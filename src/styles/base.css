@@ -1,0 +1,29 @@
+
+.ivu-layout{
+  background: transparent;
+}
+.ivu-btn-primary{
+  background: rgba(19, 100, 248, 1);
+}
+.login .ivu-card {
+  border-radius: 20px;
+}
+.ivu-card {
+  border-radius: 8px;
+}
+
+ .ivu-radio-group-button .ivu-radio-wrapper{
+  background: rgb(18, 98, 248,.1);
+  font-size: 14px;
+  font-family: PingFangSC, PingFang SC;
+  font-weight: 400;
+  color: #1C1B1B;
+}
+
+ .ivu-radio-group-button-solid .ivu-radio-wrapper-checked:not(.ivu-radio-wrapper-disabled){
+  background: rgba(19, 100, 248, 1);
+  color: #fff;
+  font-size: 14px;
+  font-family: PingFangSC, PingFang SC;
+  font-weight: 400;
+}
