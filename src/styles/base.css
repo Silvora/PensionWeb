@@ -33,3 +33,90 @@
   text-align: center;
 }
 
+
+
+.TableForm .ivu-input-number{
+  height: 100%;
+}
+.TableForm .ivu-input-number-input-wrap{
+  height: 100%;
+}
+.TableForm .ivu-input-number-input{
+  height: 100%;
+
+
+}
+
+ .TableForm .ivu-input-number-handler{
+    height: 50%;
+    display: flex;
+  }
+  .TableForm .ivu-input-number-handler-down-inner, 
+  .TableForm .ivu-input-number-handler-up-inner{
+    height: 100%;
+    line-height: 100%;
+    display: flex;
+    align-items: center;
+  }
+.TableForm .ivu-select{
+   height: 100%;
+}
+.TableForm .ivu-select-selection{
+   height: 100%;
+       display: flex;
+    align-items: center;
+}
+
+.TableForm .ivu-select-single .ivu-select-selection .ivu-select-placeholder{
+  overflow: hidden;
+  white-space:inherit
+
+}
+
+.TableForm .ivu-input-wrapper{
+  height: 100%;
+}
+
+.TableForm .ivu-input{
+    border: 1px solid #98D2E1;
+    border-radius: 0;
+    box-sizing: border-box;
+    /* height: 30px; */
+    height: 100%;
+    min-height: 32px;
+}
+.TableForm .ivu-input:focus{
+  border: 1px solid #1364F8;
+  border-radius: 0;
+  box-sizing: border-box;
+  height: 100%;
+}
+
+.TableForm .ivu-form-item-label{
+  background: #F1F1F5;
+  border: 1px solid #98D2E1;
+  text-align: center;
+  box-sizing: border-box;
+  font-family: PingFangSC, PingFang SC;
+  font-weight: 400;
+  color: #1C1B1B;
+  padding: 0px 4px;
+  /* margin-top: 1px; */
+  word-wrap: break-word;
+  word-break: break-all;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 30px;
+}
+.TableForm .ivu-form-item{
+  margin-bottom: 0;
+  width: 100%;
+  height:100%;
+}
+
+.TableForm .ivu-form-item-content{
+  line-height: 0;
+  height: 100%;
+}

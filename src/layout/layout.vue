@@ -8,11 +8,12 @@
         <span class="title">
           {{ route.meta.title }}
         </span>
-       <div class="right-box">
-        <span class="right" :style="{'background':route.name == 'home'?'rgba(19, 100, 248, 1)':'#fff'}" >
-          <img v-if="route.name == 'home'" class="right-img"  src="@/assets/images/setting.png" alt="" @click="() => router.push('/sys')">
-        </span>
-       </div>
+        <div class="right-box">
+          <span class="right" :style="{ 'background': route.name == 'home' ? 'rgba(19, 100, 248, 1)' : '#fff' }">
+            <img v-if="route.name == 'home'" class="right-img" src="@/assets/images/setting.png" alt=""
+              @click="() => router.push('/sys')">
+          </span>
+        </div>
       </div>
     </div>
     <div class="layout-box">
@@ -77,7 +78,8 @@ console.log(route)
         width: 80px;
         cursor: pointer;
       }
-      .right-box{
+
+      .right-box {
         width: 80px;
         float: right;
         display: flex;
@@ -111,6 +113,7 @@ console.log(route)
     height: calc(100vh - 60px);
     margin: 0 auto;
     background: transparent !important;
+    overflow: hidden;
   }
 }
 </style>

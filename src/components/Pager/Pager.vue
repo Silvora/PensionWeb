@@ -1,5 +1,5 @@
 <template>
-    <VxePager :align="'center'" background :loading="PageLoding"
+    <VxePager :align="'center'" :loading="PageLoding"
         :layouts="['Sizes', 'PrevJump', 'PrevPage', 'Number', 'NextPage', 'NextJump', 'FullJump', 'Total']"
         :current-page="props.tablePage.currentPage" :page-size="props.tablePage.pageSize" :total="props.tablePage.total"
         @page-change="handlePageChange">
