@@ -110,6 +110,7 @@ console.log(route)
 
   .layout-box {
     width: 75%;
+    min-width: 1400px;
     height: calc(100vh - 60px);
     margin: 0 auto;
     background: transparent !important;

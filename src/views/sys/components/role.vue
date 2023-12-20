@@ -1,13 +1,15 @@
 <template>
     <div class="role">
-        role
+        <div class="tableView">
+sadsa
+        </div>
 
 
 
 
 
 
-        <Pager :tablePage="pageConfig" @handlePageChange="handlePageChange" ref="PagerRef"></Pager>
+        <Pager class="pager" :tablePage="pagerConfig" @handlePageChange="handlePageChange" ref="PagerRef"></Pager>
         <Card :bordered="false" padding="6" class="btnList">
             <div class="list">
                 <Button type="primary">新增</Button>
@@ -24,7 +26,7 @@
 <script setup lang='ts'>
 import { ref } from "vue"
 
-const pageConfig = ref({
+const pagerConfig = ref({
     total: 100,//总数
     currentPage: 1,//当前页
     pageSize: 10 //数量
@@ -32,8 +34,8 @@ const pageConfig = ref({
 
 const handlePageChange = ({ currentPage, pageSize }) => {
     console.log(currentPage, pageSize)
-    pageConfig.value = {
-        ...pageConfig.value,
+    pagerConfig.value = {
+        ...pagerConfig.value,
         currentPage,
         pageSize
     }
@@ -48,6 +50,14 @@ const handlePageChange = ({ currentPage, pageSize }) => {
     position: relative;
     background: red;
     margin-top: 20px;
+    height: calc(100% - 48px);
+    .tableView{
+        width: 100%;
+        height: calc(100% - 48px);
+        background: goldenrod;
+        overflow: hidden;
+        overflow-y: auto;
+    }
 
 
     .btnList {
@@ -64,6 +74,9 @@ const handlePageChange = ({ currentPage, pageSize }) => {
                 margin: 5px 0;
             }
         }
+    }
+    .pager{
+        width: 100%;
     }
 }
 </style>

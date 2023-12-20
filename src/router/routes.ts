@@ -10,7 +10,7 @@ import Sys from "@/views/sys/sys.vue"
 
 import Room from "@/views/room/room.vue"
 //import admin from './admin'
-
+import Screen from '@/views/screen/screen.vue'
 
 //首页
 const home: any = [
@@ -80,6 +80,23 @@ const room: any = [
       },
     
 ]
+//看护大屏
+const screen: any = [
+  {
+       path: '/screen',
+       name: 'screen',
+       meta: {
+         title: '看护大屏',
+         icon: 'md-home',
+         //id: Date.now(),
+         keepAlive: true,
+         //是否显示
+         isDisplay: true
+       },
+       component: Screen
+     },
+   
+]
 
 const routes: any = [
   {
@@ -95,6 +112,7 @@ const routes: any = [
       ...home,
       ...sys,
       ...room,
+      ...screen,
       ...err,
 
     ]
