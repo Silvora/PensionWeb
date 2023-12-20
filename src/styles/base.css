@@ -27,3 +27,9 @@
   font-family: PingFangSC, PingFang SC;
   font-weight: 400;
 }
+
+.ivu-modal-header {
+  padding: 5px 16px;
+  text-align: center;
+}
+

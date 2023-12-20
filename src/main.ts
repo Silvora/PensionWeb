@@ -19,7 +19,7 @@ import 'vxe-table/lib/style.css'
 import createDirective from './utils/directive'
 import i18n from './i18n'
 
-//import AppInstallView from "@/components/index"
+import AppInstallView from "@/components/index"
 
 
 
@@ -47,7 +47,7 @@ function bootstrap() {
     translate: (key, args) => i18n.global.t(key, args)
   })
 
-  //AppInstallView(app)
+  AppInstallView(app)
 
   app.mount('#app')
 }

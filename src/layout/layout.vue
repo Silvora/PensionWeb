@@ -8,9 +8,11 @@
         <span class="title">
           {{ route.meta.title }}
         </span>
-        <span class="right">
-          <img class="right-img" src="@/assets/images/setting.png" alt="" @click="() => router.push('/sys')">
+       <div class="right-box">
+        <span class="right" :style="{'background':route.name == 'home'?'rgba(19, 100, 248, 1)':'#fff'}" >
+          <img v-if="route.name == 'home'" class="right-img"  src="@/assets/images/setting.png" alt="" @click="() => router.push('/sys')">
         </span>
+       </div>
       </div>
     </div>
     <div class="layout-box">
@@ -34,6 +36,7 @@
 import router from '@/router';
 import { useRoute } from 'vue-router';
 const route = useRoute()
+console.log(route)
 </script>
 
 <style scoped lang="less">
@@ -51,6 +54,8 @@ const route = useRoute()
       font-family: PingFangSC, PingFang SC;
       font-weight: 400;
       color: #1C1B1B;
+      width: calc(100% - 120px);
+      text-align: center;
     }
 
     .tool-bar {
@@ -70,12 +75,19 @@ const route = useRoute()
 
       .left-img {
         width: 80px;
+        cursor: pointer;
+      }
+      .right-box{
+        width: 80px;
+        float: right;
+        display: flex;
+        justify-content: flex-end;
       }
 
       .right {
         width: 40px;
         border-radius: 50%;
-        background: rgba(19, 100, 248, 1);
+        //background: rgba(19, 100, 248, 1);
         height: 40px;
         display: flex;
         align-items: center;
@@ -85,6 +97,7 @@ const route = useRoute()
           display: block;
           width: 20px;
           height: 20px;
+          cursor: pointer;
         }
       }
 

@@ -12,7 +12,8 @@
             </div>
             <div class="btn">
                 <!-- <Button type="primary" v-if="type == 'mechanism'">保存</Button> -->
-                <Input search clearable placeholder="搜索" />
+                <Input prefix="ios-search" clearable  enter-button="搜索" placeholder="搜索" />
+                   
             </div>
         </div>
 
@@ -41,8 +42,7 @@
                         <span>1 入住、2预留、5空闲</span>
                     </p>
                     <Row :gutter="8">
-                        <Col span="4">
-
+                        <Col span="4" v-for="item in Array.from({ length: 10 })" :key="item">
                         <Card :bordered="false" padding="0">
                             <div class="roomBox">
                                 <p class="t1">
@@ -75,7 +75,7 @@
 
             </div>
             <div class="floor">
-                <Button type="primary" class="btn">楼栋管理</Button>
+                <Button type="primary" class="btn" @click="handleShowModal">楼栋管理</Button>
                 <Card :bordered="false" padding="6">
                     <Row :gutter="8">
                         <Col span="24" v-for="item in houseList" :key="item" class="floorCard">
@@ -88,7 +88,11 @@
             </div>
         </div>
         <p class="footer">深圳海吉雅健康科技有限公司 技术支持</p>
+
+
+        <FormData ref="FormDataRef"></FormData>
     </div>
+
 </template>
 
 <script setup lang='ts' name="room">
@@ -96,7 +100,8 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import HouseOpen from "@/assets/images/house-open.png"
 import HouseClose from "@/assets/images/house-close.png"
-
+import FormData from './formData.vue';
+const FormDataRef:any = ref(null)
 const router = useRouter()
 const type = ref('a')
 const typeList = ref([
@@ -116,6 +121,9 @@ const typeList = ref([
         type: "c",
     }
 ])
+const handleShowModal = () => {
+    FormDataRef.value.showModal()
+}
 
 
 const houseList = ref(['a102', '1203', 'a123', 'a302', 'c203', 'a103'])
@@ -232,7 +240,9 @@ const handleRadioType = (label: any) => {
                 }
 
                 .roomBox {
+                   // width: 150px;
                     text-align: center;
+                    margin-bottom: 10px;
 
                     .t1 {
                         display: flex;

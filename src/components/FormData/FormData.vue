@@ -136,8 +136,8 @@ import { nextTick, ref, shallowRef, watchEffect } from 'vue';
 import languages from '@/config/languages';
 // import UploadImg from '@/components/UploadImg.vue'
 // import { RegionSelects, RegionGroupCore, RegionGroup } from 'v-region'
-import '@wangeditor/editor/dist/css/style.css'
-import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
+//import '@wangeditor/editor/dist/css/style.css'
+//import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 import { useI18n } from "vue-i18n"
 const { t } = useI18n()
 const appStore = useAppStore()
