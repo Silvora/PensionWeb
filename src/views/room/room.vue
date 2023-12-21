@@ -5,15 +5,15 @@
             <div class="bar">
                 <RadioGroup v-model="type" type="button" button-style="solid" @on-change="handleRadioType">
                     <Radio v-for="item in  typeList" :key="item.label" :label="item.type">
-                        <Icon :type="item.icon" />
+                        <!-- <Icon :type="item.icon" /> -->
                         {{ item.label }}
                     </Radio>
                 </RadioGroup>
             </div>
             <div class="btn">
                 <!-- <Button type="primary" v-if="type == 'mechanism'">保存</Button> -->
-                <Input prefix="ios-search" clearable  enter-button="搜索" placeholder="搜索" />
-                   
+                <Input prefix="ios-search" clearable enter-button="搜索" placeholder="搜索" />
+
             </div>
         </div>
 
@@ -23,13 +23,10 @@
                 <Card :bordered="false" padding="6">
                     <Row :gutter="8">
                         <Col span="12" v-for="item in houseList" :key="item" class="houseCard">
-                        <!-- <Card :bordered="false" :style="{ 'background': item.color, 'border': '2px solid #fff' }"
-                        @click="handleNav(item.route)"> -->
                         <div class="cardBody" @click="handleHouseActive(item)">
                             <p :style="{ 'color': houseActive == item ? '' : '#1C1B1B' }">{{ item }}</p>
                             <img :src="houseActive == item ? HouseOpen : HouseClose" alt="" srcset="">
                         </div>
-                        <!-- </Card> -->
                         </Col>
                     </Row>
                 </Card>
@@ -42,7 +39,7 @@
                         <span>1 入住、2预留、5空闲</span>
                     </p>
                     <Row :gutter="8">
-                        <Col span="4" v-for="item in Array.from({ length: 10 })" :key="item">
+                        <Col span="4" v-for="item in Array.from({ length: 20 })" :key="item">
                         <Card :bordered="false" padding="0">
                             <div class="roomBox">
                                 <p class="t1">
@@ -52,7 +49,7 @@
                                         <img src="@/assets/images/room-setting.png" alt="" srcset="">
                                     </span>
                                 </p>
-                                <div class="t5">
+                                <div class="t5" @click="handleGetUserInfo">
                                     <span class="t6">dsadsa</span>
                                     <img class="t7" src="@/assets/images/screen.png" alt="" srcset="">
                                 </div>
@@ -87,12 +84,11 @@
                 </Card>
             </div>
         </div>
-        <p class="footer">深圳海吉雅健康科技有限公司 技术支持</p>
 
 
-        <FormData ref="FormDataRef"></FormData>
+        <BuildingModal ref="BuildingModalRef"></BuildingModal>
+        <DetailsModal ref="DetailsModalRef"></DetailsModal>
     </div>
-
 </template>
 
 <script setup lang='ts' name="room">
@@ -100,8 +96,10 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import HouseOpen from "@/assets/images/house-open.png"
 import HouseClose from "@/assets/images/house-close.png"
-import FormData from './formData.vue';
-const FormDataRef:any = ref(null)
+import BuildingModal from './BuildingModal.vue';
+import DetailsModal from "./DetailsModal.vue"
+const BuildingModalRef: any = ref(null)
+const DetailsModalRef: any = ref(null)
 const router = useRouter()
 const type = ref('a')
 const typeList = ref([
@@ -122,7 +120,11 @@ const typeList = ref([
     }
 ])
 const handleShowModal = () => {
-    FormDataRef.value.showModal()
+    BuildingModalRef.value.showModal()
+}
+
+const handleGetUserInfo = () => {
+    DetailsModalRef.value.showModal()
 }
 
 
@@ -135,7 +137,7 @@ const handleHouseActive = (label: string) => {
 const handleFloorActive = (label: string) => {
     floorActive.value = label
 }
-const handleRadioType = (label: any) => {
+const handleRadioType = (label: string) => {
     //console.log(label)
     router.push('/room?type=' + label)
 }
@@ -145,7 +147,7 @@ const handleRadioType = (label: any) => {
 <style scoped lang='less'>
 .room {
     width: 100%;
-    height: 100%;
+    height: calc(100vh - 90px);
 
     .toolBar {
         height: 60px;
@@ -169,7 +171,7 @@ const handleRadioType = (label: any) => {
 
     .box {
         width: 100%;
-        height: calc(100% - 90px);
+        height: calc(100% - 60px);
         background: rgba(212, 242, 250, 1);
         display: flex;
         justify-content: space-between;
@@ -208,7 +210,10 @@ const handleRadioType = (label: any) => {
 
         .roomUser {
             width: calc(100% - 420px);
-            margin: 15px auto;
+            padding-top: 15px;
+            height: 100%;
+            overflow: hidden;
+            overflow-y: auto;
 
             .roomItem {
                 width: 100%;
@@ -240,7 +245,7 @@ const handleRadioType = (label: any) => {
                 }
 
                 .roomBox {
-                   // width: 150px;
+                    // width: 150px;
                     text-align: center;
                     margin-bottom: 10px;
 
@@ -370,17 +375,6 @@ const handleRadioType = (label: any) => {
                 }
             }
         }
-    }
-
-    .footer {
-        text-align: center;
-        font-size: 12px;
-        font-family: PingFangSC, PingFang SC;
-        font-weight: 400;
-        color: #1C1B1B;
-        height: 30px;
-        line-height: 30px;
-        background: #BCE2ED;
     }
 
 }

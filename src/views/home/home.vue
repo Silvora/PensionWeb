@@ -59,7 +59,7 @@ const menuList: any = ref([
   {
     logo: sys,
     label: "设备中心",
-    route: "/sys",
+    route: "/setting",
     color: "rgba(211, 114, 114, 1)",
   }
 ])

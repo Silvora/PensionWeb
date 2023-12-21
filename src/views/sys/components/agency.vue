@@ -5,6 +5,8 @@
         <TableForm title="建设信息" :FormData="constructData.FormData" :labelHeight="constructData.labelHeight">
         </TableForm>
         <TableForm title="服务信息" :FormData="serveData.FormData" :labelHeight="serveData.labelHeight"></TableForm>
+        <br>
+
     </div>
 </template>
 

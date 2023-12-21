@@ -5,41 +5,14 @@
         <template #tool>
             <slot name="tool"></slot>
         </template>
-        <!-- <template #active>
-            <Space>
-                <Select v-model="props.searchData.oemId" :placeholder="t('请选择') + t('所属机构')" clearable
-                    v-if="toolBarConfig.oemIdSearch" style="width: 150px;" @on-change="handleOemIdChange">
-                    <Option v-for="child in appStore.roleList" :value="child.value" :key="child.value">
-                        {{ child.label }}
-                    </Option>
-                </Select>
-                <Input v-model="props.searchData[select]" style="width: 280px;" v-if="toolBarConfig.selectSearch" clearable
-                    @on-enter="handleSelectChange">
-                <template #prepend>
-                    <Select v-model="select" :style="{ 'width': '100px' }">
-                        <Option :value="item.value" v-for="item in toolBarConfig.selectSearch ">{{ t(item.label) }}
-                        </Option>
-                    </Select>
-                </template>
-                <template #append>
-                    <Button icon="ios-search" @click="handleSelectChange"></Button>
-                </template>
-                </Input>
-                
-                <vxe-button status="primary" icon="vxe-icon-add" @click="handleOpenAddModal"
-                    v-if="toolBarConfig">{{ t(toolBarConfig.title) }}</vxe-button>
-            </Space>
-        </template> -->
     </ToolBar>
-
-    <!-- 添加数据 -->
-    <!-- <FormModal :title="toolBarConfig.title" :rules="toolBarConfig.rules" :lableWidth="toolBarConfig.lableWidth"
-        :FormData="toolBarConfig.FormData" ref="TableAddRef" @handleModalOk="handleAddModalOk" v-if="toolBarConfig">
-    </FormModal> -->
 
     <VxeTable :align="'center'" :data="props.data" :loading="TableLoading" :height="appStore.tableH"
         :row-config="{ isHover: true }" :stripe="tableConfig.stripe" :border="tableConfig.border" class="TableView"
-        @cell-click="headerCellClick" @cell-dblclick="headercellDBClickEvent">
+        @cell-click="headerCellClick" @cell-dblclick="headercellDBClickEvent" @checkbox-all="selectAllChangeEvent"
+        @checkbox-change="selectChangeEvent" ref="tableRef">
+
+        <vxe-column type="checkbox" title="" v-if="tableConfig.checkbox"></vxe-column>
         <VxeColumn type="seq" title="序号" width="60" v-if="tableConfig.seq">
         </VxeColumn>
         <VxeColumn v-for=" item  in  columns " :key="item.key" :field="item.key" :title="item.title"
@@ -90,6 +63,7 @@ const { t } = useI18n()
 const appStore = useAppStore()
 //表格loding状态
 const TableLoading = ref(false)
+const tableRef = ref<any>(null)
 const PagerRef = ref<any>(null)
 const ToolBarRef = ref<any>(null)
 const TableEditRef = ref<any>(null)
@@ -153,6 +127,8 @@ const props: any = defineProps({
 //table默认设置
 const tableConfig = props.tableConfig.defaultConfig
 const editConfig = props.tableConfig.editConfig
+
+console.log("-------", editConfig)
 //columns数据
 const columns = props.tableConfig.columns
 
@@ -186,7 +162,6 @@ const handleEditModalOk = (data: any) => {
 }
 //打开编辑modal
 const handleOpenEditModal = (row: any) => {
-    //console.log(row)
     TableEditRef.value.openModal(row)
 }
 //关闭编辑modal
@@ -232,6 +207,23 @@ const headercellDBClickEvent = ({ row }: any) => {
     emit('headerCellDBClickEvent', row)
 }
 
+//复选框全部
+const selectAllChangeEvent = ({ checked }: any) => {
+    const $table = tableRef.value
+    if ($table) {
+        const records = $table.getCheckboxRecords()
+        console.log(checked ? '所有勾选事件' : '所有取消事件', records)
+    }
+}
+//复选框
+const selectChangeEvent = ({ checked }: any) => {
+    const $table = tableRef.value
+    if ($table) {
+        const records = $table.getCheckboxRecords()
+        console.log(checked ? '勾选事件' : '取消事件', records)
+    }
+}
+
 
 defineExpose({
     openLoding,
@@ -239,6 +231,12 @@ defineExpose({
     closeTextLoding,
     closeAddModal,
     closeEditModal,
+
+    selectAllChangeEvent,
+    selectChangeEvent,
+
+
+    handleOpenEditModal,//打开编辑model
 })
 </script>
 

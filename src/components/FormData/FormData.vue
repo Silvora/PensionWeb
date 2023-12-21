@@ -1,6 +1,5 @@
 <template>
-    <Form ref="FormDataRef" label-position="right" :model="FormData" :rules="rules" :label-width="props.lableWidth"
-        v-if="FormData" :key="Date.now()">
+    <Form ref="FormDataRef" label-position="top" :model="FormData" :rules="rules" v-if="FormData" :key="Date.now()">
 
         <FormItem v-for="item in     props.FormData    " :label="t(item.label)" :prop="item.prop">
 
@@ -120,12 +119,12 @@
             </div>
 
 
-            <div v-if="item.type == 'editor'">
+            <!-- <div v-if="item.type == 'editor'">
                 <Toolbar style="border-bottom: 1px solid #ccc" :editor="editorRef" :defaultConfig="toolbarConfig"
                     :mode="mode" />
                 <Editor style="height: 165px; overflow-y: hidden;border-bottom: 1px solid #ccc"
                     v-model="FormData[item.prop]" :defaultConfig="editorConfig" :mode="mode" @onCreated="handleCreated" />
-            </div>
+            </div> -->
         </FormItem>
     </Form>
 </template>
@@ -143,13 +142,13 @@ const { t } = useI18n()
 const appStore = useAppStore()
 
 // 编辑器实例，必须用 shallowRef
-const mode = 'default'
-const editorRef = shallowRef()
-const toolbarConfig = {}
-const editorConfig = {
-    placeholder: t('请输入内容...')
-    //   scroll: false
-}
+// const mode = 'default'
+// const editorRef = shallowRef()
+// const toolbarConfig = {}
+// const editorConfig = {
+//     placeholder: t('请输入内容...')
+//     //   scroll: false
+// }
 
 
 const FormDataRef = ref<any>(null)
@@ -171,15 +170,15 @@ const props: any = defineProps({
         default: null
     }
 })
-
+console.log("--------", props.FormData)
 const FormData = ref<any>({})
 const rules = ref<any>({})
 
 
-const handleCreated = (editor: any) => {
-    //console.log(editor)
-    editorRef.value = editor // 记录 editor 实例，重要！
-}
+// const handleCreated = (editor: any) => {
+//     //console.log(editor)
+//     editorRef.value = editor // 记录 editor 实例，重要！
+// }
 
 //上传文件
 const uploadImgName = (data: any) => {

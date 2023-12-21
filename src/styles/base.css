@@ -5,11 +5,27 @@
 .ivu-btn-primary{
   background: rgba(19, 100, 248, 1);
 }
+.ivu-btn-error{
+  background:rgba(224, 98, 85, 1);
+}
 .login .ivu-card {
   border-radius: 20px;
 }
 .ivu-card {
   border-radius: 8px;
+}
+
+.ivu-tag-primary{
+  background: rgba(19, 100, 248, 1);
+}
+.ivu-radio-checked .ivu-radio-inner{
+  border-color: rgba(19, 100, 248, 1);
+}
+.ivu-radio-inner:after{
+  background: rgba(19, 100, 248, 1);
+}
+.ivu-tag:not(.ivu-tag-border):not(.ivu-tag-dot):not(.ivu-tag-checked){
+  background: #fff;
 }
 
  .ivu-radio-group-button .ivu-radio-wrapper{
@@ -119,4 +135,10 @@
 .TableForm .ivu-form-item-content{
   line-height: 0;
   height: 100%;
+}
+
+.user .ivu-description-term,
+.user .ivu-description-detail{
+  padding-bottom: 2px;
+ 
 }

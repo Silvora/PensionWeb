@@ -38,7 +38,7 @@
                     </div>
 
                     <div style="width: 100%;height:100%" v-if="item.type == 'select'">
-                        <Select v-model="FormData[item.prop]" :placeholder="t('请选择') + t(item.label)" clearable
+                        <!-- <Select v-model="FormData[item.prop]" :placeholder="t('请选择') + t(item.label)" clearable
                             :disabled="item.disabled" :multiple="item.multiple" v-if="item.prop == 'oemId'">
                             <Option v-for="      child       in       appStore.oemList      " :value="child.value"
                                 :key="child.value">{{
@@ -65,10 +65,10 @@
                                     child.label + ` - ${child.desc} `
                                 }}
                             </Option>
-                        </Select>
+                        </Select> -->
 
                         <Select v-model="FormData[item.prop]" :placeholder="t('请选择') + t(item.label)" clearable
-                            :disabled="item.disabled" :multiple="item.multiple" v-else>
+                            :disabled="item.disabled" :multiple="item.multiple">
                             <Option v-for="      child       in       item.childs      " :value="child.value"
                                 :key="child.value">{{
                                     t(child.label)

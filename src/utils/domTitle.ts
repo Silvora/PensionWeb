@@ -1,4 +1,4 @@
 
 export default function setPageDomTitle(title: unknown) {
-  document.title = 'meicetPro - ' + title
+  document.title = '觉所 - ' + title
 }

@@ -66,7 +66,7 @@
 </template>
 
 <script setup lang="ts">
-import UserItem from "./UserItem.vue"
+import UserItem from "./components/UserItem"
 import { ref } from 'vue';
 
 const model1 = ref()

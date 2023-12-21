@@ -16,12 +16,11 @@
             </div>
         </div>
 
-        <div class="formInfo">
+        <div class="formInfo" id="formInfo">
             <Agency v-if="type == 'agency'"></Agency>
             <Role v-if="type == 'role'"></Role>
             <Account v-if="type == 'account'"></Account>
         </div>
-        <p class="footer">深圳海吉雅健康科技有限公司 技术支持</p>
     </div>
 </template>
 
@@ -33,7 +32,7 @@ import Role from "./components/role.vue"
 import Account from "./components/account.vue"
 const router = useRouter()
 const route = useRoute()
-const type = ref('agency')
+const type = ref(route.query.type)
 const typeList = ref([
     {
         label: "机构设置",
@@ -61,7 +60,6 @@ const typeList = ref([
         type: "system",
     }
 ])
-console.log(route)
 
 const handleRadioType = (label: any) => {
     //console.log(label)
@@ -73,7 +71,6 @@ const handleRadioType = (label: any) => {
 .sys {
     width: 100%;
     height: calc(100vh - 60px);
-    background: red;
     overflow: hidden;
     position: relative;
 
@@ -100,36 +97,11 @@ const handleRadioType = (label: any) => {
 
     .formInfo {
         width: 100%;
-        height: calc(100% - 90px);
-        margin-bottom: 30px;
-
-
+        height: calc(100vh - 150px);
         background: rgba(212, 242, 250, 1);
         overflow: hidden;
         overflow-y: auto;
 
-        // .formBox {
-        //     width: 70%;
-        //     height: 100%;
-        //     margin: 0 auto;
-        // }
-    }
-
-    .footer {
-
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-
-        text-align: center;
-        font-size: 12px;
-        font-family: PingFangSC, PingFang SC;
-        font-weight: 400;
-        color: #1C1B1B;
-        height: 30px;
-        line-height: 30px;
-        background: #BCE2ED;
     }
 
 }
