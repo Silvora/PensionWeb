@@ -14,6 +14,10 @@ import Screen from '@/views/screen/screen.vue'
 
 import Setting from '@/views/setting/setting.vue'
 
+import Elder from "@/views/elder/elder.vue"
+
+import AddElder from "@/views/add-elder/add-elder.vue"
+
 //首页
 const home: any = [
   {
@@ -118,6 +122,40 @@ const setting: any = [
    
 ]
 
+//长者信息
+const elder: any = [
+   {
+       path: '/elder',
+       name: 'elder',
+       meta: {
+         title: '长者信息',
+         icon: 'md-home',
+         //id: Date.now(),
+         keepAlive: true,
+         //是否显示
+         isDisplay: true
+       },
+       component: Elder
+     }
+]
+
+//添加长者信息
+const addElder: any = [
+  {
+      path: '/add-elder',
+      name: 'add-elder',
+      meta: {
+        title: '长者新增',
+        icon: 'md-home',
+        //id: Date.now(),
+        keepAlive: true,
+        //是否显示
+        isDisplay: true
+      },
+      component: AddElder
+    }
+]
+
 const routes: any = [
   {
     path: '/',
@@ -134,6 +172,8 @@ const routes: any = [
       ...room,
       ...screen,
       ...setting,
+      ...elder,
+      ...addElder,
       ...err,
 
     ]

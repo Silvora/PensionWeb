@@ -23,8 +23,8 @@
         </div>
       </div>
     </div>
-    <div class="layout-box">
-      <Layout style="height: calc(100vh - 90px)">
+    <div class="layout-box" id="layoutBox">
+      <Layout class="layout-content">
         <Content>
           <Suspense>
             <RouterView v-slot="{ Component }">
@@ -65,9 +65,9 @@ onMounted(() => {
   //console.log(content.value.offsetHeight)
   nextTick(() => {
     //appStore.setTableHeight(content.value.offsetHeight - 172)
-    let conH: any = document.getElementById('formInfo') || { clientHeight: 1080 }
+    let conH: any = document.getElementById('layoutBox')
     console.log(conH.offsetHeight)
-    appStore.setTableHeight(conH.offsetHeight - 110)
+    appStore.setTableHeight(conH.offsetHeight - 190)
   })
 })
 window.addEventListener('resize', () => {
@@ -75,9 +75,9 @@ window.addEventListener('resize', () => {
   nextTick(() => {
     // console.log(content.value.clientHeight)
     // appStore.setTableHeight(content.value.offsetHeight - 172)
-    let conH: any = document.getElementById('formInfo') || { clientHeight: 1080 }
+    let conH: any = document.getElementById('layoutBox')
     console.log(conH.offsetHeight)
-    appStore.setTableHeight(conH.offsetHeight - 110)
+    appStore.setTableHeight(conH.offsetHeight - 190)
   })
   //appStore.setTableHeight(content.value.offsetHeight - 172)
 })
@@ -158,20 +158,27 @@ window.addEventListener('resize', () => {
     width: 75%;
     min-width: 1400px;
     height: calc(100vh - 60px);
+    min-height: 960px;
     margin: 0 auto;
     background: transparent !important;
-    overflow: hidden;
-    .footer{
+    // overflow: hidden;
+
+    .layout-content{
+      width: 100%;
+      height:calc(100vh - 90px);
+    }
+
+    .footer {
       width: 100%;
 
-text-align: center;
-font-size: 12px;
-font-family: PingFangSC, PingFang SC;
-font-weight: 400;
-color: #1C1B1B;
-height: 30px;
-line-height: 30px;
-background: #BCE2ED;
+      text-align: center;
+      font-size: 12px;
+      font-family: PingFangSC, PingFang SC;
+      font-weight: 400;
+      color: #1C1B1B;
+      height: 30px;
+      line-height: 30px;
+      background: #BCE2ED;
 
     }
 

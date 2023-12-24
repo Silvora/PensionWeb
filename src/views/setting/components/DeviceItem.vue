@@ -1,15 +1,28 @@
 <template>
     <Card :bordered="false" padding="0" style="background: rgba(255, 255, 255, 1);margin-bottom: 10px;">
-        <div class="userInfo">
+        <div class="deviceInfo">
             <p class="title">
-                <span :class="['t1', 'green', 'yellow', 'gary']">空闲</span>
-                <span class="t2">a102</span>
+                <span :class="['t1', 'green', 'yellow', 'gary']">在线</span>
+                <span class="t2">一楼 A101 06床</span>
                 <span class="t3">
                     <img src="@/assets/images/room-setting.png" alt="" srcset="">
                 </span>
             </p>
-            <div class="userBox">
-                <div class="imgInfo">
+            <div class="deviceBox">
+                <img class="img" src="@/assets/images/sleep.png" alt="" srcset="">
+                <div class="info">
+                    <p class="t1">睡眠雷达
+
+                    </p>
+                    <p class="t2">
+                        ID:264233215
+                    </p>
+                    <p class="t2">
+                        关联老人:倪杰
+                    </p>
+                </div>
+
+                <!-- <div class="imgInfo">
                     <img class="img" src="@/assets/images/screen.png" alt="" srcset="">
                     <div class="imgList">
                         <img src="@/assets/images/位图@2x(1).png" alt="">
@@ -37,8 +50,10 @@
                         <Icon type="ios-checkmark" />
                         36.9/度
                     </p>
-                </div>
+                </div> -->
+
             </div>
+            <Button type="error" size="small" class="stateBtn">一键布防</Button>
         </div>
     </Card>
 </template>
@@ -48,10 +63,16 @@
 </script>
 
 <style scoped lang='less'>
-.userInfo {
+.deviceInfo {
     width: 100%;
     padding-bottom: 1px;
     cursor: pointer;
+
+    .stateBtn {
+        width: calc(100% - 20px);
+        margin-left: 10px;
+        margin-bottom: 10px;
+    }
 
     .title {
         width: 100%;
@@ -100,52 +121,55 @@
         }
     }
 
-    .userBox {
+    .deviceBox {
         margin: 10px;
         display: flex;
 
-
-        .imgInfo {
-            display: flex;
-            flex-direction: column;
-            width: 130px;
-
-            .img {
-                width: 130px;
-            }
-
-            .imgList {
-                width: 100%;
-                background: gold;
-                display: flex;
-                justify-content: flex-start;
-                align-items: center;
-                height: 30px;
-
-                img {
-                    width: 20px;
-                    margin-right: 10px;
-                }
-            }
+        img {
+            width: 60px;
+            height: 60px;
         }
+
+        // .imgInfo {
+        //     display: flex;
+        //     flex-direction: column;
+        //     width: 130px;
+
+        //     .img {
+        //         width: 130px;
+        //     }
+
+        //     .imgList {
+        //         width: 100%;
+        //         background: gold;
+        //         display: flex;
+        //         justify-content: flex-start;
+        //         align-items: center;
+        //         height: 30px;
+
+        //         img {
+        //             width: 20px;
+        //             margin-right: 10px;
+        //         }
+        //     }
+        // }
 
         .info {
             width: 100%;
             padding: 0 10px;
 
-            .t4,
-            .t5 {
-                display: flex;
-                width: 100%;
-                margin: 2px 0;
-                justify-content: space-around;
-                align-items: center;
-                height: 30px;
+            .t1 {
+                font-size: 16px;
+                font-family: PingFangSC, PingFang SC;
+                font-weight: 400;
+                color: #1C1B1B;
             }
 
-            .t5 {
-                background: rgba(1, 96, 255, 0.05);
-                border-radius: 4px;
+            .t2 {
+                font-size: 14px;
+                font-family: PingFangSC, PingFang SC;
+                font-weight: 400;
+                color: #8B8A96;
             }
         }
     }

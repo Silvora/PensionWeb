@@ -7,10 +7,10 @@
         </template>
     </ToolBar>
 
-    <VxeTable :align="'center'" :data="props.data" :loading="TableLoading" :height="appStore.tableH"
-        :row-config="{ isHover: true }" :stripe="tableConfig.stripe" :border="tableConfig.border" class="TableView"
-        @cell-click="headerCellClick" @cell-dblclick="headercellDBClickEvent" @checkbox-all="selectAllChangeEvent"
-        @checkbox-change="selectChangeEvent" ref="tableRef">
+    <VxeTable :align="'center'" :data="props.data" :loading="TableLoading"
+        :height="props.tableH ? props.tableH : appStore.tableH" :row-config="{ isHover: true }" :stripe="tableConfig.stripe"
+        :border="tableConfig.border" class="TableView" @cell-click="headerCellClick" @cell-dblclick="headercellDBClickEvent"
+        @checkbox-all="selectAllChangeEvent" @checkbox-change="selectChangeEvent" ref="tableRef">
 
         <vxe-column type="checkbox" title="" v-if="tableConfig.checkbox"></vxe-column>
         <VxeColumn type="seq" title="序号" width="60" v-if="tableConfig.seq">
@@ -69,6 +69,10 @@ const ToolBarRef = ref<any>(null)
 const TableEditRef = ref<any>(null)
 const emit = defineEmits(['handleUpdatePage', 'handleEdit', 'handleAdd', 'handleSearch', 'headerCellClickEvent', 'headerCellDBClickEvent'])
 const props: any = defineProps({
+    tableH: {
+        type: String,
+        default: null
+    },
     searchData: {
         type: Object,
         default: {

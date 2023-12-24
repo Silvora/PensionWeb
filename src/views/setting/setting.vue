@@ -1,5 +1,5 @@
 <template>
-    <div class="screen" id="screen">
+    <div class="setting">
         <div class="bar">
             <span></span>
             <span class="searchBtn">
@@ -33,32 +33,54 @@
         <div class="box">
             <div class="focus">
                 <div class="title">
-                    <span>重点关注老人</span>
+                    <span>预警信息</span>
                     <span>
-                        <Button type="primary">添加人员</Button>
                     </span>
                 </div>
                 <div class="list">
-                    <UserItem v-for="item in Array.from({ length: 10 })" :name="item"></UserItem>
+                    <ErrItem v-for="item in Array.from({ length: 1 })" :name="item"></ErrItem>
                 </div>
             </div>
             <div class="bed">
                 <div class="title">
-                    <span class="p">床位管理</span>
+                    <span class="p">
+                        <Checkbox v-model="model1">设备全选</Checkbox>
+                    </span>
                     <span class="alert">
-                        <Alert type="error">An error prompt</Alert>
-                        <Button type="primary">全部日志</Button>
+                        <!-- <Alert type="error">An error prompt</Alert>
+                        <Button type="primary">全部日志</Button> -->
                     </span>
                 </div>
                 <div class="list">
-
                     <Row gutter="10">
-                        <Col span="6" v-for="item in Array.from({ length: 20 })" :key="item">
-                        <UserItem></UserItem>
+                        <Col span="6" v-for="item in Array.from({ length: 10 })" :key="item">
+                        <DeviceItem></DeviceItem>
                         </Col>
                     </Row>
+                </div>
+            </div>
 
+            <div class="deviceList">
+                <div class="floor">
+                    <!-- <Button type="primary" class="btn" @click="handleShowModal">楼栋管理</Button> -->
+                    <Card :bordered="false" padding="6" class="btnList" style="border: 1px solid #98D2E1;">
+                        <div class="list">
+                            <Button type="primary">设备关联</Button>
+                            <Button type="primary">参数设置</Button>
+                            <Button type="primary">一键布防</Button>
+                            <Button type="primary">一键撤防</Button>
+                            <Button type="error">批量删除</Button>
+                        </div>
+                    </Card>
+                </div>
 
+                <div class="chart">
+                    <p>设备类型统计</p>
+                    <CountChart></CountChart>
+                </div>
+                <div class="chart">
+                    <p>设备状态</p>
+                    <StateChart></StateChart>
                 </div>
             </div>
         </div>
@@ -66,7 +88,10 @@
 </template>
 
 <script setup lang="ts">
-import UserItem from "./components/UserItem"
+import DeviceItem from "./components/DeviceItem.vue"
+import ErrItem from "./components/ErrItem.vue";
+import CountChart from "./components/CountChart.vue"
+import StateChart from "./components/StateChart.vue"
 import { ref } from 'vue';
 
 const model1 = ref()
@@ -74,7 +99,7 @@ const model1 = ref()
 </script>
 
 <style lang="less" scoped>
-.screen {
+.setting {
     width: 100%;
     height: calc(100vh - 60px);
     background: #D4F2FA;
@@ -104,7 +129,8 @@ const model1 = ref()
         justify-content: space-around;
 
         .focus {
-            width: 21%;
+            width: 210px;
+
             padding: 20px 7px 0 20px;
 
             .title {
@@ -127,7 +153,7 @@ const model1 = ref()
         }
 
         .bed {
-            width: 79%;
+            width: calc(100% - 390px);
             padding: 20px 20px 0 7px;
 
             .title {
@@ -162,6 +188,60 @@ const model1 = ref()
                 overflow-y: auto;
 
             }
+        }
+
+        .deviceList {
+
+            width: 180px;
+            padding: 20px 20px 0 0;
+            overflow: hidden;
+            overflow-y: auto;
+
+
+            .floor {
+                width: 160px;
+                // margin: 10px 0px;
+                // margin-right: 30px;
+                margin-bottom: 10px;
+
+                .btnList {
+                    width: 160px;
+
+
+                    .list {
+                        display: flex;
+                        flex-direction: column;
+
+                        button {
+                            margin: 5px 0;
+                        }
+                    }
+                }
+            }
+
+            .chart {
+                border-radius: 8px;
+                // height: 281px;
+                background: #FFFFFF;
+                border-radius: 8px;
+                border: 1px solid #98D2E1;
+                margin-bottom: 10px;
+
+                p {
+                    width: 100%;
+                    background: linear-gradient(270deg, rgba(19, 100, 248, 0) 0%, rgba(19, 100, 248, 0.7) 100%);
+                    border-radius: 8px 0px 0px 0px;
+                    opacity: 0.3;
+                    font-size: 14px;
+                    font-family: PingFangSC, PingFang SC;
+                    font-weight: 400;
+                    color: #1C1B1B;
+                    padding-left: 10px;
+                    line-height: 30px;
+                }
+            }
+
+
         }
     }
 
