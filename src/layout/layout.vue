@@ -66,7 +66,7 @@ onMounted(() => {
   nextTick(() => {
     //appStore.setTableHeight(content.value.offsetHeight - 172)
     let conH: any = document.getElementById('layoutBox')
-    console.log(conH.offsetHeight)
+    console.log("------",conH.clientHeight)
     appStore.setTableHeight(conH.offsetHeight - 190)
   })
 })
@@ -76,7 +76,7 @@ window.addEventListener('resize', () => {
     // console.log(content.value.clientHeight)
     // appStore.setTableHeight(content.value.offsetHeight - 172)
     let conH: any = document.getElementById('layoutBox')
-    console.log(conH.offsetHeight)
+    console.log("------",conH.clientHeight)
     appStore.setTableHeight(conH.offsetHeight - 190)
   })
   //appStore.setTableHeight(content.value.offsetHeight - 172)
@@ -158,7 +158,6 @@ window.addEventListener('resize', () => {
     width: 75%;
     min-width: 1400px;
     height: calc(100vh - 60px);
-    min-height: 960px;
     margin: 0 auto;
     background: transparent !important;
     // overflow: hidden;
