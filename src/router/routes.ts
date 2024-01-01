@@ -14,6 +14,10 @@ import Screen from '@/views/screen/screen.vue'
 
 import Setting from '@/views/setting/setting.vue'
 
+import Staff from '@/views/staff/staff.vue'
+
+import StaffDetails from '@/views/staff-details/staff-details.vue'
+
 import Elder from "@/views/elder/elder.vue"
 
 import AddElder from "@/views/add-elder/add-elder.vue"
@@ -122,6 +126,41 @@ const setting: any = [
    
 ]
 
+//员工管理
+const staff: any = [
+  {
+       path: '/staff',
+       name: 'staff',
+       meta: {
+         title: '员工管理',
+         icon: 'md-home',
+         //id: Date.now(),
+         keepAlive: true,
+         //是否显示
+         isDisplay: true
+       },
+       component: Staff
+     },
+   
+]
+//员工详情
+const staffDetails: any = [
+  {
+       path: '/staff-details',
+       name: 'staff-details',
+       meta: {
+         title: '员工详情',
+         icon: 'md-home',
+         //id: Date.now(),
+         keepAlive: true,
+         //是否显示
+         isDisplay: true
+       },
+       component: StaffDetails
+     },
+   
+]
+
 //长者信息
 const elder: any = [
    {
@@ -172,6 +211,8 @@ const routes: any = [
       ...room,
       ...screen,
       ...setting,
+      ...staff,
+      ...staffDetails,
       ...elder,
       ...addElder,
       ...err,

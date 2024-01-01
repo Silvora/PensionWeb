@@ -14,6 +14,10 @@ import './styles/base.css'
 import VXETable from 'vxe-table'
 import 'vxe-table/lib/style.css'
 
+import VCalendar from 'v-calendar';
+import 'v-calendar/style.css';
+
+
 
 
 import createDirective from './utils/directive'
@@ -46,6 +50,7 @@ function bootstrap() {
     i18n: (key, args) => i18n.global.t(key, args),
     translate: (key, args) => i18n.global.t(key, args)
   })
+  app.use(VCalendar, {})
 
   AppInstallView(app)
 

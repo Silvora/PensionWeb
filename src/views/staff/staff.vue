@@ -1,27 +1,44 @@
 <template>
-    <div class="elder" ref="pageBox">
+    <div class="saff" ref="pageBox">
         <div class="infoBox">
             <div class="left">
-                <div class="chart">
-                    <p class="title">年龄分布</p>
-                    <AgeChart></AgeChart>
+                <VCalendar :attributes="attrs" trim-weeks>
+                    <template #footer>
+                        <Button type="primary" style="width: 100%;" @click="modal = true">当日排班</Button>
+                    </template>
+                </VCalendar>
+                <!-- <div class="chart">
+                    <p class="title">排班情况</p>
+                    <div style="width:100%"> -->
+                <!-- <Calendar :backgroundText="true" class-name="select-mode" :language="'cn'"
+                    :weeks="['日', '一', '二', '三', '四', '五', '六']" :select-date="'2023-12-26'" style="transform: scale(1);" />
+                -->
+
+                <!-- </div>
+                </div> -->
+                <div class="chart" style="margin-top: 10px;">
+                    <p class="title">职业等级分布</p>
+                    <LevelChart></LevelChart>
                 </div>
                 <div class="chart">
                     <p class="title">性别占比</p>
                     <SexChart></SexChart>
                 </div>
-                <div class="chart" style="margin-bottom: 0px;">
+                <!-- <div class="chart" style="margin-bottom: 0px;">
                     <p class="title">空床比例</p>
                     <EmptyChart></EmptyChart>
-                </div>
+                </div> -->
             </div>
             <div class="center">
                 <TableView ref="TableViewRef" :data="data" :tableConfig="roleTable" :tablePage="pagerConfig"
                     @handleUpdatePage="handleUpdatePage" :tableH="tableH">
 
                     <template #active="{ row }">
-                        <vxe-button type="text" size="mini" status="primary">
+                        <vxe-button type="text" size="mini" status="primary" @click="handleGetUserInfo(row)">
                             查看
+                        </vxe-button>
+                        <vxe-button type="text" size="mini" status="primary">
+                            排班
                         </vxe-button>
                         <vxe-button type="text" size="mini" status="primary" @click="handleRoleEdit(row)">
                             编辑
@@ -38,58 +55,35 @@
                     <!-- <Button type="primary" class="btn" @click="handleShowModal">楼栋管理</Button> -->
                     <Card :bordered="false" padding="6" class="btnList" style="border: 1px solid #98D2E1;">
                         <div class="list">
-                            <Button type="primary" @click="() => router.push('/add-elder')">新增</Button>
+                            <Button type="primary">新增</Button>
+                            <Button type="primary">导入</Button>
+                            <Button type="primary">导出</Button>
                             <Button type="error">批量删除</Button>
                         </div>
                     </Card>
                 </div>
+                <div class="chart" style="margin-bottom: 10px;">
+                    <p class="title">当班信息</p>
+                    <div class="info">
+                        dsadsadsada
+                    </div>
+                </div>
+
                 <div class="chart" style="margin-bottom: 0px;">
-                    <p class="title">临近续费提醒</p>
-                    <div class="renewalList">
-                        <div v-for="item in Array.from({ length: 2 })" class="item">
-                            <p class="t1">{{ item }}李梅梅</p>
-                            <p class="t2">到期时间:2025-10-23</p>
-                            <p class="t3">3天</p>
-                        </div>
+                    <p class="title">交接班信息</p>
+                    <div class="info">
+                        dsadsadsada
                     </div>
                 </div>
             </div>
         </div>
-        <div class="chartBox">
-            <div class="left">
-                <div class="chart">
-                    <p class="title">护理等级统计</p>
-                    <LevelChart></LevelChart>
-                </div>
-            </div>
-            <div class="center">
-                <div class="chart">
-                    <p class="title">入住时间统计</p>
-                    <DateChart></DateChart>
-                </div>
-            </div>
-            <div class="right">
-                <div class="chart">
-                    <p class="title">备忘录 <span class="write">
-                            <Icon type="md-brush" />
-                        </span></p>
-                    <div class="memo">
-                        <div class="textList">
-                            <p>dsadsa</p>
-                            <p>dsadsa</p>
-                            <p>dsadsa</p>
-                        </div>
-                        <div class="list">
-                            <div class="item" v-for="item in Array.from({ length: 3 })">
-                                <p class="t1">病人看护指南{{ item }}</p>
-                                <p class="t2">2023/10/9</p>
-                                <p class="t3">1:准点提醒吃药</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+        <Modal v-model="modal" title="排班情况" footer-hide="true" :width="80">
+            <template #close>
+                <Icon type="md-add-circle" color="#000" style="transform: rotateZ(45deg);" size="16" />
+            </template>
+            <Scheduling></Scheduling>
+        </Modal>
     </div>
 </template>
 
@@ -98,15 +92,22 @@ import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router"
 import { roleTable } from "./data"
 import { Message, Modal } from "view-ui-plus";
-import AgeChart from "./components/AgeChart.vue";
+import LevelChart from "./components/LevelChart.vue";
 import SexChart from "./components/SexChart.vue";
-import EmptyChart from "./components/EmptyChart.vue";
-import LevelChart from "./components/LevelChart.vue"
-import DateChart from "./components/DateChart.vue"
+import Scheduling from "./components/Scheduling.vue"
+const modal = ref(false)
 const TableViewRef = ref<any>(null)
 const pageBox = ref<any>(null)
 const router = useRouter()
-const tableH = ref("595px")
+const attrs = ref([
+    {
+        key: 'today',
+        highlight: true,
+        dates: new Date(),
+    },
+]);
+
+const tableH = ref("765px")
 const data: any = ref([
     {
         deviceName: '2121',
@@ -125,11 +126,18 @@ const data: any = ref([
 onMounted(() => {
     console.log("", pageBox.value?.clientHeight)//680
     const h = pageBox.value?.clientHeight
-    if (h >= 990) {
-        tableH.value = h - 220 - 95 + 'px'
-    }
+
+    tableH.value = h - 85 + 'px'
 
 })
+
+
+const handleGetUserInfo = (row: any) => {
+    router.push({
+        path: '/staff-details'
+    })
+}
+
 
 const pagerConfig = ref({
     total: 100,//总数
@@ -149,7 +157,7 @@ const handleUpdatePage = ({ currentPage, pageSize }: any) => {
 </script>
 
 <style scoped lang='less'>
-.elder {
+.saff {
     width: 100%;
     height: calc(100vh - 90px);
     padding: 20px 40px;
@@ -179,48 +187,11 @@ const handleUpdatePage = ({ currentPage, pageSize }: any) => {
             line-height: 30px;
         }
 
-        .renewalList {
-            width: 100%;
-            height: 525px;
-            overflow: hidden;
-            overflow-y: auto;
-
-            .item {
-                height: 50px;
-                position: relative;
-                background: rgba(19, 100, 248, 0.05);
-                border-radius: 4px;
-                margin: 5px 10px;
-                padding: 10px;
-                display: flex;
-                flex-direction: column;
-
-                .t1 {
-                    font-size: 14px;
-                    font-family: PingFangSC, PingFang SC;
-                    font-weight: 400;
-                    color: #1C1B1B;
-                }
-
-                .t2 {
-                    font-size: 12px;
-                    font-family: PingFangSC, PingFang SC;
-                    font-weight: 400;
-                    color: #E06255;
-                }
-
-                .t3 {
-                    position: absolute;
-                    top: 0px;
-                    right: 0px;
-                    background: #E06255;
-                    border-radius: 0px 4px 0px 4px;
-                    color: #fff;
-                    font-size: 10px;
-                }
-            }
-
+        .info {
+            height: 285px;
+            padding: 0 5px;
         }
+
 
         .write {
             float: right;
@@ -312,11 +283,11 @@ const handleUpdatePage = ({ currentPage, pageSize }: any) => {
         width: 100%;
 
         .left {
-            width: 160px;
+            width: 230px;
         }
 
         .center {
-            width: calc(100% - 330px);
+            width: calc(100% - 400px);
             padding: 0 20px;
         }
 

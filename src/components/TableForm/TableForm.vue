@@ -1,9 +1,9 @@
 <template>
     <div class="TableForm" v-if="FormData">
-        <p class="formTitle">{{ props.title }}</p>
+        <p class="formTitle" v-if="props.title">{{ props.title }}</p>
         <Form :model="FormData" :rules="rules" :label-width="110" ref="FormDataRef" :key="Date.now()">
             <Row justify="start">
-                <Col v-for="item in props.FormData" :span="item.span * 8" class="col">
+                <Col v-for="item in props.FormData" :span="item.span * props.span" class="col">
                 <!-- <div style="width: 100%;height:100%"> -->
                 <FormItem :prop="item.prop" :label="item.label"
                     :style="{ 'width': '100%', 'height': props.labelHeight ? props.labelHeight + 'px' : '32px' }">
@@ -12,14 +12,15 @@
                 </div> -->
 
                     <div style="width: 100%;height:100%" v-if="item.type == 'sort'">
-                        <InputNumber :min="0" :max="item.max ? item.max : 10000000" v-model="FormData[item.prop]"
+                        <InputNumber :min="0" :max="item.max ? item.max : 9999999999" v-model="FormData[item.prop]"
                             style="width: 100%;touch-action:none" />
                     </div>
 
                     <div style="width: 100%;height:100%" v-if="item.type == 'price'">
-                        <InputNumber v-model="FormData[item.prop]" :min="0"
+                        <InputNumber v-model="FormData[item.prop]" :max="9999999999" :min="0"
                             :formatter="(value: any) => `￥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
-                            :parser="(value: any) => value.replace(/\$\s?|(,*)/g, '')" style="width: 100%;" />
+                            :parser="(value: any) => value.replace(/\$\s?|(,*)/g, '')"
+                            style="width: 100%;touch-action:none" />
                     </div>
 
 
@@ -27,7 +28,7 @@
                         <Input v-if="item.password" v-model="FormData[item.prop]" :placeholder="t('请输入') + t(item.label)"
                             type="password" password />
                         <Input v-else v-model="FormData[item.prop]" :placeholder="t('请输入') + t(item.label)"
-                            :disabled="item.disabled" />
+                            :disabled="item.disabled" :prefix="item.prefix" :suffix="item.prefix" />
                     </div>
 
 
@@ -75,6 +76,12 @@
                                 }}</Option>
                         </Select>
                     </div>
+
+                    <div style="width: 100%;height:100%" v-if="item.type == 'date'">
+                        <DatePicker type="date" :placeholder="t('请输入') + t(item.label)" v-model="FormData[item.prop]">
+                        </DatePicker>
+                    </div>
+
 
                     <div style="width: 100%;height:100%" v-if="item.type == 'switch'">
                         <Switch size="large" v-model="FormData[item.prop]" :true-value="1" :false-value="0">
@@ -152,6 +159,10 @@ const props: any = defineProps({
     data: {
         type: Object,
         default: {}
+    },
+    span: {
+        type: String,
+        default: 8
     }
 })
 

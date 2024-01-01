@@ -2,7 +2,6 @@
   <div class="login">
     <div class="login-con">
       <Card icon="log-in" :bordered="false">
-
         <div class="form-logo">
           <img src="@/assets/images/logo.png" alt="">
           <p>养老平台登录</p>
@@ -12,8 +11,12 @@
           <LoginForm v-model:loginTitle="loginTitle"></LoginForm>
           <div class="demo-auto-login">
             <Checkbox v-model="autoDesc" style="margin: 0;"></Checkbox>
-            <a @click="modal = true">{{ t(`${'《用户隐私协议》'}`) }}</a>
-            <span>{{ t("尚未拥有账户？") }}<a @click="handleSetLoginTitle('注册')">{{ t('注册') }}</a></span>
+            我已阅读并同意<a @click="modal = true">{{ t(`${'《用户隐私协议》'}`) }}</a>
+            <!-- <span>{{ t("尚未拥有账户？") }}<a @click="handleSetLoginTitle('注册')">{{ t('注册') }}</a></span> -->
+          </div>
+
+          <div style="padding-top: 20px;text-align: center;">
+            <a @click="() => loginTitle = '修改密码'">{{ t('忘记密码') }}</a>
           </div>
         </div>
         <div class="form-con" v-if="loginTitle == '注册'">
@@ -28,6 +31,9 @@
             <p>{{ t('已经拥有账户？') }}<a @click="handleSetLoginTitle('登录')">{{ t('登录') }}</a></p>
           </div>
         </div>
+
+
+
 
         <p class="form-footer">深圳海吉雅健康科技有限公司 技术支持</p>
       </Card>
@@ -84,11 +90,11 @@ const handleSetLoginTitle = (value: string) => {
 
       img {
         width: 120px;
-        margin-top: 54px;
+        margin-top: 34px;
       }
 
       p {
-        margin: 30px 0;
+        margin: 20px 0;
       }
 
     }

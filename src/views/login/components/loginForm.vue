@@ -12,8 +12,8 @@
     </FormItem>
     <FormItem>
       <div class="demo-auto-login">
-        <Checkbox v-model="autoLogin" size="large">{{ t('自动登录') }}</Checkbox>
-        <a @click="handleRePassword">{{ t('忘记密码') }}</a>
+        <Checkbox v-model="autoLogin" size="large">{{ t('记住密码') }}</Checkbox>
+        <!-- <a @click="handleRePassword">{{ t('忘记密码') }}</a> -->
       </div>
     </FormItem>
 

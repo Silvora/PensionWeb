@@ -47,7 +47,7 @@
 @media (max-width: 1440px) {
   body {
     width: 1440px;
-    height: 768px;
+    /* height: 768px; */
     /* overflow: hidden;
     overflow-y: auto;
     overflow-x: auto; */
@@ -79,4 +79,20 @@
   100% {
     transform: scale(1);
   }
+}
+
+
+
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.4s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
 }

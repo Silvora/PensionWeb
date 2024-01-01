@@ -20,6 +20,8 @@
             <Agency v-if="type == 'agency'"></Agency>
             <Role v-if="type == 'role'"></Role>
             <Account v-if="type == 'account'"></Account>
+
+            <System v-if="type == 'system'"></System>
         </div>
     </div>
 </template>
@@ -30,6 +32,7 @@ import { useRouter, useRoute } from 'vue-router';
 import Agency from "./components/agency.vue"
 import Role from "./components/role.vue"
 import Account from "./components/account.vue"
+import System from "./components/system.vue"
 const router = useRouter()
 const route = useRoute()
 const type = ref(route.query.type)
