@@ -23,8 +23,12 @@ RUN npm run build
 FROM nginx:stable-alpine as production-stage
 
 
+
 # 从构建阶段拷贝构建产物到 Nginx 服务器的服务目录
 COPY --from=build-stage /PensionWeb/dist /usr/share/nginx/html
+
+# 替换默认的 Nginx 配置文件
+COPY nginx.conf /etc/nginx/nginx.conf
 
 
 # 暴露80端口
