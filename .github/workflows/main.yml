@@ -42,5 +42,5 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           script: |
             cd /home/docker-compose &&
-            docker compose -f www.yml pull &&
-            docker compose -f www.yml up -d
+            docker compose -f ai.yml down &&
+            docker compose -f ai.yml up -d
