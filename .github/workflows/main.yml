@@ -43,4 +43,5 @@ jobs:
           script: |
             cd /home/docker-compose &&
             docker compose -f ai.yml down &&
+            docker rmi registry.ap-southeast-1.aliyuncs.com/whispora/pension:latest &&
             docker compose -f ai.yml up -d
