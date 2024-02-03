@@ -28,7 +28,7 @@ FROM nginx:stable-alpine as production-stage
 COPY --from=build-stage /PensionWeb/dist /usr/share/nginx/html
 
 # 替换默认的 Nginx 配置文件
-COPY /PensionWeb/nginx.conf /etc/nginx/nginx.conf
+COPY ./nginx.conf /etc/nginx/nginx.conf
 
 
 # 暴露80端口
