@@ -28,7 +28,7 @@ COPY --from=build-stage /PensionWeb/dist /usr/share/nginx/html
 
 
 # 暴露80端口
-EXPOSE 80
+EXPOSE 12233
 
 # 启动Nginx服务器
 CMD ["nginx", "-g", "daemon off;"]
