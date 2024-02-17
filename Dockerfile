@@ -1,5 +1,5 @@
-# 使用 Node.js 18 的官方镜像作为基础镜像
-FROM node:18 as build-stage
+# 使用 Node.js 20 的官方镜像作为基础镜像
+FROM node:20 as build-stage
 
 
 # 设置工作目录
