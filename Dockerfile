@@ -9,6 +9,9 @@ WORKDIR /PensionWeb
 # 复制项目文件到工作目录
 COPY . .
 
+# 清理现有的 node_modules 和 package-lock.json 并重新安装依赖项
+RUN rm -rf node_modules package-lock.json
+
 RUN npm cache clean --force
 
 #docker push your-username/vue-app
