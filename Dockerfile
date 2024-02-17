@@ -9,6 +9,8 @@ WORKDIR /PensionWeb
 # 复制项目文件到工作目录
 COPY . .
 
+RUN npm cache clean --force
+
 #docker push your-username/vue-app
 # 安装项目依赖
 RUN npm install .
