@@ -98,7 +98,7 @@
 <script setup lang='ts'>
 import { roleTable } from "./data"
 import { ref, onMounted } from "vue";
-import { StaffDetailId } from "@/api/staff/Staff"
+import { StaffDetailId } from "@/api/Staff/Staff"
 import { useRoute } from "vue-router"
 const route = useRoute()
 const userInfo = ref<any>({})
