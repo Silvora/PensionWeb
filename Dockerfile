@@ -17,7 +17,7 @@ RUN npm install .
 
 
 # 构建 Vue 项目
-RUN npm run build || (cat npm-debug.log; false)
+RUN npm run build 
 
 
 # 阶段 2: 以构建产物为基础，运行 Nginx 服务器
