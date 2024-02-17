@@ -1,18 +1,23 @@
 <template>
     <div class="sys">
         <div class="toolBar">
-            <div></div>
+            <div>
+                <span class="goBack" @click="() => $router.go(-1)">
+                    <Icon type="md-navigate" style="transform: rotateZ(-90deg);" />返回上一页
+                </span>
+            </div>
             <div class="bar">
                 <RadioGroup v-model="type" type="button" button-style="solid" @on-change="handleRadioType">
                     <Radio v-for="item in  typeList" :key="item.label" :label="item.type">
-                        <Icon :type="item.icon" />
+                        <!-- <Icon :type="item.icon" /> -->
+                        <i :class="['iconfont', item.icon]"></i>
                         {{ item.label }}
                     </Radio>
                 </RadioGroup>
             </div>
             <div class="btn">
                 <Button type="primary" v-if="type == 'agency'">保存</Button>
-                <Input v-else search clearable placeholder="搜索" />
+                <Input v-if="type == 'role'||type == 'account'" search clearable placeholder="搜索" />
             </div>
         </div>
 
@@ -20,7 +25,6 @@
             <Agency v-if="type == 'agency'"></Agency>
             <Role v-if="type == 'role'"></Role>
             <Account v-if="type == 'account'"></Account>
-
             <System v-if="type == 'system'"></System>
         </div>
     </div>
@@ -39,34 +43,34 @@ const type = ref(route.query.type)
 const typeList = ref([
     {
         label: "机构设置",
-        icon: "ios-checkmark",
+        icon: "icon-jigou",
         type: "agency",
     },
     {
         label: "角色设置",
-        icon: "ios-checkmark",
+        icon: "icon-jiaoseguanli",
         type: "role",
     },
     {
         label: "账号管理",
-        icon: "ios-checkmark",
+        icon: "icon-zhanghao",
         type: "account",
     },
-    {
-        label: "护工教室",
-        icon: "ios-checkmark",
-        type: "care",
-    },
+    // {
+    //     label: "护工教室",
+    //     icon: "icon-icon-08",
+    //     type: "care",
+    // },
     {
         label: "系统设置",
-        icon: "ios-checkmark",
+        icon: "icon-xitong",
         type: "system",
     }
 ])
 
 const handleRadioType = (label: any) => {
     //console.log(label)
-    router.push('/sys?type=' + label)
+    router.replace('/sys?type=' + label)
 }
 </script>
 
@@ -78,6 +82,7 @@ const handleRadioType = (label: any) => {
     position: relative;
 
     .toolBar {
+
 
         height: 60px;
         width: 100%;
@@ -104,7 +109,6 @@ const handleRadioType = (label: any) => {
         background: rgba(212, 242, 250, 1);
         overflow: hidden;
         overflow-y: auto;
-
     }
 
 }

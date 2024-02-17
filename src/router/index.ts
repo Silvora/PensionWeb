@@ -100,8 +100,9 @@ router.beforeEach((to, _from, next) => {
   if (to.path === '/login') {
      next()
   }else {
-    getToken('meicePro-Token').then((token: any) => {
+    getToken('ing-Token').then((token: any) => {
    
+      console.log("-------",token)
     //判断是否有token
     if (token) {
       // if (!isRoutes) {
@@ -117,7 +118,7 @@ router.beforeEach((to, _from, next) => {
       next()
     } else {
       //console.log("first")
-      clearItemToken("meicePro-Token")
+      clearItemToken("ing-Token")
       next('/login') // 跳转到登录页
     }
   })

@@ -150,3 +150,7 @@
 .vc-pane {
   min-width: 230px !important;
 }
+
+.system .ivu-select-selection {
+              border-radius: 0px;
+          }

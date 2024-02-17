@@ -432,7 +432,7 @@ const roleTable: any = {
         },
     },
     editConfig: {
-        title: '编辑门店',
+        title: '编辑角色',
         lableWidth: 100,
         rules: {},
         FormData: [
@@ -460,8 +460,8 @@ const roleTable: any = {
         // },
         {
             type: 'input',
-            label: '设备名称',
-            prop: "deviceName",
+            label: '角色名称',
+            prop: "name",
             //disabled: false,
             //childs: [],
             required: false,
@@ -469,22 +469,33 @@ const roleTable: any = {
         },
            {
             type: 'input',
-            label: '设备号',
-            prop: "deviceNo",
+            label: '角色说明',
+            prop: "description",
             //disabled: false,
             //childs: [],
             required: false,
             // default: "",
         },
+        {
+            type: 'switch',
+            label: '状态',
+            prop: "status",
+            //disabled: false,
+            //childs: [],
+            required: false,
+            
+            
+            // default: "",
+        }
         
 
-    {
-                type: 'sort',
-                label: '赠送数量',
-                prop: "freeObsNum",
-                //disabled: false,
-                default: 0,
-            },
+            // {
+            //     type: 'sort',
+            //     label: '赠送数量',
+            //     prop: "freeObsNum",
+            //     //disabled: false,
+            //     default: 0,
+            // },
 
     
         ]
@@ -492,24 +503,24 @@ const roleTable: any = {
     columns: [
         {
             title: '角色',
-            key: 'deviceName',
+            key: 'name',
             minWidth: 150,
         },
         {
             title: '角色说明',
-            key: 'deviceNo',
+            key: 'description',
             minWidth: 250,
         },
-        {
-            title: '创建时间',
-            key: 'freeObsNum',
-            minWidth: 230,
-        },
+        // {
+        //     title: '创建时间',
+        //     key: 'freeObsNum',
+        //     minWidth: 230,
+        // },
 
 
         {
             title: '角色状态',
-            key: 'deviceStatus',
+            key: 'type',
             slot: true,
             minWidth: 100,
         }
@@ -517,10 +528,166 @@ const roleTable: any = {
 }
 
 
+const accountTable: any = {
+    defaultConfig: {
+      DOMTool: false,
+      DOMPage: true,
+      stripe: false, //斑马线条纹
+      border: 'inner', //边框样式
+      seq: true, //排序
+      checkbox:true,//复选框
+      activeConfig: {
+          active: true,
+           width: 300,
+      },
+  },
+  editConfig: {
+      title: '编辑角色',
+      lableWidth: 100,
+      rules: {},
+      FormData: [
+      // {
+      //     type: 'select',
+      //     label: '所属区域',
+      //     prop: "meiceRegionId",
+      //     //disabled: false,
+      //     childs: [
+      //         {
+      //             label: "中国",
+      //             value:"CN"
+      //         },
+      //          {
+      //             label: "亚太",
+      //             value:"AP"
+      //         },
+      //          {
+      //             label: "欧洲",
+      //             value:"EU"
+      //         }
+      //     ],
+      //     required: false,
+      //     // default: "",
+      // },
+      {
+        type: 'input',
+        label: '账号',
+        prop: "account",
+        disabled: true,
+        //childs: [],
+        required: false,
+        // default: "",
+    },
+      {
+          type: 'input',
+          label: '用户姓名',
+          prop: "name",
+          //disabled: false,
+          //childs: [],
+          required: true,
+          // default: "",
+      },
+
+      {
+        type: 'radio',
+        label: '性别',
+        prop: "gender",
+        //disabled: false,
+        childs: [
+            {
+                label: "男",
+                value:"1"
+            },
+            {
+                label: "女",
+                value:"2"
+            },
+            {
+                label: "未知",
+                value:"0"
+            }
+        ],
+        required: false,
+        // default: "",
+        },
+        {
+            type: 'input',
+            label: '手机号',
+            prop: "phone",
+            //disabled: false,
+            //childs: [],
+            required: false,
+            // default: "",
+        },
+
+         {
+          type: 'input',
+          label: '角色说明',
+          prop: "description",
+          //disabled: false,
+          //childs: [],
+          required: false,
+          // default: "",
+      },
+    //   {
+    //       type: 'switch',
+    //       label: '状态',
+    //       prop: "status",
+    //       //disabled: false,
+    //       //childs: [],
+    //       required: false,
+    //       open: "启用",
+    //       close: "禁用",
+    //   }
+      
+
+          // {
+          //     type: 'sort',
+          //     label: '赠送数量',
+          //     prop: "freeObsNum",
+          //     //disabled: false,
+          //     default: 0,
+          // },
+
+  
+      ]
+  },
+  columns: [
+      {
+          title: '姓名',
+          key: 'name',
+          minWidth: 150,
+      },
+      {
+        title: '性别',
+        key: 'gender',
+        minWidth: 100,
+    },
+      {
+          title: '手机号',
+          key: 'phone',
+          minWidth: 250,
+      },
+      // {
+      //     title: '创建时间',
+      //     key: 'freeObsNum',
+      //     minWidth: 230,
+      // },
+
+
+      {
+          title: '角色状态',
+          key: 'status',
+          slot: true,
+          minWidth: 100,
+      }
+  ]
+}
+
 export {
     agencyData,
     legalData,
     constructData,
     serveData,
-    roleTable
+    roleTable,
+    accountTable
 }

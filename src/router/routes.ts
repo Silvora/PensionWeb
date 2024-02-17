@@ -22,6 +22,8 @@ import Elder from "@/views/elder/elder.vue"
 
 import AddElder from "@/views/add-elder/add-elder.vue"
 
+import DateView from "@/views/date/date.vue"
+
 //首页
 const home: any = [
   {
@@ -38,6 +40,24 @@ const home: any = [
     component: Home
   }
 ]
+
+const date:any = [
+   {
+        path: '/date',
+        name: 'date',
+        meta: {
+          title: '设置',
+          icon: 'md-home',
+          //id: Date.now(),
+          keepAlive: true,
+          //是否显示
+          isDisplay: true
+        },
+        component: DateView
+      },
+    
+]
+
 //错误
 const err: any = [
   {
@@ -219,6 +239,20 @@ const routes: any = [
 
     ]
   },
+
+  {
+        path: '/date',
+        name: 'date',
+        meta: {
+          title: '设置',
+          icon: 'md-home',
+          //id: Date.now(),
+          keepAlive: true,
+          //是否显示
+          isDisplay: true
+        },
+        component: DateView
+      },
  
 
   {

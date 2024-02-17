@@ -35,7 +35,7 @@
 
 
                         <div v-if="item.isSched && !isArray(item.len)" class="center"
-                            :style="{ marginLeft: `${item.ml * 45}px`, height: '30px', width: `${item.len * 45}px`, background: 'rgba(255, 238, 191, 1)' }">
+                            :style="{ marginLeft: `${item.ml * WW}px`, height: '30px', width: `${item.len * WW}px`, background: 'rgba(255, 238, 191, 1)' }">
                             <span>
                                 {{ item.start }}-{{ item.end }}
                                 <!-- 6:00am - 15:30pm -->
@@ -53,10 +53,9 @@
                         </div>
 
 
-
                         <div v-if="item.isSched && isArray(item.len)" class="bothEnds">
                             <div class="start"
-                                :style="{ position: 'absolute', top: 0, left: 0, height: '30px', width: `${item.len[1] * 45 - 1}px`, background: 'rgba(255, 238, 191, 1)' }">
+                                :style="{ position: 'absolute', top: 0, left: 0, height: '30px', width: `${item.len[1] * WW - 1}px`, background: 'rgba(255, 238, 191, 1)' }">
 
                                 <span v-if="item.len[1] > item.len[0]">
                                     {{ item.start }}-{{ item.end }}
@@ -74,7 +73,7 @@
                             </div>
 
                             <div class="end"
-                                :style="{ position: 'absolute', top: 0, left: `${item.ml * 45 - 1}px`, height: '30px', width: `${item.len[0] * 45}px`, background: 'rgba(255, 238, 191, 1)' }">
+                                :style="{ position: 'absolute', top: 0, left: `${item.ml * WW - 1}px`, height: '30px', width: `${item.len[0] * WW}px`, background: 'rgba(255, 238, 191, 1)' }">
 
                                 <span v-if="item.len[1] <= item.len[0]">
                                     {{ item.start }}-{{ item.end }}
@@ -101,7 +100,7 @@
             </div>
 
             <div class="table" :style="{ height: `${(data.length + 1) * 50}px` }">
-                <div><span>6am</span></div>
+                <div ref="timeW"><span>6am</span></div>
                 <div><span>7am</span></div>
                 <div><span>8am</span></div>
                 <div><span>9am</span></div>
@@ -165,9 +164,12 @@
 </template>
 
 <script setup lang='ts'>
+import { onMounted } from 'vue';
 import { ref } from 'vue';
 import { isArray } from 'xe-utils';
+const timeW = ref(null)
 
+const WW = ref(45)
 const addModal = ref(false)
 
 const addForm = ref({
@@ -217,6 +219,10 @@ const data = ref([
         calss: '夜班'
     }
 ])
+
+onMounted(() => {
+    WW.value = timeW.value.clientWidth + 2
+})
 
 const handleSetTimeModal = (row: any) => {
     console.log(row)
@@ -407,7 +413,8 @@ const handleAddForm = () => {
             margin-left: 125px;
 
             div {
-                width: 45px;
+                // width: 45px;
+                width: calc(100% / 24);
                 border-right: 1px solid #ccc;
                 text-align: center;
 

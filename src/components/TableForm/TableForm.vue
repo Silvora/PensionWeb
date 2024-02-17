@@ -3,7 +3,7 @@
         <p class="formTitle" v-if="props.title">{{ props.title }}</p>
         <Form :model="FormData" :rules="rules" :label-width="110" ref="FormDataRef" :key="Date.now()">
             <Row justify="start">
-                <Col v-for="item in props.FormData" :span="item.span * props.span" class="col">
+                <Col v-for="item in props.FormData" :span="String(item.span * props.span)" class="col">
                 <!-- <div style="width: 100%;height:100%"> -->
                 <FormItem :prop="item.prop" :label="item.label"
                     :style="{ 'width': '100%', 'height': props.labelHeight ? props.labelHeight + 'px' : '32px' }">
@@ -69,7 +69,7 @@
                         </Select> -->
 
                         <Select v-model="FormData[item.prop]" :placeholder="t('请选择') + t(item.label)" clearable
-                            :disabled="item.disabled" :multiple="item.multiple">
+                            :disabled="item.disabled" :multiple="item.multiple" filterable>
                             <Option v-for="      child       in       item.childs      " :value="child.value"
                                 :key="child.value">{{
                                     t(child.label)
@@ -109,6 +109,12 @@
                             {{ FormData[item.prop] == 1 ? t('是') : t('否') }}
                         </Tag>
                     </div>
+
+
+                    <!-- <div v-if="item.type == 'date'">
+                        <DatePicker v-model="FormData[item.prop]" type="date" :placeholder="t('请选择') + t(item.label)"
+                            style="width: 100%" />
+                    </div> -->
                 </FormItem>
 
                 </Col>
@@ -162,7 +168,7 @@ const props: any = defineProps({
     },
     span: {
         type: String,
-        default: 8
+        default: "8"
     }
 })
 
@@ -207,6 +213,11 @@ watchEffect(() => {
         if (item.type == 'radio') {
             // console.log(FormData.value[item.prop])
             FormData.value[item.prop] = String(FormData.value[item.prop])
+        }
+
+        if (item.type == 'sort') {
+            // console.log(FormData.value[item.prop])
+            FormData.value[item.prop] = Number(FormData.value[item.prop])
         }
 
 

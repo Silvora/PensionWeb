@@ -67,6 +67,7 @@ const tableRef = ref<any>(null)
 const PagerRef = ref<any>(null)
 const ToolBarRef = ref<any>(null)
 const TableEditRef = ref<any>(null)
+
 const emit = defineEmits(['handleUpdatePage', 'handleEdit', 'handleAdd', 'handleSearch', 'headerCellClickEvent', 'headerCellDBClickEvent'])
 const props: any = defineProps({
     tableH: {
@@ -192,11 +193,11 @@ const closeLoding = () => {
 
 }
 
-//关闭文字旋转
+//关闭文字旋转 async
 const closeTextLoding = () => {
     console.log(ToolBarRef.value)
-    ToolBarRef.value.closeTextLoding()
-    TableEditRef.value.closeTextLoding()
+    ToolBarRef.value?.closeTextLoding()
+    TableEditRef.value?.closeTextLoding()
 }
 
 //单击列表
@@ -216,20 +217,37 @@ const selectAllChangeEvent = ({ checked }: any) => {
     const $table = tableRef.value
     if ($table) {
         const records = $table.getCheckboxRecords()
-        console.log(checked ? '所有勾选事件' : '所有取消事件', records)
+        //console.log(checked ? '所有勾选事件' : '所有取消事件', records)
+        records.value = records
+
     }
 }
+
 //复选框
 const selectChangeEvent = ({ checked }: any) => {
     const $table = tableRef.value
     if ($table) {
         const records = $table.getCheckboxRecords()
-        console.log(checked ? '勾选事件' : '取消事件', records)
+        //console.log(checked ? '勾选事件' : '取消事件', records)
+        records.value = records
     }
 }
 
 
+const getSelectRecords = () => {
+    const $table = tableRef.value
+    if ($table) {
+        const records = $table.getCheckboxRecords()
+        return records
+    }
+    return []
+}
+
+
 defineExpose({
+    getSelectRecords,
+
+
     openLoding,
     closeLoding,
     closeTextLoding,

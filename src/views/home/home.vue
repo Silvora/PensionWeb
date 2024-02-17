@@ -23,6 +23,8 @@ import elder from "@/assets/images/elder.png"
 import staff from "@/assets/images/staff.png"
 import sys from "@/assets/images/sys.png"
 import { useRouter } from 'vue-router';
+// import { onMounted } from 'vue';
+// import { AdminUserInfo } from "@/api/AdminUserInfo/AdminUserInfo"
 
 const menuList: any = ref([
   {
@@ -68,6 +70,14 @@ const router = useRouter()
 const handleNav = (route: string) => {
   router.push(route)
 }
+
+
+// onMounted(() => {
+//   AdminUserInfo().then((res: any) => {
+//     console.log(res)
+//   })
+// })
+
 
 </script>
 

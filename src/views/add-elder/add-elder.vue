@@ -15,7 +15,7 @@
                 <Button type="text" icon="ios-person">合同管理</Button> >
                 <Button type="text" icon="ios-person">入院缴费</Button> -->
             </div>
-            <div>
+            <div style="position: absolute;right: 10px;">
                 <Space>
                     <Button type="primary" @click="() => active--" v-if="active > 0">上一步</Button>
                     <Button type="primary" @click="() => active++" v-if="active < 6">下一步</Button>
@@ -96,13 +96,14 @@ const active = ref(0)
         background: #fff;
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: center;
         padding: 0 20px;
+        position: relative;
 
 
 
         .steps {
-            width: calc(100% - 300px);
+            // width: calc(100% - 300px);
             //    background:red;
             text-align: center;
             font-size: 14px;

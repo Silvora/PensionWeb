@@ -45,16 +45,17 @@ export default defineConfig({
     port: 8899,
     open: false,
     //cors: true,
-    // proxy: {
-    //   "/meicepro-admin": {
-    //     target: VITE_APP_AXIOS_BASE,
-    //     changeOrigin: true,
-    //     rewrite: (path) => {
-    //       console.log(path)
-    //       return path.replace(/^\/api/, "")
-    //     }
-    //   }
-    // }
+    proxy: {
+      "/api": {
+        target: "http://8.217.217.243:9000",
+        changeOrigin: true,
+        rewrite: (path) => {
+          console.log(path)
+          return path.replace(/^\/api/, "")
+        }
+      }
+    }
+
   },
   build: {
     //target: 'modules',

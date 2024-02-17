@@ -30,6 +30,7 @@ const initChart = () => {
         ],
         tooltip: {
             trigger: 'item',
+            confine: true,
         },
         legend: {
             bottom: '5%',

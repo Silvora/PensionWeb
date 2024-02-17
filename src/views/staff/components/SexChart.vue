@@ -1,25 +1,51 @@
 <template>
-    <div class="sexChart" ref="SexChartRef"></div>
+    <div class="sexChart" ref="SexChartRef">
+    </div>
 </template>
 
 <script setup lang='ts'>
 import * as echarts from "echarts"
 import { onMounted, ref } from "vue";
+import { StaffGenderRatio } from "@/api/Staff/Staff"
 const SexChartRef = ref(null)
 const myChart: any = ref(null)
+
+
+const map: any = ref()
+const sum: any = ref(0)
+
+
 onMounted(() => {
 
-    initChart()
 
     window.addEventListener('resize', () => {
         myChart.value.resize();
     });
+
+
+
+    StaffGenderRatio().then((res: any) => {
+        let obj: any = []
+        let s: any = 0
+        res.data.forEach((item: any) => {
+            if (item.type == 1) {
+                obj.push({ value: item.totalCount, name: '男', ...item })
+            }
+            if (item.type == 2) {
+                obj.push({ value: item.totalCount, name: '女', ...item })
+            }
+            s += item.totalCount
+        })
+
+        map.value = obj
+        sum.value = s
+
+        initChart()
+
+    })
+
 })
 
-const map: any = ref({
-    "男": 23,
-    "女": 32
-})
 
 const initChart = () => {
     myChart.value = echarts.init(SexChartRef.value);
@@ -43,7 +69,7 @@ const initChart = () => {
                 color: 'rgba(28, 27, 27, .5)',
             },
             formatter: (name: any) => {
-                return map.value[name] + '% ' + name
+                return map.value.find((it: any) => it.name == name).percentage + '% ' + name
             }
         },
         series: [
@@ -51,7 +77,7 @@ const initChart = () => {
                 name: '',
                 type: 'pie',
                 radius: ['50%', '30%'],
-                center: ['50%', '30%'],
+                center: ['50%', '28%'],
                 avoidLabelOverlap: false,
                 label: {
                     show: true,
@@ -63,20 +89,20 @@ const initChart = () => {
                     // 注意，换行仍是使用 '\n'。
                     formatter: () => {
                         return [
-                            `{a|2121}`,
+                            `{a|${sum.value}}`,
                             `{b|总数}`
                         ].join('\n')
                     },
 
                     rich: {
                         a: {
-                            fontSize: 12,
+                            fontSize: 20,
                             color: '#1C1B1B',
                         },
                         b: {
 
                             color: "rgba(28, 27, 27, .5)",
-                            fontSize: 10,
+                            fontSize: 12,
                         }
                     }
 
@@ -92,10 +118,7 @@ const initChart = () => {
                 labelLine: {
                     show: false
                 },
-                data: [
-                    { value: 1048, name: '男' },
-                    { value: 735, name: '女' },
-                ]
+                data: map.value
             }
         ]
     };
@@ -110,6 +133,6 @@ const initChart = () => {
 <style scoped lang='less'>
 .sexChart {
     width: 100%;
-    height: 150px;
+    height: 250px;
 }
 </style>

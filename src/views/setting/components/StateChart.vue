@@ -29,6 +29,7 @@ const initChart = () => {
         ],
         tooltip: {
             trigger: 'item',
+            confine: true,
         },
         legend: {
             bottom: '3%',
@@ -109,5 +110,6 @@ const initChart = () => {
 .stateChart {
     width: 100%;
     height: 190px;
+
 }
 </style>

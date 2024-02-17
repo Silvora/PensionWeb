@@ -2,16 +2,17 @@
     <div class="system">
         <Row justify="start" style="width: 330px;">
             <Col :span="24" class="col">
-            <div class="label">语言</div>
+            <div class="label">{{ t('语言') }}</div>
             <div class="input">
-                <Select clearable>
-                    <Option value="zh">中文</Option>
+                <Select v-model="local" @on-change="handleSetLocal">
+                    <Option value="zh-CN">{{ t('中文') }}</Option>
+                    <Option value="zh_HK">{{ t('繁体') }}</Option>
                 </Select>
             </div>
             </Col>
 
             <Col :span="24" class="col">
-            <div class="label">背景</div>
+            <div class="label">{{ t('背景') }}</div>
             <div class="input upload1">
 
                 <div class="up1">1</div>
@@ -20,7 +21,7 @@
             </Col>
 
             <Col :span="24" class="col">
-            <div class="label">驾驶舱图片</div>
+            <div class="label">{{ t('驾驶舱图片') }}</div>
             <div class="input upload1">
                 <div class="up4">1</div>
                 <div class="up4">2</div>
@@ -33,10 +34,29 @@
 </template>
 
 <script setup lang='ts'>
+import { getToken } from "@/utils/token";
+import { ref } from "vue";
+import { useI18n } from "vue-i18n"
+const { t, locale } = useI18n()
+
+const local = ref("zh-CN")
+
+getToken('language').then((res: any) => {
+    console.log(res)
+    local.value = res
+})
+
+const handleSetLocal = (local: string) => {
+    console.log(local)
+
+    locale.value = local
+
+}
 
 </script>
 
 <style scoped lang='less'>
+
 .system {
     display: flex;
     justify-content: center;
@@ -59,6 +79,7 @@
         .input {
             width: 210px;
             border: 1px solid #98D2E1;
+            
         }
 
         .upload1 {

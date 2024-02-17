@@ -491,28 +491,27 @@ const roleTable: any = {
     },
     columns: [
         {
-            title: '角色',
-            key: 'deviceName',
+            title: '姓名',
+            key: 'name',
             minWidth: 150,
         },
         {
-            title: '角色说明',
-            key: 'deviceNo',
-            minWidth: 250,
+            title: '性别',
+            key: 'gender',
+            minWidth: 150,
         },
         {
-            title: '创建时间',
-            key: 'freeObsNum',
-            minWidth: 230,
+            title: '生日',
+            key: 'birthDate',
+            minWidth: 150,
         },
 
+        // {
+        //     title: '入住时间',
+        //     key: 'birthday',
+        //     minWidth: 150,
+        // },
 
-        {
-            title: '角色状态',
-            key: 'deviceStatus',
-            slot: true,
-            minWidth: 100,
-        }
     ]
 }
 

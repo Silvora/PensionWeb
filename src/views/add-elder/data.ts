@@ -4,9 +4,9 @@ const baseInfo: any = {
     FormData:
         [
             {
-                type: 'date',
-                label: '建档日期',
-                prop: "nadsadme",
+                type: 'input',
+                label: '姓名',
+                prop: "name",
                 span: 1,
                 //disabled: false,
                 required: false,
@@ -14,26 +14,17 @@ const baseInfo: any = {
             },
             {
                 type: 'input',
-                label: '机构地址',
-                prop: "descdsription",
+                label: '身份证',
+                prop: "idNumber",
                 span: 2,
                 //disabled: false,
                 required: false,
                 default: "",
             },
             {
-                type: 'input',
-                label: '注册名称',
-                prop: "oemvfdId",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
-            {
-                type: 'input',
-                label: '统一信用代码',
-                prop: "namdae",
+                type: 'date',
+                label: '生日',
+                prop: "birthday",
                 span: 1,
                 //disabled: false,
                 required: false,
@@ -41,8 +32,93 @@ const baseInfo: any = {
             },
             {
                 type: 'select',
-                label: '所属区域',
-                prop: "descrviption",
+                label: '性别',
+                prop: "gender",
+                span: 1,
+                //disabled: false,
+                chils: [
+                    {
+                        label: '男',
+                        value: '1'
+                    },
+                    {
+                        label: '女',
+                        value: '2'
+                    }
+                ],
+                required: false,
+                default: "",
+            },
+            {
+                type: 'input',
+                label: '联系电话',
+                prop: "phone",
+                span: 1,
+                //disabled: false,
+                required: false,
+                default: "",
+            },
+            {
+                type: 'select',
+                label: '婚姻状况',
+                prop: "maritalStatus",
+                span: 1,
+                //disabled: false,
+                required: false,
+                default: "",
+                childs: [
+                    {
+                        label: '是',
+                        value: '1'
+                    },
+                    {
+                        label: '否',
+                        value: '0'
+                    }
+                ]
+            },
+             {
+                type: 'select',
+                label: '是否是本地户籍',
+                prop: "localDomicile",
+                span: 1,
+                //disabled: false,
+                required: false,
+                default: "",
+                childs: [
+                    {
+                        label: '是',
+                        value: '0'
+                    },
+                    {
+                        label: '否',
+                        value: '1'
+                    }
+                ]
+            },
+             {
+                type: 'select',
+                label: '血型',
+                prop: "bloodType",
+                span: 1,
+                //disabled: false,
+                required: false,
+                default: "",
+                childs: [
+                    {
+                        label: '是',
+                        value: '1'
+                    },
+                    {
+                        label: '否',
+                        value: '0'
+                    }
+                ]
+            },
+              {
+                type: 'select',
+                label: '居住人情况',
+                prop: "residentSituation",
                 span: 1,
                 //disabled: false,
                 required: false,
@@ -60,8 +136,54 @@ const baseInfo: any = {
             },
             {
                 type: 'input',
-                label: '运营模式',
-                prop: "oemIad",
+                label: '家人人口',
+                prop: "familyPopulation",
+                span: 1,
+                //disabled: false,
+                required: false,
+                default: "",
+            },
+             {
+                type: 'input',
+                label: '家庭地址',
+                prop: "address",
+                span: 1,
+                //disabled: false,
+                required: false,
+                default: "",
+            },
+            {
+                type: 'input',
+                label: '户籍地址',
+                prop: "domicileAddress",
+                span: 1,
+                //disabled: false,
+                required: false,
+                default: "",
+            },
+                {
+                type: 'input',
+                label: '饮食特点',
+                prop: "dietary",
+                span: 1,
+                //disabled: false,
+                required: false,
+                default: "",
+            },
+                    {
+                type: 'input',
+                label: '爱好',
+                prop: "personalHobbies",
+                span: 1,
+                //disabled: false,
+                required: false,
+                default: "",
+            },
+            
+            {
+                type: 'select',
+                label: '经济来源',
+                prop: "financial",
                 span: 1,
                 //disabled: false,
                 required: false,
@@ -69,26 +191,44 @@ const baseInfo: any = {
             },
             {
                 type: 'select',
-                label: '是否公建民营',
+                label: '文化程度',
                 prop: "oemIvd",
                 span: 1,
                 //disabled: false,
                 required: false,
                 default: "",
             },
+               {
+                type: 'select',
+                label: '性格心理',
+                prop: "personality",
+                span: 1,
+                //disabled: false,
+                required: false,
+                default: "",
+            },
             {
-                type: 'input',
-                label: '邮政编码',
+                type: 'date',
+                label: '签订合同日期',
                 prop: "oemIasd",
                 span: 1,
                 //disabled: false,
                 required: false,
                 default: "",
             },
-            {
-                type: 'input',
-                label: '联系电话',
-                prop: "oemIvfd",
+             {
+                type: 'select',
+                label: '医疗保障',
+                prop: "healthCare",
+                span: 1,
+                //disabled: false,
+                required: false,
+                default: "",
+            },
+             {
+                type: 'select',
+                label: '劳动能力',
+                prop: "laborCapacity",
                 span: 1,
                 //disabled: false,
                 required: false,
@@ -96,15 +236,121 @@ const baseInfo: any = {
             },
             {
                 type: 'input',
-                label: '机构介绍',
+                label: '经办人',
+                prop: "operator",
+                span: 1,
+                //disabled: false,
+                required: false,
+                default: "",
+            },
+            {
+                type: 'input',
+                label: '医保卡号',
+                prop: "medicalNumber",
+                span: 1,
+                //disabled: false,
+                required: false,
+                default: "",
+            },
+             {
+                type: 'input',
+                label: '档案号',
                 prop: "oemqwId",
-                span: 2,
+                span: 1,
+                //disabled: false,
+                required: false,
+                default: "",
+             },
+              {
+                type: 'input',
+                label: '备注',
+                prop: "notes",
+                span: 3,
                 //disabled: false,
                 required: false,
                 default: "",
             }
         ]
 }
+
+const toolBarConfig:any= {
+        title: '添加家属',
+        lableWidth: 100,
+        rules: {},
+        FormData: [
+        {
+            type: 'input',
+            label: '姓名',
+            prop: "deviceName",
+            //disabled: false,
+            //childs: [],
+            required: false,
+            // default: "",
+        },
+           {
+            type: 'input',
+            label: '联系电话',
+            prop: "deviceNo",
+            //disabled: false,
+            //childs: [],
+            required: false,
+            // default: "",
+            },
+        
+             {
+            type: 'input',
+            label: '身份证号',
+            prop: "deviceNo",
+            //disabled: false,
+            //childs: [],
+            required: false,
+            // default: "",
+            },
+             
+              {
+            type: 'select',
+            label: '性别',
+            prop: "deviceNo",
+            //disabled: false,
+            childs: [],
+            required: false,
+            // default: "",
+            },
+               {
+            type: 'select',
+            label: '与老人关系',
+            prop: "deviceNo",
+            //disabled: false,
+            childs: [],
+            required: false,
+            // default: "",
+            },
+                  {
+            type: 'select',
+            label: '是否监护人',
+            prop: "deviceNo",
+            //disabled: false,
+            childs: [],
+            required: false,
+            // default: "",
+        },
+        
+                  {
+            type: 'textarea',
+            label: '联系地址',
+            prop: "deviceNo",
+            //disabled: false,
+            childs: [],
+            required: false,
+            // default: "",
+        },
+
+
+
+    
+        ]
+    }
+
 //家属信息
 const familyInfo: any = {
       defaultConfig: {
@@ -119,33 +365,12 @@ const familyInfo: any = {
              width: 300,
         },
     },
+    
     editConfig: {
         title: '编辑家属',
         lableWidth: 100,
         rules: {},
         FormData: [
-        // {
-        //     type: 'select',
-        //     label: '所属区域',
-        //     prop: "meiceRegionId",
-        //     //disabled: false,
-        //     childs: [
-        //         {
-        //             label: "中国",
-        //             value:"CN"
-        //         },
-        //          {
-        //             label: "亚太",
-        //             value:"AP"
-        //         },
-        //          {
-        //             label: "欧洲",
-        //             value:"EU"
-        //         }
-        //     ],
-        //     required: false,
-        //     // default: "",
-        // },
         {
             type: 'input',
             label: '姓名',
@@ -225,23 +450,28 @@ const familyInfo: any = {
             minWidth: 150,
         },
         {
-            title: '角色说明',
+            title: '性别',
             key: 'deviceNo',
-            minWidth: 250,
+            minWidth: 150,
         },
         {
-            title: '创建时间',
+            title: '联系电话',
+            key: 'freeObsNum',
+            minWidth: 230,
+        },
+          {
+            title: '是否监护人',
+            key: 'freeObsNum',
+            minWidth: 150,
+        },
+             {
+            title: '联系地址',
             key: 'freeObsNum',
             minWidth: 230,
         },
 
 
-        {
-            title: '角色状态',
-            key: 'deviceStatus',
-            slot: true,
-            minWidth: 100,
-        }
+       
     ]
 }
 // 健康信息
@@ -252,7 +482,7 @@ const healthyInfo: any = {
             {
                 type: 'select',
                 label: '自理情况',
-                prop: "nadsadme",
+                prop: "selfCareAbility",
                 span: 1,
                 //disabled: false,
                 required: false,
@@ -271,7 +501,7 @@ const healthyInfo: any = {
            {
                 type: 'select',
                 label: '视力',
-                prop: "nadsadme",
+                prop: "vision",
                 span: 1,
                 //disabled: false,
                 required: false,
@@ -290,7 +520,7 @@ const healthyInfo: any = {
              {
                 type: 'select',
                 label: '听力',
-                prop: "nadsadme",
+                prop: "hearing",
                 span: 1,
                 //disabled: false,
                 required: false,
@@ -309,7 +539,7 @@ const healthyInfo: any = {
             {
                 type: 'input',
                 label: '主治医院',
-                prop: "oemvfdId",
+                prop: "attendingHospital",
                 span: 1,
                 //disabled: false,
                 required: false,
@@ -318,7 +548,7 @@ const healthyInfo: any = {
             {
                 type: 'input',
                 label: '主治医师',
-                prop: "namdae",
+                prop: "attendingPhysician",
                 span: 1,
                 //disabled: false,
                 required: false,
@@ -327,7 +557,7 @@ const healthyInfo: any = {
 {
                 type: 'input',
                 label: '医院电话',
-                prop: "namdae",
+                prop: "attendingPhone",
                 span: 1,
                 //disabled: false,
                 required: false,
@@ -336,7 +566,7 @@ const healthyInfo: any = {
 {
                 type: 'input',
                 label: '过敏药物',
-                prop: "namdae",
+                prop: "allergicDrugs",
                 span: 3,
                 //disabled: false,
                 required: false,
@@ -345,19 +575,82 @@ const healthyInfo: any = {
 
 
             {
-                type: 'input',
+                type: 'select',
                 label: '主要疾病',
-                prop: "oemIad",
-                span: 2,
+                prop: "majorDisease",
+                span: 3,
                 //disabled: false,
+                multiple:true,
+                childs: [
+                    {
+                        label: '高血压',
+                        value: '高血压'
+                    },
+                    {
+                        label: '糖尿病',
+                        value: '糖尿病'
+                    },
+                    {
+                        label: '冠心病',
+                        value: '冠心病'
+                    },
+                    {
+                        label: '慢性阻塞性肺疾病',
+                        value: '慢性阻塞性肺疾病'
+                    },
+                    {
+                        label: '恶性肿瘤',
+                        value: '恶性肿瘤'
+                    },
+                    {
+                        label: '脑卒中',
+                        value: '脑卒中'
+                    },
+                    {
+                        label: '严重精神障碍',
+                        value: '严重精神障碍'
+                    },
+                    {
+                        label: '结核病',
+                        value: '结核病'
+                    },
+                    {
+                        label: '肝炎',
+                        value: '肝炎'
+                    },
+                    {
+                        label: '高血栓',
+                        value: '高血栓'
+                    },
+                    {
+                        label: '心脏病',
+                        value: '心脏病'
+                    },
+                    {
+                        label: '高血栓',
+                        value: '高血栓'
+                    },
+                       {
+                        label: '脑血栓',
+                        value: '脑血栓'
+                    },
+                       {
+                        label: '关节炎',
+                        value: '关节炎'
+                    },
+                       {
+                        label: '风湿',
+                        value: '风湿'
+                    },
+                ],
                 required: false,
                 default: "",
             },
               {
                 type: 'input',
                 label: '其他疾病',
-                prop: "oemIad",
-                span: 1,
+                prop: "otherDisease",
+                span: 3,
                 //disabled: false,
                 required: false,
                 default: "",
@@ -366,7 +659,7 @@ const healthyInfo: any = {
             {
                 type: 'input',
                 label: '病史',
-                prop: "oemIad",
+                prop: "medicalHistory",
                 span: 3,
                 //disabled: false,
                 required: false,
@@ -700,6 +993,7 @@ const contractInfo: any = {
 
 
 export {
+    toolBarConfig,
     baseInfo,
     familyInfo,
     healthyInfo,

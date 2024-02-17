@@ -1,5 +1,39 @@
 <template>
     <div class="elder" ref="pageBox">
+
+        <div class="bar">
+            <span class="Back" @click="() => $router.go(-1)">
+                <Icon type="md-navigate" style="transform: rotateZ(-90deg);" />返回上一页
+            </span>
+            <span class="searchBtn">
+                <Space>
+                    <Select v-model="model1" style="width:100px" placeholder="床位">
+                        <Option value="beijing">New York</Option>
+                        <Option value="shanghai" disabled>London</Option>
+                        <Option value="shenzhen">Sydney</Option>
+                    </Select>
+                    <Select v-model="model1" style="width:100px" placeholder="楼层">
+                        <Option value="beijing">New York</Option>
+                        <Option value="shanghai" disabled>London</Option>
+                        <Option value="shenzhen">Sydney</Option>
+                    </Select>
+                    <Select v-model="model1" style="width:100px" placeholder="房间">
+                        <Option value="beijing">New York</Option>
+                        <Option value="shanghai" disabled>London</Option>
+                        <Option value="shenzhen">Sydney</Option>
+                    </Select>
+                    <Select v-model="model1" style="width:100px" placeholder="等级">
+                        <Option value="beijing">New York</Option>
+                        <Option value="shanghai" disabled>London</Option>
+                        <Option value="shenzhen">Sydney</Option>
+                    </Select>
+                    <div>
+                        <Input search clearable placeholder="搜索" />
+                    </div>
+                </Space>
+            </span>
+        </div>
+
         <div class="infoBox">
             <div class="left">
                 <div class="chart">
@@ -26,7 +60,7 @@
                         <vxe-button type="text" size="mini" status="primary" @click="handleRoleEdit(row)">
                             编辑
                         </vxe-button>
-                        <vxe-button type="text" size="mini" status="danger" @click="handleRoleDelete(row.id)">
+                        <vxe-button type="text" size="mini" status="danger" @click="handleElderlyDelete(row.id)">
                             删除
                         </vxe-button>
                     </template>
@@ -36,7 +70,7 @@
             <div class="right">
                 <div class="floor">
                     <!-- <Button type="primary" class="btn" @click="handleShowModal">楼栋管理</Button> -->
-                    <Card :bordered="false" padding="6" class="btnList" style="border: 1px solid #98D2E1;">
+                    <Card :bordered="false" :padding="6" class="btnList" style="border: 1px solid #98D2E1;">
                         <div class="list">
                             <Button type="primary" @click="() => router.push('/add-elder')">新增</Button>
                             <Button type="error">批量删除</Button>
@@ -103,24 +137,12 @@ import SexChart from "./components/SexChart.vue";
 import EmptyChart from "./components/EmptyChart.vue";
 import LevelChart from "./components/LevelChart.vue"
 import DateChart from "./components/DateChart.vue"
+import { ElderlyList, ElderlyRemoveId } from "@/api/Elderly/Elderly"
 const TableViewRef = ref<any>(null)
 const pageBox = ref<any>(null)
 const router = useRouter()
 const tableH = ref("595px")
-const data: any = ref([
-    {
-        deviceName: '2121',
-        deviceNo: 'dsada',
-        freeObsNum: '121',
-        deviceStatus: '1',
-    },
-    {
-        deviceName: '2121',
-        deviceNo: 'dsada',
-        freeObsNum: '121',
-        deviceStatus: '0',
-    }
-])
+const data: any = ref([])
 
 onMounted(() => {
     console.log("", pageBox.value?.clientHeight)//680
@@ -129,6 +151,8 @@ onMounted(() => {
         tableH.value = h - 220 - 95 + 'px'
     }
 
+    getData()
+
 })
 
 const pagerConfig = ref({
@@ -136,6 +160,29 @@ const pagerConfig = ref({
     currentPage: 1,//当前页
     pageSize: 10 //数量
 })
+
+// 单项删除
+const handleElderlyDelete = (id: any) => {
+
+    Modal.confirm({
+        title: '提示',
+        content: '确定要删除吗？',
+        okText: '确认',
+        cancelText: '取消',
+        loading: true,
+        onOk: () => {
+            ElderlyRemoveId({ id: id }).then(() => {
+                Message.success("删除成功")
+                Modal.remove();
+                getData()
+            })
+        },
+        onCancel: () => {
+            console.log('Cancel');
+        }
+    });
+}
+
 
 
 const handleUpdatePage = ({ currentPage, pageSize }: any) => {
@@ -146,17 +193,61 @@ const handleUpdatePage = ({ currentPage, pageSize }: any) => {
         pageSize
     }
 }
+
+const getData = () => {
+    ElderlyList({
+        current: pagerConfig.value.currentPage,
+        size: pagerConfig.value.pageSize
+    }).then((res: any) => {
+        data.value = res.data.records
+        pagerConfig.value.total = res.data.total
+        console.log(res)
+    })
+}
+
 </script>
 
 <style scoped lang='less'>
 .elder {
     width: 100%;
     height: calc(100vh - 90px);
-    padding: 20px 40px;
+    //padding: 0px 40px;
     padding-bottom: 0;
     background: rgba(212, 242, 250, 1);
     overflow: hidden;
     overflow-y: auto;
+
+    .bar {
+        width: 100%;
+        height: 60px;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        //padding: 0 0 20px 0;
+        padding-right: 20px;
+        margin-bottom: 20px;
+
+        .Back {
+            width: 260px;
+            cursor: pointer;
+            display: inline-block;
+            line-height: 60px;
+            height: 60px;
+            background-color: red;
+            padding: 0 20px;
+            color: #1364F8;
+            background: linear-gradient(90deg, rgba(19, 100, 248, 0.1) 0%, rgba(19, 100, 248, 0) 100%);
+        }
+
+        .searchBtn {
+            display: flex;
+
+            .input {
+                width: 100px;
+            }
+        }
+    }
 
     .chart {
         border-radius: 8px;
@@ -310,6 +401,7 @@ const handleUpdatePage = ({ currentPage, pageSize }: any) => {
     .infoBox {
         display: flex;
         width: 100%;
+        padding: 0 40px;
 
         .left {
             width: 160px;
@@ -329,6 +421,7 @@ const handleUpdatePage = ({ currentPage, pageSize }: any) => {
         display: flex;
         width: 100%;
         margin-top: 10px;
+        padding: 0 40px;
 
 
         .left {

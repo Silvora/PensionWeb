@@ -4,14 +4,14 @@
       <Card icon="log-in" :bordered="false">
         <div class="form-logo">
           <img src="@/assets/images/logo.png" alt="">
-          <p>养老平台登录</p>
+          <p>{{ t('养老平台登录') }}</p>
         </div>
 
         <div class="form-con" v-if="loginTitle == '登录'">
           <LoginForm v-model:loginTitle="loginTitle"></LoginForm>
           <div class="demo-auto-login">
             <Checkbox v-model="autoDesc" style="margin: 0;"></Checkbox>
-            我已阅读并同意<a @click="modal = true">{{ t(`${'《用户隐私协议》'}`) }}</a>
+            {{ t('我已阅读并同意') }}<a @click="modal = true">{{ t(`${'《用户隐私协议》'}`) }}</a>
             <!-- <span>{{ t("尚未拥有账户？") }}<a @click="handleSetLoginTitle('注册')">{{ t('注册') }}</a></span> -->
           </div>
 
@@ -35,7 +35,7 @@
 
 
 
-        <p class="form-footer">深圳海吉雅健康科技有限公司 技术支持</p>
+        <p class="form-footer">{{ t('深圳海吉雅健康科技有限公司 技术支持') }}</p>
       </Card>
     </div>
     <Modal v-model="modal" :title="t('用户隐私协议')" footer-hide>

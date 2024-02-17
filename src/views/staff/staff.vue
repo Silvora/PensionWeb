@@ -1,7 +1,42 @@
 <template>
     <div class="saff" ref="pageBox">
+        <div class="bar">
+            <span class="Back" @click="() => $router.go(-1)">
+                <Icon type="md-navigate" style="transform: rotateZ(-90deg);" />返回上一页
+            </span>
+            <span class="searchBtn">
+                <Space>
+                    <Select v-model="model1" style="width:100px" placeholder="床位">
+                        <Option value="beijing">New York</Option>
+                        <Option value="shanghai" disabled>London</Option>
+                        <Option value="shenzhen">Sydney</Option>
+                    </Select>
+                    <Select v-model="model1" style="width:100px" placeholder="楼层">
+                        <Option value="beijing">New York</Option>
+                        <Option value="shanghai" disabled>London</Option>
+                        <Option value="shenzhen">Sydney</Option>
+                    </Select>
+                    <Select v-model="model1" style="width:100px" placeholder="房间">
+                        <Option value="beijing">New York</Option>
+                        <Option value="shanghai" disabled>London</Option>
+                        <Option value="shenzhen">Sydney</Option>
+                    </Select>
+                    <Select v-model="model1" style="width:100px" placeholder="等级">
+                        <Option value="beijing">New York</Option>
+                        <Option value="shanghai" disabled>London</Option>
+                        <Option value="shenzhen">Sydney</Option>
+                    </Select>
+                    <div>
+                        <Input search clearable placeholder="搜索" />
+                    </div>
+                </Space>
+            </span>
+        </div>
+
+
         <div class="infoBox">
             <div class="left">
+                <p class="title">排班情况</p>
                 <VCalendar :attributes="attrs" trim-weeks>
                     <template #footer>
                         <Button type="primary" style="width: 100%;" @click="modal = true">当日排班</Button>
@@ -53,12 +88,12 @@
             <div class="right">
                 <div class="floor">
                     <!-- <Button type="primary" class="btn" @click="handleShowModal">楼栋管理</Button> -->
-                    <Card :bordered="false" padding="6" class="btnList" style="border: 1px solid #98D2E1;">
+                    <Card :bordered="false" :padding="6" class="btnList" style="border: 1px solid #98D2E1;">
                         <div class="list">
-                            <Button type="primary">新增</Button>
+                            <Button type="primary" @click="handleRoleAdd">新增</Button>
                             <Button type="primary">导入</Button>
                             <Button type="primary">导出</Button>
-                            <Button type="error">批量删除</Button>
+                            <Button type="error" @click="handleDeleteAll">批量删除</Button>
                         </div>
                     </Card>
                 </div>
@@ -84,19 +119,62 @@
             </template>
             <Scheduling></Scheduling>
         </Modal>
+
+
+        <Modal v-model="addModal" title="添加员工" footer-hide="true" :width="80">
+            <template #close>
+                <Icon type="md-add-circle" color="#000" style="transform: rotateZ(45deg);" size="16" />
+            </template>
+            <div class="up_box">
+                <Row justify="start">
+                    <Col :span="8" class="col">
+                    <div class="label"> 员工头像 </div>
+                    <div class="input upload1">
+                        <div class="up4">1</div>
+                        <!-- <div class="up4">2</div>
+                        <div class="up4">3</div> -->
+                        <!-- <div class="up4">4</div> -->
+                    </div>
+                    </Col>
+                </Row>
+            </div>
+            <TableForm title="" :FormData="roleData.FormData" ref="TableFormRef" :data="info"></TableForm>
+            <p class="user_info">添加培训认证</p>
+            <div class="up_box">
+                <Row justify="start">
+                    <Col :span="24" class="col">
+                    <div class="label"> 证书 </div>
+                    <div class="input upload1">
+                        <div class="up4">1</div>
+                        <div class="up4">2</div>
+                        <div class="up4">3</div>
+                        <!-- <div class="up4">4</div> -->
+                    </div>
+                    </Col>
+                </Row>
+            </div>
+
+            <Button class="save_btn" type="primary" @click="handleRoleSumbit">保存</Button>
+
+        </Modal>
+
     </div>
 </template>
 
 <script setup lang='ts'>
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router"
-import { roleTable } from "./data"
+import { roleTable, roleData } from "./data"
 import { Message, Modal } from "view-ui-plus";
 import LevelChart from "./components/LevelChart.vue";
 import SexChart from "./components/SexChart.vue";
 import Scheduling from "./components/Scheduling.vue"
+import { StaffList, StaffRemoveId, StaffRemoveBatch } from "@/api/Staff/Staff"
 const modal = ref(false)
+const addModal = ref(false)
+const info = ref<any>({})
 const TableViewRef = ref<any>(null)
+const TableFormRef = ref<any>(null)
 const pageBox = ref<any>(null)
 const router = useRouter()
 const attrs = ref([
@@ -108,33 +186,25 @@ const attrs = ref([
 ]);
 
 const tableH = ref("765px")
-const data: any = ref([
-    {
-        deviceName: '2121',
-        deviceNo: 'dsada',
-        freeObsNum: '121',
-        deviceStatus: '1',
-    },
-    {
-        deviceName: '2121',
-        deviceNo: 'dsada',
-        freeObsNum: '121',
-        deviceStatus: '0',
-    }
-])
+const data: any = ref()
 
 onMounted(() => {
     console.log("", pageBox.value?.clientHeight)//680
     const h = pageBox.value?.clientHeight
 
-    tableH.value = h - 85 + 'px'
+    tableH.value = h - 165 + 'px'
+    getData()
+    getInfo()
 
 })
 
 
 const handleGetUserInfo = (row: any) => {
     router.push({
-        path: '/staff-details'
+        path: '/staff-details',
+        query: {
+            id: row.id
+        }
     })
 }
 
@@ -146,6 +216,84 @@ const pagerConfig = ref({
 })
 
 
+//添加
+const handleRoleAdd = () => {
+    info.value = {}
+    //TableAddRef.value.openModal()
+    addModal.value = true
+}
+
+const handleRoleSumbit = () => {
+    console.log(TableFormRef.value.FormData)
+}
+
+//编辑
+const handleRoleEdit = (item: any) => {
+    //TableViewRef.value.handleOpenEditModal()
+    info.value = item
+    addModal.value = true
+
+}
+
+// 删除单个
+const handleRoleDelete = (id: string) => {
+    Modal.confirm({
+        title: '提示',
+        content: '确定要删除吗？',
+        okText: '确认',
+        cancelText: '取消',
+        loading: true,
+        onOk: () => {
+            StaffRemoveId({ id: id }).then(() => {
+                Message.success("删除成功")
+                Modal.remove();
+                getData()
+            })
+        },
+        onCancel: () => {
+            console.log('Cancel');
+        }
+    });
+}
+
+// 删除多个
+const handleDeleteAll = () => {
+    console.log(TableViewRef.value.getSelectRecords())
+    let ids: any = []
+    TableViewRef.value.getSelectRecords().forEach((item: any) => {
+        ids.push(item.id)
+    })
+    if (ids.length == 0) return
+
+    Modal.confirm({
+        title: '提示',
+        content: '确定要删除吗？',
+        okText: '确认',
+        cancelText: '取消',
+        loading: true,
+        onOk: () => {
+
+            StaffRemoveBatch({ ids: ids }).then(() => {
+                Message.success("删除成功")
+                Modal.remove();
+                getData()
+            })
+
+        },
+        onCancel: () => {
+            console.log('Cancel');
+        }
+    });
+
+    console.log(ids)
+    // StaffRemoveBatch({ ids: [] }).then(() => {
+
+    // })
+}
+
+
+
+
 const handleUpdatePage = ({ currentPage, pageSize }: any) => {
     console.log(currentPage, pageSize)
     pagerConfig.value = {
@@ -154,17 +302,154 @@ const handleUpdatePage = ({ currentPage, pageSize }: any) => {
         pageSize
     }
 }
+
+// 数据列表
+const getData = () => {
+    let parmse = {
+        current: pagerConfig.value.currentPage,
+        size: pagerConfig.value.pageSize
+    }
+    StaffList(parmse).then((res: any) => {
+        console.log(res)
+        pagerConfig.value.total = res.data.total
+        data.value = res.data.records
+    })
+
+}
+
+
+
+//数据统计
+const getInfo = () => {
+    // StaffGenderRatio().then((res: any) => {
+    //     let obj: any = []
+    //     res.data.forEach((item: any) => {
+    //         if (item.type == 1) {
+    //             obj.push({ value: item.totalCount, name: '男', percentage: item.percentage })
+    //         }
+    //         if (item.type == 2) {
+    //             obj.push({ value: item.totalCount, name: '女', percentage: item.percentage })
+    //         }
+    //     })
+
+    //     sexData.value = obj
+
+    //     console.log(sexData.value)
+    // })
+
+    // StaffJobLevelRatio().then((res: any) => {
+    //     console.log(res)
+    // })
+}
+
+
+
 </script>
 
 <style scoped lang='less'>
+.user_info {
+    font-size: 16px;
+    font-family: PingFangSC, PingFang SC;
+    font-weight: 400;
+    color: #1C1B1B;
+    padding: 20px 0;
+}
+
+.save_btn {
+    width: 80%;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    margin-left: 10%;
+}
+
+.up_box {
+    // display: flex;
+    // justify-content: center;
+    // padding: 20px 0;
+    margin: 0 auto;
+
+    .col {
+        display: flex;
+
+        .label {
+            width: 110px;
+            background: #F1F1F5;
+            border: 1px solid #98D2E1;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .input {
+            // width: 810px;
+            width: calc(100% - 110px);
+            border: 1px solid #98D2E1;
+            // background: red;
+        }
+
+        .upload1 {
+            // width: 210px;
+            height: 200px;
+            display: flex;
+            // background: red;
+            // flex-direction: row;
+            // flex-wrap: wrap;
+        }
+
+
+
+        .up4 {
+            flex: 1;
+            margin: 0 10px;
+            // width: 104px;
+            height: 200px;
+            text-align: center;
+            // line-height: 100px;
+        }
+    }
+
+}
+
 .saff {
     width: 100%;
     height: calc(100vh - 90px);
-    padding: 20px 40px;
+    padding: 0 40px 20px 40px;
     padding-bottom: 0;
     background: rgba(212, 242, 250, 1);
     overflow: hidden;
     overflow-y: auto;
+
+    .bar {
+        width: 100%;
+        height: 60px;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        //padding: 0 0 20px 0;
+        padding-right: 20px;
+
+        .Back {
+            width: 260px;
+            cursor: pointer;
+            display: inline-block;
+            line-height: 60px;
+            height: 60px;
+            background-color: red;
+            padding: 0 20px;
+            color: #1364F8;
+            background: linear-gradient(90deg, rgba(19, 100, 248, 0.1) 0%, rgba(19, 100, 248, 0) 100%);
+        }
+
+        .searchBtn {
+            display: flex;
+
+            .input {
+                width: 100px;
+            }
+        }
+    }
 
     .chart {
         border-radius: 8px;
@@ -188,7 +473,7 @@ const handleUpdatePage = ({ currentPage, pageSize }: any) => {
         }
 
         .info {
-            height: 285px;
+            height: 320px;
             padding: 0 5px;
         }
 
@@ -281,6 +566,10 @@ const handleUpdatePage = ({ currentPage, pageSize }: any) => {
     .infoBox {
         display: flex;
         width: 100%;
+        padding-top: 20px;
+        height: calc(100vh - 150px);
+        overflow: hidden;
+        overflow-y: auto;
 
         .left {
             width: 230px;

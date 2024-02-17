@@ -5,28 +5,65 @@
 <script setup lang='ts'>
 import * as echarts from "echarts"
 import { onMounted, ref } from "vue";
+import { StaffJobLevelRatio } from "@/api/Staff/Staff"
 const AgeChartRef = ref(null)
 const myChart: any = ref(null)
-onMounted(() => {
 
-    initChart()
+
+const map: any = ref()
+const sum: any = ref(0)
+
+onMounted(() => {
 
     window.addEventListener('resize', () => {
         myChart.value.resize();
     });
 
+    StaffJobLevelRatio().then((res: any) => {
+        let obj: any = []
+        let s: any = 0
+        let list = ["(三级)", "(二级)", "(一级)", "(特一级)", "(特二级)", "(特三级)", "(专需护理)"]
+        res.data.forEach((item: any) => {
+            obj.push({
+                value: item.totalCount,
+                name: list[item.type],
+                ...item
+            })
+            obj.push({
+                value: item.totalCount,
+                name: list[item.type + 2],
+                ...item
+            })
+
+
+            s += item.totalCount
+        })
+        obj.push({
+            ...obj[0],
+            value: 1,
+            name: '(专需护理)',
+        })
+
+
+        map.value = obj
+        sum.value = s
+
+        initChart()
+
+    })
+
 
 })
 
-const map: any = ref({
-    "(三级)": 23,
-    "(二级)": 32,
-    "(一级)": 42,
-    "(特一级)": 32,
-    "(特二级)": 32,
-    "(特三级)": 32,
-    "(专需护理)": 32,
-})
+// const map: any = ref({
+//     "(三级)": 23,
+//     "(二级)": 32,
+//     "(一级)": 42,
+//     "(特一级)": 32,
+//     "(特二级)": 32,
+//     "(特三级)": 32,
+//     "(专需护理)": 32,
+// })
 
 const initChart = () => {
     myChart.value = echarts.init(AgeChartRef.value);
@@ -74,14 +111,14 @@ const initChart = () => {
                 color: 'rgba(28, 27, 27, .5)',
             },
             formatter: (name: any) => {
-                return '12人' + map.value[name] + '% ' + name
+                return map.value.find((it: any) => it.name == name).totalCount + '人 ' + map.value.find((it: any) => it.name == name).percentage + '% ' + name
             }
         },
         series: [
             {
                 name: '',
                 type: 'pie',
-                radius: ['50%', '70%'],
+                radius: ['50%', '30%'],
                 center: ['50%', '28%'],
                 avoidLabelOverlap: false,
                 label: {
@@ -95,7 +132,7 @@ const initChart = () => {
                     formatter: () => {
                         //console.log(params.name)
                         return [
-                            `{a|2121}`,
+                            `{a|${sum.value}}`,
                             `{b|总数}`,
                         ].join('\n')
                     },
@@ -124,15 +161,16 @@ const initChart = () => {
                 labelLine: {
                     show: false
                 },
-                data: [
-                    { value: 12, name: '(三级)' },
-                    { value: 2, name: '(二级)' },
-                    { value: 2, name: '(一级)' },
-                    { value: 1, name: '(特一级)' },
-                    { value: 32, name: '(特二级)' },
-                    { value: 1, name: '(特三级)' },
-                    { value: 32, name: '(专需护理)' },
-                ]
+                // data: [
+                //     { value: 12, name: '(三级)' },
+                //     { value: 2, name: '(二级)' },
+                //     { value: 2, name: '(一级)' },
+                //     { value: 1, name: '(特一级)' },
+                //     { value: 32, name: '(特二级)' },
+                //     { value: 1, name: '(特三级)' },
+                //     { value: 32, name: '(专需护理)' },
+                // ]
+                data: map.value
             }
         ]
     };
@@ -147,6 +185,6 @@ const initChart = () => {
 <style scoped lang='less'>
 .ageChart {
     width: 100%;
-    height: 330px;
+    height: 280px;
 }
 </style>

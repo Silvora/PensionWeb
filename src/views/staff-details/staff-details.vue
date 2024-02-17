@@ -24,11 +24,11 @@
                         <div class="txt">
                             <p>
                                 <span class="t1">员工姓名</span>
-                                <span class="t2">张美丽</span>
+                                <span class="t2">{{ userInfo.name }}</span>
                             </p>
                             <p>
                                 <span class="t1">性别</span>
-                                <span class="t2">女</span>
+                                <span class="t2">{{ userInfo.gender == 1 ? '男' : '女' }}</span>
                             </p>
                             <p>
                                 <span class="t1">年龄</span>
@@ -36,15 +36,15 @@
                             </p>
                             <p>
                                 <span class="t1">出生日期</span>
-                                <span class="t2">1994-11-10</span>
+                                <span class="t2">{{ userInfo.birthday }}</span>
                             </p>
                             <p>
                                 <span class="t1">身份证</span>
-                                <span class="t2">中专</span>
+                                <span class="t2">{{ userInfo.idNumber }}</span>
                             </p>
                             <p>
                                 <span class="t1">文化程度</span>
-                                <span class="t2">大专</span>
+                                <span class="t2">{{ userInfo.educationLevel }}</span>
                             </p>
                             <p>
                                 <span class="t1">入职时间</span>
@@ -52,23 +52,23 @@
                             </p>
                             <p>
                                 <span class="t1">职位</span>
-                                <span class="t2">护理员</span>
+                                <span class="t2">{{ userInfo.roleId }}</span>
                             </p>
                             <p>
                                 <span class="t1">联系方式</span>
-                                <span class="t2">13764879734</span>
+                                <span class="t2">{{ userInfo.phone }}</span>
                             </p>
                             <p>
                                 <span class="t1">职业等级</span>
-                                <span class="t2">3级</span>
+                                <span class="t2">{{ userInfo.jobLevel }}</span>
                             </p>
                             <p>
                                 <span class="t1">所属小组</span>
-                                <span class="t2">护工一组</span>
+                                <span class="t2">{{ userInfo.groupId }}</span>
                             </p>
                             <p>
                                 <span class="t1">直属上级</span>
-                                <span class="t2">倪杰</span>
+                                <span class="t2">{{ userInfo.superiorId }}</span>
                             </p>
                         </div>
                     </div>
@@ -98,6 +98,10 @@
 <script setup lang='ts'>
 import { roleTable } from "./data"
 import { ref, onMounted } from "vue";
+import { StaffDetailId } from "@/api/staff/Staff"
+import { useRoute } from "vue-router"
+const route = useRoute()
+const userInfo = ref<any>({})
 const data: any = ref([
     {
         deviceName: '2121',
@@ -126,6 +130,7 @@ onMounted(() => {
     console.log(h)
     tableH.value = h - 210 + 'px'
 
+    getData()
 })
 
 
@@ -137,6 +142,14 @@ const handleUpdatePage = ({ currentPage, pageSize }: any) => {
         pageSize
     }
 }
+
+const getData = () => {
+    StaffDetailId({ id: route.query.id }).then((res: any) => {
+        console.log(res)
+        userInfo.value = res.data
+    })
+}
+
 </script>
 
 <style scoped lang='less'>

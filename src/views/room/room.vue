@@ -4,9 +4,9 @@
             <div></div>
             <div class="bar">
                 <RadioGroup v-model="type" type="button" button-style="solid" @on-change="handleRadioType">
-                    <Radio v-for="item in  typeList" :key="item.label" :label="item.type">
+                    <Radio v-for="item in  typeList" :key="item.id" :label="item.id">
                         <!-- <Icon :type="item.icon" /> -->
-                        {{ item.label }}
+                        {{ item.name }}
                     </Radio>
                 </RadioGroup>
             </div>
@@ -19,65 +19,69 @@
 
         <div class="box">
             <div class="house">
-                <p class="houseTitle">楼层房间</p>
+                <p class="houseTitle">{{ t('楼层房间') }}</p>
                 <Card :bordered="false" padding="6">
                     <Row :gutter="8">
-                        <Col span="12" v-for="item in houseList" :key="item" class="houseCard">
-                        <div class="cardBody" @click="handleHouseActive(item)">
-                            <p :style="{ 'color': houseActive == item ? '' : '#1C1B1B' }">{{ item }}</p>
-                            <img :src="houseActive == item ? HouseOpen : HouseClose" alt="" srcset="">
+                        <Col span="12" v-for="item in houseList" :key="item.id" class="houseCard">
+                        <div class="cardBody" @click="handleHouseActive(item.id)">
+                            <p :style="{ 'color': houseActive == item.id ? '' : '#1C1B1B' }">{{ item.roomNumber }}</p>
+                            <img :src="houseActive == item.id ? HouseOpen : HouseClose" alt="" srcset="">
                         </div>
                         </Col>
                     </Row>
                 </Card>
             </div>
+
             <div class="roomUser">
 
                 <div class="roomItem">
                     <p class="roomTitle">
                         <span class="tt">Aa01</span>
-                        <span>1 入住、2预留、5空闲</span>
+                        <span>1 入住、2预留、5空闲、共{{ bedList[0]?.cost }}</span>
                     </p>
-                    <Row :gutter="8">
-                        <Col span="4" v-for="item in Array.from({ length: 20 })" :key="item">
-                        <Card :bordered="false" padding="0">
-                            <div class="roomBox">
-                                <p class="t1">
-                                    <span :class="['t2', 'green', 'yellow', 'gary']">空闲</span>
-                                    <span class="t3">a102</span>
-                                    <span class="t4">
-                                        <img src="@/assets/images/room-setting.png" alt="" srcset="">
-                                    </span>
-                                </p>
-                                <div class="t5" @click="handleGetUserInfo">
-                                    <span class="t6">dsadsa</span>
-                                    <img class="t7" src="@/assets/images/screen.png" alt="" srcset="">
+                    <div class="roomContiner">
+                        <Row :gutter="8">
+                            <Col span="4" v-for="item in bedList" :key="item">
+                            <Card :bordered="false" padding="0">
+                                <div class="roomBox">
+                                    <p class="t1">
+                                        <span :class="['t2', 'green', 'yellow', 'gary']">{{ t('空闲') }}</span>
+                                        <span class="t3">a102</span>
+                                        <span class="t4">
+                                            <img src="@/assets/images/room-setting.png" alt="" srcset="">
+                                        </span>
+                                    </p>
+                                    <div class="t5" @click="handleGetUserInfo">
+                                        <span class="t6">dsadsa</span>
+                                        <img class="t7" src="@/assets/images/screen.png" alt="" srcset="">
+                                    </div>
+                                    <p class="t8">李梅梅</p>
+                                    <p class="t9">1964-11-10</p>
+                                    <p class="t10">
+                                        <img src="@/assets/images/位图@2x(1).png" alt="">
+                                        <img src="@/assets/images/位图@2x(1).png" alt="">
+                                        <img src="@/assets/images/位图@2x(1).png" alt="">
+                                        <img src="@/assets/images/位图@2x(1).png" alt="">
+                                    </p>
                                 </div>
-                                <p class="t8">李梅梅</p>
-                                <p class="t9">1964-11-10</p>
-                                <p class="t10">
-                                    <img src="@/assets/images/位图@2x(1).png" alt="">
-                                    <img src="@/assets/images/位图@2x(1).png" alt="">
-                                    <img src="@/assets/images/位图@2x(1).png" alt="">
-                                    <img src="@/assets/images/位图@2x(1).png" alt="">
-                                </p>
-                            </div>
-                        </Card>
-                        </Col>
+                            </Card>
+                            </Col>
 
-                    </Row>
+                        </Row>
+                    </div>
                 </div>
 
 
 
             </div>
+
             <div class="floor">
-                <Button type="primary" class="btn" @click="handleShowModal">楼栋管理</Button>
+                <Button type="primary" class="btn" @click="handleShowModal">{{ t('楼栋管理') }}</Button>
                 <Card :bordered="false" padding="6">
                     <Row :gutter="8">
-                        <Col span="24" v-for="item in houseList" :key="item" class="floorCard">
-                        <p :style="{ 'color': floorActive == item ? '' : '#1C1B1B', 'background': floorActive == item ? '#1364F8' : 'rgba(19, 100, 248, .1)' }"
-                            @click="handleFloorActive(item)">item
+                        <Col span="24" v-for="item in floorList" :key="item.id" class="floorCard">
+                        <p :style="{ 'color': floorActive == item.id ? '' : '#1C1B1B', 'background': floorActive == item.id ? '#1364F8' : 'rgba(19, 100, 248, .1)' }"
+                            @click="handleFloorActive(item.id)">{{ item.floorNumber }}
                         </p>
                         </Col>
                     </Row>
@@ -86,7 +90,9 @@
         </div>
 
 
-        <BuildingModal ref="BuildingModalRef"></BuildingModal>
+        <BuildingModal ref="BuildingModalRef" @handleUpdate="handleUpdate" :HostelList=typeList :floorList="floorList"
+            :houseList="houseList" :bedList="bedList">
+        </BuildingModal>
         <DetailsModal ref="DetailsModalRef"></DetailsModal>
     </div>
 </template>
@@ -98,27 +104,16 @@ import HouseOpen from "@/assets/images/house-open.png"
 import HouseClose from "@/assets/images/house-close.png"
 import BuildingModal from './BuildingModal.vue';
 import DetailsModal from "./DetailsModal.vue"
+import { useI18n } from "vue-i18n"
+import { onMounted } from 'vue';
+const { t } = useI18n()
+import { HostelList, HostelFloorlList, HostelRoomListOfFloor, HostelRoomBedListOfRoom } from "@/api/Hostel/Hostel"
+
 const BuildingModalRef: any = ref(null)
 const DetailsModalRef: any = ref(null)
 const router = useRouter()
-const type = ref('a')
-const typeList = ref([
-    {
-        label: "A栋",
-        icon: "ios-checkmark",
-        type: "a",
-    },
-    {
-        label: "B栋",
-        icon: "ios-checkmark",
-        type: "b",
-    },
-    {
-        label: "C栋",
-        icon: "ios-checkmark",
-        type: "c",
-    }
-])
+const type = ref('')
+const typeList = ref<any>([])
 const handleShowModal = () => {
     BuildingModalRef.value.showModal()
 }
@@ -127,20 +122,90 @@ const handleGetUserInfo = () => {
     DetailsModalRef.value.showModal()
 }
 
+//是否更新数据
+const handleUpdate = (isUpdata: boolean) => {
+    if (isUpdata) {
+        getHostelList()
+    }
+}
 
-const houseList = ref(['a102', '1203', 'a123', 'a302', 'c203', 'a103'])
-const houseActive = ref('a102')
-const floorActive = ref('a102')
-const handleHouseActive = (label: string) => {
-    houseActive.value = label
+
+const houseList = ref<any>([])
+const houseActive = ref<any>('')
+const floorList = ref<any>([])
+const floorActive = ref<any>('')
+const bedList = ref<any>([])
+
+
+const handleHouseActive = (id: string) => {
+    houseActive.value = id
 }
-const handleFloorActive = (label: string) => {
-    floorActive.value = label
+const handleFloorActive = (id: string) => {
+    floorActive.value = id
 }
-const handleRadioType = (label: string) => {
+const handleRadioType = (id: string) => {
     //console.log(label)
-    router.push('/room?type=' + label)
+    router.replace('/room?type=' + id)
+
+
+    getFloorlList()
+
 }
+
+const getHostelList = () => {
+    // 获取楼栋列表
+    HostelList().then((res: any) => {
+        console.log(res)
+        typeList.value = res.data
+        type.value = res.data[0].id
+        getFloorlList()
+    })
+}
+
+const getFloorlList = () => {
+    // 获取楼层列表
+    HostelFloorlList({
+        hostelId: type.value
+    }).then((res: any) => {
+        console.log(res)
+
+        floorList.value = res.data
+        floorActive.value = res.data[0].id
+        // typeList.value = res.data
+        // type.value = res.data[0].name
+
+        getRoomList()
+    })
+}
+
+const getRoomList = () => {
+    // 获取房间列表
+    HostelRoomListOfFloor({
+        floorId: floorActive.value,
+        needBed: true,
+    }).then((res: any) => {
+        houseList.value = res.data
+        houseActive.value = res.data[0].id
+        getRoomBedList()
+    })
+}
+
+const getRoomBedList = () => {
+    // 获取房间床位列表
+    HostelRoomBedListOfRoom({
+        roomId: houseActive.value
+    }).then((res: any) => {
+        console.log(res)
+        bedList.value = res.data
+    })
+}
+
+
+//获取楼栋数据
+onMounted(() => {
+    getHostelList()
+})
+
 
 </script>
 
@@ -212,8 +277,7 @@ const handleRadioType = (label: string) => {
             width: calc(100% - 420px);
             padding-top: 15px;
             height: 100%;
-            overflow: hidden;
-            overflow-y: auto;
+
 
             .roomItem {
                 width: 100%;
@@ -242,6 +306,13 @@ const handleRadioType = (label: string) => {
                         background-repeat: no-repeat;
                         background-size: 100% 100%;
                     }
+                }
+
+                .roomContiner {
+                    width: 100%;
+                    height: calc(100vh - 210px);
+                    overflow: hidden;
+                    overflow-y: auto;
                 }
 
                 .roomBox {

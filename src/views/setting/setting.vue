@@ -63,7 +63,7 @@
             <div class="deviceList">
                 <div class="floor">
                     <!-- <Button type="primary" class="btn" @click="handleShowModal">楼栋管理</Button> -->
-                    <Card :bordered="false" padding="6" class="btnList" style="border: 1px solid #98D2E1;">
+                    <Card :bordered="false" :padding="6" class="btnList" style="border: 1px solid #98D2E1;">
                         <div class="list">
                             <Button type="primary">设备关联</Button>
                             <Button type="primary">参数设置</Button>
@@ -227,11 +227,12 @@ const model1 = ref()
                 border: 1px solid #98D2E1;
                 margin-bottom: 10px;
 
+
                 p {
                     width: 100%;
-                    background: linear-gradient(270deg, rgba(19, 100, 248, 0) 0%, rgba(19, 100, 248, 0.7) 100%);
+                    background: linear-gradient(270deg, RGBA(255, 255, 255, 1) 0%, RGBA(206, 223, 254, 1) 100%);
                     border-radius: 8px 0px 0px 0px;
-                    opacity: 0.3;
+                    // opacity: 0.3;
                     font-size: 14px;
                     font-family: PingFangSC, PingFang SC;
                     font-weight: 400;

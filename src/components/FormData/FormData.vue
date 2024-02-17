@@ -71,12 +71,13 @@
             </div>
 
             <div v-if="item.type == 'switch'">
-                <Switch size="large" v-model="FormData[item.prop]" :true-value="1" :false-value="0">
+                <Switch size="large" v-model="FormData[item.prop]" :true-value="30" :false-value="40" true-color="RGBA(18, 185, 135, 1)"
+                        false-color="RGBA(237, 144, 0, 1)" >
                     <template #open>
                         <span>{{ item.open.length == 1 ? '&nbsp;&nbsp;' + t(item.open) : t(item.open) }}</span>
                     </template>
                     <template #close>
-                        <span>{{ item.open.length == 1 ? '&nbsp;' + t(item.close) : t(item.close) }}</span>
+                        <span>{{ item.close.length == 1 ? '&nbsp;' + t(item.close) : t(item.close) }}</span>
                     </template>
                 </Switch>
             </div>
@@ -116,6 +117,13 @@
 
             <div v-if="item.type == 'color'">
                 <ColorPicker v-model="FormData[item.prop]" alpha />
+            </div>
+
+
+
+            <div v-if="item.type == 'date'">
+                <DatePicker v-model="FormData[item.prop]" type="date" :placeholder="t('请选择') + t(item.label)"
+                    style="width: 100%" />
             </div>
 
 

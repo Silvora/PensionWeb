@@ -1,422 +1,3 @@
-//机构信息
-const agencyData: any = {
-    rules: {},
-    FormData:
-        [
-            {
-                type: 'input',
-                label: '建档日期',
-                prop: "nadsadme",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
-            {
-                type: 'input',
-                label: '机构地址',
-                prop: "descdsription",
-                span: 2,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
-            {
-                type: 'input',
-                label: '注册名称',
-                prop: "oemvfdId",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
-            {
-                type: 'input',
-                label: '统一信用代码',
-                prop: "namdae",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
-            {
-                type: 'select',
-                label: '所属区域',
-                prop: "descrviption",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-                childs: [
-                    {
-                        label: '是',
-                        value: '1'
-                    },
-                    {
-                        label: '否',
-                        value: '0'
-                    }
-                ]
-            },
-            {
-                type: 'input',
-                label: '运营模式',
-                prop: "oemIad",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
-            {
-                type: 'select',
-                label: '是否公建民营',
-                prop: "oemIvd",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
-            {
-                type: 'input',
-                label: '邮政编码',
-                prop: "oemIasd",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
-            {
-                type: 'input',
-                label: '联系电话',
-                prop: "oemIvfd",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
-            {
-                type: 'input',
-                label: '机构介绍',
-                prop: "oemqwId",
-                span: 2,
-                //disabled: false,
-                required: false,
-                default: "",
-            }
-        ]
-}
-//法人信息
-const legalData = {
-    rules: {},
-    FormData:
-        [
-            {
-                type: 'input',
-                label: '负责人电话',
-                prop: "nadsadme",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
-            {
-                type: 'sort',
-                label: '机构床位总数',
-                prop: "descdsription",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
-            {
-                type: 'sort',
-                label: '床位使用总数',
-                prop: "oemvfdId",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
-            {
-                type: 'sort',
-                label: '护理床位数量',
-                prop: "namdae",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
-            {
-                type: 'sort',
-                label: '家庭床位数量',
-                prop: "descrviption",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-                // childs: [
-                //     {
-                //         label: '是',
-                //         value:'1'
-                //     },
-                //      {
-                //         label: '否',
-                //         value:'0'
-                //     }
-                // ]
-            },
-            {
-                type: 'sort',
-                label: '入住人员总数',
-                prop: "oemIad",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
-            {
-                type: 'sort',
-                label: '入住率',
-                prop: "oemIvd",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-                max: 100
-            },
-            // {
-            //     type: 'input',
-            //     label: '邮政编码',
-            //     prop: "oemIasd",
-            //     span:1,
-            //     //disabled: false,
-            //     required: false,
-            //     default: "",
-            // },
-            //  {
-            //     type: 'input',
-            //     label: '联系电话',
-            //     prop: "oemIvfd",
-            //     span:1,
-            //     //disabled: false,
-            //     required: false,
-            //     default: "",
-            // },
-            //   {
-            //     type: 'input',
-            //     label: '机构介绍',
-            //     prop: "oemqwId",
-            //     span:2,
-            //     //disabled: false,
-            //     required: false,
-            //     default: "",
-            // }
-        ]
-}
-//建设信息
-const constructData = {
-    labelHeight: '64',
-    rules: {},
-    FormData:
-        [
-            {
-                type: 'select',
-                label: '是否为特困救助供养机构',
-                prop: "nadsadme",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
-            {
-                type: 'input',
-                label: '享受政府扶持优惠政策内容',
-                prop: "descdsription",
-                span: 2,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
-
-            {
-                type: 'select',
-                label: '是否开展居家和社区养老服务',
-                prop: "descrviption",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-                childs: [
-                    {
-                        label: '是',
-                        value: '1'
-                    },
-                    {
-                        label: '否',
-                        value: '0'
-                    }
-                ]
-            },
-            {
-                type: 'select',
-                label: '是否具备医疗资质',
-                prop: "descrviption",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-                childs: [
-                    {
-                        label: '是',
-                        value: '1'
-                    },
-                    {
-                        label: '否',
-                        value: '0'
-                    }
-                ]
-            },
-            {
-                type: 'select',
-                label: '是否具备医保定点资质',
-                prop: "descrviption",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-                childs: [
-                    {
-                        label: '是',
-                        value: '1'
-                    },
-                    {
-                        label: '否',
-                        value: '0'
-                    }
-                ]
-            },
-        ]
-}
-//服务信息
-const serveData = {
-    labelHeight: '64',
-    rules: {},
-    FormData:
-        [
-            {
-                type: 'select',
-                label: '是否接受失智老人',
-                prop: "nadsadme",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
-            {
-                type: 'sort',
-                label: '无自理能力老人数量',
-                prop: "descdsription",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
-
-            {
-                type: 'select',
-                label: '收费方式',
-                prop: "descrviption",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-                childs: [
-                    {
-                        label: '是',
-                        value: '1'
-                    },
-                    {
-                        label: '否',
-                        value: '0'
-                    }
-                ]
-            },
-            {
-                type: 'select',
-                label: '是否采用会员制收费',
-                prop: "descrviption",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-                childs: [
-                    {
-                        label: '是',
-                        value: '1'
-                    },
-                    {
-                        label: '否',
-                        value: '0'
-                    }
-                ]
-            },
-            {
-                type: 'sort',
-                label: '押金/备用金',
-                prop: "descrviption",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-                // childs: [
-                //     {
-                //         label: '是',
-                //         value:'1'
-                //     },
-                //      {
-                //         label: '否',
-                //         value:'0'
-                //     }
-                // ]
-            },
-            {
-                type: 'sort',
-                label: '总收费',
-                prop: "descdsription",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
-            {
-                type: 'sort',
-                label: '床位费',
-                prop: "descdsription",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
-            {
-                type: 'sort',
-                label: '膳食费',
-                prop: "descdsription",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
-            {
-                type: 'sort',
-                label: '其他费用',
-                prop: "descdsription",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
-        ]
-}
 
 const roleTable: any = {
       defaultConfig: {
@@ -431,8 +12,9 @@ const roleTable: any = {
              width: 300,
         },
     },
+    
     editConfig: {
-        title: '编辑门店',
+        title: '编辑员工',
         lableWidth: 100,
         rules: {},
         FormData: [
@@ -492,35 +74,247 @@ const roleTable: any = {
     columns: [
         {
             title: '角色',
-            key: 'deviceName',
+            key: 'name',
             minWidth: 150,
         },
         {
             title: '角色说明',
-            key: 'deviceNo',
+            key: 'roleName',
             minWidth: 250,
         },
         {
             title: '创建时间',
-            key: 'freeObsNum',
+            key: 'groupId',
             minWidth: 230,
         },
 
-
         {
             title: '角色状态',
-            key: 'deviceStatus',
+            key: 'superiorId',
             slot: true,
             minWidth: 100,
         }
     ]
 }
 
+// 添加用户
+const roleData: any = {
+    rules: {},
+    FormData: [
+        {
+            type: 'input',
+            label: '员工姓名',
+            prop: "name",
+                span: 1,
+                //disabled: false,
+                required: false,
+                default: "",
+        },
+        {
+            type: 'input',
+            label: '英文名',
+            prop: "englishName",
+            //disabled: false,
+            span: 1,
+                //disabled: false,
+                required: false,
+                default: "",
+        },
+        {
+                 type: 'select',
+            label: '性别',
+            prop: "gender",
+                span: 1,
+                //disabled: false,
+                childs: [
+                {
+                    label: '男',
+                    value: '1'
+                },
+                {
+                    label: '女',
+                    value: '2'
+                }
+            ],
+                required: false,
+                default: "",
+        },
+
+
+         {
+            type: 'date',
+            label: '生日',
+            prop: "birthday",
+            //disabled: false,
+            span: 1,
+                //disabled: false,
+                required: false,
+                default: "",
+        },
+         {
+            type: 'input',
+            label: '身份证号',
+            prop: "idNumber",
+            //disabled: false,
+            span: 1,
+                //disabled: false,
+                required: false,
+                default: "",
+        },
+         
+         {
+            type: 'input',
+            label: '联系电话',
+            prop: "phone",
+            //disabled: false,
+            span: 1,
+                //disabled: false,
+                required: false,
+                default: "",
+        },
+ 
+         
+         
+         {
+            type: 'select',
+            label: '文化程度',
+            prop: "educationLevel",
+            //disabled: false,
+            childs: [
+                {
+                    label: '小学',
+                    value: '小学'
+                },
+                {
+                    label: '初中',
+                    value: '初中'
+                },
+                {
+                    label: '中专',
+                    value: '中专'
+                },
+                {
+                    label: '高中',
+                    value: '高中'
+                },
+                {
+                    label: '大专',
+                    value: '大专'
+                },
+                {
+                    label: '本科',
+                    value: '本科'
+                },
+                {
+                    label: '硕士',
+                    value: '硕士'
+                }
+            ],
+            span: 1,
+                //disabled: false,
+                required: false,
+                default: "",
+        },
+
+   
+          
+          {
+            type: 'select',
+            label: '职业等级',
+            prop: "jobLevel",
+            //disabled: false,
+            childs: [
+                {
+                    label: '三级',
+                    value: '0'
+                },
+                {
+                    label: '二级',
+                    value: '1'
+                },
+                {
+                    label: '一级',
+                    value: '2',
+
+                },
+                {
+                    label: '特一级',
+                    value: '3'
+                },
+                {
+                    label: '特二级',
+                    value: '4'
+                },
+                {
+                    label: '特三级',
+                    value: '5'
+                },
+                {
+                    label: '专需护理',
+                    value: '6'
+                }
+            ],
+            span: 1,
+                //disabled: false,
+                required: false,
+                default: "",
+        },
+                      {
+            type: 'select',
+            label: '角色',
+            prop: "roleId",
+            //disabled: false,
+            childs: [
+                {
+                    label: '管理员',
+                    value: '管理员'
+                }
+            ],
+            span: 1,
+                //disabled: false,
+                required: false,
+                default: "",
+        },
+
+         {
+            type: 'select',
+            label: '所属小组',
+            prop: "groupId",
+            //disabled: false,
+            childs: [
+                {
+                    label: '管理员',
+                    value: '管理员'
+                }
+            ],
+            span: 1,
+                //disabled: false,
+                required: false,
+                default: "",
+        },
+          
+           {
+            type: 'select',
+            label: '直属上级',
+            prop: "superiorId",
+            //disabled: false,
+            childs: [
+                {
+                    label: '管理员',
+                    value: '管理员'
+                }
+            ],
+            span: 1,
+                //disabled: false,
+                required: false,
+                default: "",
+        },
+          
+
+    ]
+}
 
 export {
-    agencyData,
-    legalData,
-    constructData,
-    serveData,
+    roleData,
     roleTable
 }

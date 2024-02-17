@@ -1,8 +1,11 @@
 <template>
     <div class="role">
         <div class="table">
+
+            <!-- <ToolBar ref="ToolBarRef" :toolBarConfig="toolBarConfig" @handleToolBarAdd="handleAddFamily"></ToolBar> -->
+
             <TableView ref="TableViewRef" :data="data" :tableConfig="familyInfo" :tablePage="pagerConfig"
-                @handleUpdatePage="handleUpdatePage">
+                @handleUpdatePage="handleUpdatePage" @handleEdit="handleEdit">
 
                 <template #deviceStatus="{ row }">
                     <Switch :model-value="row.deviceStatus" true-color="RGBA(18, 185, 135, 1)"
@@ -31,22 +34,30 @@
             </TableView>
         </div>
         <!-- <Pager class="pager" :tablePage="pagerConfig" @handlePageChange="handlePageChange" ref="PagerRef"></Pager> -->
-        <Card :bordered="false" padding="6" class="btnList">
+        <Card :bordered="false" :padding="6" class="btnList">
             <div class="list">
-                <Button type="primary">新增</Button>
+                <Button type="primary" @click="handleAddFamily">新增</Button>
                 <!-- <Button type="primary">批量启用</Button>
                 <Button type="primary">批量禁用</Button> -->
                 <Button type="error">批量删除</Button>
             </div>
         </Card>
+
+        <FormModal title="添加家属" :rules="toolBarConfig.rules" :lableWidth="toolBarConfig.lableWidth"
+            :FormData="toolBarConfig.FormData" ref="TableAddRef" @handleModalOk="handleAddModalOk">
+        </FormModal>
     </div>
 </template>
 
 <script setup lang='ts'>
-import { ref } from "vue"
-import { familyInfo } from "../data"
+import { ref, onMounted } from "vue"
+import { familyInfo, toolBarConfig } from "../data"
 import { Message, Modal } from "view-ui-plus";
+import { useI18n } from "vue-i18n"
+import { FamilyList, FamilyRemoveId, FamilySave, FamilyUpdate } from "@/api/Family/Family"
 const TableViewRef = ref<any>(null)
+const TableAddRef = ref<any>(null)
+const { t } = useI18n()
 const data: any = ref([
     {
         deviceName: '2121',
@@ -68,30 +79,50 @@ const pagerConfig = ref({
     pageSize: 10 //数量
 })
 
+// 添加
+const handleAddFamily = () => {
+    TableAddRef.value.openModal()
+}
+const handleAddModalOk = (data: any) => {
+    console.log(data)
+    FamilySave(data).then(() => {
+        Message.success(t('添加成功'))
+    })
+}
+
 //状态选择
 const handleUpdateSwitch = (b: boolean) => {
     console.log(b)
 }
+
 //编辑角色
 const handleRoleEdit = (row: any) => {
     TableViewRef.value.handleOpenEditModal(row)
 }
+const handleEdit = (data: any) => {
+    console.log(data)
+    FamilyUpdate(data).then(() => {
+        Message.success(t('修改成功'))
+    })
+}
+
+
 //删除角色
 const handleRoleDelete = (id: any) => {
     Modal.confirm({
-        title: '删除角色',
-        content: '确定要删除此角色',
+        title: '删除家属',
+        content: '确定要删除此家属',
         loading: true,
         onOk: () => {
             console.log(id)
-            // DeviceInfoResetId(data).then(() => {
-            //     Message.success(t('重置成功'))
-            //     Modal.remove();
-            //     getData({ ...searchData })
-            //     // handleDeviceList(data)
-            // }).catch(() => {
-            //     Modal.loading = false
-            // })
+            FamilyRemoveId({ id }).then(() => {
+                Message.success(t('删除成功'))
+                Modal.remove();
+                getData()
+                // handleDeviceList(data)
+            }).catch(() => {
+                Modal.loading = false
+            })
         }
     })
 }
@@ -103,6 +134,16 @@ const handleUpdatePage = ({ currentPage, pageSize }: any) => {
         currentPage,
         pageSize
     }
+}
+
+onMounted(() => {
+    getData()
+})
+
+const getData = () => {
+    FamilyList().then((res: any) => {
+        console.log(res)
+    })
 }
 
 </script>

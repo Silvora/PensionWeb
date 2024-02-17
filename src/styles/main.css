@@ -1,7 +1,7 @@
-@import url('https://at.alicdn.com/t/c/font_4285872_xpwkmmey8yc.css');
+@import url('https://at.alicdn.com/t/c/font_4383904_fmfgg5hiokq.css');
 
 
-#app {
+body {
   /* max-width: 1280px;
   margin: 0 auto;
   padding: 2rem; */
@@ -16,9 +16,9 @@
   overflow-y: auto;
   overflow-x: auto; */
   background-image: url('../assets/images/login-bg.png') !important;
-  background-size: contain;
+  /* background-size: contain; */
   background-position: center;
-  /* background-size: 100% 100%; */
+  background-size: 100% 100%;
 }
 
 .page_title {
@@ -95,4 +95,32 @@
 .slide-fade-leave-to {
   transform: translateX(20px);
   opacity: 0;
+}
+ .goBack {
+            position: absolute;
+            top: 0;
+            left: 0;
+            cursor: pointer;
+            display: inline-block;
+            line-height: 60px;
+            width: 260px;
+            height: 60px;
+            background-color: red;
+            padding: 0 10px;
+            color: #1364F8;
+            background: linear-gradient(90deg, rgba(19, 100, 248, 0.1) 0%, rgba(19, 100, 248, 0) 100%);
+        }
+
+.formInfo,.list,.infoBox,.roomUser{
+         -ms-overflow-style: none;
+        /* 适用于Internet Explorer, Edge */
+        scrollbar-width: none;
+        /* 适用于Firefox */
+        overflow-y: scroll;
+}
+.formInfo::-webkit-scrollbar,
+.list::-webkit-scrollbar,
+.infoBox::-webkit-scrollbar,
+.roomUser::-webkit-scrollbar {
+  display: none; /* 适用于Chrome, Safari, Opera */
 }

@@ -1,7 +1,7 @@
 <template>
   <Form ref="loginForm" :model="form" :rules="rule" @submit.prevent>
-    <FormItem prop="username">
-      <Input type="text" prefix="ios-person-outline" v-model="form.username" :placeholder="t('请输入') + t('用户名')"
+    <FormItem prop="identifier">
+      <Input type="text" prefix="ios-person-outline" v-model="form.identifier" :placeholder="t('请输入') + t('用户名')"
         :size="size">
       </Input>
     </FormItem>
@@ -33,17 +33,18 @@ import { clearItemToken, getToken, setToken } from "@/utils/token";
 import { useAppStore } from "@/stores/modules/app"
 import { useI18n } from "vue-i18n"
 const { t } = useI18n()
+import md5 from 'js-md5';
 const appStore = useAppStore()
 const size = 'large'
 const emit = defineEmits(['update:loginTitle'])
 const loading = ref(false)
 const router = useRouter()
 const form = ref({
-  username: '',
+  identifier: '',
   password: ''
 })
 const rule = {
-  username: [
+  identifier: [
     { required: true, message: t('请输入') + t('用户名'), trigger: 'blur' }
   ],
   password: [
@@ -55,28 +56,40 @@ const autoLogin = ref(true)
 const handleSubmit = () => {
 
   if (autoLogin) {
-    setToken('username', form.value.username)
+    setToken('identifier', form.value.identifier)
     setToken('password', form.value.password)
   } else {
-    clearItemToken('username')
+    clearItemToken('identifier')
     clearItemToken('password')
   }
-  setToken('meicePro-Token', "res.datas.access_token")
-  setToken('meicePro-User', "res.datas.user")
-  router.push("/")
-  //loading.value = true
-  // Login(form.value).then((res: any) => {
-  //   console.log(res)
-  //   setToken('meicePro-Token', res.datas.access_token)
-  //   setToken('meicePro-User', res.datas.user)
+  setToken('ing-Token', "res.datas.access_token")
+  setToken('ing-User', "res.datas.user")
+  //router.push("/")
 
-  //   appStore.setUserInfo(res.datas.user)
-  //   loading.value = false
+  const data = {
+    identifier: form.value.identifier,
+    password: md5(form.value.password)
 
-  // }).finally(() => {
-  //   loading.value = false
-  //   router.push("/")
-  // })
+  }
+
+
+  loading.value = true
+  Login(data).then((res: any) => {
+    console.log(res)
+    setToken('ing-Token', res.data)
+    setToken('ing-User', form.value.identifier)
+
+    appStore.setUserInfo(form.value.identifier)
+
+
+    router.push("/")
+    loading.value = false
+
+
+  }).finally(() => {
+    loading.value = false
+    //router.push("/")
+  })
 }
 
 const handleRePassword = () => {
@@ -84,9 +97,9 @@ const handleRePassword = () => {
 }
 
 onMounted(() => {
-  getToken('username').then((res: any) => {
+  getToken('identifier').then((res: any) => {
     console.log(res)
-    form.value.username = res
+    form.value.identifier = res
   })
   getToken('password').then((res: any) => {
     console.log(res)

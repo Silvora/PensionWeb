@@ -22,7 +22,7 @@ declare module '*.tiff'
 declare module '*.js'
 declare module 'view-ui-plus/dist/locale/zh-CN'
 declare module 'view-ui-plus/dist/locale/en-US'
-
+declare module 'view-ui-plus/dist/locale/zh-TW'
 declare module "pinia-persistedstate-plugin"
 
 declare module "js-md5"

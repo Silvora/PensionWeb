@@ -2,7 +2,7 @@ import localforage from "localforage"
 
 
 localforage.config({
-    name: 'Meicepro'
+    name: 'Ing-Web'
 });
 
 export async function getToken(key: string): Promise<unknown> {
