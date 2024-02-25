@@ -47,6 +47,11 @@ body {
 @media (max-width: 1440px) {
   body {
     width: 1440px;
+    -ms-overflow-style: none;
+    /* 适用于Internet Explorer和Edge */
+    scrollbar-width: none;
+    /* 适用于Firefox */
+    overflow-y: scroll;
     /* height: 768px; */
     /* overflow: hidden;
     overflow-y: auto;
@@ -62,6 +67,30 @@ body {
     padding: 0 2rem;
   } */
 }
+@media (min-width: 1440px) {
+  body {
+    width: 100%;
+    -ms-overflow-style: none;
+    /* 适用于Internet Explorer和Edge */
+    scrollbar-width: none;
+    /* 适用于Firefox */
+    overflow-y: scroll;
+    /* height: 768px; */
+    /* overflow: hidden;
+    overflow-y: auto;
+    overflow-x: auto; */
+  }
+  body::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* #app {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 0 2rem;
+  } */
+}
+
 
 .bounce-enter-active {
   animation: bounce-in 0.5s;

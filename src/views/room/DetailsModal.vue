@@ -1,6 +1,6 @@
 <template>
     <div class="details">
-        <Modal v-model="detailsModal" title="楼栋管理" footer-hide="true" width="650">
+        <Modal v-model="detailsModal" title="楼栋管理" :footer-hide="true" width="650">
             <template #close>
                 <Icon type="md-add-circle" color="#000" style="transform: rotateZ(45deg);" size="16" />
             </template>
@@ -40,7 +40,7 @@
                         <img src="@/assets/images/screen.png" alt="" srcset="">
                     </div>
                     <div class="user">
-                        <DescriptionList title="" col="2">
+                        <DescriptionList title="" :col="2">
                             <Description v-for="item in descriptionList" :key="item.label">
                                 <template #default>
                                     <p class="descript">
@@ -57,7 +57,8 @@
                 <div class="device">
                     <Row :gutter="10">
                         <Col span="12" v-for="item in deviceList" :key="item.label">
-                        <Card :bordered="false" padding="16" style="background: rgba(19,100,248,0.05);margin-bottom: 10px;">
+                        <Card :bordered="false" :padding="16"
+                            style="background: rgba(19,100,248,0.05);margin-bottom: 10px;">
                             <div class="deviceBox">
                                 <div style="margin-right: 16px;">
                                     <img :src="item.img" alt="">
@@ -84,7 +85,7 @@
             </div>
         </Modal>
 
-        <Modal v-model="elderModal" title="老人选择" footer-hide="true" width="270">
+        <Modal v-model="elderModal" title="老人选择" :footer-hide="true" width="270">
             <template #close>
                 <Icon type="md-add-circle" color="#000" style="transform: rotateZ(45deg);" size="16" />
             </template>
@@ -92,15 +93,15 @@
             <div class="elderBox">
                 <Input prefix="ios-search" clearable enter-button="搜索" placeholder="搜索" />
 
-                <Card :bordered="false" padding="5" style="background: rgba(19,100,248,0.05);margin: 5px 0;"
-                    v-for="item in Array.from({ length: 10 })" :key="item">
+                <Card :bordered="false" :padding="5" style="background: rgba(19,100,248,0.05);margin: 5px 0;"
+                    v-for="item in detailList" :key="item.id">
                     <div class="userBox">
                         <div>
                             <img :src="sleep" alt="">
                         </div>
                         <div class="name">
-                            <p>name{{ item }}</p>
-                            <p>phone</p>
+                            <p>{{ item.name }}</p>
+                            <p>{{ item.phone }}</p>
                         </div>
                     </div>
                 </Card>
@@ -111,16 +112,17 @@
 </template>
 
 <script setup lang='ts'>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import thermometer from "@/assets/images/thermometer.png"
 import bitmap from "@/assets/images/bitmap.png"
 import sleep from "@/assets/images/sleep.png"
 import errBtn from "@/assets/images/errBtn.png"
+import { ElderlyList } from '@/api/Elderly/Elderly'
 
 const detailsModal = ref(false)
 const emptyModal = ref(false)
 const elderModal = ref(false)
-
+const detailList = ref<any>([])
 const descriptionList = ref([
     {
         label: '姓名',
@@ -215,6 +217,20 @@ const showModal = () => {
 const hideModal = () => {
     detailsModal.value = false
 }
+
+const getData = () => {
+    ElderlyList({
+        current: 1,
+        size: 9999
+    }).then(res => {
+        console.log(res)
+        detailList.value = res.data.records
+    })
+}
+
+onMounted(() => {
+    getData()
+})
 
 defineExpose({
     showModal,

@@ -79,9 +79,11 @@ const handleCancel = () => {
 }
 
 const handleSumbit = () => {
-    //console.log(FormRef.value.validate())
+    console.log(FormRef.value.validate(), { ...FormRef.value.FormData, ...FormId.value })
     FormRef.value.validate().then((valid: any) => {
+        console.log(valid)
         if (valid) {
+
             textLoing.value = true
             // console.log(FormRef.value.FormData)
             emit('handleModalOk', { ...FormRef.value.FormData, ...FormId.value })

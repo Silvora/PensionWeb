@@ -1,6 +1,6 @@
 <template>
     <div class="building">
-        <Modal v-model="modal" title="楼栋管理" footer-hide="true">
+        <Modal v-model="modal" title="楼栋管理" :footer-hide="true">
             <template #close>
                 <Icon type="md-add-circle" color="#000" style="transform: rotateZ(45deg);" size="16" />
             </template>
@@ -9,14 +9,20 @@
                     <p class="title">
                         <span>楼栋</span>
                         <span>
-                            <Button type="primary" size="small" class="btn" @click="handleAddHouse(0)">添加</Button>
+                            <Button type="primary" size="small" class="btn" @click="handleAddHouse(0)">添加楼栋</Button>
                         </span>
                     </p>
                     <div class="info">
-                        <Tooltip placement="top" theme="light" v-for="item in props.HostelList" :key="item.id"
-                            :delay="1000">
-                            <Tag :style="{ background: item.id == selectHostelId ? '#1364f8' : '#fff' }" checkable
-                                @on-change="handleChangeName(0, item.id)">
+                        <Tooltip placement="top" theme="light" v-for="item in props.HostelList" :key="item.id">
+                            <!-- <a>
+                                <Tag :style="{ background: item.id == selectHostelId ? '#1364f8' : '#fff' }" checkable
+                                    @on-change="handleChangeName(0, item.id)">
+                                    <span :style="{ color: item.id == selectHostelId ? '#fff' : '#515a6e' }">
+                                        {{ item.name }}</span>
+                                </Tag>
+                            </a> -->
+                            <Tag :style="{ background: item.id == selectHostelId ? '#1364f8' : '#fff', cursor: 'pointer' }"
+                                checkable @on-change="handleChangeName(0, item.id)" :delay="500">
                                 <span :style="{ color: item.id == selectHostelId ? '#fff' : '#515a6e' }">
                                     {{ item.name }}</span>
                             </Tag>
@@ -34,21 +40,24 @@
 
                 <div class="box_2" v-if="selectHostelId">
                     <p class="title">
-                        <span>{{ props.HostelList.find((it: any) => it.id == selectHostelId)?.name }} 楼层</span>
+                        <span>{{ props.HostelList.find((it: any) => it.id == selectHostelId)?.name }} 楼栋</span>
                         <span>
                             <Button type="primary" size="small" class="btn" @click="handleAddHouse(1)">添加</Button>
                         </span>
                     </p>
                     <div class="info">
                         <!-- <Tag color="primary" closable>标签</Tag> -->
-                        <Tooltip placement="top" theme="light" v-for="item in props.floorList" :key="item.id" :delay="1000">
-                            <Tag :style="{ background: item.id == selectFloorId ? '#1364f8' : '#fff' }" checkable
-                                @on-change="handleChangeName(1, item.id)">
+                        <Tooltip placement="top" theme="light" v-for="item in floorList" :key="item.id" :delay="500">
+                            <Tag :style="{ background: item.id == selectFloorId ? '#1364f8' : '#fff', cursor: 'pointer' }"
+                                checkable @on-change="handleChangeName(1, item.id)">
                                 <span :style="{ color: item.id == selectFloorId ? '#fff' : '#515a6e' }">
                                     {{ item.floorNumber }}</span>
                             </Tag>
                             <template #content>
-                                <Button type="error" size="small" @click="handleTagClose(1, item)">删除</Button>
+                                <Space>
+                                    <Button type="primary" size="small" @click="handleOpenEdit(1, item)">编辑</Button>
+                                    <Button type="error" size="small" @click="handleTagClose(1, item)">删除</Button>
+                                </Space>
                             </template>
                         </Tooltip>
                     </div>
@@ -57,42 +66,54 @@
 
                 <div class="box_3" v-if="selectHostelId && selectFloorId">
                     <p class="title">
-                        <span>{{ props.floorList.find((it: any) => it.id == selectFloorId)?.floorNumber }} 房间</span>
+                        <span>{{ props.floorList.find((it: any) => it.id == selectFloorId)?.floorNumber }} 楼层</span>
                         <span>
-                            <Button type="primary" size="small" class="btn" @click="handleAddHouse(2)">添加</Button>
+                            <Button type="primary" size="small" class="btn" @click="handleAddHouse(2)">添加房间</Button>
                         </span>
                     </p>
                     <div class="info">
-                        <Tooltip placement="top" theme="light" v-for="item in props.houseList" :key="item.id" :delay="1000">
-                            <Tag :style="{ background: item.id == selectRoomId ? '#1364f8' : '#fff' }" checkable
+                        <Tooltip placement="top" theme="light" v-for="item in houseList" :key="item.id" :delay="500">
+                            <Tag :style="{ background: item.id == selectRoomId ? '#1364f8' : '#fff', cursor: 'pointer' }"
                                 @on-change="handleChangeName(2, item.id)">
                                 <span :style="{ color: item.id == selectRoomId ? '#fff' : '#515a6e' }">
-                                    {{ item.roomNumber }}</span>
+                                    {{ item.roomNumber }} -（{{ item.count }}人间）</span>
                             </Tag>
                             <template #content>
-                                <Button type="error" size="small" @click="handleTagClose(1, item)">删除</Button>
+                                <Space>
+                                    <Button type="primary" size="small" @click="handleOpenEdit(2, item)">编辑</Button>
+                                    <Button type="error" size="small" @click="handleTagClose(2, item)">删除</Button>
+                                </Space>
                             </template>
                         </Tooltip>
-                        <div style="margin-top: 15px;">
+                        <!-- <div style="margin-top: 15px;">
                             <RadioGroup v-model="space">
                                 <Radio :label="idx + 1 + ''" v-for="(item, idx) in roomList" :key="item">{{ item + '人间' }}
                                 </Radio>
                             </RadioGroup>
-                        </div>
+                        </div> -->
                     </div>
-                    <Button type="primary" class="sumbit" @click="handleSetRoomBed">保存</Button>
+                    <!-- <Button type="primary" class="sumbit" @click="handleSetRoomBed">保存</Button> -->
                 </div>
             </div>
         </Modal>
 
-        <Modal v-model="addModal" :title="['楼栋', '楼层', '房间'][roomType] + (isEdit ? '编辑' : '添加')" footer-hide="true"
-            :styles="{ top: '280px' }">
+        <Modal v-model="addModal" :title="['楼栋', '楼层', '房间'][roomType] + (isEdit ? '编辑' : '添加')" :footer-hide="true"
+            :styles="{ top: '150px' }">
             <template #close>
                 <Icon type="md-add-circle" color="#000" style="transform: rotateZ(45deg);" size="16" />
             </template>
 
             <p style="padding-bottom: 10px;">{{ ['楼栋', '楼层', '房间'][roomType] }}名称</p>
             <Input v-model="addInput" placeholder="" style="width: 100%" />
+            <div style="padding-top: 10px;">
+                <p style="padding-bottom: 10px;">{{ ['楼栋', '楼层', '房间'][roomType] }}名称</p>
+                <RadioGroup v-model="count">
+                    <Radio :label="idx + 1 + ''" v-for="(item, idx) in roomList" :key="item">
+                        {{ item + '人间' }}
+                    </Radio>
+                </RadioGroup>
+            </div>
+
             <Button type="primary" class="addSumbit" @click="handleSumbitAdd">保存</Button>
         </Modal>
     </div>
@@ -102,20 +123,23 @@
 import { ref } from 'vue';
 import {
     HostelSave, HostelFloorSave, HostelRemoveId, HostelRoomSave, HostelRoomBedSave, HostelRoomRemoveId,
-    HostelUpdate, HostelFloorUpdate, HostelRoomUpdate
+    HostelUpdate, HostelFloorUpdate, HostelRoomUpdate, HostelFloorlList, HostelRoomListOfFloor
 } from "@/api/Hostel/Hostel"
 import { Message, Poptip, Tooltip, Modal, Space } from 'view-ui-plus';
 const modal = ref(false)
 const addModal = ref(false)
 const addInput = ref('')
 const space = ref('')
+const count = ref("1")
+
 const roomList = ref(['单', '双', '三', '四', '五', '六', '七', '八'])
 const roomType = ref(0)
 
 //是否编辑
 const isEdit = ref(false)
 const editData = ref({})
-
+const floorList = ref<any>([])
+const houseList = ref<any>([])
 
 const props = defineProps({
     HostelList: <any>{
@@ -156,12 +180,29 @@ const handleChangeName = (type: number, id: any) => {
     console.log(id)
     if (type == 0) {
         selectHostelId.value = id
+        // 获取楼层列表
+        HostelFloorlList({
+            hostelId: id
+        }).then((res: any) => {
+            console.log(res)
 
+            floorList.value = res.data
+            selectFloorId.value = ''
+
+        })
     }
 
     if (type == 1) {
         selectFloorId.value = id
 
+        HostelRoomListOfFloor({
+            floorId: id,
+            needBed: true
+        }).then((res: any) => {
+            houseList.value = res.data
+            // houseActive.value = res.data[0].id
+            // getRoomBedList()
+        })
     }
 
     if (type == 2) {
@@ -188,6 +229,7 @@ const handleOpenEdit = (type: number, item: any) => {
 
     if (type == 2) {
         addInput.value = item.roomNumber
+        count.value = item.count + ''
     }
 
     if (type == 3) {
@@ -308,7 +350,7 @@ const handleSumbitAdd = () => {
 
     if (roomType.value == 2) {
         //房间
-        HostelRoomSave({ roomNumber: data.name, floorId: selectFloorId.value }).then(() => {
+        HostelRoomSave({ roomNumber: data.name, count: count.value, floorId: selectFloorId.value }).then(() => {
             Message.success('添加成功')
             addModal.value = false
             emit('handleUpdate', true)
@@ -364,6 +406,7 @@ defineExpose({
         padding: 20px;
         border-radius: 8px;
         margin-bottom: 20px;
+
 
         .ivu-tag .ivu-icon-ios-close {
             color: red;

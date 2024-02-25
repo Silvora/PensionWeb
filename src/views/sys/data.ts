@@ -418,6 +418,7 @@ const serveData = {
         ]
 }
 
+//角色管理
 const roleTable: any = {
       defaultConfig: {
         DOMTool: false,
@@ -483,6 +484,8 @@ const roleTable: any = {
             //disabled: false,
             //childs: [],
             required: false,
+            open: '启用',
+            close: '禁用',
             
             
             // default: "",
@@ -520,14 +523,83 @@ const roleTable: any = {
 
         {
             title: '角色状态',
-            key: 'type',
+            key: 'status',
             slot: true,
             minWidth: 100,
         }
     ]
 }
+// 创建角色
+const createRole: any = {
+    rules:[],
+    FormData: [
+        {
+            type: 'input',
+            label: '角色名称',
+            prop: "name",
+            //disabled: false,
+            //childs: [],
+            //password: true,
+            required: true,
+            // default: 0,
+        },
+        //  {
+        // type: 'radio',
+        // label: '性别',
+        // prop: "gender",
+        // //disabled: false,
+        // childs: [
+        //     {
+        //         label: "男",
+        //         value:"1"
+        //     },
+        //     {
+        //         label: "女",
+        //         value:"2"
+        //     },
+        //     {
+        //         label: "未知",
+        //         value:"0"
+        //     }
+        // ],
+        // required: true,
+        // // default: "",
+        // },
+        // {
+        //     type: 'input',
+        //     label: '手机号',
+        //     prop: "phone",
+        //     //disabled: false,
+        //     //childs: [],
+        //     //password: true,
+        //     required: true,
+        //     // default: 0,
+        // },
+        {
+            type: 'input',
+            label: '说明',
+            prop: "description",
+            //disabled: false,
+            //childs: [],
+            //password: true,
+            required: true,
+            // default: 0,
+        },
+        {
+            type: 'switch',
+            label: '状态',
+            prop: "status",
+            //disabled: false,
+            //childs: [],
+            //password: true,
+            //required: true,
+            open: '启用',
+            close: '禁用',
+        }
+    ],
+}
 
-
+//用户管理
 const accountTable: any = {
     defaultConfig: {
       DOMTool: false,
@@ -588,25 +660,25 @@ const accountTable: any = {
       },
 
       {
-        type: 'radio',
+        type: 'select',
         label: '性别',
         prop: "gender",
         //disabled: false,
         childs: [
             {
                 label: "男",
-                value:"1"
+                value:1
             },
             {
                 label: "女",
-                value:"2"
+                value:2
             },
             {
                 label: "未知",
-                value:"0"
+                value:0
             }
         ],
-        required: false,
+        required: true,
         // default: "",
         },
         {
@@ -615,7 +687,7 @@ const accountTable: any = {
             prop: "phone",
             //disabled: false,
             //childs: [],
-            required: false,
+            required: true,
             // default: "",
         },
 
@@ -660,6 +732,7 @@ const accountTable: any = {
       {
         title: '性别',
         key: 'gender',
+        slot: true,
         minWidth: 100,
     },
       {
@@ -683,11 +756,142 @@ const accountTable: any = {
   ]
 }
 
+// 更新密码
+const accountUpdate = {
+    rules:[],
+    FormData: [
+        {
+            type: 'input',
+            label: '旧密码',
+            prop: "oldPassword",
+            password: true,
+            //disabled: false,
+            //childs: [],
+            required: true,
+            // default: 0,
+        },
+        {
+            type: 'input',
+            label: '新密码',
+            prop: "newPassword",
+            //disabled: false,
+            //childs: [],
+            password: true,
+            required: true,
+            // default: 0,
+        }
+    ],
+}
+
+// 添加管理员
+const accountCreateAdmin = {
+    rules:[],
+    FormData: [
+        {
+            type: 'input',
+            label: '账号',
+            prop: "account",
+            //password: true,
+            //disabled: false,
+            //childs: [],
+            required: true,
+            // default: 0,
+        },
+        {
+            type: 'input',
+            label: '用户姓名',
+            prop: "name",
+            //disabled: false,
+            //childs: [],
+            //password: true,
+            required: true,
+            // default: 0,
+        },
+         {
+        type: 'select',
+        label: '性别',
+        prop: "gender",
+        //disabled: false,
+        childs: [
+            {
+                label: "男",
+                value:"1"
+            },
+            {
+                label: "女",
+                value:"2"
+            },
+            {
+                label: "未知",
+                value:"0"
+            }
+        ],
+        required: true,
+        // default: "",
+        },
+        {
+            type: 'select',
+            label: '角色',
+            prop: "roleIds",
+            //disabled: false,
+            childs: [],
+            //password: true,
+            required: true,
+            // default: 0,
+        },
+        {
+            type: 'input',
+            label: '手机号',
+            prop: "phone",
+            //disabled: false,
+            //childs: [],
+            //password: true,
+            required: true,
+            // default: 0,
+        },
+        {
+            type: 'input',
+            label: '账号密码',
+            prop: "password",
+            //disabled: false,
+            //childs: [],
+            password: true,
+            required: true,
+            // default: 0,
+        },
+        {
+            type: 'input',
+            label: '备注',
+            prop: "description",
+            //disabled: false,
+            //childs: [],
+            //password: true,
+            required: true,
+            // default: 0,
+        },
+        {
+            type: 'switch',
+            label: '状态',
+            prop: "status",
+            //disabled: false,
+            //childs: [],
+            //password: true,
+            //required: true,
+            open: '启用',
+            close: '禁用',
+        }
+    ],
+}
+
+
 export {
     agencyData,
     legalData,
     constructData,
     serveData,
     roleTable,
-    accountTable
+    createRole,
+    accountTable,
+    accountUpdate,
+    accountCreateAdmin
 }

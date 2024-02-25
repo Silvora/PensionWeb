@@ -20,7 +20,7 @@
         <div class="box">
             <div class="house">
                 <p class="houseTitle">{{ t('楼层房间') }}</p>
-                <Card :bordered="false" padding="6">
+                <Card :bordered="false" :padding="6">
                     <Row :gutter="8">
                         <Col span="12" v-for="item in houseList" :key="item.id" class="houseCard">
                         <div class="cardBody" @click="handleHouseActive(item.id)">
@@ -37,32 +37,38 @@
                 <div class="roomItem">
                     <p class="roomTitle">
                         <span class="tt">Aa01</span>
-                        <span>1 入住、2预留、5空闲、共{{ bedList[0]?.cost }}</span>
+                        <span>{{ checkInfo.check }}入住、{{ checkInfo.reserve }}预留、{{ checkInfo.free }}空闲、共{{ checkInfo.count
+                        }}床</span>
                     </p>
                     <div class="roomContiner">
                         <Row :gutter="8">
                             <Col span="4" v-for="item in bedList" :key="item">
-                            <Card :bordered="false" padding="0">
+                            <Card :bordered="false" :padding="0">
                                 <div class="roomBox">
                                     <p class="t1">
                                         <span :class="['t2', 'green', 'yellow', 'gary']">{{ t('空闲') }}</span>
-                                        <span class="t3">a102</span>
+                                        <span class="t3">{{ item.bedNumber }}</span>
                                         <span class="t4">
                                             <img src="@/assets/images/room-setting.png" alt="" srcset="">
                                         </span>
                                     </p>
-                                    <div class="t5" @click="handleGetUserInfo">
-                                        <span class="t6">dsadsa</span>
-                                        <img class="t7" src="@/assets/images/screen.png" alt="" srcset="">
+                                    <div v-if="true">
+                                        <div class="t5" @click="handleGetUserInfo">
+                                            <span class="t6">dsadsa</span>
+                                            <img class="t7" src="@/assets/images/screen.png" alt="" srcset="">
+                                        </div>
+                                        <p class="t8">李梅梅</p>
+                                        <p class="t9">1964-11-10</p>
+                                        <p class="t10">
+                                            <img src="@/assets/images/位图@2x(1).png" alt="">
+                                            <img src="@/assets/images/位图@2x(1).png" alt="">
+                                            <img src="@/assets/images/位图@2x(1).png" alt="">
+                                            <img src="@/assets/images/位图@2x(1).png" alt="">
+                                        </p>
                                     </div>
-                                    <p class="t8">李梅梅</p>
-                                    <p class="t9">1964-11-10</p>
-                                    <p class="t10">
-                                        <img src="@/assets/images/位图@2x(1).png" alt="">
-                                        <img src="@/assets/images/位图@2x(1).png" alt="">
-                                        <img src="@/assets/images/位图@2x(1).png" alt="">
-                                        <img src="@/assets/images/位图@2x(1).png" alt="">
-                                    </p>
+                                    <div v-else>
+                                        等待入住
+                                    </div>
                                 </div>
                             </Card>
                             </Col>
@@ -77,7 +83,7 @@
 
             <div class="floor">
                 <Button type="primary" class="btn" @click="handleShowModal">{{ t('楼栋管理') }}</Button>
-                <Card :bordered="false" padding="6">
+                <Card :bordered="false" :padding="6">
                     <Row :gutter="8">
                         <Col span="24" v-for="item in floorList" :key="item.id" class="floorCard">
                         <p :style="{ 'color': floorActive == item.id ? '' : '#1C1B1B', 'background': floorActive == item.id ? '#1364F8' : 'rgba(19, 100, 248, .1)' }"
@@ -114,6 +120,14 @@ const DetailsModalRef: any = ref(null)
 const router = useRouter()
 const type = ref('')
 const typeList = ref<any>([])
+
+const checkInfo = ref({
+    count: 100,//全部人数
+    check: 100,//入住人数
+    free: 100,//空闲  
+    reserve: 100,//预留
+})
+
 const handleShowModal = () => {
     BuildingModalRef.value.showModal()
 }
@@ -137,21 +151,27 @@ const floorActive = ref<any>('')
 const bedList = ref<any>([])
 
 
+// 选择房间
 const handleHouseActive = (id: string) => {
+    console.log("first", id)
     houseActive.value = id
+    getRoomBedList()
 }
+// 选择楼层
 const handleFloorActive = (id: string) => {
+    console.log("------first")
     floorActive.value = id
+    getRoomList()
 }
 const handleRadioType = (id: string) => {
     //console.log(label)
     router.replace('/room?type=' + id)
 
-
     getFloorlList()
 
 }
 
+// 获取楼栋列表
 const getHostelList = () => {
     // 获取楼栋列表
     HostelList().then((res: any) => {
@@ -162,6 +182,8 @@ const getHostelList = () => {
     })
 }
 
+
+// 获取楼层列表
 const getFloorlList = () => {
     // 获取楼层列表
     HostelFloorlList({
@@ -178,18 +200,21 @@ const getFloorlList = () => {
     })
 }
 
+// 获取房间列表
 const getRoomList = () => {
     // 获取房间列表
     HostelRoomListOfFloor({
         floorId: floorActive.value,
-        needBed: true,
+        needBed: true
     }).then((res: any) => {
         houseList.value = res.data
         houseActive.value = res.data[0].id
+
         getRoomBedList()
     })
 }
 
+// 获取房间床位列表
 const getRoomBedList = () => {
     // 获取房间床位列表
     HostelRoomBedListOfRoom({
@@ -197,6 +222,23 @@ const getRoomBedList = () => {
     }).then((res: any) => {
         console.log(res)
         bedList.value = res.data
+
+        // let count = 0;//全部人数
+        // let check = 0;//入住人数
+        // let free = 0;//空闲  
+        // let reserve = 0;//预留
+
+
+        // res.data.forEach((item: any) => {
+        //     count += (parseInt(item.cost) * 1)
+        // })
+
+        checkInfo.value = {
+            check: 0,
+            free: 0,
+            reserve: 0,
+            count: (parseInt(res.data[0].cost)) * 1,
+        }
     })
 }
 

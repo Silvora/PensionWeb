@@ -50,14 +50,18 @@
                 </div>
             </div>
             <div class="center">
-                <TableView ref="TableViewRef" :data="data" :tableConfig="roleTable" :tablePage="pagerConfig"
-                    @handleUpdatePage="handleUpdatePage" :tableH="tableH">
+                <TableView ref="TableViewRef" :data="data" :tableConfig="elderTable" :tablePage="pagerConfig"
+                    @handleUpdatePage="handleUpdatePage" :tableH="tableH" @handleEdit="handleElderEditModal">
+
+                    <template #gender="{ row }">
+                        <span>{{ row.gender == 1 ? '男' : row.gender == 2 ? '女' : '' }}</span>
+                    </template>
 
                     <template #active="{ row }">
                         <vxe-button type="text" size="mini" status="primary">
                             查看
                         </vxe-button>
-                        <vxe-button type="text" size="mini" status="primary" @click="handleRoleEdit(row)">
+                        <vxe-button type="text" size="mini" status="primary" @click="handleElderEdit(row)">
                             编辑
                         </vxe-button>
                         <vxe-button type="text" size="mini" status="danger" @click="handleElderlyDelete(row.id)">
@@ -130,29 +134,32 @@
 <script setup lang='ts'>
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router"
-import { roleTable } from "./data"
+import { elderTable } from "./data"
 import { Message, Modal } from "view-ui-plus";
 import AgeChart from "./components/AgeChart.vue";
 import SexChart from "./components/SexChart.vue";
 import EmptyChart from "./components/EmptyChart.vue";
 import LevelChart from "./components/LevelChart.vue"
 import DateChart from "./components/DateChart.vue"
-import { ElderlyList, ElderlyRemoveId } from "@/api/Elderly/Elderly"
+import { useI18n } from "vue-i18n";
+import { ElderlyList, ElderlyRemoveId, ElderlyHealthUpdate } from "@/api/Elderly/Elderly"
 const TableViewRef = ref<any>(null)
 const pageBox = ref<any>(null)
 const router = useRouter()
-const tableH = ref("595px")
+const { t } = useI18n()
+const tableH = ref("630px")
 const data: any = ref([])
+
+const model1 = ref<any>(null)
 
 onMounted(() => {
     console.log("", pageBox.value?.clientHeight)//680
     const h = pageBox.value?.clientHeight
     if (h >= 990) {
-        tableH.value = h - 220 - 95 + 'px'
+        tableH.value = 630 + 'px'
     }
 
     getData()
-
 })
 
 const pagerConfig = ref({
@@ -161,9 +168,26 @@ const pagerConfig = ref({
     pageSize: 10 //数量
 })
 
+
+//编辑
+const handleElderEdit = (row: any) => {
+    console.log(row.localDomicile)
+    TableViewRef.value.handleOpenEditModal(row)
+}
+const handleElderEditModal = (data: any) => {
+    // console.log(data)
+    ElderlyHealthUpdate(data).then(() => {
+        Message.success(t('编辑成功'))
+        getData()
+        TableViewRef.value.closeLoding()
+    }).catch(() => {
+        console.log("first", TableViewRef.value)
+        TableViewRef.value.closeTextLoding()
+    })
+}
+
 // 单项删除
 const handleElderlyDelete = (id: any) => {
-
     Modal.confirm({
         title: '提示',
         content: '确定要删除吗？',
@@ -259,9 +283,11 @@ const getData = () => {
 
         .title {
             width: 100%;
-            background: linear-gradient(270deg, rgba(19, 100, 248, 0) 0%, rgba(19, 100, 248, 0.7) 100%);
-            border-radius: 8px 0px 0px 0px;
-            opacity: 0.3;
+            // background: linear-gradient(270deg, RGBA(255, 255, 255, 1) 0%, RGBA(206, 223, 254, 1) 100%);
+
+            background: linear-gradient(270deg, RGBA(255, 255, 255, 1) 0%, RGBA(206, 223, 254, 1) 100%);
+            border-radius: 8px 8px 0px 0px;
+            //opacity: 0.3;
             font-size: 14px;
             font-family: PingFangSC, PingFang SC;
             font-weight: 400;
@@ -272,7 +298,7 @@ const getData = () => {
 
         .renewalList {
             width: 100%;
-            height: 525px;
+            height: 560px;
             overflow: hidden;
             overflow-y: auto;
 

@@ -34,7 +34,7 @@
             </div>
 
             <div v-if="item.type == 'select'">
-                <Select v-model="FormData[item.prop]" :placeholder="t('请选择') + t(item.label)" clearable
+                <!-- <Select v-model="FormData[item.prop]" :placeholder="t('请选择') + t(item.label)" clearable
                     :disabled="item.disabled" :multiple="item.multiple" v-if="item.prop == 'oemId'">
                     <Option v-for="      child       in       appStore.oemList      " :value="child.value"
                         :key="child.value">{{
@@ -51,19 +51,19 @@
                             child.label
                         }}
                     </Option>
-                </Select>
+                </Select> -->
 
-                <Select v-model="FormData[item.prop]" :placeholder="t('请选择') + t(item.label)" clearable
+                <!-- <Select v-model="FormData[item.prop]" :placeholder="t('请选择') + t(item.label)" clearable
                     :disabled="item.disabled" :multiple="item.multiple" v-else-if="item.prop == 'language'">
                     <Option v-for="      child       in       languages      " :value="child.value" :key="child.value">
                         {{
                             child.label + ` - ${child.desc} `
                         }}
                     </Option>
-                </Select>
+                </Select> -->
 
                 <Select v-model="FormData[item.prop]" :placeholder="t('请选择') + t(item.label)" clearable
-                    :disabled="item.disabled" :multiple="item.multiple" v-else>
+                    :disabled="item.disabled" :multiple="item.multiple">
                     <Option v-for="      child       in       item.childs      " :value="child.value" :key="child.value">{{
                         t(child.label)
                     }}</Option>
@@ -71,8 +71,8 @@
             </div>
 
             <div v-if="item.type == 'switch'">
-                <Switch size="large" v-model="FormData[item.prop]" :true-value="30" :false-value="40" true-color="RGBA(18, 185, 135, 1)"
-                        false-color="RGBA(237, 144, 0, 1)" >
+                <Switch size="large" v-model="FormData[item.prop]" :true-value="30" :false-value="40"
+                    true-color="RGBA(18, 185, 135, 1)" false-color="RGBA(237, 144, 0, 1)">
                     <template #open>
                         <span>{{ item.open.length == 1 ? '&nbsp;&nbsp;' + t(item.open) : t(item.open) }}</span>
                     </template>
@@ -242,18 +242,15 @@ watchEffect(() => {
     // }
 
 
-
     props.FormData.forEach((item: any) => {
 
-        FormData.value[item.prop] = props.data[item.prop] ? props.data[item.prop] : item.default
+        FormData.value[item.prop] = props.data[item.prop] != undefined ? props.data[item.prop] : item.default
 
 
         if (item.type == 'radio') {
             // console.log(FormData.value[item.prop])
             FormData.value[item.prop] = String(FormData.value[item.prop])
         }
-
-
 
 
         if (item.required) {
@@ -289,9 +286,6 @@ watchEffect(() => {
     FormData.value = { ...props.data, ...FormData.value }
 
     rules.value = { ...rulesData, ...props.rules }
-
-
-    //console.log(FormData.value, props.data)
 
 })
 // onMounted(() => {

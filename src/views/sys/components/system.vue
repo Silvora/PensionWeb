@@ -6,7 +6,7 @@
             <div class="input">
                 <Select v-model="local" @on-change="handleSetLocal">
                     <Option value="zh-CN">{{ t('中文') }}</Option>
-                    <Option value="zh_HK">{{ t('繁体') }}</Option>
+                    <Option value="zh-HK">{{ t('繁体') }}</Option>
                 </Select>
             </div>
             </Col>
@@ -41,22 +41,25 @@ const { t, locale } = useI18n()
 
 const local = ref("zh-CN")
 
+const lan: any = {
+    "zh": "zh-CN",
+}
+
 getToken('language').then((res: any) => {
     console.log(res)
-    local.value = res
+    res?local.value = lan[res]:''
+    res?locale.value = lan[res]:''
 })
 
-const handleSetLocal = (local: string) => {
-    console.log(local)
-
-    locale.value = local
+const handleSetLocal = (lan: string) => {
+    console.log(lan)
+    lan?locale.value = lan:''
 
 }
 
 </script>
 
 <style scoped lang='less'>
-
 .system {
     display: flex;
     justify-content: center;
@@ -79,7 +82,7 @@ const handleSetLocal = (local: string) => {
         .input {
             width: 210px;
             border: 1px solid #98D2E1;
-            
+
         }
 
         .upload1 {

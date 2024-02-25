@@ -7,9 +7,11 @@
                     <p class="sum">坐席总数：245 在线坐席人数：25 今日呼入：62 今日呼出：84</p>
                     <div class="chart">
                         <p>护理员人数分析</p>
+                        <People></People>
                     </div>
                     <div class="chart">
                         <p>护理员在线学习情况</p>
+                        <Study></Study>
                     </div>
                     <div class="chart">
                         <p>护理员培训基地</p>
@@ -21,23 +23,51 @@
                 </div>
                 <div class="center">
                     <p class="tabs">
-                        <span :class="[type == 'home' ? 'activeTab' : '']">居家养老服务</span>
-                        <span :class="[type == 'community' ? 'activeTab' : '']">社区养老服务</span>
-                        <span :class="[type == 'mechanism' ? 'activeTab' : '']">机构养老服务</span>
+                        <span :class="[type == 'home' ? 'activeTab' : '']" @click="type = 'home'">居家养老服务</span>
+                        <span :class="[type == 'community' ? 'activeTab' : '']" @click="type = 'community'">社区养老服务</span>
+                        <span :class="[type == 'mechanism' ? 'activeTab' : '']" @click="type = 'mechanism'">机构养老服务</span>
                     </p>
+
+                    <div class="notes">
+                        爱以德养老护理连锁，先后在上海嘉定、黄浦、静安、杨浦、宝山、奉贤、浦东、虹口、普陀等地
+                        区开设共17家养老护理机构，拥有养老床位和护理床位7000余张，提供养老、医疗、康复、护理、
+                        临终关怀一站式服务。 【收治收住】自理老人、失能失智老人、老年痴呆、偏瘫、临终关怀等长者。
+                        【生活照料】24小时日常生活照料规范化流程，20余项护理流程 【营养膳食】营养师调配营养餐、
+                        每周不重样。
+                    </div>
+
+                    <div class="chart">
+                        <p>荣誉展示</p>
+                        <div>
+                            <Space wrap>
+                                <template v-for="(url, index) in urlList" :key="url">
+                                    <Image :src="url" fit="contain" width="120px" height="80px" preview
+                                        :preview-list="urlList" :initial-index="index" />
+                                </template>
+                            </Space>
+                        </div>
+                    </div>
+
+
+                    <div class="table">
+
+                    </div>
 
 
                 </div>
                 <div class="right">
                     <p class="day">12:30:05</p>
                     <div class="chart">
-                        <p>护理员人数分析</p>
+                        <p>入住情况分析</p>
+                        <Check></Check>
                     </div>
                     <div class="chart">
-                        <p>护理员在线学习情况</p>
+                        <p>能力分析</p>
+                        <Ability></Ability>
                     </div>
                     <div class="chart">
-                        <p>护理员培训基地</p>
+                        <p>护理内容需求量</p>
+                        <Need></Need>
                     </div>
                 </div>
             </div>
@@ -47,19 +77,41 @@
 </template>
 
 <script setup lang='ts'>
-import { useRoute } from "vue-router";
+import People from "./components/People.vue"
+import Study from "./components/Study.vue"
+import Check from "./components/Check.vue"
+import Ability from "./components/Ability.vue"
+import Need from "./components/Need.vue"
 import SwiperBox from "./components/swiperBox.vue"
+
+import { useRoute } from "vue-router";
 import { ref } from "vue";
+import { Image, Space } from 'view-ui-plus';
 
 const route = useRoute()
 
 const type = ref(route.query.type)
+const urlList = ref([
+    'https://file.iviewui.com/images/image-demo-1.jpg',
+    'https://file.iviewui.com/images/image-demo-2.jpg',
+    'https://file.iviewui.com/images/image-demo-3.jpg',
+    'https://file.iviewui.com/images/image-demo-4.jpg',
+    'https://file.iviewui.com/images/image-demo-5.jpg',
+    'https://file.iviewui.com/images/image-demo-6.jpg'
+])
+
+
 
 console.log(route)
 
 </script>
 
 <style scoped lang='less'>
+.date::-webkit-scrollbar {
+    display: none;
+    /* 适用于Chrome、Safari和Opera */
+}
+
 .date {
     width: 100%;
     min-width: 1920px;
@@ -67,6 +119,11 @@ console.log(route)
     background-image: url('../../assets/date/bg.png') !important;
     background-position: center;
     background-size: 101% 100%;
+    -ms-overflow-style: none;
+    /* 适用于Internet Explorer和Edge */
+    scrollbar-width: none;
+    /* 适用于Firefox */
+    overflow-y: scroll;
 
     .box {
         width: 100%;
@@ -112,7 +169,7 @@ console.log(route)
             }
 
             .left {
-                width: 520px;
+                width: 450px;
 
                 .sum {
                     font-size: 16px;
@@ -129,7 +186,8 @@ console.log(route)
             }
 
             .center {
-                width: calc(100% - 950px);
+                width: calc(100% - 900px);
+                padding: 0 30px;
 
                 .tabs {
                     width: 100%;
@@ -145,6 +203,7 @@ console.log(route)
                     span {
                         margin: 0 8px;
                         padding: 8px 12px;
+                        cursor: pointer;
                     }
 
                     .activeTab {
@@ -153,10 +212,16 @@ console.log(route)
                         background-position: center;
                     }
                 }
+
+                .notes {
+                    color: #fff;
+                    padding: 12px 0;
+                    font-size: 18px;
+                }
             }
 
             .right {
-                width: 430px;
+                width: 450px;
             }
         }
     }

@@ -46,35 +46,42 @@ const initChart = () => {
             {
                 name: '',
                 type: 'pie',
-                radius: ['50%', '30%'],
-                center: ['50%', '30%'],
+                radius: ['50%', '70%'],
+                center: ['50%', '35%'],
                 avoidLabelOverlap: false,
                 label: {
-                    show: false,
+                    show: true,
                     position: 'center',
-                    ellipsis: '...',
+                    // ellipsis: '...',
                     // normal: { show: true },
                     // 在文本中，可以对部分文本采用 rich 中定义样式。
                     // 这里需要在文本中使用标记符号：
                     // `{styleName|text content text content}` 标记样式名。
                     // 注意，换行仍是使用 '\n'。
+                    // formatter: (params) => {
+                    //     console.log(params.name)
+                    //     return [
+                    //         `{a|${params.data.product}}`,
+                    //         `{b|${params.data.value}}`
+                    //     ].join('\n')
+                    // },
                     formatter: (params) => {
                         console.log(params.name)
                         return [
-                            `{a|${params.data.product}}`,
-                            `{b|${params.data.value}}`
+                            `{a|1111}`,
+                            `{b|设备状态}`
                         ].join('\n')
                     },
 
                     rich: {
                         a: {
-                            fontSize: 12,
+                            fontSize: 20,
                             color: '#1C1B1B',
                         },
                         b: {
 
                             color: "rgba(28, 27, 27, .5)",
-                            fontSize: 10,
+                            fontSize: 12,
                         }
                     }
 

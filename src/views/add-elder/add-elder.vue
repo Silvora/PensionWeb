@@ -6,7 +6,7 @@
                 <span v-for="(item, idx) in orderMenu" :key="item.title">
                     <Button type="text" :icon="item.icon" :class="[active == idx ? 'active' : '']"
                         @click="() => active = idx">{{ item.title }}</Button>
-                    <spans v-if="idx != 6">></spans>
+                    <span v-if="idx != 6">></span>
                 </span>
                 <!-- <Button type="text" icon="ios-person">家属信息登记</Button> >
                 <Button type="text" icon="ios-person">健康信息登记</Button> >
@@ -17,6 +17,7 @@
             </div>
             <div style="position: absolute;right: 10px;">
                 <Space>
+
                     <Button type="primary" @click="() => active--" v-if="active > 0">上一步</Button>
                     <Button type="primary" @click="() => active++" v-if="active < 6">下一步</Button>
                 </Space>
@@ -24,7 +25,7 @@
         </div>
         <div class="info">
             <div class="form">
-                <Order1 v-if="active == 0"></Order1>
+                <Order1 v-if="active == 0" @handleSumbit="handleSumbit"></Order1>
                 <Order2 v-if="active == 1"></Order2>
                 <Order3 v-if="active == 2"></Order3>
                 <Order4 v-if="active == 3"></Order4>
@@ -77,8 +78,12 @@ const orderMenu = [
     }
 ]
 
-
 const active = ref(0)
+const handleSumbit = () => {
+    console.log("first")
+}
+
+
 </script>
 
 <style lang="less" scoped>

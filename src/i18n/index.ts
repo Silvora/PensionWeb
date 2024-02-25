@@ -26,7 +26,7 @@ const messages = {
   "zh-CN": Object.assign(view_zh, zh_info, vxe_zh),
   en: Object.assign(view_en, en_info, vxe_en),
   "en-US": Object.assign(view_en, en_info, vxe_en),
-  "zh_HK": Object.assign(view_hk, vxe_hk, hk_info)
+  "zh-HK": Object.assign(view_hk, vxe_hk, hk_info)
 }
 
 

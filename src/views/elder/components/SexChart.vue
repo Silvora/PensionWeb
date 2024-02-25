@@ -31,6 +31,8 @@ const initChart = () => {
         ],
         tooltip: {
             trigger: 'item',
+            confine: true,
+
         },
         legend: {
             bottom: '2%',
@@ -50,8 +52,8 @@ const initChart = () => {
             {
                 name: '',
                 type: 'pie',
-                radius: ['50%', '30%'],
-                center: ['50%', '30%'],
+                radius: ['50%', '70%'],
+                center: ['50%', '40%'],
                 avoidLabelOverlap: false,
                 label: {
                     show: true,
@@ -70,13 +72,13 @@ const initChart = () => {
 
                     rich: {
                         a: {
-                            fontSize: 12,
+                            fontSize: 20,
                             color: '#1C1B1B',
                         },
                         b: {
 
                             color: "rgba(28, 27, 27, .5)",
-                            fontSize: 10,
+                            fontSize: 12,
                         }
                     }
 
@@ -110,6 +112,6 @@ const initChart = () => {
 <style scoped lang='less'>
 .sexChart {
     width: 100%;
-    height: 150px;
+    height: 165px;
 }
 </style>

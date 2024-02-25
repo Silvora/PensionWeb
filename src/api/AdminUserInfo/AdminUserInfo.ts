@@ -113,22 +113,20 @@ export function AdminUserRemoveBatch(data:any) {
 
 
 //重置用户密码
-export function AdminUserResetPassword(params: {userId:string},data:any) {
-    return http.request({
-        url: '/adminUser/resetPassword',
+export function AdminUserResetPassword(data:any) {
+   return http.request({
+        url: `/adminUser/resetPassword/${data.id}`,
         method: 'put',
-        params:params,
         data
     })
 }
 
 
 //重置用户密码
-export function AdminUserUpdatePassword(params: {userId:string},data:any) {
+export function AdminUserUpdatePassword(data:any) {
     return http.request({
-        url: '/adminUser/resetPassword',
+        url: `/adminUser/updatePassword`,
         method: 'put',
-        params:params,
         data
     })
 }

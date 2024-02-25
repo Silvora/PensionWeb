@@ -38,9 +38,9 @@
                             :style="{ marginLeft: `${item.ml * WW}px`, height: '30px', width: `${item.len * WW}px`, background: 'rgba(255, 238, 191, 1)' }">
                             <span>
                                 {{ item.start }}-{{ item.end }}
-                                <!-- 6:00am - 15:30pm -->
+
                                 <span class="type">
-                                    <!-- 早班 -->{{ item.calss }}
+                                    {{ item.calss }}
                                 </span>
                             </span>
 
@@ -126,9 +126,63 @@
                 <div><span>5am</span></div>
             </div>
         </div>
+        <div class="box">
+            <table border="0" cellspacing="0" cellpadding="0">
+                <colgroup>
+                    <!-- <col span="1" style="width: 100px !important;">
+                    <col span="1" style="background: rgb(12, 221, 51);"> -->
+                </colgroup>
+                <thead>
+                    <tr height="45">
+                        <th>
+                            <div style="width: 100px;">值班人员</div>
+                        </th>
+                        <th v-for="item in time" :key="item" width="45">
+                            <div style="width: 45px;">{{ item }}</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr height="45" style="position: relative;padding: 10px 0;">
+                        <td>
+                            <div style="width: 100px;display: flex;align-items: center;justify-content: center;">
+                                <div>
+                                    <Avatar icon="ios-person" size="30" />
+                                </div>
+                                <div class="txt">
+                                    <p class="t1">倪杰</p>
+                                    <p class="t2">护士</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td v-for="item in time" :key="item" width="40" style="border-left: 1px solid #ccc;"></td>
+                        <div style="position: absolute;left: 100px;top: 5px;background: rgb(255, 238, 191);height: 35px;">
+                            dasd5432432sa
+                        </div>
+                    </tr>
 
+                    <tr height="45" style="position: relative;">
+                        <td>
+                            <div style="width: 100px;display: flex;align-items: center;justify-content: center;">
+                                <div>
+                                    <Avatar icon="ios-person" size="30" />
+                                </div>
+                                <div class="txt">
+                                    <p class="t1">倪杰</p>
+                                    <p class="t2">护士</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td v-for="item in time" :key="item" width="45" style="border-left: 1px solid #ccc;"></td>
+                        <div style="position: absolute;left: 100px;top: 5px;background: rgb(255, 238, 191);height: 35px;">
+                            dasd5432432s
+                        </div>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-        <Modal v-model="addModal" title="排班设置" footer-hide="true" :width="340">
+        <Modal v-model="addModal" title="排班设置" :footer-hide="true" :width="340">
             <template #close>
                 <Icon type="md-add-circle" color="#000" style="transform: rotateZ(45deg);" size="16" />
             </template>
@@ -165,9 +219,10 @@
 
 <script setup lang='ts'>
 import { onMounted } from 'vue';
+import { isArray } from 'lodash';
 import { ref } from 'vue';
-import { isArray } from 'xe-utils';
-const timeW = ref(null)
+import { StaffScheduleListOfDay, StaffScheduleListOfMonth } from '@/api/Staff/Staff';
+const timeW = ref<any>(null)
 
 const WW = ref(45)
 const addModal = ref(false)
@@ -220,9 +275,11 @@ const data = ref([
     }
 ])
 
-onMounted(() => {
-    WW.value = timeW.value.clientWidth + 2
-})
+let time = ['6am', "7am", "8am", "9am", "10am", "11am", "12am", "13pm", "14pm", "15pm", "16pm", "17pm", "18pm", "19pm", "20pm", "21pm", "22pm", "23pm", "0am", "1am", "2am", "3am", "4am", "5am"]
+
+// onMounted(() => {
+//     WW.value = timeW.value.clientWidth + 2
+// })
 
 const handleSetTimeModal = (row: any) => {
     console.log(row)
@@ -230,7 +287,7 @@ const handleSetTimeModal = (row: any) => {
 }
 
 const handleAddForm = () => {
-    console.log(addForm.value)
+    //console.log(addForm.value)
 
     let time = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 0, 1, 2, 3, 4, 5]
 
@@ -301,6 +358,21 @@ const handleAddForm = () => {
 }
 
 
+onMounted(() => {
+    StaffScheduleListOfDay({
+        current: 1,
+        size: 9999,
+    }).then(res => {
+        console.log(res)
+    })
+
+    StaffScheduleListOfMonth({
+
+    }).then(res => {
+        console.log(res)
+    })
+})
+
 
 
 
@@ -344,6 +416,21 @@ const handleAddForm = () => {
         span {
             width: 80px;
         }
+    }
+}
+
+.txt {
+    font-size: 12px;
+    font-family: PingFangSC, PingFang SC;
+    font-weight: 500;
+    text-indent: 5px;
+
+    .t1 {
+        color: #1C1B1B;
+    }
+
+    .t2 {
+        color: #8B8A96;
     }
 }
 
@@ -400,10 +487,13 @@ const handleAddForm = () => {
     }
 
     .box {
+        width: 100%;
         position: relative;
         max-height: 700px;
         overflow: hidden;
         overflow-y: auto;
+        // background: red;
+        margin-top: 10px;
 
         .table {
             display: flex;

@@ -80,18 +80,20 @@ export function StaffUpdate(data: any) {
 
 
 // 当日所有员工排班列表
-export function StaffScheduleListOfDay() { 
+export function StaffScheduleListOfDay(params:any) { 
     return http.request({
         url: `/admin/staff/scheduleListOfDay`,
+        params:params,
         method: 'get',
     })
 }
 
 
 // 员工当月排班列表
-export function StaffScheduleListOfMonth(data: any) {
+export function StaffScheduleListOfMonth(params:any) {
     return http.request({
         url: `/admin/staff/scheduleListOfMonth`,
+        params:params,
         method: 'get',
     })
 }

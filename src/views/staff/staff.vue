@@ -113,7 +113,7 @@
             </div>
         </div>
 
-        <Modal v-model="modal" title="排班情况" footer-hide="true" :width="80">
+        <Modal v-model="modal" title="排班情况" :footer-hide="true" :width="1220">
             <template #close>
                 <Icon type="md-add-circle" color="#000" style="transform: rotateZ(45deg);" size="16" />
             </template>
@@ -121,7 +121,7 @@
         </Modal>
 
 
-        <Modal v-model="addModal" title="添加员工" footer-hide="true" :width="80">
+        <Modal v-model="addModal" title="添加员工" :footer-hide="true" :width="80">
             <template #close>
                 <Icon type="md-add-circle" color="#000" style="transform: rotateZ(45deg);" size="16" />
             </template>
@@ -187,6 +187,8 @@ const attrs = ref([
 
 const tableH = ref("765px")
 const data: any = ref()
+
+const model1 = ref<any>()
 
 onMounted(() => {
     console.log("", pageBox.value?.clientHeight)//680

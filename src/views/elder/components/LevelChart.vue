@@ -4,23 +4,21 @@
 
 <script setup lang='ts'>
 import * as echarts from "echarts"
-import { onMounted, ref } from "vue";
+import { onMounted, ref, nextTick } from "vue";
 const LevelChartRef = ref(null)
-const myChart: any = ref(null)
 onMounted(() => {
 
-    initChart()
+    nextTick(() => {
+        initChart()
+    })
 
-    window.addEventListener('resize', () => {
-        myChart.value.resize();
-    });
 
 
 })
 
 
 const initChart = () => {
-    myChart.value = echarts.init(LevelChartRef.value);
+    const myChart: any = echarts.init(LevelChartRef.value);
 
     const option = {
         tooltip: {
@@ -29,14 +27,12 @@ const initChart = () => {
             axisPointer: {
                 type: 'shadow'
             },
-            formatter: '111111'
-
         },
         grid: {
             left: '2%',
             right: '2%',
             bottom: '2%',
-            top: '6%',
+            top: '10%',
             containLabel: true
         },
         xAxis: {
@@ -71,6 +67,12 @@ const initChart = () => {
             {
                 barWidth: '40%',
                 name: "数据",
+                // stack: 'Total',
+                // color: '#000',
+                // label: {
+                //     show: true,
+                //     position: 'top'
+                // },
                 data: [
                     {
                         value: 200,
@@ -91,7 +93,7 @@ const initChart = () => {
                         }
                     },
                     {
-                        value: 200,
+                        value: 100,
                         itemStyle: {
                             color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                                 { offset: 0, color: '#11685F' },
@@ -141,7 +143,11 @@ const initChart = () => {
         ]
     };
 
-    option && myChart.value.setOption(option);
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
+    }
+
+    window.addEventListener('resize', myChart.resize);
 }
 
 

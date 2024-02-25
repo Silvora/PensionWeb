@@ -39,6 +39,7 @@ const initChart = () => {
         ],
         tooltip: {
             trigger: 'item',
+            confine: true,
             // formatter: '{b}: {c}<br />{d}',
             // formatter: (params: any) => {
             //     console.log(params)
@@ -60,7 +61,7 @@ const initChart = () => {
             // }
         },
         legend: {
-            bottom: '5%',
+            bottom: '2%',
             left: 'center',
             orient: 'vertical',
             itemWidth: 10,
@@ -78,7 +79,7 @@ const initChart = () => {
                 name: '',
                 type: 'pie',
                 radius: ['50%', '70%'],
-                center: ['50%', '30%'],
+                center: ['50%', '28%'],
                 avoidLabelOverlap: false,
                 label: {
                     show: true,
@@ -141,6 +142,6 @@ const initChart = () => {
 <style scoped lang='less'>
 .ageChart {
     width: 100%;
-    height: 250px;
+    height: 230px;
 }
 </style>

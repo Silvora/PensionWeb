@@ -1,5 +1,5 @@
 <template>
-    <Card :bordered="false" padding="0" style="background: rgba(255, 255, 255, 1);margin-bottom: 10px;">
+    <Card :bordered="false" :padding="0" style="background: rgba(255, 255, 255, 1);margin-bottom: 10px;">
         <div class="errInfo">
             <p class="title">
                 <span :class="['t1', 'green', 'yellow', 'gary']">空闲</span>

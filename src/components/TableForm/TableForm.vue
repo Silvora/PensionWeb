@@ -78,7 +78,8 @@
                     </div>
 
                     <div style="width: 100%;height:100%" v-if="item.type == 'date'">
-                        <DatePicker type="date" :placeholder="t('请输入') + t(item.label)" v-model="FormData[item.prop]">
+                        <DatePicker format="yyyy-MM-dd" type="date" :placeholder="t('请输入') + t(item.label)"
+                            v-model="FormData[item.prop]" @on-change="(data: any) => handleDate(item.prop, data)">
                         </DatePicker>
                     </div>
 
@@ -175,6 +176,9 @@ const props: any = defineProps({
 const FormData = ref<any>({})
 const rules = ref<any>({})
 
+const handleDate = (type: any, data: any) => {
+    FormData.value[type] = data
+}
 
 watchEffect(() => {
     // const validatePassCheck = (_rule: any, value: any, callback: any) => {

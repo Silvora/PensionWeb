@@ -50,12 +50,11 @@ export default defineConfig({
         target: "http://8.217.217.243:9000",
         changeOrigin: true,
         rewrite: (path) => {
-          console.log(path)
+          //console.log(path)
           return path.replace(/^\/api/, "")
         }
       }
     }
-
   },
   build: {
     //target: 'modules',

@@ -5,9 +5,17 @@
                 @handleUpdatePage="handleUpdatePage" @handleEdit="handleRoleEditModal">
 
                 <!-- @on-change="(b:any)=>handleUpdateSwitch(b,row)"  -->
-                <template #type="{ row }">
-                    <Switch :model-value="String(row.type)" true-color="RGBA(18, 185, 135, 1)"
-                        false-color="RGBA(237, 144, 0, 1)" true-value="1" false-value="0" :before-change="()=>handleUpdateSwitch(row)"/>
+                <template #status="{ row }">
+                    <Switch size="large" :model-value="String(row.status)" true-color="RGBA(18, 185, 135, 1)"
+                        false-color="RGBA(237, 144, 0, 1)" true-value="30" false-value="40"
+                        :before-change="() => handleUpdateSwitch(row)">
+                        <template #open>
+                            <span>开启</span>
+                        </template>
+                        <template #close>
+                            <span>禁用</span>
+                        </template>
+                    </Switch>
                 </template>
 
 
@@ -34,23 +42,28 @@
         <!-- <Pager class="pager" :tablePage="pagerConfig" @handlePageChange="handlePageChange" ref="PagerRef"></Pager> -->
         <Card :bordered="false" :padding="6" class="btnList">
             <div class="list">
-                <Button type="primary">新增</Button>
+                <Button type="primary" @click="handleAddRole">新增</Button>
                 <Button type="primary" @click="handleBatchOnline">批量启用</Button>
                 <Button type="primary" @click="handleBatchOffline">批量禁用</Button>
                 <Button type="error" @click="handleBatchDelete">批量删除</Button>
             </div>
         </Card>
+
+        <FormModal title="创建用户" :rules="createRole.rules" :lableWidth="100" :FormData="createRole.FormData"
+            ref="TableCreateRef" @handleModalOk="handleCreateRole">
+        </FormModal>
     </div>
 </template>
 
 <script setup lang='ts'>
 import { ref } from "vue"
-import { roleTable } from "../data"
-import { Modal,Message } from "view-ui-plus";
+import { roleTable, createRole } from "../data"
+import { Modal, Message } from "view-ui-plus";
 import { onMounted } from "vue";
-import {RoleList,RoleOnline,RoleUpdateId,RoleOnlineBatch,RoleOffline,RoleOfflineBatch,RoleRemoveBatch} from "@/api/RoleInfo/RoleInfo"
+import { Role, RoleList, RoleOnline, RoleUpdateId, RoleOnlineBatch, RoleOffline, RoleOfflineBatch, RoleRemoveBatch } from "@/api/RoleInfo/RoleInfo"
 import { useI18n } from "vue-i18n";
 const TableViewRef = ref<any>(null)
+const TableCreateRef = ref<any>(null)
 const { t } = useI18n()
 const data: any = ref([])
 
@@ -59,49 +72,64 @@ const pagerConfig = ref({
     currentPage: 1,//当前页
     pageSize: 10 //数量
 })
+// 创建角色
+const handleAddRole = () => {
+    TableCreateRef.value.openModal({ status: 30 })
+}
+
+// 创建角色
+const handleCreateRole = (data: any) => {
+    console.log(data)
+    Role(data).then(() => {
+        Message.success(t('创建成功'))
+        TableCreateRef.value.closeModal()
+    })
+}
 
 //状态选择
-const handleUpdateSwitch = (row:any) => {
+const handleUpdateSwitch = (row: any) => {
     console.log(row)
     return new Promise((resolve, reject) => {
-         // 启用角色
-    if(row.type==0){
-        RoleOnline({id:row.id}).then(()=>{
-            Message.success(t('启用成功'))
-            resolve(true)
-        }).catch(()=>{
-            //Message.error(t('启用失败'))
-            reject()
-        })
-    }
+        // 启用角色
+        if (row.status == 40) {
+            RoleOnline({ id: row.id }).then(() => {
+                Message.success(t('启用成功'))
+                resolve(true)
+                getData()
+            }).catch(() => {
+                //Message.error(t('启用失败'))
+                reject()
+            })
+        }
 
-    // 禁用角色
-    if(row.type==1){
-        RoleOffline({id:row.id}).then(()=>{
-            Message.success(t('禁用成功'))
-            resolve(true)
-        }).catch(()=>{
-            //Message.error(t('禁用失败'))
-            reject()
-        })
-    }
+        // 禁用角色
+        if (row.status == 30) {
+            RoleOffline({ id: row.id }).then(() => {
+                Message.success(t('禁用成功'))
+                resolve(true)
+                getData()
+            }).catch(() => {
+                //Message.error(t('禁用失败'))
+                reject()
+            })
+        }
     });
 
 
-   
+
 }
 //编辑角色
 const handleRoleEdit = (row: any) => {
     TableViewRef.value.handleOpenEditModal(row)
 }
 const handleRoleEditModal = (data: any) => {
-   // console.log(data)
+    // console.log(data)
     RoleUpdateId(data).then(() => {
         Message.success(t('编辑成功'))
         getData()
         TableViewRef.value.closeLoding()
     }).catch(() => {
-        console.log("first",TableViewRef.value)
+        console.log("first", TableViewRef.value)
         TableViewRef.value.closeTextLoding()
     })
 }
@@ -110,7 +138,7 @@ const handleRoleEditModal = (data: any) => {
 const handleBatchOnline = () => {
     let list = TableViewRef.value.getSelectRecords().map((item: any) => item.id)
     console.log(list)
-    RoleOnlineBatch({ids:list}).then(()=>{
+    RoleOnlineBatch({ ids: list }).then(() => {
         Message.success(t('禁用成功'))
     })
 }
@@ -118,7 +146,7 @@ const handleBatchOnline = () => {
 const handleBatchOffline = () => {
     let list = TableViewRef.value.getSelectRecords().map((item: any) => item.id)
     console.log(list)
-    RoleOfflineBatch({ids:list}).then(()=>{
+    RoleOfflineBatch({ ids: list }).then(() => {
         Message.success(t('禁用成功'))
     })
 }
@@ -146,7 +174,7 @@ const handleRoleDelete = (id: any) => {
 const handleBatchDelete = () => {
     let list = TableViewRef.value.getSelectRecords().map((item: any) => item.id)
     console.log(list)
-    RoleRemoveBatch({ids:list}).then(()=>{
+    RoleRemoveBatch({ ids: list }).then(() => {
         Message.success(t('删除成功'))
     })
 }
@@ -167,7 +195,7 @@ const getData = () => {
         current: pagerConfig.value.currentPage,
         size: pagerConfig.value.pageSize
     }).then((res: any) => {
-        console.log(res,res.data.total)
+        console.log(res, res.data.total)
         data.value = res.data.records
         pagerConfig.value.total = res.data.total
     })

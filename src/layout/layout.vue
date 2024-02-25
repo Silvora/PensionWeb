@@ -11,8 +11,8 @@
         <div class="right-box" v-if="route.name != 'sys'">
           <!-- <span class="right" :style="{ 'background': route.name == 'home' ? 'rgba(19, 100, 248, 1)' : '#fff' }"> -->
           <span class="right" :style="{ 'background': 'rgba(19, 100, 248, 1)' }">
-            <img v-if="route.name == 'home'" class="right-img" src="@/assets/images/setting.png" alt=""
-              @click="() => router.push('/sys?type=agency')">
+            <img v-if="['home', 'room', 'elder', 'add-elder', 'staff', 'setting', 'staff-details'].includes(route.name)"
+              class="right-img" src="@/assets/images/setting.png" alt="" @click="() => router.push('/sys?type=agency')">
             <!-- <img v-if="route.name == 'screen'" class="right-img" src="@/assets/images/setting.png" alt=""
                 @click="() => router.push('/sys')"> -->
             <Icon v-if="route.name == 'screen' && !isFullscreen" type="md-code" color="#fff" size="28" @click="handleZoom"

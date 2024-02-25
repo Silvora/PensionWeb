@@ -16,7 +16,7 @@
 
             <div class="left">
                 <p class="title">员工信息</p>
-                <Card :bordered="false" padding="20">
+                <Card :bordered="false" :padding="20">
                     <div class="info">
                         <div class="img">
                             <img src="@/assets/images/screen.png" alt="" srcset="">

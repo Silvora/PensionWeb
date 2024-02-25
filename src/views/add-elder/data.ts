@@ -36,15 +36,19 @@ const baseInfo: any = {
                 prop: "gender",
                 span: 1,
                 //disabled: false,
-                chils: [
+                childs: [
                     {
                         label: '男',
-                        value: '1'
+                        value: 1
                     },
                     {
                         label: '女',
-                        value: '2'
-                    }
+                        value: 2
+                    },
+                    {
+                label: "未知",
+                value:0
+            }
                 ],
                 required: false,
                 default: "",
@@ -96,46 +100,64 @@ const baseInfo: any = {
                     }
                 ]
             },
-             {
-                type: 'select',
+            {
+                type: 'input',
                 label: '血型',
                 prop: "bloodType",
                 span: 1,
                 //disabled: false,
                 required: false,
                 default: "",
-                childs: [
-                    {
-                        label: '是',
-                        value: '1'
-                    },
-                    {
-                        label: '否',
-                        value: '0'
-                    }
-                ]
             },
-              {
-                type: 'select',
+            //  {
+            //     type: 'select',
+            //     label: '血型',
+            //     prop: "bloodType",
+            //     span: 1,
+            //     //disabled: false,
+            //     required: false,
+            //     default: "",
+            //     childs: [
+            //         {
+            //             label: '是',
+            //             value: '1'
+            //         },
+            //         {
+            //             label: '否',
+            //             value: '0'
+            //         }
+            //     ]
+            // },
+             {
+                type: 'input',
                 label: '居住人情况',
                 prop: "residentSituation",
                 span: 1,
                 //disabled: false,
                 required: false,
                 default: "",
-                childs: [
-                    {
-                        label: '是',
-                        value: '1'
-                    },
-                    {
-                        label: '否',
-                        value: '0'
-                    }
-                ]
             },
+            //   {
+            //     type: 'select',
+            //     label: '居住人情况',
+            //     prop: "residentSituation",
+            //     span: 1,
+            //     //disabled: false,
+            //     required: false,
+            //     default: "",
+            //     childs: [
+            //         {
+            //             label: '是',
+            //             value: '1'
+            //         },
+            //         {
+            //             label: '否',
+            //             value: '0'
+            //         }
+            //     ]
+            // },
             {
-                type: 'input',
+                type: 'sort',
                 label: '家人人口',
                 prop: "familyPopulation",
                 span: 1,

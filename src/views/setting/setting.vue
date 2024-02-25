@@ -231,7 +231,7 @@ const model1 = ref()
                 p {
                     width: 100%;
                     background: linear-gradient(270deg, RGBA(255, 255, 255, 1) 0%, RGBA(206, 223, 254, 1) 100%);
-                    border-radius: 8px 0px 0px 0px;
+                    border-radius: 8px 8px 0px 0px;
                     // opacity: 0.3;
                     font-size: 14px;
                     font-family: PingFangSC, PingFang SC;
