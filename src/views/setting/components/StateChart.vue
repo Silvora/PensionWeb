@@ -66,7 +66,7 @@ const initChart = () => {
                     //     ].join('\n')
                     // },
                     formatter: (params) => {
-                        console.log(params.name)
+                       // console.log(params.name)
                         return [
                             `{a|1111}`,
                             `{b|设备状态}`

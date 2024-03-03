@@ -26,8 +26,8 @@ import i18n from './i18n'
 import AppInstallView from "@/components/index"
 
 
-
 function bootstrap() {
+
 
   const app = createApp(App)
 

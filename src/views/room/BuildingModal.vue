@@ -2,7 +2,7 @@
     <div class="building">
         <Modal v-model="modal" title="楼栋管理" :footer-hide="true">
             <template #close>
-                <Icon type="md-add-circle" color="#000" style="transform: rotateZ(45deg);" size="16" />
+                <Icon type="md-close-circle" color="#000" size="16" />
             </template>
             <div class="buildingBox">
                 <div class="box_1">
@@ -100,7 +100,7 @@
         <Modal v-model="addModal" :title="['楼栋', '楼层', '房间'][roomType] + (isEdit ? '编辑' : '添加')" :footer-hide="true"
             :styles="{ top: '150px' }">
             <template #close>
-                <Icon type="md-add-circle" color="#000" style="transform: rotateZ(45deg);" size="16" />
+                <Icon type="md-close-circle" color="#000" size="16" />
             </template>
 
             <p style="padding-bottom: 10px;">{{ ['楼栋', '楼层', '房间'][roomType] }}名称</p>

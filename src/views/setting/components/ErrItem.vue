@@ -13,16 +13,18 @@
                 <div class="info">
                     <p class="t1">张玲
                     </p>
-                    <p class="t2">倪杰
+                    <p class="t2">
+                        <img src="@/assets/images/pad-processing@2x.png" alt="">
+                        倪杰
                     </p>
                 </div>
             </div>
             <p class="roomTitle">床位：一楼 A101 06床</p>
             <div class="imgList">
-                <img src="@/assets/images/位图@2x(1).png" alt="">
-                <img src="@/assets/images/位图@2x(1).png" alt="">
-                <img src="@/assets/images/位图@2x(1).png" alt="">
-                <img src="@/assets/images/位图@2x(1).png" alt="">
+                <img src="@/assets/images/睡眠监测@2x(4).png" alt="">
+                <img src="@/assets/images/位图@2x(2).png" alt="">
+                <img src="@/assets/images/温度计@2x.png" alt="">
+                <img src="@/assets/images/紧急按钮@2x.png" alt="">
             </div>
             <Button type="error" size="small" class="stateBtn">心率异常</Button>
         </div>
@@ -107,6 +109,10 @@
             }
 
             .t2 {
+                img {
+            width: 12px;
+            height: 12px;
+        }
                 font-size: 14px;
                 font-family: PingFangSC, PingFang SC;
                 font-weight: 400;

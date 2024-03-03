@@ -115,22 +115,26 @@
 
         <Modal v-model="modal" title="排班情况" :footer-hide="true" :width="1220">
             <template #close>
-                <Icon type="md-add-circle" color="#000" style="transform: rotateZ(45deg);" size="16" />
+                <Icon type="md-close-circle" color="#000" size="16" />
             </template>
             <Scheduling></Scheduling>
         </Modal>
 
 
-        <Modal v-model="addModal" title="添加员工" :footer-hide="true" :width="80">
+        <Modal v-model="addModal" title="添加员工" :footer-hide="true" :width="802">
             <template #close>
-                <Icon type="md-add-circle" color="#000" style="transform: rotateZ(45deg);" size="16" />
+                <Icon type="md-close-circle" color="#000" size="16" />
             </template>
             <div class="up_box">
                 <Row justify="start">
                     <Col :span="8" class="col">
                     <div class="label"> 员工头像 </div>
                     <div class="input upload1">
-                        <div class="up4">1</div>
+                        <!-- <div class="up4">1</div> -->
+                        <Upload :show-upload-list="false" :before-upload="(f:any)=>handleUpload('proto',f)" action="#">
+                    <img :src="fileUrl.proto" class="up4" alt="" v-if="fileUrl.proto"/>
+                    <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else/>
+                </Upload>
                         <!-- <div class="up4">2</div>
                         <div class="up4">3</div> -->
                         <!-- <div class="up4">4</div> -->
@@ -145,10 +149,26 @@
                     <Col :span="24" class="col">
                     <div class="label"> 证书 </div>
                     <div class="input upload1">
-                        <div class="up4">1</div>
+                        <!-- <div class="up4">1</div>
                         <div class="up4">2</div>
-                        <div class="up4">3</div>
+                        <div class="up4">3</div> -->
                         <!-- <div class="up4">4</div> -->
+                        <Upload :show-upload-list="false" :before-upload="(f:any)=>handleUpload('certUrl1',f)" action="#">
+                    <img :src="fileUrl.certUrl1" class="up4" alt="" v-if="fileUrl.certUrl1"/>
+                    <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else/>
+                </Upload>
+                <Upload :show-upload-list="false" :before-upload="(f:any)=>handleUpload('certUrl2',f)" action="#">
+                    <img :src="fileUrl.certUrl2" class="up4" alt="" v-if="fileUrl.certUrl2"/>
+                    <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else/>
+                </Upload>
+                <Upload :show-upload-list="false" :before-upload="(f:any)=>handleUpload('certUrl3',f)" action="#">
+                    <img :src="fileUrl.certUrl3" class="up4" alt="" v-if="fileUrl.certUrl3"/>
+                    <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else/>
+                </Upload>
+                <!-- <Upload :show-upload-list="false" :before-upload="(f:any)=>handleUpload('driveUrl4',f)" action="#">
+                    <img :src="fileUrl.driveUrl4" class="up4" alt="" v-if="fileUrl.driveUrl4"/>
+                    <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else/>
+                </Upload> -->
                     </div>
                     </Col>
                 </Row>
@@ -169,6 +189,7 @@ import { Message, Modal } from "view-ui-plus";
 import LevelChart from "./components/LevelChart.vue";
 import SexChart from "./components/SexChart.vue";
 import Scheduling from "./components/Scheduling.vue"
+import {FileUploadImage} from "@/api/File/File"
 import { StaffList, StaffRemoveId, StaffRemoveBatch } from "@/api/Staff/Staff"
 const modal = ref(false)
 const addModal = ref(false)
@@ -184,11 +205,34 @@ const attrs = ref([
         dates: new Date(),
     },
 ]);
-
+const fileUrl = ref<any>({
+    proto:"",
+    certUrl1:"",
+    certUrl2:"",
+    certUrl3:"",
+    certUrl4:""
+})
 const tableH = ref("765px")
 const data: any = ref()
 
 const model1 = ref<any>()
+
+
+const handleUpload = (type: string,file:any) => {
+    console.log(type,file,import.meta.env.VITE_APP_AXIOS_BASER)
+   // file.value = file;
+
+    const formData = new FormData();
+    formData.append("file", file.value);
+    FileUploadImage(formData).then((res: any) => {
+        console.log(res)
+        fileUrl.value[type] = "import.meta.env.VITE_APP_AXIOS_BASER"+res.data
+       // file.value ='http://8.217.217.243:9000'+ res.data
+    })
+
+    return false;
+}
+
 
 onMounted(() => {
     console.log("", pageBox.value?.clientHeight)//680
@@ -392,7 +436,8 @@ const getInfo = () => {
 
         .upload1 {
             // width: 210px;
-            height: 200px;
+            
+            height: 140px;
             display: flex;
             // background: red;
             // flex-direction: row;
@@ -403,9 +448,10 @@ const getInfo = () => {
 
         .up4 {
             flex: 1;
-            margin: 0 10px;
+           // margin: 0 10px;
             // width: 104px;
-            height: 200px;
+            width: 145px;
+            height: 140px;
             text-align: center;
             // line-height: 100px;
         }

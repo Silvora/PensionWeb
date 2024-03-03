@@ -70,7 +70,7 @@ const initChart = () => {
                     //     ].join('\n')
                     // },
                     formatter: (params: any) => {
-                        console.log(params.name)
+                        //console.log(params.name)
                         return [
                             `{a|1111}`,
                             `{b|类型统计}`

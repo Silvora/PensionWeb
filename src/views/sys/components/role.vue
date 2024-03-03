@@ -60,7 +60,7 @@ import { ref } from "vue"
 import { roleTable, createRole } from "../data"
 import { Modal, Message } from "view-ui-plus";
 import { onMounted } from "vue";
-import { Role, RoleList, RoleOnline, RoleUpdateId, RoleOnlineBatch, RoleOffline, RoleOfflineBatch, RoleRemoveBatch } from "@/api/RoleInfo/RoleInfo"
+import { RoleRemoveId, Role, RoleList, RoleOnline, RoleUpdateId, RoleOnlineBatch, RoleOffline, RoleOfflineBatch, RoleRemoveBatch } from "@/api/RoleInfo/RoleInfo"
 import { useI18n } from "vue-i18n";
 const TableViewRef = ref<any>(null)
 const TableCreateRef = ref<any>(null)
@@ -159,14 +159,14 @@ const handleRoleDelete = (id: any) => {
         loading: true,
         onOk: () => {
             console.log(id)
-            // DeviceInfoResetId(data).then(() => {
-            //     Message.success(t('重置成功'))
-            //     Modal.remove();
-            //     getData({ ...searchData })
-            //     // handleDeviceList(data)
-            // }).catch(() => {
-            //     Modal.loading = false
-            // })
+            RoleRemoveId(id).then(() => {
+                Message.success(t('重置成功'))
+                Modal.remove();
+                getData()
+                // handleDeviceList(data)
+            }).catch(() => {
+                Modal.loading = false
+            })
         }
     })
 }

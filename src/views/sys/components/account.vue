@@ -205,9 +205,13 @@ const handleResetPassword = (row: any) => {
     Modal.confirm({
         title: '提示',
         content: '确定要重置密码吗？',
+        loading: true,
         onOk: () => {
             AdminUserResetPassword({ id: row.id }).then(() => {
                 Message.success(t('重置成功'))
+                Modal.remove();
+            }).catch(() => {
+                Modal.loading = false
             })
         }
     })

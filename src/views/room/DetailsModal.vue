@@ -1,11 +1,12 @@
 <template>
     <div class="details">
-        <Modal v-model="detailsModal" title="楼栋管理" :footer-hide="true" width="650">
+        <Modal v-model="detailsModal" title="床位信息" :footer-hide="true" width="650">
             <template #close>
-                <Icon type="md-add-circle" color="#000" style="transform: rotateZ(45deg);" size="16" />
+                <Icon type="md-close-circle" color="#000" size="16" />
             </template>
             <div class="detailsBox">
-                <p class="title" v-if="false">
+                <p class="title" v-if="props.info?.checkIn">
+
                     <span>
                         <Space>
                             <RadioGroup v-model="type" size="small" type="button" button-style="solid"
@@ -20,11 +21,14 @@
                             <Button type="error" size="small" class="btn">移除床位</Button>
                         </Space>
                     </span>
-                    <span>
+                    <!-- <span>
                         <Button type="primary" size="small" class="btn">编辑</Button>
-                    </span>
+                    </span> -->
+
+
                 </p>
                 <p class="title" v-else>
+
                     <span>
                         <Space>
                             <span>床位信息</span>
@@ -32,10 +36,12 @@
                         </Space>
                     </span>
                     <span>
-                        <Button type="primary" size="small" class="btn" @click="elderModal = true">选择老人</Button>
+                        <Button type="primary" size="small" class="btn" @click="handleOpenElderModal">选择老人</Button>
                     </span>
+                    
+                   
                 </p>
-                <div class="info" v-if="true">
+                <div class="info" v-if="props.info?.checkIn">
                     <div class="img">
                         <img src="@/assets/images/screen.png" alt="" srcset="">
                     </div>
@@ -52,9 +58,9 @@
                         </DescriptionList>
                     </div>
                 </div>
-                <div class="info" v-else style="background: rgba(241, 241, 245, 1);"></div>
+                <div class="info noBox" v-else>暂无老人</div>
                 <p style="padding:20px 0 ;">智能设备列表</p>
-                <div class="device">
+                <div class="device" v-if="props.info?.checkIn">
                     <Row :gutter="10">
                         <Col span="12" v-for="item in deviceList" :key="item.label">
                         <Card :bordered="false" :padding="16"
@@ -82,16 +88,17 @@
                         </Col>
                     </Row>
                 </div>
+                <div class="device noBox" v-else>暂无设备</div>
             </div>
         </Modal>
 
         <Modal v-model="elderModal" title="老人选择" :footer-hide="true" width="270">
             <template #close>
-                <Icon type="md-add-circle" color="#000" style="transform: rotateZ(45deg);" size="16" />
+                <Icon type="md-close-circle" color="#000" size="16" />
             </template>
 
             <div class="elderBox">
-                <Input prefix="ios-search" clearable enter-button="搜索" placeholder="搜索" />
+                <Input prefix="ios-search" clearable enter-button="搜索" placeholder="搜索" v-model="keyword" />
 
                 <Card :bordered="false" :padding="5" style="background: rgba(19,100,248,0.05);margin: 5px 0;"
                     v-for="item in detailList" :key="item.id">
@@ -117,12 +124,12 @@ import thermometer from "@/assets/images/thermometer.png"
 import bitmap from "@/assets/images/bitmap.png"
 import sleep from "@/assets/images/sleep.png"
 import errBtn from "@/assets/images/errBtn.png"
-import { ElderlyList } from '@/api/Elderly/Elderly'
+import { ElderlyListNotCheckIn } from '@/api/Elderly/Elderly'
 
 const detailsModal = ref(false)
-const emptyModal = ref(false)
 const elderModal = ref(false)
 const detailList = ref<any>([])
+const keyword = ref('')
 const descriptionList = ref([
     {
         label: '姓名',
@@ -206,11 +213,26 @@ const deviceList = ref([
 ])
 
 const type = ref('0')
+
+const props= defineProps({
+    info: {
+        type: Object,
+        defined:{}
+    }
+})
+
+const handleOpenElderModal = () => {
+    elderModal.value = true
+    getData()
+}
+
+
 const handleRadioType = (label: string) => {
     type.value = label
 }
 
 const showModal = () => {
+
     detailsModal.value = true
 }
 
@@ -219,18 +241,19 @@ const hideModal = () => {
 }
 
 const getData = () => {
-    ElderlyList({
+    ElderlyListNotCheckIn({
         current: 1,
+        keyword: keyword.value,
         size: 9999
-    }).then(res => {
+    }).then((res:any) => {
         console.log(res)
         detailList.value = res.data.records
     })
 }
 
-onMounted(() => {
-    getData()
-})
+// onMounted(() => {
+//     getData()
+// })
 
 defineExpose({
     showModal,
@@ -265,10 +288,10 @@ defineExpose({
         .t2 {
             color: #1C1B1B;
         }
-
     }
 
 
+   
     .info {
         width: 100%;
         // background: rgba(241, 241, 245, 1);
@@ -299,6 +322,8 @@ defineExpose({
 
     .device {
         width: 100%;
+        height:231px;
+        border-radius: 8px;
 
         .deviceBox {
             display: flex;
@@ -308,6 +333,14 @@ defineExpose({
                 width: 68px;
             }
         }
+    }
+
+    .noBox{
+        width: 100%;
+        background: rgb(241, 241, 245);
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }
 

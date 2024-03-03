@@ -64,7 +64,8 @@ export function HostelRemoveId(data: {id:string}) {
 }
 
 // 宿舍楼层中房间列表
-export function HostelRoomListOfFloor(params: {floorId:string, needBed:boolean}) {
+//{floorId:string, needBed:boolean, needDeviceInfo:boolean,status:number}
+export function HostelRoomListOfFloor(params: any) {
     return http.request({
         url: '/admin/hostel/room/listOfFloor',
         method: 'get',
@@ -102,7 +103,7 @@ export function HostelRoomUpdate(data:any) {
 
 
 // 宿舍房间中床位列表
-export function HostelRoomBedListOfRoom(params: {roomId:string}) {
+export function HostelRoomBedListOfRoom(params: {roomId:string, needDeviceInfo:boolean}) {
     return http.request({
         url: '/admin/hostel/roomBed/listOfRoom',
         method: 'get',
@@ -157,5 +158,14 @@ export function HostelUpdate(data:any) {
         url: '/admin/hostel/update',
         method: 'post',
         data
+    })
+}
+
+// 获取空床比例
+export function HostelEmptyBedRatio(params:any) {
+    return http.request({
+        url: `/admin/hostel/emptyBedRatio`,
+        method: 'get',
+        params
     })
 }

@@ -25,7 +25,7 @@ const map: any = ref({
 })
 
 const initChart = () => {
-    myChart.value = echarts.init(EmptyChartRef.value);
+    const myChart:any = echarts.init(EmptyChartRef.value);
 
     const option = {
         color: [
@@ -109,7 +109,11 @@ const initChart = () => {
     };
 
 
-    option && myChart.value.setOption(option);
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
+    }
+
+    window.addEventListener('resize', myChart.resize);
 }
 
 

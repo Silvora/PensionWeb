@@ -4,16 +4,18 @@
 
 <script setup lang='ts'>
 import * as echarts from "echarts"
-import { onMounted, ref } from "vue";
+import { onMounted, ref ,nextTick} from "vue";
 const AgeChartRef = ref(null)
 const myChart: any = ref(null)
 onMounted(() => {
 
-    initChart()
+    nextTick(() => {
+        initChart()
+    })
 
-    window.addEventListener('resize', () => {
-        myChart.value.resize();
-    });
+    // window.addEventListener('resize', () => {
+    //     myChart.value.resize();
+    // });
 
 
 })
@@ -27,7 +29,7 @@ const map: any = ref({
 })
 
 const initChart = () => {
-    myChart.value = echarts.init(AgeChartRef.value);
+   const myChart: any  = echarts.init(AgeChartRef.value);
 
     const option = {
         color: [
@@ -132,8 +134,11 @@ const initChart = () => {
         ]
     };
 
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
+    }
 
-    option && myChart.value.setOption(option);
+    window.addEventListener('resize', myChart.resize);
 }
 
 

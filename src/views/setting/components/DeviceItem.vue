@@ -2,24 +2,30 @@
     <Card :bordered="false" :padding="0" style="background: rgba(255, 255, 255, 1);margin-bottom: 10px;">
         <div class="deviceInfo">
             <p class="title">
-                <span :class="['t1', 'green', 'yellow', 'gary']">在线</span>
-                <span class="t2">一楼 A101 06床</span>
+                <span :class="['t1', props.info?.online==1?'green':'gary']">{{['离线','在线'][props.info.online]}}</span>
+
+                <!-- <span :class="['t1', 'green', 'yellow', 'gary'][props.info.online]">{{['离线','在线'][props.info.online]}}</span> -->
+                <span class="t2">{{props.info.roomBedNumber}}</span>
                 <span class="t3">
                     <img src="@/assets/images/room-setting.png" alt="" srcset="">
                 </span>
             </p>
-            <div class="deviceBox">
-                <img class="img" src="@/assets/images/sleep.png" alt="" srcset="">
+            <div class="deviceBox" @click="handleSetCheck">
+                <img class="img" src="@/assets/images/睡眠监测@2x(1).png" alt="" srcset="">
                 <div class="info">
-                    <p class="t1">睡眠雷达
+                    <p class="t1">{{ props.info.name }}
 
                     </p>
                     <p class="t2">
-                        ID:264233215
+                        ID:{{ props.info.mac }}
                     </p>
                     <p class="t2">
-                        关联老人:倪杰
+                        关联老人:{{ props.info.elderlyInfo.name }}
                     </p>
+
+                    <span class="check">
+                        <Checkbox v-model="check">{{  }}</Checkbox>
+                    </span>
                 </div>
 
                 <!-- <div class="imgInfo">
@@ -59,7 +65,37 @@
 </template>
 
 <script setup lang='ts'>
+import { ref } from 'vue'
+import {Checkbox} from "view-ui-plus"
+import { watchEffect } from 'vue';
+const check = ref(false)
+const props = defineProps({
+    info: {
+        type: Object,
+        defined:{}
+    },
+    checkAll:{
+        type:Boolean,
+        default:false
+    }
+})
 
+watchEffect(()=>{
+    // console.log("===========",props.checkAll)
+    check.value = props.checkAll
+    // console.log(check.value)
+
+    // if(props.checkAll){
+    //     check.value = true
+    // }
+
+})
+
+const emit = defineEmits(['handleCheck'])
+const handleSetCheck = ()=>{
+    check.value = !check.value
+    emit('handleCheck',{id:props.info.id,check:check.value})
+}
 </script>
 
 <style scoped lang='less'>
@@ -124,6 +160,7 @@
     .deviceBox {
         margin: 10px;
         display: flex;
+        position: relative;
 
         img {
             width: 60px;
@@ -153,7 +190,11 @@
         //         }
         //     }
         // }
-
+            .check{
+                position: absolute;
+                top: 45px;
+                left: 45px;
+            }
         .info {
             width: 100%;
             padding: 0 10px;

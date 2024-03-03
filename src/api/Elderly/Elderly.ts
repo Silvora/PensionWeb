@@ -16,6 +16,15 @@ export function ElderlyList(params: any) {
     })
 }
 
+// 未入住长者列表
+export function ElderlyListNotCheckIn(params: any) { 
+    return http.request({
+        url: '/admin/elderly/list/notCheckIn',
+        method: 'get',
+        params
+    })
+}
+
 // 删除长者
 export function ElderlyRemoveId(data:any) { 
     return http.request({

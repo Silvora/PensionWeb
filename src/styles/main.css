@@ -140,7 +140,7 @@ body {
             background: linear-gradient(90deg, rgba(19, 100, 248, 0.1) 0%, rgba(19, 100, 248, 0) 100%);
         }
 
-.formInfo,.list,.infoBox,.roomUser{
+.formInfo,.list,.infoBox,.roomUser,.deviceList{
          -ms-overflow-style: none;
         /* 适用于Internet Explorer, Edge */
         scrollbar-width: none;
@@ -150,6 +150,7 @@ body {
 .formInfo::-webkit-scrollbar,
 .list::-webkit-scrollbar,
 .infoBox::-webkit-scrollbar,
-.roomUser::-webkit-scrollbar {
+.roomUser::-webkit-scrollbar,
+.deviceList::-webkit-scrollbar {
   display: none; /* 适用于Chrome, Safari, Opera */
 }

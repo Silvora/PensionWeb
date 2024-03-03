@@ -184,7 +184,7 @@
 
         <Modal v-model="addModal" title="排班设置" :footer-hide="true" :width="340">
             <template #close>
-                <Icon type="md-add-circle" color="#000" style="transform: rotateZ(45deg);" size="16" />
+                <Icon type="md-close-circle" color="#000" size="16" />
             </template>
             <div class="userModal">
                 <div class="avatar">

@@ -7,7 +7,7 @@
             </div>
             <div class="btn">
                 <Space>
-                    <Button type="primary">绑定老人</Button>
+                    <Button type="primary" @click="elderModal = true">绑定老人</Button>
                     <Input prefix="ios-search" clearable enter-button="搜索" placeholder="搜索" />
                 </Space>
             </div>
@@ -79,12 +79,11 @@
 
                 <TableView ref="TableViewRef" :data="data" :tableConfig="roleTable" :tablePage="pagerConfig"
                     @handleUpdatePage="handleUpdatePage" :tableH="tableH">
-
                     <template #active="{ row }">
-                        <vxe-button type="text" size="mini" status="primary" @click="handleRoleEdit(row)">
+                        <vxe-button type="text" size="mini" status="primary" @click="handleElderLook(row)">
                             查看服务
                         </vxe-button>
-                        <vxe-button type="text" size="mini" status="danger" @click="handleRoleDelete(row.id)">
+                        <vxe-button type="text" size="mini" status="danger" @click="handleElderDelete(row.id)">
                             移除老人
                         </vxe-button>
                     </template>
@@ -92,34 +91,111 @@
                 </TableView>
             </div>
         </div>
+
+        <Modal v-model="elderModal" title="绑定老人" :footer-hide="true" :width="270">
+            <template #close>
+
+                <Icon type="md-close-circle" color="#000" size="16" />
+            </template>
+
+            <div class="elderBox">
+                <Input prefix="ios-search" clearable enter-button="搜索" placeholder="搜索" v-model="keyword" />
+
+                <Card :bordered="false" :padding="5" style="background: rgba(19,100,248,0.05);margin: 5px 0;"
+                    v-for="item in elderList" :key="item.id">
+                    <div class="userBox">
+                        <div>
+                            <!-- <img :src="" alt=""> -->
+                        </div>
+                        <div class="name">
+                            <p>{{ item.name }}</p>
+                            <p>{{ item.phone }}</p>
+                        </div>
+                    </div>
+                </Card>
+
+            </div>
+        </Modal>
+
+
+        <!--  护理列表 -->
+        <Modal v-model="nerseModal" title="护理计划" :footer-hide="true" :width="70">
+            <template #close>
+                <Icon type="md-close-circle" color="#000" size="16" />
+            </template>
+
+            <div class="nuresBox">
+                <Table :columns="nuresTable.columns" :data="nuresList"></Table>
+                <!-- <TableView ref="TableViewRef" :data="data" :tableConfig="roleTable" :tablePage="pagerConfig"
+                    @handleUpdatePage="handleUpdatePage" :tableH="tableH">
+                    <template #active="{ row }">
+                        <vxe-button type="text" size="mini" status="primary" @click="handleElderLook(row)">
+                            查看服务
+                        </vxe-button>
+                        <vxe-button type="text" size="mini" status="danger" @click="handleElderDelete(row.id)">
+                            移除老人
+                        </vxe-button>
+                    </template>
+
+                </TableView> -->
+                <!-- <TableView ref="NuresViewRef" :data="nuresList" :tableConfig="nuresTable">
+                    <template #active="{ row }">
+                        <vxe-button type="text" size="mini" status="primary" @click="">
+                            开始/结束
+                        </vxe-button>
+                        <vxe-button type="text" size="mini" status="primary" @click="">
+                            编辑
+                        </vxe-button>
+                        <vxe-button type="text" size="mini" status="danger" @click="">
+                            删除
+                        </vxe-button>
+                    </template>
+
+                </TableView> -->
+            </div>
+        </Modal>
+
     </div>
 </template>
 
 <script setup lang='ts'>
-import { roleTable } from "./data"
+import { roleTable, nuresTable } from "./data"
 import { ref, onMounted } from "vue";
 import { StaffDetailId } from "@/api/Staff/Staff"
 import { useRoute } from "vue-router"
+import { NurseRecordBindList, NurseRecordUnBindId } from "@/api/Nurse/Nurse"
+import { Modal, Message } from "view-ui-plus";
+
+import { useI18n } from "vue-i18n";
+const { t } = useI18n()
 const route = useRoute()
+
+const NuresViewRef = ref<any>(null)
+
 const userInfo = ref<any>({})
+const elderModal = ref<any>(false)
+const keyword = ref<any>('')
+const elderList = ref<any>(false)
+const nerseModal = ref<any>(false)
 const data: any = ref([
     {
-        deviceName: '2121',
-        deviceNo: 'dsada',
-        freeObsNum: '121',
-        deviceStatus: '1',
-    },
-    {
-        deviceName: '2121',
-        deviceNo: 'dsada',
-        freeObsNum: '121',
-        deviceStatus: '0',
+        elderlyName: '111',
+        elderlyFileNo: '111',
+        nurseLevel: '111',
+        serviceCount: 10
     }
 ])
+const nuresList: any = ref([{
+    elderlyName: '111',
+    elderlyFileNo: '111',
+    nurseLevel: '111',
+    serviceCount: 10,
+    status: 10,
+}])
 const tableH = ref("640px")
 const pageBox = ref<any>(null)
 const pagerConfig = ref({
-    total: 100,//总数
+    total: 10,//总数
     currentPage: 1,//当前页
     pageSize: 10 //数量
 })
@@ -131,7 +207,30 @@ onMounted(() => {
     tableH.value = h - 210 + 'px'
 
     getData()
+    getNurseList()
 })
+
+// 查看服务
+const handleElderLook = (item: any) => {
+    nerseModal.value = true
+}
+
+// 移除老人
+const handleElderDelete = (id: any) => {
+    Modal.confirm({
+        title: '移除',
+        content: '确定要移除老人吗？',
+        loading: true,
+        onOk: () => {
+            NurseRecordUnBindId({ id }).then(() => {
+                Message.success(t('移除成功'))
+                Modal.remove();
+            }).catch(() => {
+                Modal.loading = false
+            })
+        }
+    })
+}
 
 
 const handleUpdatePage = ({ currentPage, pageSize }: any) => {
@@ -143,9 +242,14 @@ const handleUpdatePage = ({ currentPage, pageSize }: any) => {
     }
 }
 
+const getNurseList = () => {
+    NurseRecordBindList({ staffId: route.query.id }).then((res: any) => {
+        //data.value = res.data
+    })
+}
+
 const getData = () => {
     StaffDetailId({ id: route.query.id }).then((res: any) => {
-        console.log(res)
         userInfo.value = res.data
     })
 }
@@ -233,6 +337,40 @@ const getData = () => {
             width: calc(100% - 520px);
             margin-left: 20px;
             margin-right: 110px;
+        }
+    }
+}
+
+.nuresBox {
+    width: 100%;
+    // height: 490px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+.elderBox {
+    width: 100%;
+    height: 490px;
+    overflow: hidden;
+    overflow-y: auto;
+
+    .userBox {
+        display: flex;
+        align-items: center;
+        height: 40px;
+        cursor: pointer;
+
+        img {
+            width: 30px;
+            margin-right: 10px;
+        }
+
+        .name {
+            font-size: 14px;
+            font-family: PingFangSC, PingFang SC;
+            font-weight: 400;
+            color: #1C1B1B;
+            line-height: 20px;
         }
     }
 }

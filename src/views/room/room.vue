@@ -52,21 +52,26 @@
                                             <img src="@/assets/images/room-setting.png" alt="" srcset="">
                                         </span>
                                     </p>
-                                    <div v-if="true">
-                                        <div class="t5" @click="handleGetUserInfo">
-                                            <span class="t6">dsadsa</span>
+                                    <!-- //item.checkIn -->
+                                    <div v-if="true" class="user" @click="handleGetUserInfo(item)">
+                                        <div class="t5" >
+                                            <span class="t6">{{ item.checkIn?.nursingGrade }}111</span>
                                             <img class="t7" src="@/assets/images/screen.png" alt="" srcset="">
                                         </div>
-                                        <p class="t8">李梅梅</p>
-                                        <p class="t9">1964-11-10</p>
+                                        <p class="t8">{{ item.checkIn?.elderlyName }}李梅梅&nbsp;
+                                            <img class="t7" src="@/assets/images/ic_客户_男@2x(1).png" alt="" srcset="" v-if="item.checkIn?.elderlyGender==1">
+                                            <img class="t7" src="@/assets/images/ic_客户_女@2x(1).png" alt="" srcset="" v-if="item.checkIn?.elderlyGender==2">                                       
+                                        </p>
+                                        <p class="t9">{{ item.checkIn?.birthDate }}1978-11-10</p>
                                         <p class="t10">
-                                            <img src="@/assets/images/位图@2x(1).png" alt="">
-                                            <img src="@/assets/images/位图@2x(1).png" alt="">
-                                            <img src="@/assets/images/位图@2x(1).png" alt="">
-                                            <img src="@/assets/images/位图@2x(1).png" alt="">
+                                            <img src="@/assets/images/睡眠监测@2x(4).png" alt="">
+                                            <img src="@/assets/images/位图@2x(2).png" alt="">
+                                            <img src="@/assets/images/温度计@2x.png" alt="">
+                                            <img src="@/assets/images/紧急按钮@2x.png" alt="">
                                         </p>
                                     </div>
-                                    <div v-else>
+                                    <div v-else class="user noUser" @click="handleGetUserInfo(item)">
+                                        <img src="@/assets/images/room.png" alt="">
                                         等待入住
                                     </div>
                                 </div>
@@ -99,7 +104,7 @@
         <BuildingModal ref="BuildingModalRef" @handleUpdate="handleUpdate" :HostelList=typeList :floorList="floorList"
             :houseList="houseList" :bedList="bedList">
         </BuildingModal>
-        <DetailsModal ref="DetailsModalRef"></DetailsModal>
+        <DetailsModal ref="DetailsModalRef" :info="info"></DetailsModal>
     </div>
 </template>
 
@@ -127,12 +132,15 @@ const checkInfo = ref({
     free: 100,//空闲  
     reserve: 100,//预留
 })
+const info= ref<any>({})
 
 const handleShowModal = () => {
     BuildingModalRef.value.showModal()
 }
 
-const handleGetUserInfo = () => {
+const handleGetUserInfo = (item:any) => {
+    info.value = item
+
     DetailsModalRef.value.showModal()
 }
 
@@ -205,7 +213,8 @@ const getRoomList = () => {
     // 获取房间列表
     HostelRoomListOfFloor({
         floorId: floorActive.value,
-        needBed: true
+        needBed: true,
+        needDeviceInfo:false,
     }).then((res: any) => {
         houseList.value = res.data
         houseActive.value = res.data[0].id
@@ -218,7 +227,8 @@ const getRoomList = () => {
 const getRoomBedList = () => {
     // 获取房间床位列表
     HostelRoomBedListOfRoom({
-        roomId: houseActive.value
+        roomId: houseActive.value,
+        needDeviceInfo: false
     }).then((res: any) => {
         console.log(res)
         bedList.value = res.data
@@ -361,6 +371,16 @@ onMounted(() => {
                     // width: 150px;
                     text-align: center;
                     margin-bottom: 10px;
+                    .user{
+                        width: 100%;
+                        height: 210px;
+                    }
+                    .noUser{
+                        img{
+                            width: 100%;
+                            padding: 10px;
+                        }
+                    }
 
                     .t1 {
                         display: flex;
@@ -399,6 +419,7 @@ onMounted(() => {
                         border-radius: 0 0 5px 5px;
                         box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.1);
                         padding: 0 10px;
+                        width: 95px;
                     }
 
                     .t4 {
@@ -435,6 +456,13 @@ onMounted(() => {
                         font-family: PingFangSC, PingFang SC;
                         font-weight: 400;
                         color: #1C1B1B;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        img{
+                            width: 15px;
+                            height: 15px;
+                        }
                     }
 
                     .t9 {

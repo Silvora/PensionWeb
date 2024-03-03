@@ -2,7 +2,7 @@
     <Modal v-model="modal" :title="t(props.title)" width="30" :transition-names="appStore.TransitionConfig.modal">
 
         <template #close>
-            <Icon type="md-add-circle" color="#000" style="transform: rotateZ(45deg);" size="16" />
+            <Icon type="md-close-circle" color="#000" size="16" />
         </template>
         <FormData :rules="props.rules" :lableWidth="props.lableWidth" :FormData="props.FormData" :data="defaultData"
             ref="FormRef">

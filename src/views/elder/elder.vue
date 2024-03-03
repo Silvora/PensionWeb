@@ -108,33 +108,45 @@
             </div>
             <div class="right">
                 <div class="chart">
-                    <p class="title">备忘录 <span class="write">
+                    <p class="title">备忘录 <span class="write" @click="handleOpenMemo">
                             <Icon type="md-brush" />
                         </span></p>
                     <div class="memo">
                         <div class="textList">
+                            <!-- <p>dsadsa</p>
                             <p>dsadsa</p>
-                            <p>dsadsa</p>
-                            <p>dsadsa</p>
+                            <p>dsadsa</p> -->
+                            {{ memoList[memoActive]?.content }}
                         </div>
                         <div class="list">
-                            <div class="item" v-for="item in Array.from({ length: 3 })">
-                                <p class="t1">病人看护指南{{ item }}</p>
-                                <p class="t2">2023/10/9</p>
-                                <p class="t3">1:准点提醒吃药</p>
+                            <div :class="['item', memoActive == idx ? 'active' : '']" v-for="(item, idx) in memoList"
+                                :key="item.id" @click="memoActive = idx">
+                                <Icon v-if="memoActive == idx" class="icon" type="md-close-circle" size="24" color="#E06255"
+                                    @click="handleDeleteMemo(item.id)">
+                                </Icon>
+
+                                <p class="t1">{{ item.name }}</p>
+                                <p class="t2">{{ item.createTime }}</p>
+                                <p class="t3">{{ item.content }}</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+
+        <FormModal title="备忘录" :rules="memoData.rules" :lableWidth="100" :FormData="memoData.FormData" ref="MemoCreateRef"
+            @handleModalOk="handleCreateMemo">
+        </FormModal>
+
     </div>
 </template>
 
 <script setup lang='ts'>
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router"
-import { elderTable } from "./data"
+import { elderTable, memoData } from "./data"
 import { Message, Modal } from "view-ui-plus";
 import AgeChart from "./components/AgeChart.vue";
 import SexChart from "./components/SexChart.vue";
@@ -143,11 +155,15 @@ import LevelChart from "./components/LevelChart.vue"
 import DateChart from "./components/DateChart.vue"
 import { useI18n } from "vue-i18n";
 import { ElderlyList, ElderlyRemoveId, ElderlyHealthUpdate } from "@/api/Elderly/Elderly"
+import { MemoList, MemoSave, MemoUpdate, MemoRemoveId } from "@/api/Memo/Memo"
 const TableViewRef = ref<any>(null)
 const pageBox = ref<any>(null)
 const router = useRouter()
 const { t } = useI18n()
 const tableH = ref("630px")
+const MemoCreateRef = ref<any>(null)
+const memoActive = ref(0)
+const memoList = ref<any>([])
 const data: any = ref([])
 
 const model1 = ref<any>(null)
@@ -160,6 +176,7 @@ onMounted(() => {
     }
 
     getData()
+    getMemoList()
 })
 
 const pagerConfig = ref({
@@ -167,6 +184,45 @@ const pagerConfig = ref({
     currentPage: 1,//当前页
     pageSize: 10 //数量
 })
+
+// 删除备忘录
+const handleDeleteMemo = (id: any) => {
+
+
+    Modal.confirm({
+        title: '删除备忘录',
+        content: '确定要删除此条备忘录',
+        loading: true,
+        onOk: () => {
+            MemoRemoveId({ id }).then(() => {
+                Message.success(t('删除成功'))
+                getMemoList()
+                Modal.remove();
+            }).catch(() => {
+                Modal.loading = false
+            })
+        }
+    })
+
+}
+
+// 打开备忘录
+const handleOpenMemo = () => {
+    MemoCreateRef.value.openModal()
+}
+// 创建备忘录
+const handleCreateMemo = (data: any) => {
+    console.log(data)
+
+
+    MemoSave({ ...data, type: 0 }).then(() => {
+        Message.success(t('添加成功'))
+        getMemoList()
+        MemoCreateRef.value.closeModal()
+    }).catch(() => {
+        MemoCreateRef.value.closeTextLoding()
+    })
+}
 
 
 //编辑
@@ -216,6 +272,13 @@ const handleUpdatePage = ({ currentPage, pageSize }: any) => {
         currentPage,
         pageSize
     }
+}
+
+const getMemoList = () => {
+    MemoList({ type: 0 }).then((res: any) => {
+        //  console.log(res)
+        memoList.value = res.data
+    })
 }
 
 const getData = () => {
@@ -334,6 +397,7 @@ const getData = () => {
                     border-radius: 0px 4px 0px 4px;
                     color: #fff;
                     font-size: 10px;
+
                 }
             }
 
@@ -356,6 +420,8 @@ const getData = () => {
                 overflow-y: auto;
                 padding: 10px;
                 background: #F1F1F5;
+                white-space: pre-wrap;
+                /* 或 pre-line */
             }
 
             .list {
@@ -363,9 +429,13 @@ const getData = () => {
                 // background: rgba(19, 100, 248, .1);
                 overflow: hidden;
                 overflow-y: auto;
-                padding: 10px;
+                padding: 0 10px;
 
                 .item:hover {
+                    background: rgba(19, 100, 248, .1);
+                }
+
+                .active {
                     background: rgba(19, 100, 248, .1);
                 }
 
@@ -375,6 +445,13 @@ const getData = () => {
                     margin-bottom: 5px;
                     padding: 10px;
                     border-radius: 8px;
+                    position: relative;
+
+                    .icon {
+                        position: absolute;
+                        top: 0;
+                        right: 0px;
+                    }
 
                     .t1 {
                         font-size: 14px;
@@ -395,6 +472,9 @@ const getData = () => {
                         font-family: PingFangSC, PingFang SC;
                         font-weight: 400;
                         color: #1C1B1B;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
                     }
                 }
 

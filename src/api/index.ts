@@ -1,3 +1,4 @@
+import router from '@/router';
 import { getToken } from '@/utils/token';
 import axios from 'axios'
 
@@ -37,8 +38,11 @@ http.interceptors.response.use(
         return Promise.reject(new Error(response.data.message));
     },
     (error) => {
+        if (error.response.status === 401) {
+            router.push('/login');
+        }
         // console.log(error)
-        Message.error(error.message);
+        //Message.error(error.message);
         //Message.error(error.response.data.message);
         return Promise.reject(error);
     }

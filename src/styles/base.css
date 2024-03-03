@@ -96,6 +96,14 @@
 .TableForm .ivu-input-wrapper{
   height: 100%;
 }
+.TableForm .ivu-select{
+  border: 1px solid #98D2E1;
+ 
+}
+.TableForm .ivu-select-selection{
+  border-radius: 0;
+  box-sizing: border-box;
+}
 
 .TableForm .ivu-input{
     border: 1px solid #98D2E1;
@@ -149,6 +157,10 @@
 
 .vc-pane {
   min-width: 230px !important;
+}
+
+.ivu-upload-select{
+  display: flex;
 }
 
 .system .ivu-select-selection {
