@@ -13,15 +13,6 @@ const baseInfo: any = {
                 default: "",
             },
             {
-                type: 'input',
-                label: '身份证',
-                prop: "idNumber",
-                span: 2,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
-            {
                 type: 'date',
                 label: '生日',
                 prop: "birthday",
@@ -55,8 +46,27 @@ const baseInfo: any = {
             },
             {
                 type: 'input',
+                label: '身份证',
+                prop: "idNumber",
+                span: 1,
+                //disabled: false,
+                required: false,
+                default: "",
+            },
+            
+            {
+                type: 'input',
                 label: '联系电话',
                 prop: "phone",
+                span: 1,
+                //disabled: false,
+                required: false,
+                default: "",
+            },
+            {
+                type: 'input',
+                label: '血型',
+                prop: "bloodType",
                 span: 1,
                 //disabled: false,
                 required: false,
@@ -100,47 +110,11 @@ const baseInfo: any = {
                     }
                 ]
             },
-            {
-                type: 'input',
-                label: '血型',
-                prop: "bloodType",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
+        
             //  {
             //     type: 'select',
             //     label: '血型',
             //     prop: "bloodType",
-            //     span: 1,
-            //     //disabled: false,
-            //     required: false,
-            //     default: "",
-            //     childs: [
-            //         {
-            //             label: '是',
-            //             value: '1'
-            //         },
-            //         {
-            //             label: '否',
-            //             value: '0'
-            //         }
-            //     ]
-            // },
-             {
-                type: 'input',
-                label: '居住人情况',
-                prop: "residentSituation",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
-            //   {
-            //     type: 'select',
-            //     label: '居住人情况',
-            //     prop: "residentSituation",
             //     span: 1,
             //     //disabled: false,
             //     required: false,
@@ -165,11 +139,11 @@ const baseInfo: any = {
                 required: false,
                 default: "",
             },
-             {
+            {
                 type: 'input',
                 label: '家庭地址',
                 prop: "address",
-                span: 1,
+                span: 3,
                 //disabled: false,
                 required: false,
                 default: "",
@@ -178,16 +152,48 @@ const baseInfo: any = {
                 type: 'input',
                 label: '户籍地址',
                 prop: "domicileAddress",
-                span: 1,
+                span: 3,
                 //disabled: false,
                 required: false,
                 default: "",
             },
+            
+             {
+                type: 'input',
+                label: '居住人情况',
+                prop: "residentSituation",
+                span: 3,
+                //disabled: false,
+                required: false,
+                default: "",
+            },
+            //   {
+            //     type: 'select',
+            //     label: '居住人情况',
+            //     prop: "residentSituation",
+            //     span: 1,
+            //     //disabled: false,
+            //     required: false,
+            //     default: "",
+            //     childs: [
+            //         {
+            //             label: '是',
+            //             value: '1'
+            //         },
+            //         {
+            //             label: '否',
+            //             value: '0'
+            //         }
+            //     ]
+            // },
+     
+             
+           
                 {
                 type: 'input',
                 label: '饮食特点',
                 prop: "dietary",
-                span: 1,
+                span: 3,
                 //disabled: false,
                 required: false,
                 default: "",
@@ -196,34 +202,63 @@ const baseInfo: any = {
                 type: 'input',
                 label: '爱好',
                 prop: "personalHobbies",
-                span: 1,
+                span: 3,
                 //disabled: false,
                 required: false,
                 default: "",
             },
             
             {
-                type: 'select',
+                type: 'input',
                 label: '经济来源',
                 prop: "financial",
-                span: 1,
+                span: 3,
                 //disabled: false,
                 required: false,
                 default: "",
             },
             {
-                type: 'select',
+                type: 'input',
                 label: '文化程度',
-                prop: "oemIvd",
-                span: 1,
+                prop: "educationLevel",
+                span: 3,
                 //disabled: false,
                 required: false,
                 default: "",
             },
                {
-                type: 'select',
+                type: 'input',
                 label: '性格心理',
                 prop: "personality",
+                span: 3,
+                //disabled: false,
+                required: false,
+                default: "",
+            },
+           
+             {
+                type: 'input',
+                label: '医疗保障',
+                prop: "healthCare",
+                span: 3,
+                //disabled: false,
+                required: false,
+                default: "",
+            },
+             {
+                type: 'input',
+                label: '劳动能力',
+                prop: "laborCapacity",
+                span: 3,
+                //disabled: false,
+                required: false,
+                default: "",
+            },
+            
+            {
+                type: 'input',
+                label: '医保卡号',
+                prop: "medicalNumber",
                 span: 1,
                 //disabled: false,
                 required: false,
@@ -232,25 +267,7 @@ const baseInfo: any = {
             {
                 type: 'date',
                 label: '签订合同日期',
-                prop: "oemIasd",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
-             {
-                type: 'select',
-                label: '医疗保障',
-                prop: "healthCare",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
-             {
-                type: 'select',
-                label: '劳动能力',
-                prop: "laborCapacity",
+                prop: "contractDateStr",
                 span: 1,
                 //disabled: false,
                 required: false,
@@ -265,24 +282,15 @@ const baseInfo: any = {
                 required: false,
                 default: "",
             },
-            {
-                type: 'input',
-                label: '医保卡号',
-                prop: "medicalNumber",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
-             {
-                type: 'input',
-                label: '档案号',
-                prop: "oemqwId",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-             },
+            //  {
+            //     type: 'input',
+            //     label: '档案号',
+            //     prop: "oemqwId",
+            //     span: 1,
+            //     //disabled: false,
+            //     required: false,
+            //     default: "",
+            //  },
               {
                 type: 'input',
                 label: '备注',
@@ -303,7 +311,7 @@ const toolBarConfig:any= {
         {
             type: 'input',
             label: '姓名',
-            prop: "deviceName",
+            prop: "name",
             //disabled: false,
             //childs: [],
             required: false,
@@ -312,7 +320,7 @@ const toolBarConfig:any= {
            {
             type: 'input',
             label: '联系电话',
-            prop: "deviceNo",
+            prop: "phone",
             //disabled: false,
             //childs: [],
             required: false,
@@ -322,7 +330,7 @@ const toolBarConfig:any= {
              {
             type: 'input',
             label: '身份证号',
-            prop: "deviceNo",
+            prop: "idNumber",
             //disabled: false,
             //childs: [],
             required: false,
@@ -332,37 +340,59 @@ const toolBarConfig:any= {
               {
             type: 'select',
             label: '性别',
-            prop: "deviceNo",
+            prop: "gender",
             //disabled: false,
-            childs: [],
+            childs: [
+                {
+                    label: '男',
+                    value: 1
+                },
+                {
+                    label: '女',
+                    value: 2
+                },
+                {
+            label: "未知",
+            value:0
+        }
+            ],
             required: false,
             // default: "",
             },
                {
-            type: 'select',
+            type: 'input',
             label: '与老人关系',
-            prop: "deviceNo",
+            prop: "relationship",
             //disabled: false,
-            childs: [],
+            //childs: [],
             required: false,
             // default: "",
             },
                   {
             type: 'select',
             label: '是否监护人',
-            prop: "deviceNo",
+            prop: "guardian",
             //disabled: false,
-            childs: [],
+            childs: [
+                {
+                    label: '是',
+                    value: 1
+                },
+                {
+                    label: '否',
+                    value: 0
+                }
+            ],
             required: false,
             // default: "",
         },
         
                   {
             type: 'textarea',
-            label: '联系地址',
-            prop: "deviceNo",
+            label: '家庭地址',
+            prop: "address",
             //disabled: false,
-            childs: [],
+           // childs: [],
             required: false,
             // default: "",
         },
@@ -393,102 +423,126 @@ const familyInfo: any = {
         lableWidth: 100,
         rules: {},
         FormData: [
-        {
-            type: 'input',
-            label: '姓名',
-            prop: "deviceName",
-            //disabled: false,
-            //childs: [],
-            required: false,
-            // default: "",
-        },
-           {
-            type: 'input',
-            label: '联系电话',
-            prop: "deviceNo",
-            //disabled: false,
-            //childs: [],
-            required: false,
-            // default: "",
-            },
-        
-             {
-            type: 'input',
-            label: '身份证号',
-            prop: "deviceNo",
-            //disabled: false,
-            //childs: [],
-            required: false,
-            // default: "",
-            },
-             
-              {
-            type: 'select',
-            label: '性别',
-            prop: "deviceNo",
-            //disabled: false,
-            childs: [],
-            required: false,
-            // default: "",
+            {
+                type: 'input',
+                label: '姓名',
+                prop: "name",
+                //disabled: false,
+                //childs: [],
+                required: false,
+                // default: "",
             },
                {
-            type: 'select',
-            label: '与老人关系',
-            prop: "deviceNo",
-            //disabled: false,
-            childs: [],
-            required: false,
-            // default: "",
+                type: 'input',
+                label: '联系电话',
+                prop: "phone",
+                //disabled: false,
+                //childs: [],
+                required: false,
+                // default: "",
+                },
+            
+                 {
+                type: 'input',
+                label: '身份证号',
+                prop: "idNumber",
+                //disabled: false,
+                //childs: [],
+                required: false,
+                // default: "",
+                },
+                 
+                  {
+                type: 'select',
+                label: '性别',
+                prop: "gender",
+                //disabled: false,
+                childs: [
+                    {
+                        label: '男',
+                        value: 1
+                    },
+                    {
+                        label: '女',
+                        value: 2
+                    },
+                    {
+                label: "未知",
+                value:0
+            }
+                ],
+                required: false,
+                // default: "",
+                },
+                   {
+                type: 'input',
+                label: '与老人关系',
+                prop: "relationship",
+                //disabled: false,
+                //childs: [],
+                required: false,
+                // default: "",
+                },
+                      {
+                type: 'select',
+                label: '是否监护人',
+                prop: "guardian",
+                //disabled: false,
+                childs: [
+                    {
+                        label: '是',
+                        value: 1
+                    },
+                    {
+                        label: '否',
+                        value: 0
+                    }
+                ],
+                required: false,
+                // default: "",
             },
-                  {
-            type: 'select',
-            label: '是否监护人',
-            prop: "deviceNo",
-            //disabled: false,
-            childs: [],
-            required: false,
-            // default: "",
-        },
-        
-                  {
-            type: 'textarea',
-            label: '联系地址',
-            prop: "deviceNo",
-            //disabled: false,
-            childs: [],
-            required: false,
-            // default: "",
-        },
-
-
-
+            
+                      {
+                type: 'textarea',
+                label: '家庭地址',
+                prop: "address",
+                //disabled: false,
+               // childs: [],
+                required: false,
+                // default: "",
+            },
     
-        ]
+    
+    
+        
+            ]
     },
     columns: [
         {
-            title: '角色',
-            key: 'deviceName',
+            title: '姓名',
+            key: 'name',
             minWidth: 150,
         },
         {
             title: '性别',
-            key: 'deviceNo',
-            minWidth: 150,
+            key: 'gender',
+            slot:'gender',
+            minWidth: 100,
         },
         {
             title: '联系电话',
-            key: 'freeObsNum',
+            key: 'phone',
             minWidth: 230,
         },
           {
             title: '是否监护人',
-            key: 'freeObsNum',
-            minWidth: 150,
+            key: 'guardian',
+            slot:'guardian',
+            minWidth: 100,
         },
              {
             title: '联系地址',
-            key: 'freeObsNum',
+            key: 'address',
             minWidth: 230,
         },
 
@@ -502,61 +556,61 @@ const healthyInfo: any = {
     FormData:
         [
             {
-                type: 'select',
+                type: 'input',
                 label: '自理情况',
                 prop: "selfCareAbility",
                 span: 1,
                 //disabled: false,
                 required: false,
                 default: "",
-                childs: [
-                    {
-                        label: '是',
-                        value: '1'
-                    },
-                    {
-                        label: '否',
-                        value: '0'
-                    }
-                ]
+                // childs: [
+                //     {
+                //         label: '是',
+                //         value: '1'
+                //     },
+                //     {
+                //         label: '否',
+                //         value: '0'
+                //     }
+                // ]
             },
            {
-                type: 'select',
+                type: 'input',
                 label: '视力',
                 prop: "vision",
                 span: 1,
                 //disabled: false,
                 required: false,
                 default: "",
-                childs: [
-                    {
-                        label: '是',
-                        value: '1'
-                    },
-                    {
-                        label: '否',
-                        value: '0'
-                    }
-                ]
+                // childs: [
+                //     {
+                //         label: '是',
+                //         value: '1'
+                //     },
+                //     {
+                //         label: '否',
+                //         value: '0'
+                //     }
+                // ]
             },
              {
-                type: 'select',
+                type: 'input',
                 label: '听力',
                 prop: "hearing",
                 span: 1,
                 //disabled: false,
                 required: false,
                 default: "",
-                childs: [
-                    {
-                        label: '是',
-                        value: '1'
-                    },
-                    {
-                        label: '否',
-                        value: '0'
-                    }
-                ]
+                // childs: [
+                //     {
+                //         label: '是',
+                //         value: '1'
+                //     },
+                //     {
+                //         label: '否',
+                //         value: '0'
+                //     }
+                // ]
             },
             {
                 type: 'input',
@@ -597,74 +651,74 @@ const healthyInfo: any = {
 
 
             {
-                type: 'select',
+                type: 'input',
                 label: '主要疾病',
                 prop: "majorDisease",
                 span: 3,
                 //disabled: false,
                 multiple:true,
-                childs: [
-                    {
-                        label: '高血压',
-                        value: '高血压'
-                    },
-                    {
-                        label: '糖尿病',
-                        value: '糖尿病'
-                    },
-                    {
-                        label: '冠心病',
-                        value: '冠心病'
-                    },
-                    {
-                        label: '慢性阻塞性肺疾病',
-                        value: '慢性阻塞性肺疾病'
-                    },
-                    {
-                        label: '恶性肿瘤',
-                        value: '恶性肿瘤'
-                    },
-                    {
-                        label: '脑卒中',
-                        value: '脑卒中'
-                    },
-                    {
-                        label: '严重精神障碍',
-                        value: '严重精神障碍'
-                    },
-                    {
-                        label: '结核病',
-                        value: '结核病'
-                    },
-                    {
-                        label: '肝炎',
-                        value: '肝炎'
-                    },
-                    {
-                        label: '高血栓',
-                        value: '高血栓'
-                    },
-                    {
-                        label: '心脏病',
-                        value: '心脏病'
-                    },
-                    {
-                        label: '高血栓',
-                        value: '高血栓'
-                    },
-                       {
-                        label: '脑血栓',
-                        value: '脑血栓'
-                    },
-                       {
-                        label: '关节炎',
-                        value: '关节炎'
-                    },
-                       {
-                        label: '风湿',
-                        value: '风湿'
-                    },
-                ],
+                // childs: [
+                //     {
+                //         label: '高血压',
+                //         value: '高血压'
+                //     },
+                //     {
+                //         label: '糖尿病',
+                //         value: '糖尿病'
+                //     },
+                //     {
+                //         label: '冠心病',
+                //         value: '冠心病'
+                //     },
+                //     {
+                //         label: '慢性阻塞性肺疾病',
+                //         value: '慢性阻塞性肺疾病'
+                //     },
+                //     {
+                //         label: '恶性肿瘤',
+                //         value: '恶性肿瘤'
+                //     },
+                //     {
+                //         label: '脑卒中',
+                //         value: '脑卒中'
+                //     },
+                //     {
+                //         label: '严重精神障碍',
+                //         value: '严重精神障碍'
+                //     },
+                //     {
+                //         label: '结核病',
+                //         value: '结核病'
+                //     },
+                //     {
+                //         label: '肝炎',
+                //         value: '肝炎'
+                //     },
+                //     {
+                //         label: '高血栓',
+                //         value: '高血栓'
+                //     },
+                //     {
+                //         label: '心脏病',
+                //         value: '心脏病'
+                //     },
+                //     {
+                //         label: '高血栓',
+                //         value: '高血栓'
+                //     },
+                //        {
+                //         label: '脑血栓',
+                //         value: '脑血栓'
+                //     },
+                //        {
+                //         label: '关节炎',
+                //         value: '关节炎'
+                //     },
+                //        {
+                //         label: '风湿',
+                //         value: '风湿'
+                //     },
+                // ],
                 required: false,
                 default: "",
             },
@@ -695,29 +749,92 @@ const careInfo: any = {
     rules: {},
     FormData:
         [
+        // let list = ["(三级)", "(二级)", "(一级)", "(特一级)", "(特二级)", "(特三级)", "(专需护理)"]
+            //
             {
                 type: 'select',
-                label: '护理级别',
-                prop: "nadsadme",
+                label: '护理项目',
+                prop: "nursingId",
                 span: 1,
                 //disabled: false,
                 required: false,
                 default: "",
                 childs: [
-                    {
-                        label: '是',
-                        value: '1'
-                    },
-                    {
-                        label: '否',
-                        value: '0'
-                    }
+                    // {
+                    //     label: '三级',
+                    //     value: '0'
+                    // },
+                    // {
+                    //     label: '二级',
+                    //     value: '1'
+                    // },
+                    // {
+                    //     label: '一级',
+                    //     value: '2'
+                    // },
+                    // {
+                    //     label: '特一级',
+                    //     value: '3'
+                    // },
+                    // {
+                    //     label: '特二级',
+                    //     value: '4'
+                    // },
+                    // {
+                    //     label: '特三级',
+                    //     value: '5'
+                    // },
+                    // {
+                    //     label: '专需护理',
+                    //     value: '6'
+                    // },
                 ]
             },
+            // {
+            //     type: 'select',
+            //     label: '周期',
+            //     prop: "unit",
+            //     span: 1,
+            //     //disabled: false,
+            //     required: false,
+            //     childs:[
+            //         {
+            //             label: '无',
+            //             value: '0'
+            //         },
+            //         {
+            //             label: '天',
+            //             value: '1'
+            //         },
+            //         {
+            //             label: '周',
+            //             value: '2'
+            //         },
+            //         {
+            //             label: '月',
+            //             value: '3'
+            //         },
+            //         {
+            //             label: '年',
+            //             value: '4'
+            //         },
+            //     ],
+            //     default: "",
+            // },
+            
+            // {
+            //     type: 'sort',
+            //     label: '护理级别费用',
+            //     prop: "price",
+            //     span: 1,
+            //     //disabled: false,
+            //     required: false,
+            //     default: "",
+            // },
             {
-                type: 'input',
-                label: '备注',
-                prop: "oemvfdId",
+                type: 'sort',
+                label: '私人定制费',
+                prop: "nursingCustomizedCosts",
                 span: 2,
                 //disabled: false,
                 required: false,
@@ -725,31 +842,23 @@ const careInfo: any = {
             },
             {
                 type: 'input',
-                label: '护理级别费用',
-                prop: "oemvfdId",
-                span: 1,
+                label: '护理备注',
+                prop: "nursingNotes",
+                span: 3,
                 //disabled: false,
                 required: false,
                 default: "",
             },
-            {
-                type: 'input',
-                label: '私人定制',
-                prop: "oemvfdId",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
-            {
-                type: 'input',
-                label: '护理总费用',
-                prop: "oemvfdId",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
+         
+            // {
+            //     type: 'input',
+            //     label: '护理总费用',
+            //     prop: "oemvfdId",
+            //     span: 1,
+            //     //disabled: false,
+            //     required: false,
+            //     default: "",
+            // },
         ]
 }
 //餐饮
@@ -760,45 +869,54 @@ const foodInfo: any = {
             {
                 type: 'select',
                 label: '选择套餐',
-                prop: "nadsadme",
+                prop: "dietId",
                 span: 1,
                 //disabled: false,
                 required: false,
                 default: "",
                 childs: [
-                    {
-                        label: '是',
-                        value: '1'
-                    },
-                    {
-                        label: '否',
-                        value: '0'
-                    }
+                    // {
+                    //     label: '是',
+                    //     value: '1'
+                    // },
+                    // {
+                    //     label: '否',
+                    //     value: '0'
+                    // }
                 ]
             },
-            {
-                type: 'input',
-                label: '套餐费用',
-                prop: "oemvfdId",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
-            {
-                type: 'input',
-                label: '档案编号',
-                prop: "oemvfdId",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
+            // {
+            //     type: 'sort',
+            //     label: '套餐费用',
+            //     prop: "price",
+            //     span: 2,
+            //     //disabled: false,
+            //     required: false,
+            //     default: "",
+            // },
+            // {
+            //     type: 'sort',
+            //     label: '套餐费用',
+            //     prop: "oemvfdId",
+            //     span: 2,
+            //     //disabled: false,
+            //     required: false,
+            //     default: "",
+            // },
+            // {
+            //     type: 'input',
+            //     label: '档案编号',
+            //     prop: "oemvfdId",
+            //     span: 1,
+            //     //disabled: false,
+            //     required: false,
+            //     default: "",
+            // },
             {
                 type: 'input',
                 label: '备注说明',
-                prop: "oemvfdId",
-                span: 3,
+                prop: "dietNotes",
+                span: 2,
                 //disabled: false,
                 required: false,
                 default: "",
@@ -812,114 +930,133 @@ const bedInfo: any = {
      FormData:
         [
              {
-                type: 'select',
+                type: 'date',
                 label: '入住日期',
-                prop: "nadsadme",
+                prop: "startTimeStr",
                 span: 1,
                 //disabled: false,
                 required: false,
                 default: "",
-                childs: [
-                    {
-                        label: '是',
-                        value: '1'
-                    },
-                    {
-                        label: '否',
-                        value: '0'
-                    }
-                ]
+                // childs: [
+                //     {
+                //         label: '是',
+                //         value: '1'
+                //     },
+                //     {
+                //         label: '否',
+                //         value: '0'
+                //     }
+                // ]
              },
              {
-                type: 'select',
-                label: '入住楼栋',
-                prop: "nadsadme",
+                type: 'date',
+                label: '结束日期',
+                prop: "endTimeStr",
                 span: 1,
                 //disabled: false,
                 required: false,
                 default: "",
-                childs: [
-                    {
-                        label: '是',
-                        value: '1'
-                    },
-                    {
-                        label: '否',
-                        value: '0'
-                    }
-                ]
+                // childs: [
+                //     {
+                //         label: '是',
+                //         value: '1'
+                //     },
+                //     {
+                //         label: '否',
+                //         value: '0'
+                //     }
+                // ]
              },
-              {
-                type: 'select',
-                label: '入住楼层',
-                prop: "nadsadme",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-                childs: [
-                    {
-                        label: '是',
-                        value: '1'
-                    },
-                    {
-                        label: '否',
-                        value: '0'
-                    }
-                ]
-             },
-               {
-                type: 'select',
-                label: '入住房号',
-                prop: "nadsadme",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-                childs: [
-                    {
-                        label: '是',
-                        value: '1'
-                    },
-                    {
-                        label: '否',
-                        value: '0'
-                    }
-                ]
-             },
-                {
-                type: 'select',
-                label: '入住床位',
-                prop: "nadsadme",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-                childs: [
-                    {
-                        label: '是',
-                        value: '1'
-                    },
-                    {
-                        label: '否',
-                        value: '0'
-                    }
-                ]
-             },
-              {
-                type: 'input',
-                label: '床位费',
-                prop: "oemvfdId",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
+            //  {
+            //     type: 'select',
+            //     label: '入住楼栋',
+            //     prop: "hostelId",
+            //     span: 1,
+            //     //disabled: false,
+            //     required: false,
+            //     default: "",
+            //     childs: [
+            //         {
+            //             label: '是',
+            //             value: '1'
+            //         },
+            //         {
+            //             label: '否',
+            //             value: '0'
+            //         }
+            //     ]
+            //  },
+            //   {
+            //     type: 'select',
+            //     label: '入住楼层',
+            //     prop: "floorId",
+            //     span: 1,
+            //     //disabled: false,
+            //     required: false,
+            //     default: "",
+            //     childs: [
+            //         {
+            //             label: '是',
+            //             value: '1'
+            //         },
+            //         {
+            //             label: '否',
+            //             value: '0'
+            //         }
+            //     ]
+            //  },
+            //    {
+            //     type: 'select',
+            //     label: '入住房号',
+            //     prop: "roomId",
+            //     span: 1,
+            //     //disabled: false,
+            //     required: false,
+            //     default: "",
+            //     childs: [
+            //         {
+            //             label: '是',
+            //             value: '1'
+            //         },
+            //         {
+            //             label: '否',
+            //             value: '0'
+            //         }
+            //     ]
+            //  },
+            //     {
+            //     type: 'select',
+            //     label: '入住床位',
+            //     prop: "bedId",
+            //     span: 1,
+            //     //disabled: false,
+            //     required: false,
+            //     default: "",
+            //     childs: [
+            //         {
+            //             label: '是',
+            //             value: '1'
+            //         },
+            //         {
+            //             label: '否',
+            //             value: '0'
+            //         }
+            //     ]
+            //  },
+            //   {
+            //     type: 'input',
+            //     label: '床位费',
+            //     prop: "oemvfdId",
+            //     span: 1,
+            //     //disabled: false,
+            //     required: false,
+            //     default: "",
+            // },
                  {
                 type: 'input',
                 label: '备注说明',
-                prop: "oemvfdId",
-                span: 3,
+                prop: "notes",
+                span: 1,
                 //disabled: false,
                 required: false,
                 default: "",
@@ -934,77 +1071,77 @@ const contractInfo: any = {
      FormData:
         [
              
-              {
-                type: 'input',
-                label: '客户姓名',
-                prop: "oemvfdId",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
+            //   {
+            //     type: 'input',
+            //     label: '客户姓名',
+            //     prop: "oemvfdId",
+            //     span: 1,
+            //     //disabled: false,
+            //     required: false,
+            //     default: "",
+            // },
+            // {
+            //     type: 'select',
+            //     label: '入住房型',
+            //     prop: "nadsadme",
+            //     span: 1,
+            //     //disabled: false,
+            //     required: false,
+            //     default: "",
+            //     childs: [
+            //         {
+            //             label: '是',
+            //             value: '1'
+            //         },
+            //         {
+            //             label: '否',
+            //             value: '0'
+            //         }
+            //     ]
+            //  },
+            //  {
+            //     type: 'date',
+            //     label: '到期时间',
+            //     prop: "nadsadme",
+            //     span: 1,
+            //     //disabled: false,
+            //     required: false,
+            //     default: "",
+            //     // childs: [
+            //     //     {
+            //     //         label: '是',
+            //     //         value: '1'
+            //     //     },
+            //     //     {
+            //     //         label: '否',
+            //     //         value: '0'
+            //     //     }
+            //     // ]
+            //  },
                  {
                 type: 'input',
                 label: '联系地址',
-                prop: "oemvfdId",
-                span: 2,
-                //disabled: false,
-                required: false,
-                default: "",
-             },
-                 {
-                type: 'select',
-                label: '入住房型',
-                prop: "nadsadme",
+                prop: "address",
                 span: 1,
                 //disabled: false,
                 required: false,
                 default: "",
-                childs: [
-                    {
-                        label: '是',
-                        value: '1'
-                    },
-                    {
-                        label: '否',
-                        value: '0'
-                    }
-                ]
              },
-                 
-                  {
-                type: 'select',
-                label: '到期时间',
-                prop: "nadsadme",
-                span: 2,
-                //disabled: false,
-                required: false,
-                default: "",
-                childs: [
-                    {
-                        label: '是',
-                        value: '1'
-                    },
-                    {
-                        label: '否',
-                        value: '0'
-                    }
-                ]
-             },
+                   
                   
                   {
-                type: 'input',
+                type: 'sort',
                 label: '入院押金',
-                prop: "oemvfdId",
+                prop: "admissionDeposit",
                 span: 1,
                 //disabled: false,
                 required: false,
                 default: "",
             },
                  {
-                type: 'input',
+                type: 'sort',
                 label: '医疗保证金',
-                prop: "oemvfdId",
+                prop: "medicalBond",
                 span: 1,
                 //disabled: false,
                 required: false,

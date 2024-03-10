@@ -123,9 +123,13 @@
 
             <div v-if="item.type == 'date'">
                 <DatePicker v-model="FormData[item.prop]" type="date" :placeholder="t('请选择') + t(item.label)"
-                    style="width: 100%" />
+                :editable="false" style="width: 100%" />
             </div>
 
+            <div v-if="item.type == 'time'">
+                <TimePicker v-model="FormData[item.prop]" format="HH:mm" :placeholder="t('请选择') + t(item.label)"
+                   :editable="false" style="width: 100%" />
+            </div>
 
             <!-- <div v-if="item.type == 'editor'">
                 <Toolbar style="border-bottom: 1px solid #ccc" :editor="editorRef" :defaultConfig="toolbarConfig"

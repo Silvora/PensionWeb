@@ -1,4 +1,9 @@
 
+/* .ivu-modal-mask,.ivu-modal-wrap{
+  z-index: 9999 !important;
+} */
+
+
 .ivu-layout{
   background: transparent;
 }
@@ -13,6 +18,9 @@
 }
 .ivu-card {
   border-radius: 8px;
+}
+.ivu-poptip-rel {
+    height: 100%;
 }
 
 .ivu-tag-primary{
@@ -98,6 +106,11 @@
 }
 .TableForm .ivu-select{
   border: 1px solid #98D2E1;
+ 
+}
+.TableForm .ivu-input-number{
+  border: 1px solid #98D2E1;
+  border-radius: 0;
  
 }
 .TableForm .ivu-select-selection{

@@ -58,7 +58,7 @@
                     </template>
 
                     <template #active="{ row }">
-                        <vxe-button type="text" size="mini" status="primary">
+                        <vxe-button type="text" size="mini" status="primary" @click="()=>router.push(`/add-elder?type=0&id=${row.id}`)">
                             查看
                         </vxe-button>
                         <vxe-button type="text" size="mini" status="primary" @click="handleElderEdit(row)">
@@ -76,7 +76,7 @@
                     <!-- <Button type="primary" class="btn" @click="handleShowModal">楼栋管理</Button> -->
                     <Card :bordered="false" :padding="6" class="btnList" style="border: 1px solid #98D2E1;">
                         <div class="list">
-                            <Button type="primary" @click="() => router.push('/add-elder')">新增</Button>
+                            <Button type="primary" @click="() => router.push('/add-elder?type=0&id=')">新增</Button>
                             <Button type="error">批量删除</Button>
                         </div>
                     </Card>

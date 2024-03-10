@@ -113,6 +113,7 @@ const handleLogout = () => {
       router.replace({
         path: '/login'
       })
+      Modal.remove();
     },
     onCancel: () => {
       //Message.info('Clicked cancel')

@@ -36,7 +36,7 @@
                             </p>
                             <p>
                                 <span class="t1">出生日期</span>
-                                <span class="t2">{{ userInfo.birthday }}</span>
+                                <span class="t2">{{ userInfo.birthDate }}</span>
                             </p>
                             <p>
                                 <span class="t1">身份证</span>
@@ -48,7 +48,7 @@
                             </p>
                             <p>
                                 <span class="t1">入职时间</span>
-                                <span class="t2">2020-10-10</span>
+                                <span class="t2">{{ userInfo.educationLevel }}</span>
                             </p>
                             <p>
                                 <span class="t1">职位</span>
@@ -60,7 +60,7 @@
                             </p>
                             <p>
                                 <span class="t1">职业等级</span>
-                                <span class="t2">{{ userInfo.jobLevel }}</span>
+                                <span class="t2">{{ jobLevelList[userInfo.jobLevel] }}</span>
                             </p>
                             <p>
                                 <span class="t1">所属小组</span>
@@ -77,8 +77,13 @@
             <div class="right">
                 <p class="title">护理老人</p>
 
-                <TableView ref="TableViewRef" :data="data" :tableConfig="roleTable" :tablePage="pagerConfig"
+                <TableView ref="TableViewRef" :data="data" :tableConfig="nursingTable" :tablePage="pagerConfig"
                     @handleUpdatePage="handleUpdatePage" :tableH="tableH">
+
+                    <template #nursingGrade="{ row }">
+                        <span>{{ jobLevelList[row.nursingGrade] }}</span>
+                    </template>
+
                     <template #active="{ row }">
                         <vxe-button type="text" size="mini" status="primary" @click="handleElderLook(row)">
                             查看服务
@@ -103,13 +108,13 @@
 
                 <Card :bordered="false" :padding="5" style="background: rgba(19,100,248,0.05);margin: 5px 0;"
                     v-for="item in elderList" :key="item.id">
-                    <div class="userBox">
+                    <div class="userBox" @click="handleConnect(item)">
                         <div>
-                            <!-- <img :src="" alt=""> -->
+                            <img :src="item.photo" alt="">
                         </div>
                         <div class="name">
                             <p>{{ item.name }}</p>
-                            <p>{{ item.phone }}</p>
+                            <p>ID:{{ item.fileNo }}</p>
                         </div>
                     </div>
                 </Card>
@@ -119,13 +124,28 @@
 
 
         <!--  护理列表 -->
-        <Modal v-model="nerseModal" title="护理计划" :footer-hide="true" :width="70">
+        <Modal v-model="nerseModal" title="护理任务" :footer-hide="true" :width="70">
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
+            <!-- <div> -->
+                <Button style="float: right;margin-bottom: 15px;" type="primary" @click="handleAddNursing">新增护理任务</Button>
+            <!-- </div> -->
 
             <div class="nuresBox">
-                <Table :columns="nuresTable.columns" :data="nuresList"></Table>
+                <Table :columns="nuresTable.columns" :data="nuresList">
+                   
+                   
+                    <template #status="{ row }">
+                        <Tag :color="statusList[row.status].type">{{ statusList[row.status].text }}</Tag>
+                    </template>
+                   
+                    <template #action="{ row }">
+                        <vxe-button type="text" size="mini" status="primary" @click="handleEditNursing(row)">编辑</vxe-button>
+                        <vxe-button type="text" size="mini" :status="row.status == 0 ? 'primary' : 'danger'" @click="handleStatusNursing(row)">{{row.status == 0 ? '开始任务' : '结束任务'}}</vxe-button>
+                        <vxe-button type="text" size="mini" status="danger" @click="handleDeleteNursing(row)">删除</vxe-button>
+                    </template>
+                </Table>
                 <!-- <TableView ref="TableViewRef" :data="data" :tableConfig="roleTable" :tablePage="pagerConfig"
                     @handleUpdatePage="handleUpdatePage" :tableH="tableH">
                     <template #active="{ row }">
@@ -155,27 +175,56 @@
             </div>
         </Modal>
 
+
+
+        <FormModal :title="editTitle" :rules="editConfig.rules" :lableWidth="editConfig.lableWidth"
+        :FormData="editConfig.FormData" ref="TableEditRef" @handleModalOk="handleEditModalOk"
+        >
+    </FormModal>
+
+
+        
+
+
     </div>
 </template>
 
 <script setup lang='ts'>
-import { roleTable, nuresTable } from "./data"
+import { nursingTable, nuresTable,editConfig } from "./data"
 import { ref, onMounted } from "vue";
 import { StaffDetailId } from "@/api/Staff/Staff"
 import { useRoute } from "vue-router"
-import { NurseRecordBindList, NurseRecordUnBindId } from "@/api/Nurse/Nurse"
-import { Modal, Message } from "view-ui-plus";
-
+import { NurseRecordBindList, NurseRecordUnBindId, NurseRecordElderlyList, NurseRecordBind,NurseTaskList, NurseTaskStartOrEndTaskId, NurseTaskRemoveId, NurseTaskUpdate, NurseTaskSave } from "@/api/Nurse/Nurse"
+import { Modal, Message,Table } from "view-ui-plus";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n()
 const route = useRoute()
+const statusList:any={
+    0:{
+        text:'未开始',
+        type:'default'
+    },
+    1:{
+        text:'进行中',
+        type:'primary'
+    },
+    2:{
+        text:'已完成',
+        type:'success'
+    },
+    7:{
+        text:'已过期',
+        type:'warning'
+    }
 
-const NuresViewRef = ref<any>(null)
-
+}
+const jobLevelList = ref(["三级", "二级", "一级", "特一级", "特二级", "特三级", "专需护理"])
+// const NuresViewRef = ref<any>(null)
+const TableEditRef = ref<any>(null)
 const userInfo = ref<any>({})
 const elderModal = ref<any>(false)
 const keyword = ref<any>('')
-const elderList = ref<any>(false)
+const elderList = ref<any>([])
 const nerseModal = ref<any>(false)
 const data: any = ref([
     {
@@ -185,12 +234,13 @@ const data: any = ref([
         serviceCount: 10
     }
 ])
+const editTitle = ref('编辑护理任务')
 const nuresList: any = ref([{
     elderlyName: '111',
     elderlyFileNo: '111',
     nurseLevel: '111',
     serviceCount: 10,
-    status: 10,
+    status: 0,
 }])
 const tableH = ref("640px")
 const pageBox = ref<any>(null)
@@ -199,6 +249,8 @@ const pagerConfig = ref({
     currentPage: 1,//当前页
     pageSize: 10 //数量
 })
+
+const NursingInfo = ref<any>({})
 
 
 onMounted(() => {
@@ -210,9 +262,115 @@ onMounted(() => {
     getNurseList()
 })
 
+const handleEditModalOk = (data:any) => {
+   // getNurseList()
+   console.log(data)
+
+   let request
+   let obj = {}
+
+   if(data.id){
+       request = NurseTaskUpdate  
+       obj = data
+   }else{
+       request = NurseTaskSave
+       obj = {
+           ...data,
+           elderlyId: NursingInfo.value.elderlyId,
+           nursingGrade: NursingInfo.value.nursingGrade,
+           nursingId:  NursingInfo.value.id,
+           staffId:  NursingInfo.value.staffId,
+           status:0
+       }
+   }
+   //console.log(NursingInfo.value,obj)
+    request(obj).then(() => {
+        Message.success("操作成功")
+
+       getNurseTaskList(NursingInfo.value.elderlyId)
+       TableEditRef.value.closeModal()
+    }).catch(() => {
+        Message.error("操作失败")
+        TableEditRef.value?.closeTextLoding()
+    })
+}
+
+
+// 新增护理任务
+const handleAddNursing = () => {
+    // console.log(item)
+    // nerseModal.value = true
+    // getNurseTaskList(item.elderlyId)
+    TableEditRef.value.openModal()
+
+}
+
+// 编辑护理任务
+const handleEditNursing = (item: any) => {
+    console.log(item)
+    TableEditRef.value.openModal(item)
+}
+
+// 开始/结束护理任务
+const handleStatusNursing = (item: any) => {
+   // console.log(item)
+   // const request = item.status == 1 ? NurseRecordUnBindId : NurseRecordBindList
+    NurseTaskStartOrEndTaskId({id: item.id,isStart:item.status==0?true:false}).then(() => {
+        Message.success("修改成功")
+        getNurseTaskList(item.elderlyId)
+    })
+
+}
+
+// 删除护理任务
+const handleDeleteNursing = (item: any) => {
+    console.log(item)
+   Modal.confirm({
+       title: '删除',
+       content: '是否删除该护理任务？',
+       loading: true,
+       onOk: () => {
+           NurseTaskRemoveId({id: item.id}).then(() => {
+               Message.success("删除成功")
+               getNurseTaskList(item.elderlyId)
+               Modal.remove();
+           })
+       }
+   })
+}
+
+// 绑定老人
+const handleConnect = (item: any) => {
+
+    let data = {
+        staffId: userInfo.value.id,
+        staffName: userInfo.value.name,
+        nursingGrade: userInfo.value.jobLevel,
+        elderlyName: item.name,
+        elderlyId: item.id,
+        elderlyFileNo: item.fileNo,
+    }
+   
+    NurseRecordBind(data).then(() => {
+        Message.success("绑定成功")
+        getData()
+        getNurseList()
+    })
+}
+
 // 查看服务
 const handleElderLook = (item: any) => {
+
+    // NurseTaskList({ elderlyId: item.id }).then((res: any) => {
+    //    // nuresList.value = res.data
+    // })
+    getNurseTaskList(item.elderlyId)
+
+    NursingInfo.value = item
+
     nerseModal.value = true
+
+
 }
 
 // 移除老人
@@ -225,6 +383,7 @@ const handleElderDelete = (id: any) => {
             NurseRecordUnBindId({ id }).then(() => {
                 Message.success(t('移除成功'))
                 Modal.remove();
+                getNurseList()
             }).catch(() => {
                 Modal.loading = false
             })
@@ -242,10 +401,24 @@ const handleUpdatePage = ({ currentPage, pageSize }: any) => {
     }
 }
 
+const getNurseTaskList=(id:any) => {
+    NurseTaskList({elderlyId: id}).then((res: any) => {
+        nuresList.value = res.data
+    })
+}
+
+
+
 const getNurseList = () => {
     NurseRecordBindList({ staffId: route.query.id }).then((res: any) => {
-        //data.value = res.data
+        data.value = res.data
     })
+
+    NurseRecordElderlyList({}).then((res: any) => {
+        //data.value = res.data
+        elderList.value = res.data.records
+    })
+   
 }
 
 const getData = () => {

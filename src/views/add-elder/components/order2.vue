@@ -7,6 +7,14 @@
             <TableView ref="TableViewRef" :data="data" :tableConfig="familyInfo" :tablePage="pagerConfig"
                 @handleUpdatePage="handleUpdatePage" @handleEdit="handleEdit">
 
+                <template #gender="{ row }">
+                    <Tag type="border" :color="row.guardian == 1 ? 'primary' : 'error'">{{ row.guardian == 1 ? '男' : '女' }}</Tag>
+
+                </template>
+                <template #guardian="{ row }">
+                    <Tag type="border" :color="row.guardian == 1 ? 'primary' : 'error'">{{ row.guardian == 1 ? '是' : '否' }}</Tag>
+</template>
+
                 <template #deviceStatus="{ row }">
                     <Switch :model-value="row.deviceStatus" true-color="RGBA(18, 185, 135, 1)"
                         false-color="RGBA(237, 144, 0, 1)" true-value="1" false-value="0" @on-change="handleUpdateSwitch" />
@@ -20,9 +28,9 @@
                     <vxe-button type="text" size="mini" status="primary">
                         权限
                     </vxe-button> -->
-                    <vxe-button type="text" size="mini" status="primary">
+                    <!-- <vxe-button type="text" size="mini" status="primary">
                         查看
-                    </vxe-button>
+                    </vxe-button> -->
                     <vxe-button type="text" size="mini" status="primary" @click="handleRoleEdit(row)">
                         编辑
                     </vxe-button>
@@ -39,7 +47,7 @@
                 <Button type="primary" @click="handleAddFamily">新增</Button>
                 <!-- <Button type="primary">批量启用</Button>
                 <Button type="primary">批量禁用</Button> -->
-                <Button type="error">批量删除</Button>
+                <!-- <Button type="error" @click="handleBatchDelete">批量删除</Button> -->
             </div>
         </Card>
 
@@ -52,25 +60,27 @@
 <script setup lang='ts'>
 import { ref, onMounted } from "vue"
 import { familyInfo, toolBarConfig } from "../data"
-import { Message, Modal } from "view-ui-plus";
+import { Message, Modal,Tag } from "view-ui-plus";
 import { useI18n } from "vue-i18n"
 import { FamilyList, FamilyRemoveId, FamilySave, FamilyUpdate } from "@/api/Family/Family"
+import { useRoute } from 'vue-router';
+const route = useRoute()
 const TableViewRef = ref<any>(null)
 const TableAddRef = ref<any>(null)
 const { t } = useI18n()
 const data: any = ref([
-    {
-        deviceName: '2121',
-        deviceNo: 'dsada',
-        freeObsNum: '121',
-        deviceStatus: '1',
-    },
-    {
-        deviceName: '2121',
-        deviceNo: 'dsada',
-        freeObsNum: '121',
-        deviceStatus: '0',
-    }
+    // {
+    //     deviceName: '2121',
+    //     deviceNo: 'dsada',
+    //     freeObsNum: '121',
+    //     deviceStatus: '1',
+    // },
+    // {
+    //     deviceName: '2121',
+    //     deviceNo: 'dsada',
+    //     freeObsNum: '121',
+    //     deviceStatus: '0',
+    // }
 ])
 
 const pagerConfig = ref({
@@ -85,8 +95,12 @@ const handleAddFamily = () => {
 }
 const handleAddModalOk = (data: any) => {
     console.log(data)
-    FamilySave(data).then(() => {
+    FamilySave({...data,elderlyId:3}).then(() => {
         Message.success(t('添加成功'))
+        TableAddRef.value.closeModal()
+        getData()
+    }).catch(() => {
+        TableAddRef.value.closeTextLoding()
     })
 }
 
@@ -127,6 +141,26 @@ const handleRoleDelete = (id: any) => {
     })
 }
 
+// const handleBatchDelete = () => {
+//     Modal.confirm({
+//         title: '批量删除家属',
+//         content: '确定要批量删除家属',
+//         loading: true,
+//         onOk: () => {
+//             console.log(id)
+//             FamilyRemoveId({ ids }).then(() => {
+//                 Message.success(t('删除成功'))
+//                 Modal.remove();
+//                 getData()
+//                 // handleDeviceList(data)
+//             }).catch(() => {
+//                 Modal.loading = false
+//             })
+//         }
+//     })
+// }
+
+
 const handleUpdatePage = ({ currentPage, pageSize }: any) => {
     console.log(currentPage, pageSize)
     pagerConfig.value = {
@@ -141,8 +175,9 @@ onMounted(() => {
 })
 
 const getData = () => {
-    FamilyList().then((res: any) => {
+    FamilyList({elderlyId:route.query.id}).then((res: any) => {
         console.log(res)
+        data.value = res.data
     })
 }
 

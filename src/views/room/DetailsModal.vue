@@ -38,8 +38,8 @@
                     <span>
                         <Button type="primary" size="small" class="btn" @click="handleOpenElderModal">选择老人</Button>
                     </span>
-                    
-                   
+
+
                 </p>
                 <div class="info" v-if="props.info?.checkIn">
                     <div class="img">
@@ -104,11 +104,11 @@
                     v-for="item in detailList" :key="item.id">
                     <div class="userBox">
                         <div>
-                            <img :src="sleep" alt="">
+                            <img :src="item.photo" alt="">
                         </div>
                         <div class="name">
                             <p>{{ item.name }}</p>
-                            <p>{{ item.phone }}</p>
+                            <p>ID:{{ item.fileNo }}</p>
                         </div>
                     </div>
                 </Card>
@@ -214,10 +214,10 @@ const deviceList = ref([
 
 const type = ref('0')
 
-const props= defineProps({
+const props = defineProps({
     info: {
         type: Object,
-        defined:{}
+        defined: {}
     }
 })
 
@@ -245,7 +245,7 @@ const getData = () => {
         current: 1,
         keyword: keyword.value,
         size: 9999
-    }).then((res:any) => {
+    }).then((res: any) => {
         console.log(res)
         detailList.value = res.data.records
     })
@@ -291,7 +291,7 @@ defineExpose({
     }
 
 
-   
+
     .info {
         width: 100%;
         // background: rgba(241, 241, 245, 1);
@@ -322,7 +322,7 @@ defineExpose({
 
     .device {
         width: 100%;
-        height:231px;
+        height: 231px;
         border-radius: 8px;
 
         .deviceBox {
@@ -335,7 +335,7 @@ defineExpose({
         }
     }
 
-    .noBox{
+    .noBox {
         width: 100%;
         background: rgb(241, 241, 245);
         display: flex;

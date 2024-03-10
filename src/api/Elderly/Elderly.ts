@@ -93,7 +93,7 @@ export function ElderlyHealthUpdate(data: any) {
 export function ElderlyHealthElderlyId(data: any) { 
     return http.request({
         url: `/admin/elderly/health/${data.elderlyId}`,
-        method: 'post',
+        method: 'get',
         data
     })
 }

@@ -100,14 +100,14 @@
                 <div class="chart" style="margin-bottom: 10px;">
                     <p class="title">当班信息</p>
                     <div class="info">
-                        dsadsadsada
+                        {{ notes.value1 }}
                     </div>
                 </div>
 
                 <div class="chart" style="margin-bottom: 0px;">
                     <p class="title">交接班信息</p>
                     <div class="info">
-                        dsadsadsada
+                        {{ notes.value2 }}
                     </div>
                 </div>
             </div>
@@ -131,10 +131,10 @@
                     <div class="label"> 员工头像 </div>
                     <div class="input upload1">
                         <!-- <div class="up4">1</div> -->
-                        <Upload :show-upload-list="false" :before-upload="(f:any)=>handleUpload('proto',f)" action="#">
-                    <img :src="fileUrl.proto" class="up4" alt="" v-if="fileUrl.proto"/>
-                    <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else/>
-                </Upload>
+                        <Upload :show-upload-list="false" :before-upload="(f: any) => handleUpload('proto', f)" action="#">
+                            <img :src="fileUrl.proto" class="up4" alt="" v-if="fileUrl.proto" />
+                            <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
+                        </Upload>
                         <!-- <div class="up4">2</div>
                         <div class="up4">3</div> -->
                         <!-- <div class="up4">4</div> -->
@@ -153,19 +153,22 @@
                         <div class="up4">2</div>
                         <div class="up4">3</div> -->
                         <!-- <div class="up4">4</div> -->
-                        <Upload :show-upload-list="false" :before-upload="(f:any)=>handleUpload('certUrl1',f)" action="#">
-                    <img :src="fileUrl.certUrl1" class="up4" alt="" v-if="fileUrl.certUrl1"/>
-                    <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else/>
-                </Upload>
-                <Upload :show-upload-list="false" :before-upload="(f:any)=>handleUpload('certUrl2',f)" action="#">
-                    <img :src="fileUrl.certUrl2" class="up4" alt="" v-if="fileUrl.certUrl2"/>
-                    <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else/>
-                </Upload>
-                <Upload :show-upload-list="false" :before-upload="(f:any)=>handleUpload('certUrl3',f)" action="#">
-                    <img :src="fileUrl.certUrl3" class="up4" alt="" v-if="fileUrl.certUrl3"/>
-                    <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else/>
-                </Upload>
-                <!-- <Upload :show-upload-list="false" :before-upload="(f:any)=>handleUpload('driveUrl4',f)" action="#">
+                        <Upload :show-upload-list="false" :before-upload="(f: any) => handleUpload('certUrl1', f)"
+                            action="#">
+                            <img :src="fileUrl.certUrl1" class="up4" alt="" v-if="fileUrl.certUrl1" />
+                            <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
+                        </Upload>
+                        <Upload :show-upload-list="false" :before-upload="(f: any) => handleUpload('certUrl2', f)"
+                            action="#">
+                            <img :src="fileUrl.certUrl2" class="up4" alt="" v-if="fileUrl.certUrl2" />
+                            <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
+                        </Upload>
+                        <Upload :show-upload-list="false" :before-upload="(f: any) => handleUpload('certUrl3', f)"
+                            action="#">
+                            <img :src="fileUrl.certUrl3" class="up4" alt="" v-if="fileUrl.certUrl3" />
+                            <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
+                        </Upload>
+                        <!-- <Upload :show-upload-list="false" :before-upload="(f:any)=>handleUpload('driveUrl4',f)" action="#">
                     <img :src="fileUrl.driveUrl4" class="up4" alt="" v-if="fileUrl.driveUrl4"/>
                     <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else/>
                 </Upload> -->
@@ -189,8 +192,10 @@ import { Message, Modal } from "view-ui-plus";
 import LevelChart from "./components/LevelChart.vue";
 import SexChart from "./components/SexChart.vue";
 import Scheduling from "./components/Scheduling.vue"
-import {FileUploadImage} from "@/api/File/File"
+import { FileUploadImage } from "@/api/File/File"
 import { StaffList, StaffRemoveId, StaffRemoveBatch } from "@/api/Staff/Staff"
+import { MemoList, MemoSave } from "@/api/Memo/Memo";
+import { getMaxListeners } from "events";
 const modal = ref(false)
 const addModal = ref(false)
 const info = ref<any>({})
@@ -198,6 +203,7 @@ const TableViewRef = ref<any>(null)
 const TableFormRef = ref<any>(null)
 const pageBox = ref<any>(null)
 const router = useRouter()
+
 const attrs = ref([
     {
         key: 'today',
@@ -206,11 +212,11 @@ const attrs = ref([
     },
 ]);
 const fileUrl = ref<any>({
-    proto:"",
-    certUrl1:"",
-    certUrl2:"",
-    certUrl3:"",
-    certUrl4:""
+    proto: "",
+    certUrl1: "",
+    certUrl2: "",
+    certUrl3: "",
+    certUrl4: ""
 })
 const tableH = ref("765px")
 const data: any = ref()
@@ -218,31 +224,23 @@ const data: any = ref()
 const model1 = ref<any>()
 
 
-const handleUpload = (type: string,file:any) => {
-    console.log(type,file,import.meta.env.VITE_APP_AXIOS_BASER)
-   // file.value = file;
+const handleUpload = (type: string, file: any) => {
+    console.log(type, file, import.meta.env.VITE_APP_AXIOS_BASER)
+    // file.value = file;
 
     const formData = new FormData();
     formData.append("file", file.value);
     FileUploadImage(formData).then((res: any) => {
-        console.log(res)
-        fileUrl.value[type] = "import.meta.env.VITE_APP_AXIOS_BASER"+res.data
-       // file.value ='http://8.217.217.243:9000'+ res.data
+      //  console.log(res)
+        fileUrl.value[type] = "import.meta.env.VITE_APP_AXIOS_BASER" + res.data
+        // file.value ='http://8.217.217.243:9000'+ res.data
     })
 
     return false;
 }
 
 
-onMounted(() => {
-    console.log("", pageBox.value?.clientHeight)//680
-    const h = pageBox.value?.clientHeight
 
-    tableH.value = h - 165 + 'px'
-    getData()
-    getInfo()
-
-})
 
 
 const handleGetUserInfo = (row: any) => {
@@ -331,7 +329,7 @@ const handleDeleteAll = () => {
         }
     });
 
-    console.log(ids)
+   // console.log(ids)
     // StaffRemoveBatch({ ids: [] }).then(() => {
 
     // })
@@ -388,6 +386,35 @@ const getInfo = () => {
     // })
 }
 
+const notes = ref({
+    value1: '',
+    value2: ''
+})
+const getMemo = () => {
+    MemoList({ type: 1 }).then((res) => {
+        console.log(res)
+        let len = res.data.length
+        notes.value.value1 = res.data[len - 1].content
+    })
+    MemoList({ type: 2 }).then((res) => {
+        let len = res.data.length
+        notes.value.value2 = res.data[len - 1].content
+    })
+}
+
+onMounted(() => {
+   // console.log("", pageBox.value?.clientHeight)//680
+    const h = pageBox.value?.clientHeight
+
+    tableH.value = h - 165 + 'px'
+    getData()
+    getInfo()
+
+    getMemo()
+
+    // modal.value = true
+
+})
 
 
 </script>
@@ -436,7 +463,7 @@ const getInfo = () => {
 
         .upload1 {
             // width: 210px;
-            
+
             height: 140px;
             display: flex;
             // background: red;
@@ -448,7 +475,7 @@ const getInfo = () => {
 
         .up4 {
             flex: 1;
-           // margin: 0 10px;
+            // margin: 0 10px;
             // width: 104px;
             width: 145px;
             height: 140px;
@@ -509,9 +536,11 @@ const getInfo = () => {
 
         .title {
             width: 100%;
-            background: linear-gradient(270deg, rgba(19, 100, 248, 0) 0%, rgba(19, 100, 248, 0.7) 100%);
-            border-radius: 8px 0px 0px 0px;
-            opacity: 0.3;
+            background: linear-gradient(270deg, RGBA(255, 255, 255, 1) 0%, RGBA(206, 223, 254, 1) 100%);
+
+            //  background: linear-gradient(270deg, rgba(19, 100, 248, 0) 0%, rgba(19, 100, 248, 0.7) 100%);
+            border-radius: 8px 8px 0px 0px;
+            //opacity: 0.3;
             font-size: 14px;
             font-family: PingFangSC, PingFang SC;
             font-weight: 400;
@@ -521,7 +550,7 @@ const getInfo = () => {
         }
 
         .info {
-            height: 320px;
+            height: 285px;
             padding: 0 5px;
         }
 
@@ -615,7 +644,7 @@ const getInfo = () => {
         display: flex;
         width: 100%;
         padding-top: 20px;
-        height: calc(100vh - 150px);
+        height: calc(100vh - 160px);
         overflow: hidden;
         overflow-y: auto;
 

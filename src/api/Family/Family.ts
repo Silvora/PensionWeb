@@ -7,12 +7,11 @@
 import http from '../index'
 
 // 家属列表
-export function FamilyList() {
+export function FamilyList(params:any) {
     return http.request({
         url: '/admin/family/list',
         method: 'GET',
-        params: {
-        }
+        params
     })
 }
 

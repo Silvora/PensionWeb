@@ -1,12 +1,12 @@
 
-const roleTable: any = {
+const nursingTable: any = {
       defaultConfig: {
         DOMTool: false,
         DOMPage: true,
         stripe: false, //斑马线条纹
         border: 'inner', //边框样式
         seq: true, //排序
-        checkbox:true,//复选框
+        checkbox:false,//复选框
         activeConfig: {
             active: false,
              width: 300,
@@ -83,14 +83,15 @@ const roleTable: any = {
         },
         {
             title: '护理等级',
-            key: 'nurseLevel',
-            minWidth: 230,
+            key: 'nursingGrade',
+            slot: true,
+            minWidth: 200,
         },
 
         {
-            title: '服务项目',
+            title: '服务项目数量',
             key: 'serviceCount',
-            minWidth: 100,
+            minWidth: 150,
         }
     ]
 }
@@ -169,40 +170,126 @@ const nuresTable: any = {
     columns: [
         {
             title: '项目名称',
-            key: 'nurseName',
+            key: 'nursingName',
             minWidth: 100,
+            align: 'center'
         },
-        {
-            title: '所属类别',
-            key: 'nurseId',
-            minWidth: 100,
-        },
+        // {
+        //     title: '所属类别',
+        //     key: 'nurseId',
+        //     minWidth: 100,
+        //     align: 'center'
+        // },
         {
             title: '项目费用',
             key: 'price',
-            minWidth: 80,
+            minWidth: 100,
+            align: 'center'
         },
         {
             title: '执行频次',
             key: 'repeatValue',
-            minWidth: 80,
+            minWidth: 100,
+            align: 'center'
         },
         {
             title: '执行时间',
-            key: 'nurseTimeStr',
-            minWidth: 230,
+            key: 'nursingTime',
+            minWidth: 100,
+            align: 'center'
         },
         {
             title: '状态',
             key: 'status',
-            // slot: true,
+            slot: 'status',
             minWidth: 100,
+            align: 'center'
+        },
+        {
+            title: '操作',
+            // key: 'active',
+            slot: 'action',
+            minWidth: 200,
+            align: 'center'
         }
+        
+    ]
+}
+
+
+const editConfig: any = {
+    title: '编辑门店',
+    lableWidth: 100,
+    rules: {},
+    FormData: [
+        {
+            type: 'input',
+            label: '护理名称',
+            prop: "nursingName",
+            //disabled: false,
+            //childs: [],
+            required: false,
+            // default: "",
+        },
+        {
+            type: 'time',
+            label: '护理时间',
+            prop: "nursingTimeStr",
+            //disabled: false,
+            //childs: [],
+            required: false,
+            // default: "",
+        },
+        {
+            type: 'sort',
+            label: '项目费用',
+            prop: "price",
+            //disabled: false,
+            //childs: [],
+            required: false,
+            default: 0,
+        },
+        {
+            type: 'input',
+            label: '执行日期',
+            prop: "repeatValue",
+            //disabled: false,
+            //childs: [],
+            required: false,
+            // default: "",
+        },
+        {
+            type: 'select',
+            label: '执行单位',
+            prop: "unit",
+            //disabled: false,
+            childs: [
+                {
+                    label: "无",
+                    value:"0"
+                },
+                {
+                    label: "日",
+                    value:"1"
+                },
+                {
+                    label: "周",
+                    value:"2"
+                },
+                {
+                    label: "月",
+                    value:"3"
+                }
+            ],
+            required: false,
+            // default: "",
+        },
     ]
 }
 
 
 export {
-    roleTable,
-    nuresTable
+    nursingTable,
+    nuresTable,
+    editConfig
 }

@@ -24,6 +24,16 @@ export const NurseRecordBindList = (params:any) => {
     })
 }
 
+
+// 获取可绑定的老人
+export const NurseRecordElderlyList = (params:any) => {
+    return http.request({
+        url: '/admin/nursing/record/elderlyList',
+        method: 'get',
+        params
+    })
+}
+
 // 解除绑定老人
 export const NurseRecordUnBindId = (data:any) => {
     return http.request({

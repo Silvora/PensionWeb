@@ -76,8 +76,8 @@ const initChart = () => {
             {
                 name: '',
                 type: 'pie',
-                radius: ['50%', '30%'],
-                center: ['50%', '28%'],
+                radius: ['62%', '36%'],
+                center: ['50%', '36%'],
                 avoidLabelOverlap: false,
                 label: {
                     show: true,
@@ -133,6 +133,6 @@ const initChart = () => {
 <style scoped lang='less'>
 .sexChart {
     width: 100%;
-    height: 250px;
+    height: 180px;
 }
 </style>

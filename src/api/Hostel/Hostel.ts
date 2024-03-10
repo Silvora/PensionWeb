@@ -103,7 +103,7 @@ export function HostelRoomUpdate(data:any) {
 
 
 // 宿舍房间中床位列表
-export function HostelRoomBedListOfRoom(params: {roomId:string, needDeviceInfo:boolean}) {
+export function HostelRoomBedListOfRoom(params: {roomId:string, needDeviceInfo:boolean,status:number}) {
     return http.request({
         url: '/admin/hostel/roomBed/listOfRoom',
         method: 'get',

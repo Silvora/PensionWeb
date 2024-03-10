@@ -78,7 +78,7 @@
                     </div>
 
                     <div style="width: 100%;height:100%" v-if="item.type == 'date'">
-                        <DatePicker format="yyyy-MM-dd" type="date" :placeholder="t('请输入') + t(item.label)"
+                        <DatePicker :editable="false"  format="yyyy-MM-dd" type="date" :placeholder="t('请输入') + t(item.label)"
                             v-model="FormData[item.prop]" @on-change="(data: any) => handleDate(item.prop, data)">
                         </DatePicker>
                     </div>
