@@ -12,12 +12,12 @@
                 </div> -->
 
                     <div style="width: 100%;height:100%" v-if="item.type == 'sort'">
-                        <InputNumber :min="0" :max="item.max ? item.max : 9999999999" v-model="FormData[item.prop]"
+                        <InputNumber :disabled="item.disabled" :min="0" :max="item.max ? item.max : 9999999999" v-model="FormData[item.prop]"
                             style="width: 100%;touch-action:none" />
                     </div>
 
                     <div style="width: 100%;height:100%" v-if="item.type == 'price'">
-                        <InputNumber v-model="FormData[item.prop]" :max="9999999999" :min="0"
+                        <InputNumber :disabled="item.disabled" v-model="FormData[item.prop]" :max="9999999999" :min="0"
                             :formatter="(value: any) => `￥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
                             :parser="(value: any) => value.replace(/\$\s?|(,*)/g, '')"
                             style="width: 100%;touch-action:none" />
@@ -209,7 +209,6 @@ watchEffect(() => {
     // }
 
 
-
     props.FormData.forEach((item: any) => {
         FormData.value[item.prop] = props.data[item.prop] ? props.data[item.prop] : item.default
 
@@ -223,6 +222,7 @@ watchEffect(() => {
             // console.log(FormData.value[item.prop])
             FormData.value[item.prop] = Number(FormData.value[item.prop])
         }
+
 
 
 
@@ -268,7 +268,7 @@ watchEffect(() => {
     rules.value = { ...rulesData, ...props.rules }
 
 
-    console.log(FormData.value, props.data)
+    //console.log(FormData.value, props.data)
 
 })
 

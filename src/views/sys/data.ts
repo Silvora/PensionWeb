@@ -4,7 +4,7 @@ const agencyData: any = {
     FormData:
         [
             {
-                type: 'input',
+                type: 'date',
                 label: '建档日期',
                 prop: "nadsadme",
                 span: 1,
@@ -25,57 +25,72 @@ const agencyData: any = {
                 type: 'input',
                 label: '注册名称',
                 prop: "oemvfdId",
-                span: 1,
+                span: 3,
                 //disabled: false,
                 required: false,
                 default: "",
             },
+            // {
+            //     type: 'input',
+            //     label: '统一信用代码',
+            //     prop: "namdae",
+            //     span: 1,
+            //     //disabled: false,
+            //     required: false,
+            //     default: "",
+            // },
             {
                 type: 'input',
-                label: '统一信用代码',
-                prop: "namdae",
-                span: 1,
+                label: '所属区域',
+                prop: "descrviption",
+                span: 3,
                 //disabled: false,
                 required: false,
                 default: "",
+                // childs: [
+                //     {
+                //         label: '是',
+                //         value: '1'
+                //     },
+                //     {
+                //         label: '否',
+                //         value: '0'
+                //     }
+                // ]
             },
             {
                 type: 'select',
-                label: '所属区域',
-                prop: "descrviption",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-                childs: [
-                    {
-                        label: '是',
-                        value: '1'
-                    },
-                    {
-                        label: '否',
-                        value: '0'
-                    }
-                ]
-            },
-            {
-                type: 'input',
                 label: '运营模式',
                 prop: "oemIad",
                 span: 1,
                 //disabled: false,
                 required: false,
                 default: "",
+                childs: [
+                    {
+                        label: '公立',
+                        value: '0',
+
+                    },
+                    {
+                        label: '民营',
+                        value: '1',
+                    },
+                    {
+                        label: '共建民营',
+                        value: '2',
+                    }
+                ]
             },
-            {
-                type: 'select',
-                label: '是否公建民营',
-                prop: "oemIvd",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
+            // {
+            //     type: 'select',
+            //     label: '是否公建民营',
+            //     prop: "oemIvd",
+            //     span: 1,
+            //     //disabled: false,
+            //     required: false,
+            //     default: "",
+            // },
             {
                 type: 'input',
                 label: '邮政编码',
@@ -94,15 +109,15 @@ const agencyData: any = {
                 required: false,
                 default: "",
             },
-            {
-                type: 'input',
-                label: '机构介绍',
-                prop: "oemqwId",
-                span: 2,
-                //disabled: false,
-                required: false,
-                default: "",
-            }
+            // {
+            //     type: 'textarea',
+            //     label: '机构介绍',
+            //     prop: "oemqwId",
+            //     span: 3,
+            //     //disabled: false,
+            //     required: false,
+            //     default: "",
+            // }
         ]
 }
 //法人信息
@@ -124,7 +139,7 @@ const legalData = {
                 label: '机构床位总数',
                 prop: "descdsription",
                 span: 1,
-                //disabled: false,
+                disabled: true,
                 required: false,
                 default: "",
             },
@@ -133,7 +148,8 @@ const legalData = {
                 label: '床位使用总数',
                 prop: "oemvfdId",
                 span: 1,
-                //disabled: false,
+                disabled: true,
+
                 required: false,
                 default: "",
             },
@@ -142,7 +158,8 @@ const legalData = {
                 label: '护理床位数量',
                 prop: "namdae",
                 span: 1,
-                //disabled: false,
+                disabled: true,
+
                 required: false,
                 default: "",
             },
@@ -151,7 +168,8 @@ const legalData = {
                 label: '家庭床位数量',
                 prop: "descrviption",
                 span: 1,
-                //disabled: false,
+                disabled: true,
+
                 required: false,
                 default: "",
                 // childs: [
@@ -170,16 +188,18 @@ const legalData = {
                 label: '入住人员总数',
                 prop: "oemIad",
                 span: 1,
-                //disabled: false,
+                disabled: true,
+
                 required: false,
                 default: "",
             },
             {
                 type: 'sort',
                 label: '入住率',
-                prop: "oemIvd",
+                prop: "oemIvddsadsa",
                 span: 1,
-                //disabled: false,
+                disabled: true,
+
                 required: false,
                 default: "",
                 max: 100
@@ -639,14 +659,23 @@ const accountTable: any = {
       //     ],
       //     required: false,
       //     // default: "",
-      // },
-      {
+    //   // },
+    //   {
+    //     type: 'input',
+    //     label: '账号',
+    //     prop: "account",
+    //     disabled: true,
+    //     //childs: [],
+    //     required: false,
+    //     // default: "",
+    // },
+    {
         type: 'input',
-        label: '账号',
-        prop: "account",
+        label: '手机号',
+        prop: "phone",
         disabled: true,
         //childs: [],
-        required: false,
+        required: true,
         // default: "",
     },
       {
@@ -681,15 +710,7 @@ const accountTable: any = {
         required: true,
         // default: "",
         },
-        {
-            type: 'input',
-            label: '手机号',
-            prop: "phone",
-            //disabled: false,
-            //childs: [],
-            required: true,
-            // default: "",
-        },
+       
 
          {
           type: 'input',
@@ -787,13 +808,23 @@ const accountUpdate = {
 const accountCreateAdmin = {
     rules:[],
     FormData: [
+        // {
+        //     type: 'input',
+        //     label: '账号',
+        //     prop: "account",
+        //     //password: true,
+        //     //disabled: false,
+        //     //childs: [],
+        //     required: true,
+        //     // default: 0,
+        // },
         {
             type: 'input',
-            label: '账号',
-            prop: "account",
-            //password: true,
+            label: '手机号',
+            prop: "phone",
             //disabled: false,
             //childs: [],
+            //password: true,
             required: true,
             // default: 0,
         },
@@ -839,16 +870,7 @@ const accountCreateAdmin = {
             required: true,
             // default: 0,
         },
-        {
-            type: 'input',
-            label: '手机号',
-            prop: "phone",
-            //disabled: false,
-            //childs: [],
-            //password: true,
-            required: true,
-            // default: 0,
-        },
+   
         {
             type: 'input',
             label: '账号密码',

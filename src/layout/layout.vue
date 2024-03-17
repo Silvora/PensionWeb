@@ -10,9 +10,9 @@
         </span>
         <div class="right-box" v-if="route.name != 'sys'">
           <!-- <span class="right" :style="{ 'background': route.name == 'home' ? 'rgba(19, 100, 248, 1)' : '#fff' }"> -->
-          <span class="right" :style="{ 'background': 'rgba(19, 100, 248, 1)' }">
-            <img v-if="['home', 'room', 'elder', 'add-elder', 'staff', 'setting', 'staff-details'].includes(route.name)"
-              class="right-img" src="@/assets/images/setting.png" alt="" @click="() => router.push('/sys?type=agency')">
+          <span v-if="['home','screen'].includes(route.name)" class="right" :style="{ 'background': 'rgba(19, 100, 248, 1)' }" @click="() => router.push('/sys?type=agency')">
+            <img  v-if="['home'].includes(route.name)"
+              class="right-img" src="@/assets/images/setting.png" alt="" >
             <!-- <img v-if="route.name == 'screen'" class="right-img" src="@/assets/images/setting.png" alt=""
                 @click="() => router.push('/sys')"> -->
             <Icon v-if="route.name == 'screen' && !isFullscreen" type="md-code" color="#fff" size="28" @click="handleZoom"
@@ -23,7 +23,7 @@
         </div>
       </div>
     </div>
-    <div class="layout-box" id="layoutBox">
+    <div class="layout-box" id="layoutBox" :style="{width:route.name=='screen'?'100%':''}">
       <Layout class="layout-content">
         <Content>
           <Suspense>

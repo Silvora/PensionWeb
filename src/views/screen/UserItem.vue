@@ -2,41 +2,56 @@
     <Card :bordered="false" :padding="0" style="background: rgba(255, 255, 255, 1);margin-bottom: 10px;">
         <div class="userInfo">
             <p class="title">
-                <span :class="['t1', 'green', 'yellow', 'gary']">空闲</span>
-                <span class="t2">a102</span>
-                <span class="t3">
+                <span
+                    :class="['t1', ['gary', 'green', 'yellow'][device?.status || 0]]">{{ ['空闲', '正常', '异常'][device?.status || 0] }}</span>
+                <span class="t2">{{ info?.roomBedNumber }}</span>
+                <span class="t3" @click="handleNavTo(`/add-elder?id=${info?.elderlyId}`)">
                     <img src="@/assets/images/room-setting.png" alt="" srcset="">
                 </span>
             </p>
             <div class="userBox">
                 <div class="imgInfo">
-                    <img class="img" src="@/assets/images/screen.png" alt="" srcset="">
-                    <div class="imgList">
-                        <img src="@/assets/images/位图@2x(1).png" alt="">
-                        <img src="@/assets/images/位图@2x(1).png" alt="">
-                        <img src="@/assets/images/位图@2x(1).png" alt="">
-                        <img src="@/assets/images/位图@2x(1).png" alt="">
+                    <img class="img" src="@/assets/images/screen.png" alt="" srcset=""
+                        @click="handleNavTo(`/add-elder?id=${info?.elderlyId}`)">
+                    <div class="imgList" @click="handleNavTo(`/setting`)">
+                        <img src="@/assets/images/睡眠监测@2x(4).png" alt="">
+                        <img src="@/assets/images/位图@2x(2).png" alt="">
+                        <img src="@/assets/images/温度计@2x.png" alt="">
+                        <img src="@/assets/images/紧急按钮@2x.png" alt="">
                     </div>
                 </div>
                 <div class="info">
-                    <p class="t4">张玲
-                        <Icon type="ios-checkmark" />
-                    </p>
-                    <p class="t4">倪杰
-                        <Icon type="ios-checkmark" />
-                    </p>
-                    <p class="t5">
-                        <Icon type="ios-checkmark" />
-                        12/次分
-                    </p>
-                    <p class="t5">
-                        <Icon type="ios-checkmark" />
-                        35/次
-                    </p>
-                    <p class="t5">
-                        <Icon type="ios-checkmark" />
-                        36.9/度
-                    </p>
+                    <div @click="handleNavTo(`/elder`)">
+                        <p class="t4">{{ info?.elderlyName }}
+                            <!-- <Icon type="ios-checkmark" /> -->
+                            <i v-if="info?.elderlyGender == 1" class="iconfont icon-nan" style="color:#0160FF"></i>
+                            <i v-if="info?.elderlyGender == 2" class="iconfont icon-nv" style="color:#E06255"></i>
+                        </p>
+                        <p class="t4">
+                            <!-- <Icon type="ios-checkmark" /> -->
+                            <img src="@/assets/images/pad-processing@2x.png" alt="" style="width: 15px;">
+                            {{ elderlyInfo?.staffName }}
+                        </p>
+                    </div>
+                    <div @click="handleNavTo(`/setting`)">
+                        <p class="t5">
+                            <!-- <Icon type="ios-checkmark" /> -->
+                            <i class="iconfont icon-xindongzhi-manxin-" style="color:#E06255"></i>
+                            {{ stateInfo?.heartRate || 0 }}/次分
+
+                        </p>
+                        <p class="t5">
+                            <!-- <Icon type="ios-checkmark" /> -->
+                            <i class="iconfont icon-tidong" style="color:#0160FF"></i>
+                            {{ stateInfo?.bodyMovement || 0 }}/次
+                        </p>
+                        <p class="t5">
+                            <!-- <Icon type="ios-checkmark" /> -->
+                            <i class="iconfont icon-wenduji" style="color:#ED9000"></i>
+                            {{ stateInfo?.bodyMovement || 0 }}/度
+                        </p>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -44,6 +59,38 @@
 </template>
 
 <script setup lang='ts'>
+import { useRouter } from 'vue-router';
+import { ref, watchEffect } from 'vue';
+const router = useRouter()
+
+const info = ref<any>({})
+const device = ref<any>({})
+const elderlyInfo = ref<any>({})
+const stateInfo = ref<any>({})
+
+const props = defineProps({
+    info: {
+        type: Object,
+        default: () => ({})
+    }
+})
+
+watchEffect(() => {
+
+    console.log(props?.info)
+    info.value = props?.info
+    device.value = props?.info?.deviceList
+    console.log(device.value)
+    stateInfo.value = device.value?.stateInfo
+    elderlyInfo.value = device.value?.elderlyInfo
+
+
+})
+
+const handleNavTo = (path: string) => {
+    router.push(path)
+}
+
 
 </script>
 
@@ -116,7 +163,7 @@
 
             .imgList {
                 width: 100%;
-                background: gold;
+                // background: gold;
                 display: flex;
                 justify-content: flex-start;
                 align-items: center;
@@ -141,6 +188,12 @@
                 justify-content: space-around;
                 align-items: center;
                 height: 30px;
+
+
+            }
+
+            .t4 {
+                justify-content: start;
             }
 
             .t5 {

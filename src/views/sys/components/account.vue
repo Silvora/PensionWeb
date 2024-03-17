@@ -89,16 +89,28 @@
 </template>
 
 <script setup lang='ts'>
-import { ref } from "vue"
+import { ref, watch } from "vue"
 import { accountTable, accountUpdate, accountCreateAdmin } from "../data"
 import { Modal, Message, Tag, Tree } from "view-ui-plus";
 import { onMounted } from "vue";
 import { RolePermission } from "@/api/RolePermission/RolePermission"
 import { AdminUser, AdminUserResetPassword, AdminUserUpdatePassword, AdminUserRemove, AdminUserUpdateStatus, AdminUserPutId, AdminUserOnline, AdminUserOffline, AdminUserList, AdminUserOfflineBatch, AdminUserOnlineBatch, AdminUserRemoveBatch } from "@/api/AdminUserInfo/AdminUserInfo"
 import { RoleList } from "@/api/RoleInfo/RoleInfo"
-
+import md5 from 'js-md5';
 import { useI18n } from "vue-i18n";
 const { t } = useI18n()
+
+const props = defineProps({
+    searchData: {
+        type: String,
+        default: ''
+    }
+})
+
+watch(() => props.searchData, () => {
+    getData({name: props.searchData})
+})
+
 const TableViewRef = ref<any>(null)
 const TablePasswordRef = ref<any>(null)
 const TableCreateRef = ref<any>(null)
@@ -162,7 +174,8 @@ const handleAddUser = () => {
 // 创建用户
 const handleCreateAdmin = (data: any) => {
 
-    console.log("--------", data)
+    // console.log("--------", data)
+    data.password = md5(data.password)
     AdminUser({ ...data, roleIds: [data.roleIds] }).then(() => {
         Message.success(t('创建成功'))
         TableCreateRef.value.closeModal()
@@ -174,7 +187,10 @@ const handleCreateAdmin = (data: any) => {
 
 // 修改密码
 const handleEditModalOk = (data: any) => {
-    console.log(data)
+    // console.log(data)
+    data.newPassword = md5(data.newPassword)
+    data.oldPassword = md5(data.oldPassword)
+
     AdminUserUpdatePassword(data).then(() => {
         Message.success(t('密码修改成功'))
         TablePasswordRef.value.closeModal()
@@ -293,7 +309,7 @@ const handleBatchDelete = () => {
     console.log(list)
     if (list.length > 0) {
         AdminUserRemoveBatch({ ids: list }).then(() => {
-            Message.success(t('禁用成功'))
+            Message.success(t('删除成功'))
         })
     }
 }
@@ -306,8 +322,8 @@ const handleRoleDelete = (id: any) => {
         loading: true,
         onOk: () => {
             console.log(id)
-            AdminUserRemove(data).then(() => {
-                Message.success(t('重置成功'))
+            AdminUserRemove({userId:id}).then(() => {
+                Message.success(t('删除成功'))
                 Modal.remove();
                 getData()
                 // handleDeviceList(data)
@@ -328,12 +344,13 @@ const handleUpdatePage = ({ currentPage, pageSize }: any) => {
 }
 
 
-const getData = () => {
+const getData = (search={}) => {
     console.log("getData")
     AdminUserList(
         {
             current: pagerConfig.value.currentPage,
-            size: pagerConfig.value.pageSize
+            size: pagerConfig.value.pageSize,
+            ...search
         }
     ).then((res: any) => {
         console.log(res, res.data.total)

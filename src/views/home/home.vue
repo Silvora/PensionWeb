@@ -37,7 +37,7 @@ const menuList: any = ref([
   {
     logo: date,
     label: "数据预警",
-    route: "/date",
+    route: "/date?type=home",
     color: "rgba(67, 140, 203, 1)",
   },
   {

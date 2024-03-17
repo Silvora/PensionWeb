@@ -23,3 +23,32 @@ export function CheckRemoveId(data:any) {
         method: 'delete',
     })
 }
+
+
+// 取消重点关注老人
+export function CheckCancelFocus(data:any) {
+    return http.request({
+        url: '/admin/checkIn/cancelFocus',
+        method: 'post',
+        data
+    })
+}
+
+
+// 重点关注老人
+export function CheckFocus(data:any) {
+    return http.request({
+        url: '/admin/checkIn/focus',
+        method: 'post',
+        data
+    })
+}
+
+// 获取入住列表
+export function CheckList(params:any) {
+    return http.request({
+        url: '/admin/checkIn/list',
+        method: 'get',
+        params
+    })
+}

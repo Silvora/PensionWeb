@@ -38,7 +38,7 @@
                 </div>
 
 
-                <div class="box_2" v-if="selectHostelId">
+                <div class="box_2" v-if="selectHostelId" :key="props.HostelList.length">
                     <p class="title">
                         <span>{{ props.HostelList.find((it: any) => it.id == selectHostelId)?.name }} 楼栋</span>
                         <span>
@@ -64,7 +64,7 @@
                 </div>
 
 
-                <div class="box_3" v-if="selectHostelId && selectFloorId">
+                <div class="box_3" v-if="selectHostelId && selectFloorId" :key="props.floorList.length">
                     <p class="title">
                         <span>{{ props.floorList.find((it: any) => it.id == selectFloorId)?.floorNumber }} 楼层</span>
                         <span>
@@ -105,7 +105,7 @@
 
             <p style="padding-bottom: 10px;">{{ ['楼栋', '楼层', '房间'][roomType] }}名称</p>
             <Input v-model="addInput" placeholder="" style="width: 100%" />
-            <div style="padding-top: 10px;">
+            <div style="padding-top: 10px;" v-if="roomType==2">
                 <p style="padding-bottom: 10px;">{{ ['楼栋', '楼层', '房间'][roomType] }}名称</p>
                 <RadioGroup v-model="count">
                     <Radio :label="idx + 1 + ''" v-for="(item, idx) in roomList" :key="item">
@@ -176,6 +176,7 @@ const hideModal = () => {
     modal.value = false
 }
 
+// 获取每一项的数据
 const handleChangeName = (type: number, id: any) => {
     console.log(id)
     if (type == 0) {
@@ -295,6 +296,8 @@ const handleEdit = () => {
             addModal.value = false
             emit('handleUpdate', true)
         })
+
+
     }
 
     if (roomType.value == 1) {
@@ -304,6 +307,9 @@ const handleEdit = () => {
             addModal.value = false
             emit('handleUpdate', true)
         })
+
+        handleChangeName(roomType.value-1, editData.value.hostelId)
+
     }
 
     if (roomType.value == 2) {
@@ -313,13 +319,16 @@ const handleEdit = () => {
             addModal.value = false
             emit('handleUpdate', true)
         })
+
+        handleChangeName(roomType.value-1, editData.value.id)
+
     }
 }
 
 //添加
 const handleSumbitAdd = () => {
 
-    if (isEdit) {
+    if (isEdit.value) {
         handleEdit()
 
         return
@@ -330,7 +339,7 @@ const handleSumbitAdd = () => {
     }
     if (roomType.value == 0) {
         //楼栋
-        HostelSave({ ...data, orgId: 1 }).then(() => {
+        HostelSave({ ...data }).then(() => {
             Message.success('添加成功')
             addModal.value = false
             emit('handleUpdate', true)
@@ -346,6 +355,8 @@ const handleSumbitAdd = () => {
             addModal.value = false
             emit('handleUpdate', true)
         })
+        handleChangeName(roomType.value-1, selectHostelId.value)
+
     }
 
     if (roomType.value == 2) {
@@ -355,7 +366,11 @@ const handleSumbitAdd = () => {
             addModal.value = false
             emit('handleUpdate', true)
         })
+
+        handleChangeName(roomType.value-1, selectFloorId.value)
+
     }
+
 }
 //判断添加类型
 const handleAddHouse = (type: number) => {

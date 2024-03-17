@@ -5,7 +5,7 @@
 
 <script setup lang='ts'>
 import * as echarts from "echarts"
-import { onMounted, ref } from "vue";
+import { onMounted, ref,nextTick } from "vue";
 import { StaffGenderRatio } from "@/api/Staff/Staff"
 const SexChartRef = ref(null)
 const myChart: any = ref(null)
@@ -29,18 +29,20 @@ onMounted(() => {
         let s: any = 0
         res.data.forEach((item: any) => {
             if (item.type == 1) {
-                obj.push({ value: item.totalCount, name: '男', ...item })
+                obj.push({ value: item.totalCount || 0, name: '男', ...item })
             }
             if (item.type == 2) {
-                obj.push({ value: item.totalCount, name: '女', ...item })
+                obj.push({ value: item.totalCount || 0, name: '女', ...item })
             }
-            s += item.totalCount
+            s += item.totalCount || 0
         })
 
         map.value = obj
         sum.value = s
 
+        nextTick(() => {
         initChart()
+    })
 
     })
 
@@ -48,7 +50,7 @@ onMounted(() => {
 
 
 const initChart = () => {
-    myChart.value = echarts.init(SexChartRef.value);
+    const myChart: any = echarts.init(SexChartRef.value);
 
     const option = {
         color: [
@@ -124,7 +126,12 @@ const initChart = () => {
     };
 
 
-    option && myChart.value.setOption(option);
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
+    }
+
+    window.addEventListener('resize', myChart.resize);
+
 }
 
 

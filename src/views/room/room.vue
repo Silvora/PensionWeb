@@ -127,12 +127,14 @@ const type = ref('')
 const typeList = ref<any>([])
 
 const checkInfo = ref({
-    count: 100,//全部人数
-    check: 100,//入住人数
-    free: 100,//空闲  
-    reserve: 100,//预留
+    count: 0,//全部人数
+    check: 0,//入住人数
+    free: 0,//空闲  
+    reserve: 0,//预留
 })
 const info= ref<any>({})
+
+const keyDom = ref<any>(Date.now())
 
 const handleShowModal = () => {
     BuildingModalRef.value.showModal()

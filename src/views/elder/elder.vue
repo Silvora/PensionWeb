@@ -7,29 +7,35 @@
             </span>
             <span class="searchBtn">
                 <Space>
-                    <Select v-model="model1" style="width:100px" placeholder="床位">
-                        <Option value="beijing">New York</Option>
+                    <Select v-model="searchData.hostelId" style="width:100px" clearable placeholder="楼栋" @on-change="handleSearchChange('0')">
+
+                        <Option :value="item.id" v-for="item in hostelList" :key="item.id">{{ item.name }}</Option>
+                        <!-- <Option value="beijing">New York</Option>
                         <Option value="shanghai" disabled>London</Option>
-                        <Option value="shenzhen">Sydney</Option>
+                        <Option value="shenzhen">Sydney</Option> -->
                     </Select>
-                    <Select v-model="model1" style="width:100px" placeholder="楼层">
-                        <Option value="beijing">New York</Option>
+                    <Select v-model="searchData.floorId" style="width:100px" clearable placeholder="楼层" @on-change="handleSearchChange('1')">
+                        <Option :value="item.id" v-for="item in floorList" :key="item.id">{{ item.floorNumber }}</Option>
+
+                        <!-- <Option value="beijing">New York</Option>
                         <Option value="shanghai" disabled>London</Option>
-                        <Option value="shenzhen">Sydney</Option>
+                        <Option value="shenzhen">Sydney</Option> -->
                     </Select>
-                    <Select v-model="model1" style="width:100px" placeholder="房间">
-                        <Option value="beijing">New York</Option>
+                    <Select v-model="searchData.roomId" style="width:100px" clearable placeholder="房间" @on-change="handleSearchChange('2')">
+                        <Option :value="item.id" v-for="item in roomList" :key="item.id">{{ item.roomNumber }}</Option>
+
+                        <!-- <Option value="beijing">New York</Option>
                         <Option value="shanghai" disabled>London</Option>
-                        <Option value="shenzhen">Sydney</Option>
+                        <Option value="shenzhen">Sydney</Option> -->
                     </Select>
-                    <Select v-model="model1" style="width:100px" placeholder="等级">
+                    <!-- <Select v-model="model1" style="width:100px" placeholder="等级">
                         <Option value="beijing">New York</Option>
                         <Option value="shanghai" disabled>London</Option>
                         <Option value="shenzhen">Sydney</Option>
                     </Select>
                     <div>
                         <Input search clearable placeholder="搜索" />
-                    </div>
+                    </div> -->
                 </Space>
             </span>
         </div>
@@ -156,6 +162,17 @@ import DateChart from "./components/DateChart.vue"
 import { useI18n } from "vue-i18n";
 import { ElderlyList, ElderlyRemoveId, ElderlyHealthUpdate } from "@/api/Elderly/Elderly"
 import { MemoList, MemoSave, MemoUpdate, MemoRemoveId } from "@/api/Memo/Memo"
+import { HostelList, HostelFloorlList, HostelRoomListOfFloor, HostelRoomBedListOfRoom } from "@/api/Hostel/Hostel"
+import { AnyARecord } from "dns";
+
+const searchData = ref<any>({
+    hostelId:"",
+    floorId:"",
+    roomId:"",
+})
+const hostelList = ref<any>([])
+const floorList = ref<any>([])
+const roomList = ref<any>([])
 const TableViewRef = ref<any>(null)
 const pageBox = ref<any>(null)
 const router = useRouter()
@@ -177,7 +194,26 @@ onMounted(() => {
 
     getData()
     getMemoList()
+
+    getHostelList()
 })
+
+const handleSearchChange = (idx:any)=>{
+    if(idx == 0){
+        getFloorlList()
+
+        searchData.value.roomId = ""
+        searchData.value.floorId=""
+    }
+
+    if(idx == 1){
+        getRoomList()
+        searchData.value.roomId=""
+    }
+
+    getData()
+    
+}
 
 const pagerConfig = ref({
     total: 100,//总数
@@ -284,13 +320,74 @@ const getMemoList = () => {
 const getData = () => {
     ElderlyList({
         current: pagerConfig.value.currentPage,
-        size: pagerConfig.value.pageSize
+        size: pagerConfig.value.pageSize,
+        ...searchData.value
     }).then((res: any) => {
         data.value = res.data.records
         pagerConfig.value.total = res.data.total
         console.log(res)
     })
 }
+
+
+
+
+// 获取楼栋列表
+const getHostelList = () => {
+    // 获取楼栋列表
+    HostelList().then((res: any) => {
+        console.log(res)
+        hostelList.value = res.data
+        // typeList.value = res.data
+        // type.value = res.data[0].id
+        // getFloorlList()
+    })
+}
+
+
+// 获取楼层列表
+const getFloorlList = () => {
+    // 获取楼层列表
+
+    if(!searchData.value.hostelId){
+        return
+    }
+
+    HostelFloorlList({
+        hostelId: searchData.value.hostelId
+    }).then((res: any) => {
+        console.log(res)
+
+        floorList.value = res.data
+        // floorActive.value = res.data[0].id
+        // typeList.value = res.data
+        // type.value = res.data[0].name
+
+        // getRoomList()
+    })
+}
+
+// 获取房间列表
+const getRoomList = () => {
+    // 获取房间列表
+
+    if(!searchData.value.floorId){
+        return
+    }
+
+    HostelRoomListOfFloor({
+        floorId: searchData.value.floorId,
+        needBed: true,
+        needDeviceInfo:false,
+    }).then((res: any) => {
+        roomList.value = res.data
+        // houseList.value = res.data
+        // houseActive.value = res.data[0].id
+
+        // getRoomBedList()
+    })
+}
+
 
 </script>
 

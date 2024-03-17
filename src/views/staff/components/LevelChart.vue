@@ -4,8 +4,9 @@
 
 <script setup lang='ts'>
 import * as echarts from "echarts"
-import { onMounted, ref } from "vue";
+import { onMounted, ref,nextTick } from "vue";
 import { StaffJobLevelRatio } from "@/api/Staff/Staff"
+
 const AgeChartRef = ref(null)
 const myChart: any = ref(null)
 
@@ -15,9 +16,9 @@ const sum: any = ref(0)
 
 onMounted(() => {
 
-    window.addEventListener('resize', () => {
-        myChart.value.resize();
-    });
+    // window.addEventListener('resize', () => {
+    //     myChart.value.resize();
+    // });
 
     StaffJobLevelRatio().then((res: any) => {
         let obj: any = []
@@ -64,11 +65,11 @@ onMounted(() => {
             //     ...item
             // })
 
-            list[item.type].value = item.totalCount
+            list[item.type].value = item.totalCount || 0
             list[item.type].percentage = item.percentage + '%'
 
 
-            s += item.totalCount
+            s += item.totalCount || 0
         })
         // obj.push({
         //     ...obj[0],
@@ -80,7 +81,10 @@ onMounted(() => {
         map.value = list
         sum.value = s
 
+        
+    nextTick(() => {
         initChart()
+    })
 
     })
 
@@ -98,7 +102,7 @@ onMounted(() => {
 // })
 
 const initChart = () => {
-    myChart.value = echarts.init(AgeChartRef.value);
+    const myChart: any =  echarts.init(AgeChartRef.value);
 
     const option = {
         color: [
@@ -209,7 +213,12 @@ const initChart = () => {
     };
 
 
-    option && myChart.value.setOption(option);
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
+    }
+
+    window.addEventListener('resize', myChart.resize);
+
 }
 
 

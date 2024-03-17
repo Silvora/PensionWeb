@@ -1,8 +1,8 @@
 <template>
     <div class="system">
-        <Row justify="start" style="width: 330px;">
+        <Row justify="start" style="width: 700px;">
             <Col :span="24" class="col">
-            <div class="label">{{ t('语言') }}</div>
+            <div class="label">{{ t('选择语言') }}</div>
             <div class="input">
                 <Select v-model="local" @on-change="handleSetLocal">
                     <Option value="zh-CN">{{ t('中文') }}</Option>
@@ -125,30 +125,32 @@ const handleUpload = (type: string,file:any) => {
         }
 
         .input {
-            width: 210px;
+            // width: 210px;
+            width: 100%;
             border: 1px solid #98D2E1;
 
         }
 
         .upload1 {
-            width: 210px;
-            height: 200px;
+            // width: 210px;
+            height: 150px;
             display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            justify-content: center;
+            // flex-direction: row;
+            // flex-wrap: wrap;
+            // justify-content: center;
         }
 
         .up1 {
-            width: 210px;
-            height: 200px;
+            width: 150px;
+            height: 148px;
             text-align: center;
-            line-height: 200px;
+            line-height: 150px;
+            
         }
 
         .up4 {
-            width: 104px;
-            height: 100px;
+            width: 150px;
+            height: 148px;
             text-align: center;
             line-height: 100px;
             img{

@@ -6,26 +6,47 @@
             </span>
             <span class="searchBtn">
                 <Space>
-                    <Select v-model="model1" style="width:100px" placeholder="床位">
+
+                    <Cascader v-model="hostelTofloor" :data="hostelList" :load-data="loadData" v-width="200"
+                        placeholder="楼栋/楼层" @on-change="handleSearch" />
+
+                    <!-- <Select v-model="hostel" style="width:100px" placeholder="楼栋">
+
+                        <Option :value="item.id" v-for="item in hostelList" :item="item.key">{{ item.label }}</Option>
+
                         <Option value="beijing">New York</Option>
                         <Option value="shanghai" disabled>London</Option>
                         <Option value="shenzhen">Sydney</Option>
-                    </Select>
-                    <Select v-model="model1" style="width:100px" placeholder="楼层">
+                    </Select> -->
+                    <!-- <Select v-model="floor" style="width:100px" placeholder="楼层">
                         <Option value="beijing">New York</Option>
                         <Option value="shanghai" disabled>London</Option>
                         <Option value="shenzhen">Sydney</Option>
+                    </Select> -->
+                    <Select v-model="searchData.roomId" style="width:100px" clearable placeholder="房间号"
+                        @on-change="handleSearch">
+                        <!-- <Option value="beijing">New York</Option>
+                        <Option value="shanghai" disabled>London</Option>
+                        <Option value="shenzhen">Sydney</Option> -->
+
+                        <Option :value="item.id" v-for="item in roomList" :key="item.id">{{ item.roomNumber }}</Option>
                     </Select>
-                    <Select v-model="model1" style="width:100px" placeholder="房间">
+                    <!-- <Select v-model="model1" style="width:100px" placeholder="等级">
                         <Option value="beijing">New York</Option>
                         <Option value="shanghai" disabled>London</Option>
                         <Option value="shenzhen">Sydney</Option>
-                    </Select>
-                    <Select v-model="model1" style="width:100px" placeholder="等级">
-                        <Option value="beijing">New York</Option>
+                    </Select> -->
+
+
+                    <Select v-model="searchData.nursingGrade" style="width:100px" clearable placeholder="护理等级"
+                        @on-change="handleSearch">
+                        <!-- <Option value="beijing">New York</Option>
                         <Option value="shanghai" disabled>London</Option>
-                        <Option value="shenzhen">Sydney</Option>
+                        <Option value="shenzhen">Sydney</Option> -->
+
+                        <Option :value="idx" v-for="(item, idx) in jobLevelList" :key="idx">{{ item }}</Option>
                     </Select>
+
                     <div>
                         <Input search clearable placeholder="搜索" />
                     </div>
@@ -37,11 +58,11 @@
                 <div class="title">
                     <span>重点关注老人</span>
                     <span>
-                        <Button type="primary">添加人员</Button>
+                        <Button type="primary" @click="handleAddFocus">添加人员</Button>
                     </span>
                 </div>
                 <div class="list">
-                    <UserItem v-for="item in Array.from({ length: 10 })" :name="item"></UserItem>
+                    <UserItem v-for="item in FocusList" :info="item"></UserItem>
                 </div>
             </div>
             <div class="bed">
@@ -54,24 +75,212 @@
                 </div>
                 <div class="list">
 
-                    <Row gutter="10">
-                        <Col span="6" v-for="item in Array.from({ length: 20 })" :key="item">
-                        <UserItem></UserItem>
+                    <Row :gutter="10">
+                        <Col :span="6" v-for="item in UserList" :key="item">
+                        <UserItem :info="item"></UserItem>
                         </Col>
                     </Row>
-
-
                 </div>
             </div>
         </div>
+
+
+        <Modal v-model="elderModal" title="老人选择" :footer-hide="true" width="270">
+            <template #close>
+                <Icon type="md-close-circle" color="#000" size="16" />
+            </template>
+
+            <div class="elderBox">
+                <Input prefix="ios-search" clearable enter-button="搜索" placeholder="搜索" />
+
+                <Card :bordered="false" :padding="5" style="background: rgba(19,100,248,0.05);margin: 5px 0;"
+                    v-for="item in detailList" :key="item.id">
+                    <div class="userBox">
+                        <div>
+                            <img :src="item.photo" alt="">
+                        </div>
+                        <div class="name">
+                            <p>{{ item.name }}</p>
+                            <p>ID:{{ item.fileNo }}</p>
+                        </div>
+                    </div>
+                </Card>
+
+            </div>
+        </Modal>
     </div>
 </template>
 
 <script setup lang="ts">
 import UserItem from "./UserItem.vue"
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { CheckFocus, CheckList, CheckCancelFocus, CheckSave, CheckRemoveId } from '@/api/Check/Check';
+import { HostelList, HostelFloorlList, HostelRoomListOfFloor, HostelRoomBedListOfRoom } from "@/api/Hostel/Hostel"
+const elderModal = ref<boolean>(false)
+const detailList = ref<any>([])
+const hostelTofloor = ref<any>([])
+const hostelList = ref<any>([])
+const roomlList = ref<any>([])
+const hostel = ref<any>('')
+const floorList = ref<any>([])
+const floor = ref<any>('')
+const roomList = ref<any>([])
+const room = ref<any>('')
+const bed = ref<any>([])
 
-const model1 = ref()
+const UserList = ref<any>([])
+const FocusList = ref<any>([])
+
+const jobLevelList = ref(["三级", "二级", "一级", "特一级", "特二级", "特三级", "专需护理"])
+const searchData = ref<any>({
+    current: 1,
+    size: 9999,
+    floorId: "",
+    roomId: "",
+    focus: "",
+    nursingGrade: "",
+})
+
+const handleSearch = (value: any) => {
+
+    getData()
+
+
+
+    if (value.length == 2) {
+
+        searchData.value.floorId = value[1]
+
+
+        HostelRoomListOfFloor({ floorId: value[1], needBed: false }).then((res: any) => {
+            roomList.value = res.data
+        })
+    }
+
+}
+
+const loadData = (item: any, callback: any) => {
+    HostelFloorlList({
+        hostelId: item.value
+    }).then(res => {
+        item.children = res.data.map((item: any) => {
+            return {
+                value: item.id,
+                label: item.floorNumber,
+                //children: [],
+                //loading: false,
+                type: 'floor'
+            }
+        })
+        callback()
+    })
+}
+
+
+
+const getData = () => {
+
+    // let floorId = searchData.value.hostelTofloor[0]
+    // let roomId = searchData.value.hostelTofloor[1]
+
+
+    // searchData.value.floorId = floorId
+    // searchData.value.roomId = roomId
+
+    CheckList(searchData.value).then((res: any) => {
+        // console.log(res.records)
+
+        UserList.value = res.data.records
+
+        console.log(UserList.value)
+
+
+        // hostelList.value = res.data.map((item: any) => {
+        //     return {
+        //         value: item.id,
+        //         label: item.name,
+        //         children: [],
+        //         loading: false,
+        //         type: 'hostel'
+        //     }
+        // })
+    })
+
+
+
+
+}
+
+
+onMounted(() => {
+
+    // let box = document.getElementById("#layoutBox")
+    
+
+    getData()
+    HostelList().then(res => {
+        hostelList.value = res.data.map((item: any) => {
+            return {
+                value: item.id,
+                label: item.name,
+                children: [],
+                loading: false,
+                type: 'hostel'
+            }
+        })
+    })
+
+    CheckList({
+        current: 1,
+        size: 9999,
+        focus: 0,
+    }).then((res: any) => {
+        FocusList.value = res.data.records
+    })
+
+
+    // hostel.value.forEach((item: any) => {
+    //     HostelFloorlList(item.value).then(res => {
+    //         floorList.value = res.data.map((item: any) => {
+    //             return {
+    //                 value: item.id,
+    //                 label: item.name
+    //             }
+    //         })
+    //     })
+    //})
+})
+
+
+const handleAddFocus = () => {
+    elderModal.value = true
+
+    CheckList({
+        current: 1,
+        size: 9999,
+        focus: 1,
+    }).then((res: any) => {
+        // console.log(res.records)
+
+        detailList.value = res.data.records
+
+        //console.log(UserList.value)
+
+
+        // hostelList.value = res.data.map((item: any) => {
+        //     return {
+        //         value: item.id,
+        //         label: item.name,
+        //         children: [],
+        //         loading: false,
+        //         type: 'hostel'
+        //     }
+        // })
+    })
+}
+
+
+
 
 </script>
 
@@ -180,5 +389,32 @@ const model1 = ref()
         }
     }
 
+}
+
+.elderBox {
+    width: 100%;
+    height: 490px;
+    overflow: hidden;
+    overflow-y: auto;
+
+    .userBox {
+        display: flex;
+        align-items: center;
+        height: 40px;
+        cursor: pointer;
+
+        img {
+            width: 30px;
+            margin-right: 10px;
+        }
+
+        .name {
+            font-size: 14px;
+            font-family: PingFangSC, PingFang SC;
+            font-weight: 400;
+            color: #1C1B1B;
+            line-height: 20px;
+        }
+    }
 }
 </style>

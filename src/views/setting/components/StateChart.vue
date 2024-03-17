@@ -5,21 +5,24 @@
 <script setup lang='ts'>
 import * as echarts from "echarts"
 import { onMounted, ref } from "vue";
+import {DeviceTypeRatio} from "@/api/Device/Device"
 const StateChartRef = ref(null)
 const myChart: any = ref(null)
+import {} from "@/api/Device/Device"
 onMounted(() => {
 
     initChart()
+    DeviceTypeRatio({}).then((res: any) => {
+        console.log(res)
+    })
 
-    window.addEventListener('resize', () => {
-        myChart.value.resize();
-    });
-
-
+    // window.addEventListener('resize', () => {
+    //     myChart.value.resize();
+    // });
 })
 
 const initChart = () => {
-    myChart.value = echarts.init(StateChartRef.value);
+    const myChart: any =  echarts.init(StateChartRef.value);
 
     const option = {
         color: [
@@ -107,7 +110,11 @@ const initChart = () => {
     };
 
 
-    option && myChart.value.setOption(option);
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
+    }
+
+    window.addEventListener('resize', myChart.resize);
 }
 
 

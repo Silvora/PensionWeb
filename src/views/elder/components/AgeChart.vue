@@ -4,9 +4,8 @@
 
 <script setup lang='ts'>
 import * as echarts from "echarts"
-import { onMounted, ref ,nextTick} from "vue";
+import { onMounted, ref, nextTick } from "vue";
 const AgeChartRef = ref(null)
-const myChart: any = ref(null)
 onMounted(() => {
 
     nextTick(() => {
@@ -29,7 +28,7 @@ const map: any = ref({
 })
 
 const initChart = () => {
-   const myChart: any  = echarts.init(AgeChartRef.value);
+    const myChart: any = echarts.init(AgeChartRef.value);
 
     const option = {
         color: [

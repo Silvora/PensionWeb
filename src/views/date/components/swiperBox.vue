@@ -9,22 +9,22 @@
             'slideShadows': true
         }" :initialSlide="1" :loop="true" @swiper="onSwiper" @slideChange="onSlideChange">
         <swiper-slide>
-            <Image src="https://swiperjs.com/demos/images/nature-1.jpg" fit="fill" height="200px" />
+            <Image src="https://swiperjs.com/demos/images/nature-1.jpg" fit="fill" height="160px" />
         </swiper-slide>
         <swiper-slide>
-            <Image src="https://swiperjs.com/demos/images/nature-2.jpg" fit="fill" height="200px" />
+            <Image src="https://swiperjs.com/demos/images/nature-2.jpg" fit="fill" height="160px" />
         </swiper-slide>
         <swiper-slide>
-            <Image src="https://swiperjs.com/demos/images/nature-3.jpg" fit="fill" height="200px" />
+            <Image src="https://swiperjs.com/demos/images/nature-3.jpg" fit="fill" height="160px" />
         </swiper-slide>
         <swiper-slide>
-            <Image src="https://swiperjs.com/demos/images/nature-4.jpg" fit="fill" height="200px" />
+            <Image src="https://swiperjs.com/demos/images/nature-4.jpg" fit="fill" height="160px" />
         </swiper-slide>
         <swiper-slide>
-            <Image src="https://swiperjs.com/demos/images/nature-5.jpg" fit="fill" height="200px" />
+            <Image src="https://swiperjs.com/demos/images/nature-5.jpg" fit="fill" height="160px" />
         </swiper-slide>
         <swiper-slide>
-            <Image src="https://swiperjs.com/demos/images/nature-6.jpg" fit="fill" height="200px" />
+            <Image src="https://swiperjs.com/demos/images/nature-6.jpg" fit="fill" height="160px" />
         </swiper-slide>
     </swiper>
 </template>

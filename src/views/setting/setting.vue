@@ -6,16 +6,19 @@
             </span>
             <span class="searchBtn">
                 <Space>
-                    <Select v-model="online" style="width:100px" placeholder="是否在线">
+                    <Select v-model="searchData.online" clearable style="width:100px" placeholder="是否在线"
+                        @on-change="handleSearchData">
                         <Option value="0">断开</Option>
                         <Option value="1">在线</Option>
                     </Select>
-                    <Select v-model="status" style="width:100px" placeholder="设备状态">
+                    <Select v-model="searchData.status" clearable style="width:100px" placeholder="设备状态"
+                        @on-change="handleSearchData">
                         <Option value="0">空闲</Option>
                         <Option value="1">正常</Option>
                         <Option value="10">异常</Option>
                     </Select>
-                    <Cascader :data="list" :load-data="loadList" v-width="200" placeholder="楼栋/楼层/房间"/>
+                    <Cascader :data="list" v-model="dataValue" :load-data="loadList" v-width="200" placeholder="楼栋/楼层/房间"
+                        @on-change="handleSearch" />
 
                     <!-- <Select v-model="model1" style="width:100px" placeholder="楼栋">
                         <Option value="beijing">New York</Option>
@@ -35,9 +38,11 @@
                         <Option value="shanghai" disabled>London</Option>
                         <Option value="shenzhen">Sydney</Option>
                     </Select> -->
-                    <div>
+                    <!-- <div>
                         <Input search clearable placeholder="搜索" />
-                    </div>
+                    </div> -->
+                    <Button type="primary" @click="handleToNavLog">全部日志</Button>
+                    <Button type="primary" >重置</Button>
                 </Space>
             </span>
         </div>
@@ -49,7 +54,9 @@
                     </span>
                 </div>
                 <div class="list">
-                    <ErrItem v-for="item in Array.from({ length: 1 })" :name="item"></ErrItem>
+                    <div v-for="item in errList" :key="item.id">
+                        <ErrItem v-for="item in Array.from({ length: 1 })" :name="item"></ErrItem>
+                    </div>
                 </div>
             </div>
             <div class="bed">
@@ -65,7 +72,7 @@
                 <div class="list">
                     <Row :gutter="10">
                         <Col span="6" v-for="item in data" :key="item.id">
-                        <DeviceItem :checkAll="checkAll" :info="item" @handleCheck="handleCheck"></DeviceItem>
+                        <DeviceItem :checkAll="checkAll" :info="item" @handleCheck="handleCheck" @handleGetUser="handleGetUser"></DeviceItem>
                         </Col>
                     </Row>
                 </div>
@@ -76,10 +83,10 @@
                     <!-- <Button type="primary" class="btn" @click="handleShowModal">楼栋管理</Button> -->
                     <Card :bordered="false" :padding="6" class="btnList" style="border: 1px solid #98D2E1;">
                         <div class="list">
-                            <!-- <Button type="primary">设备关联</Button>
-                            <Button type="primary">参数设置</Button> -->
-                            <Button type="primary">一键布防</Button>
-                            <Button type="primary">一键撤防</Button>
+                            <Button type="primary" @click="handleShowModal">设备关联</Button>
+                            <!-- <Button type="primary">参数设置</Button> -->
+                            <Button type="primary" @click="handleDeviceOnline">一键布防</Button>
+                            <Button type="primary" @click="handleDeviceOffline">一键撤防</Button>
                             <Button type="error" @click="handleBatchDelete">批量删除</Button>
                         </div>
                     </Card>
@@ -95,6 +102,8 @@
                 </div>
             </div>
         </div>
+
+        <FormData ref="FormDataRef"></FormData>
     </div>
 </template>
 
@@ -103,33 +112,72 @@ import DeviceItem from "./components/DeviceItem.vue"
 import ErrItem from "./components/ErrItem.vue";
 import CountChart from "./components/CountChart.vue"
 import StateChart from "./components/StateChart.vue"
+import FormData from "./components/Form.vue";
 import { ref } from 'vue';
 import { onMounted } from "vue";
 import { useI18n } from "vue-i18n";
-import {Cascader,Modal,Message} from 'view-ui-plus';
+import { Cascader, Modal, Message } from 'view-ui-plus';
 import { HostelList, HostelFloorlList, HostelRoomListOfFloor, HostelRoomBedListOfRoom } from "@/api/Hostel/Hostel"
-import {DeviceList,DeviceUpdate,DeviceSave,DeviceRemoveBatch,DeviceStopUsage,DeviceUsageRecordList,DeviceAddUsageRecord} from "@/api/Device/Device";  
+import {DeviceOnlineBatch,DeviceOfflineBatch, DeviceStateratio, DeviceTypeRatio, DeviceList, DeviceUpdate, DeviceSave, DeviceRemoveBatch, DeviceStopUsage, DeviceUsageRecordList, DeviceAddUsageRecord } from "@/api/Device/Device";
+import router from "@/router";
 const { t } = useI18n()
 const checkAll = ref<any>(false)
 const data = ref<any>([])
-const online = ref<any>()
-const status = ref<any>()
+const errList = ref<any>([])
+const FormDataRef = ref<InstanceType<typeof FormData>>()
+
+const searchData = ref<any>({
+    hostelId: '',
+    floorId: '',
+    roomId: '',
+    status: '',
+    online: ''
+})
 // const online = ref<any>()
+const dataValue = ref<any>([])
 const floorId = ref<any>()
 const roomId = ref<any>()
 const list = ref<any>([])
-const hostelList=ref<any>([])
-const floorList=ref<any>([])
-const roomList=ref<any>([])
+const hostelList = ref<any>([])
+const floorList = ref<any>([])
+const roomList = ref<any>([])
 
 const checkList = ref<any>([])
-const handleCheck = (item:any) => {
+
+
+// 获取设备详情
+const handleGetUser = (data:any) => {
+    FormDataRef.value?.Open(data)
+}
+
+
+const handleShowModal = () => {
+    // console.log("handleShowModal")
+    FormDataRef.value?.Open({})
+}
+
+// 选中
+const handleCheck = (item: any) => {
     console.log(item)
-    if(checkList.value.includes(item)){
+    if (checkList.value.includes(item)) {
         checkList.value.splice(checkList.value.indexOf(item.id), 1);
-    }else{
+    } else {
         checkList.value.push(item.id)
     }
+}
+
+// 搜索
+const handleSearchData = () => {
+    getData()
+}
+
+// 搜索房间
+const handleSearch = (value: any) => {
+
+    searchData.value.floorId = value[1]
+    searchData.value.roomId = value[2]
+
+    getData()
 }
 
 // 批量删除
@@ -156,75 +204,119 @@ const handleBatchDelete = () => {
     });
 }
 
+// 获取数据
 const getData = () => {
-    DeviceList({}).then((res: any) => {
+    DeviceList(searchData.value).then((res: any) => {
         console.log(res)
         data.value = res.data
     })
 }
 
-const loadList = (item:any, callback:any) => {
+
+// 获取错误数据
+const getErrData = () => {
+    DeviceList({ status: 10 }).then((res: any) => {
+        console.log(res)
+        errList.value = res.data
+    })
+}
+
+// 获取房间数据
+const loadList = (item: any, callback: any) => {
     console.log(item)
     item.loading = true
 
-    if(item.type=='floor'){
-        HostelRoomListOfFloor({floorId: item.value,needBed:false}).then((res: any) => {
+    if (item.type == 'floor') {
+        HostelRoomListOfFloor({ floorId: item.value, needBed: false }).then((res: any) => {
             //console.log(res)
-            item.children = res.data.map((item:any)=>{
-            return {
-                value: item.id,
-                label: item.roomNumber,
-                //children: [],
-                //loading: false
-            }
-        })
+            item.children = res.data.map((item: any) => {
+                return {
+                    value: item.id,
+                    label: item.roomNumber,
+                    //children: [],
+                    //loading: false
+                }
+            })
             item.loading = false;
-                    callback();
+            callback();
         })
     }
 
 
-    if(item.type=='hostel'){
-        HostelFloorlList({hostelId: item.value}).then((res: any) => {
+    if (item.type == 'hostel') {
+        HostelFloorlList({ hostelId: item.value }).then((res: any) => {
             //console.log(res)
-            item.children = res.data?.map((item:any)=>{
-            return {
-                value: item.id,
-                label: item.floorNumber,
-                children: [],
-                loading: false,
-                type:'floor'
-            }
-        })
+            item.children = res.data?.map((item: any) => {
+                return {
+                    value: item.id,
+                    label: item.floorNumber,
+                    children: [],
+                    loading: false,
+                    type: 'floor'
+                }
+            })
             item.loading = false;
-                    callback();
+            callback();
         })
     }
 }
 
+// 获取楼栋
 const getHome = () => {
     HostelList().then((res: any) => {
         hostelList.value = res.data
-        floorId.value = res.data[0]?.id+''
+        floorId.value = res.data[0]?.id + ''
 
-        list.value=res.data.map((item:any)=>{
+        list.value = res.data.map((item: any) => {
             return {
                 value: item.id,
                 label: item.name,
                 children: [],
                 loading: false,
-                type:'hostel'
+                type: 'hostel'
             }
         })
     })
-   
+
+}
+
+// 设备布防
+const handleDeviceOnline = () => {
+    DeviceOnlineBatch({idx:checkList.value}).then((res: any) => {
+        console.log(res)
+        Message.success("设备布防成功")
+        getData()
+    })
+}
+// 设备撤防
+const handleDeviceOffline = () => {
+    DeviceOfflineBatch({idx:checkList.value}).then((res: any) => {
+        console.log(res)
+        Message.success("设备撤防成功")
+        getData()
+    })
 }
 
 
+const getRatio = () => {
+    DeviceStateratio({}).then((res: any) => {
+        console.log(res)
+    })
+    DeviceTypeRatio({}).then((res: any) => {
+        console.log(res)
+    })
+}
+
 onMounted(() => {
     getData()
+    getErrData()
+  //  getRatio()
     getHome()
 })
+
+const handleToNavLog = ()=>{
+    router.push('/log')
+}
 
 </script>
 
@@ -243,6 +335,7 @@ onMounted(() => {
         justify-content: space-between;
         //padding: 0 20px;
         padding-right: 20px;
+
         .Back {
             width: 260px;
             cursor: pointer;
@@ -254,6 +347,7 @@ onMounted(() => {
             color: #1364F8;
             background: linear-gradient(90deg, rgba(19, 100, 248, 0.1) 0%, rgba(19, 100, 248, 0) 100%);
         }
+
         .searchBtn {
             display: flex;
 

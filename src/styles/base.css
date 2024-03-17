@@ -36,6 +36,12 @@
   background: #fff;
 }
 
+
+textarea.ivu-input{
+  /* border: 1px solid #98D2E1; */
+  border-radius: 0;
+}
+
  .ivu-radio-group-button .ivu-radio-wrapper{
   background: rgb(18, 98, 248,.1);
   font-size: 14px;
@@ -179,3 +185,42 @@
 .system .ivu-select-selection {
               border-radius: 0px;
           }
+
+
+
+.date .ivu-table,.date .ivu-table th,.date .ivu-table td{
+  background: transparent;
+  font-size: 12px;
+}
+.date .ivu-table tr{
+  color: #fff;
+}
+
+.date .ivu-table td, .date .ivu-table th{
+  border: none;
+  /* color: #fff; */
+} 
+.date .ivu-table:before{
+  background: transparent;
+}
+
+ .ivu-table .demo-table-info-row td{
+        background-color: rgba(29, 78, 140, .25);
+        /* color: #fff; */
+    }
+     .ivu-table .demo-table-error-row td{
+        background-color: transparent;
+        /* color: #fff; */
+    }
+
+
+.date .ivu-table-body {
+ -ms-overflow-style: none;
+        /* 适用于Internet Explorer, Edge */
+        scrollbar-width: none;
+        /* 适用于Firefox */
+        overflow-y: scroll;
+}
+.date .ivu-table-body::-webkit-scrollbar {
+  display: none; /* 适用于Chrome, Safari, Opera */
+}

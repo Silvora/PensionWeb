@@ -2,29 +2,30 @@
     <Card :bordered="false" :padding="0" style="background: rgba(255, 255, 255, 1);margin-bottom: 10px;">
         <div class="deviceInfo">
             <p class="title">
-                <span :class="['t1', props.info?.online==1?'green':'gary']">{{['离线','在线'][props.info.online]}}</span>
+                <span
+                    :class="['t1', props.info?.online == 1 ? 'green' : 'gary']">{{ ['离线', '在线'][props?.info.online] }}</span>
 
                 <!-- <span :class="['t1', 'green', 'yellow', 'gary'][props.info.online]">{{['离线','在线'][props.info.online]}}</span> -->
-                <span class="t2">{{props.info.roomBedNumber}}</span>
-                <span class="t3">
+                <span class="t2">{{ props?.info.roomBedNumber }}</span>
+                <span class="t3" @click="handleGet">
                     <img src="@/assets/images/room-setting.png" alt="" srcset="">
                 </span>
             </p>
             <div class="deviceBox" @click="handleSetCheck">
                 <img class="img" src="@/assets/images/睡眠监测@2x(1).png" alt="" srcset="">
                 <div class="info">
-                    <p class="t1">{{ props.info.name }}
+                    <p class="t1">{{ props?.info.name }}
 
                     </p>
                     <p class="t2">
-                        ID:{{ props.info.mac }}
+                        ID:{{ props?.info.mac }}
                     </p>
                     <p class="t2">
-                        关联老人:{{ props.info.elderlyInfo.name }}
+                        关联老人:{{ props?.info.elderlyInfo?.name }}
                     </p>
 
                     <span class="check">
-                        <Checkbox v-model="check">{{  }}</Checkbox>
+                        <Checkbox v-model="check">{{ }}</Checkbox>
                     </span>
                 </div>
 
@@ -66,21 +67,22 @@
 
 <script setup lang='ts'>
 import { ref } from 'vue'
-import {Checkbox} from "view-ui-plus"
+import { Checkbox } from "view-ui-plus"
 import { watchEffect } from 'vue';
+//import {DeviceDetailId} from "@/api/Device/Device"
 const check = ref(false)
 const props = defineProps({
     info: {
         type: Object,
-        defined:{}
+        defined: {}
     },
-    checkAll:{
-        type:Boolean,
-        default:false
+    checkAll: {
+        type: Boolean,
+        default: false
     }
 })
 
-watchEffect(()=>{
+watchEffect(() => {
     // console.log("===========",props.checkAll)
     check.value = props.checkAll
     // console.log(check.value)
@@ -91,10 +93,17 @@ watchEffect(()=>{
 
 })
 
-const emit = defineEmits(['handleCheck'])
-const handleSetCheck = ()=>{
+const emit = defineEmits(['handleCheck', 'handleGetUser'])
+const handleSetCheck = () => {
     check.value = !check.value
-    emit('handleCheck',{id:props.info.id,check:check.value})
+    emit('handleCheck', { id: props.info.id, check: check.value })
+}
+
+const handleGet = () => {
+    // DeviceDetailId({id:props.info.id}).then((res:any)=>{
+    //     console.log(res)
+    // })
+    emit('handleGetUser',props.info)
 }
 </script>
 
@@ -190,11 +199,12 @@ const handleSetCheck = ()=>{
         //         }
         //     }
         // }
-            .check{
-                position: absolute;
-                top: 45px;
-                left: 45px;
-            }
+        .check {
+            position: absolute;
+            top: 45px;
+            left: 45px;
+        }
+
         .info {
             width: 100%;
             padding: 0 10px;

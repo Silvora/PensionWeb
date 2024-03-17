@@ -243,6 +243,20 @@ const getSelectRecords = () => {
     return []
 }
 
+const exportAllDataEvent = () => {
+    const $table = tableRef.value
+  if ($table) {
+    $table.exportData({
+      filename: '员工数据-'+ Date.now(),
+      type: 'csv',
+      isHeader: true,
+      isFooter: true,
+      // 自定义导出的数据源
+      data: props.data.value
+    })
+  }
+}
+
 
 defineExpose({
     getSelectRecords,
@@ -259,6 +273,8 @@ defineExpose({
 
 
     handleOpenEditModal,//打开编辑model
+
+    exportAllDataEvent,
 })
 </script>
 

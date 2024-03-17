@@ -6,7 +6,12 @@
             </span>
             <span class="searchBtn">
                 <Space>
-                    <Select v-model="model1" style="width:100px" placeholder="床位">
+
+                    <Select v-model="searchData.roleId" style="width:100px" placeholder="角色" clearable @on-change="handleSearchChange">
+                        <Option :value="item.id" v-for="item in roleList" :key="item.id">{{ item.name }}</Option>
+                        </Select>
+
+                    <!-- <Select v-model="model1" style="width:100px" placeholder="床位">
                         <Option value="beijing">New York</Option>
                         <Option value="shanghai" disabled>London</Option>
                         <Option value="shenzhen">Sydney</Option>
@@ -28,7 +33,7 @@
                     </Select>
                     <div>
                         <Input search clearable placeholder="搜索" />
-                    </div>
+                    </div> -->
                 </Space>
             </span>
         </div>
@@ -72,7 +77,7 @@
                         <vxe-button type="text" size="mini" status="primary" @click="handleGetUserInfo(row)">
                             查看
                         </vxe-button>
-                        <vxe-button type="text" size="mini" status="primary">
+                        <vxe-button type="text" size="mini" status="primary" @click="modal = true">
                             排班
                         </vxe-button>
                         <vxe-button type="text" size="mini" status="primary" @click="handleRoleEdit(row)">
@@ -91,8 +96,8 @@
                     <Card :bordered="false" :padding="6" class="btnList" style="border: 1px solid #98D2E1;">
                         <div class="list">
                             <Button type="primary" @click="handleRoleAdd">新增</Button>
-                            <Button type="primary">导入</Button>
-                            <Button type="primary">导出</Button>
+                            <!-- <Button type="primary">导入</Button> -->
+                            <Button type="primary" @click="handleExport">导出</Button>
                             <Button type="error" @click="handleDeleteAll">批量删除</Button>
                         </div>
                     </Card>
@@ -195,7 +200,13 @@ import Scheduling from "./components/Scheduling.vue"
 import { FileUploadImage } from "@/api/File/File"
 import { StaffList, StaffRemoveId, StaffRemoveBatch } from "@/api/Staff/Staff"
 import { MemoList, MemoSave } from "@/api/Memo/Memo";
-import { getMaxListeners } from "events";
+import {RoleList } from "@/api/RoleInfo/RoleInfo"
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+const searchData = ref<any>({
+    roleId:""
+})
+const roleList = ref<any>([])
 const modal = ref(false)
 const addModal = ref(false)
 const info = ref<any>({})
@@ -221,8 +232,20 @@ const fileUrl = ref<any>({
 const tableH = ref("765px")
 const data: any = ref()
 
-const model1 = ref<any>()
+const pagerConfig = ref({
+    total: 100,//总数
+    currentPage: 1,//当前页
+    pageSize: 10 //数量
+})
 
+const handleExport = ()=>{
+    TableViewRef.value.exportAllDataEvent()
+}
+
+const handleSearchChange = () => {
+    pagerConfig.value.currentPage = 1
+    getData()
+}
 
 const handleUpload = (type: string, file: any) => {
     console.log(type, file, import.meta.env.VITE_APP_AXIOS_BASER)
@@ -253,11 +276,7 @@ const handleGetUserInfo = (row: any) => {
 }
 
 
-const pagerConfig = ref({
-    total: 100,//总数
-    currentPage: 1,//当前页
-    pageSize: 10 //数量
-})
+
 
 
 //添加
@@ -351,7 +370,8 @@ const handleUpdatePage = ({ currentPage, pageSize }: any) => {
 const getData = () => {
     let parmse = {
         current: pagerConfig.value.currentPage,
-        size: pagerConfig.value.pageSize
+        size: pagerConfig.value.pageSize,
+        ...searchData.value
     }
     StaffList(parmse).then((res: any) => {
         console.log(res)
@@ -362,29 +382,6 @@ const getData = () => {
 }
 
 
-
-//数据统计
-const getInfo = () => {
-    // StaffGenderRatio().then((res: any) => {
-    //     let obj: any = []
-    //     res.data.forEach((item: any) => {
-    //         if (item.type == 1) {
-    //             obj.push({ value: item.totalCount, name: '男', percentage: item.percentage })
-    //         }
-    //         if (item.type == 2) {
-    //             obj.push({ value: item.totalCount, name: '女', percentage: item.percentage })
-    //         }
-    //     })
-
-    //     sexData.value = obj
-
-    //     console.log(sexData.value)
-    // })
-
-    // StaffJobLevelRatio().then((res: any) => {
-    //     console.log(res)
-    // })
-}
 
 const notes = ref({
     value1: '',
@@ -402,13 +399,24 @@ const getMemo = () => {
     })
 }
 
+const getRoleList = ()=>{
+    RoleList({
+        current: 1,
+        size: 9999
+    }).then((res:any)=>{
+        console.log(res)
+        roleList.value = res.data.records
+    })
+}
+
+
 onMounted(() => {
    // console.log("", pageBox.value?.clientHeight)//680
     const h = pageBox.value?.clientHeight
 
     tableH.value = h - 165 + 'px'
     getData()
-    getInfo()
+    getRoleList()
 
     getMemo()
 

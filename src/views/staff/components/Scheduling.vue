@@ -134,12 +134,12 @@
 
                 <div class="time">
                     <span>开始时间</span>
-                    <TimePicker v-model="addForm.startTimeStr" format="HH:mm" placeholder="开始时间" style="width: 100px" />
+                    <TimePicker v-model="addForm.startTimeStr" format="HH:mm" placeholder="开始时间" style="width: 150px" />
                 </div>
 
                 <div class="time">
                     <span>结束时间</span>
-                    <TimePicker v-model="addForm.endTimeStr" format="HH:mm" placeholder="结束时间" style="width: 100px" />
+                    <TimePicker v-model="addForm.endTimeStr" format="HH:mm" placeholder="结束时间" style="width: 150px" />
                     <!-- <TimePicker :model-value="addForm.end" format="HH’mm’ss" type="timerange" placement="bottom-end"
                         placeholder="Select time" /> -->
                 </div>

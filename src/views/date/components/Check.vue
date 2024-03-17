@@ -39,6 +39,7 @@ const initChart = () => {
         grid: {
             left: '3%',
             right: '3%',
+            top: '15%',
             // top: '20%',
             bottom: '4%',
             containLabel: true
@@ -186,5 +187,6 @@ const initChart = () => {
 .check {
     width: 100%;
     height: calc(50vh - 240px);
+    min-height: 200px;
 }
 </style>

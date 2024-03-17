@@ -5,7 +5,10 @@
             <div class="steps">
                 <span v-for="(item, idx) in orderMenu" :key="item.title">
                     <Button type="text" :icon="item.icon" :class="[active == idx ? 'active' : '']"
-                        @click="handleSetActive(idx)">{{ item.title }}</Button>
+                        @click="handleSetActive(idx)">
+
+                        <i :class="['iconfont', item.icon]"></i>
+                        {{ item.title }}</Button>
                     <span v-if="idx != 4">></span>
                 </span>
                 <!-- <Button type="text" icon="ios-person">家属信息登记</Button> >
@@ -19,7 +22,8 @@
                 <Space>
 
                     <Button type="primary" @click="() => active--" v-if="active > 0">上一步</Button>
-                    <Button type="primary" @click="() => active++" v-if="active < 6">下一步</Button>
+                    <Button type="primary" @click="() => active++" v-if="active < 4">下一步</Button>
+                    <!-- <Button type="primary" @click="() => active++" v-if="active == 4">打印</Button> -->
                 </Space>
             </div>
         </div>
@@ -38,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref,onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import Order1 from './components/order1.vue';
 import Order2 from './components/order2.vue';
 import Order3 from './components/order3.vue';
@@ -46,26 +50,26 @@ import Order4 from './components/order4.vue';
 import Order5 from './components/order5.vue';
 import Order6 from './components/order6.vue';
 import Order7 from './components/order7.vue';
-import { useRoute,useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 const route = useRoute()
 const router = useRouter()
 const orderMenu = [
     {
         title: "基础信息登记",
-        icon: "ios-person",
+        icon: "icon-1_round_solid",
     },
     {
         title: "家属信息登记",
-        icon: "ios-person",
+        icon: "icon-2_round_solid",
     },
     {
         title: "健康信息登记",
-        icon: "ios-person",
+        icon: "icon-3_round_solid",
     },
     {
         // title: "护理任务设置",
         title: "其它设置",
-        icon: "ios-person",
+        icon: "icon-4_round_solid",
     },
     // {
     //     title: "餐饮床位选择",
@@ -77,7 +81,7 @@ const orderMenu = [
     // },
     {
         title: "入院缴费",
-        icon: "ios-person",
+        icon: "icon-5_round_solid",
     }
 ]
 
@@ -85,7 +89,7 @@ const active = ref(0)
 
 const handleSetActive = (idx: number) => {
     active.value = idx
-    router.replace({ query: { type: idx,id: route.query.id } })
+    router.replace({ query: { type: idx, id: route.query.id } })
 }
 
 onMounted(() => {

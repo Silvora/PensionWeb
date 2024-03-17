@@ -24,6 +24,8 @@ import AddElder from "@/views/add-elder/add-elder.vue"
 
 import DateView from "@/views/date/date.vue"
 
+import Log from "@/views/log/log.vue"
+
 //首页
 const home: any = [
   {
@@ -215,6 +217,24 @@ const addElder: any = [
     }
 ]
 
+
+//添加长者信息
+const log: any = [
+  {
+      path: '/log',
+      name: 'log',
+      meta: {
+        title: '日志记录',
+        icon: 'md-home',
+        //id: Date.now(),
+        keepAlive: true,
+        //是否显示
+        isDisplay: true
+      },
+      component: Log
+    }
+]
+
 const routes: any = [
   {
     path: '/',
@@ -235,6 +255,7 @@ const routes: any = [
       ...staffDetails,
       ...elder,
       ...addElder,
+      ...log,
       ...err,
 
     ]

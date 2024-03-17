@@ -43,6 +43,15 @@ export function ElderlySave(data: any) {
     })
 }
 
+// 
+export function ElderlyDetail(data: any) { 
+    return http.request({
+        url: `/admin/elderly/detail/${data.elderlyId}`,
+        method: 'get',
+        data
+    })
+}
+
 // 修改长者
 export function ElderlyUpdate(data: any) { 
     return http.request({

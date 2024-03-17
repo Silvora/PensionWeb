@@ -5,21 +5,23 @@
 <script setup lang='ts'>
 import * as echarts from "echarts"
 import { onMounted, ref } from "vue";
+import {DeviceStateratio} from "@/api/Device/Device"
 const CountChartRef = ref(null)
 const myChart: any = ref(null)
 onMounted(() => {
 
+    DeviceStateratio({}).then((res: any) => {
+        console.log(res)
+    })
+
     initChart()
-
-    window.addEventListener('resize', () => {
-        myChart.value.resize();
-    });
-
-
+    // window.addEventListener('resize', () => {
+    //     myChart.value.resize();
+    // });
 })
 
 const initChart = () => {
-    myChart.value = echarts.init(CountChartRef.value);
+    const myChart: any  = echarts.init(CountChartRef.value);
 
     const option = {
         color: [
@@ -113,8 +115,19 @@ const initChart = () => {
     };
 
 
-    option && myChart.value.setOption(option);
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
+    }
+
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
+    }
+
+    window.addEventListener('resize', myChart.resize);
 }
+
+
+
 
 
 </script>

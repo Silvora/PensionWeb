@@ -17,14 +17,14 @@
             </div>
             <div class="btn">
                 <Button type="primary" v-if="type == 'agency'">保存</Button>
-                <Input v-if="type == 'role'||type == 'account'" search clearable placeholder="搜索" />
+                <Input v-if="type == 'role'||type == 'account'" @on-search="handleSearch" search clearable placeholder="搜索" />
             </div>
         </div>
 
         <div class="formInfo" id="formInfo">
             <Agency v-if="type == 'agency'"></Agency>
             <Role v-if="type == 'role'"></Role>
-            <Account v-if="type == 'account'"></Account>
+            <Account v-if="type == 'account'" :searchData="name"></Account>
             <System v-if="type == 'system'"></System>
         </div>
     </div>
@@ -40,6 +40,9 @@ import System from "./components/system.vue"
 const router = useRouter()
 const route = useRoute()
 const type = ref(route.query.type)
+
+const name = ref<any>('')
+
 const typeList = ref([
     {
         label: "机构设置",
@@ -71,6 +74,11 @@ const typeList = ref([
 const handleRadioType = (label: any) => {
     //console.log(label)
     router.replace('/sys?type=' + label)
+}
+
+const handleSearch = (value:any)=>{
+    console.log(value)
+    name.value = value
 }
 </script>
 

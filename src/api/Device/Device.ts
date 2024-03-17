@@ -25,6 +25,25 @@ export function DeviceDetailId(data: any) {
     })
 }
 
+// 设备状态比例
+export function DeviceStateratio(data: any) {
+    return http.request({
+        url: `/admin/device/deviceStateratio`,
+        method: 'get',
+        data
+    })
+}
+// 设备类型比例
+export function DeviceTypeRatio(data: any) {
+    return http.request({
+        url: `/admin/device/deviceTypeRatio`,
+        method: 'get',
+        data
+    })
+}
+
+
+
 // 获取设备
 export function DeviceList(params: any) {
     return http.request({
@@ -87,3 +106,33 @@ export function DeviceUsageRecordList(data: any) {
         data
     })
 }
+
+// 日志列表
+export function DeviceLogList(params: any) {
+    return http.request({
+        url: '/admin/device/logList',
+        method: 'get',
+        params
+    })
+}
+
+
+// 设备离线
+export function DeviceOfflineBatch(data: any) {
+    return http.request({
+        url: '/admin/device/offlineBatch',
+        method: 'put',
+        data
+    })
+}
+
+
+// 设备在线
+export function DeviceOnlineBatch(data: any) {
+    return http.request({
+        url: '/admin/device/onlineBatch',
+        method: 'put',
+        data
+    })
+}
+
