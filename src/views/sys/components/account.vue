@@ -108,7 +108,7 @@ const props = defineProps({
 })
 
 watch(() => props.searchData, () => {
-    getData({name: props.searchData})
+    getData({ name: props.searchData })
 })
 
 const TableViewRef = ref<any>(null)
@@ -283,23 +283,33 @@ const handleRoleEditModal = (data: any) => {
 
 // 批量启用
 const handleBatchOnline = () => {
-    let list = TableViewRef.value.getSelectRecords().map((item: any) => item.id)
+    let list = TableViewRef.value.getSelectRecords().map((item: any) => {
+        return {
+            id: item.id
+        }
+    })
     console.log(list)
     if (list.length > 0) {
-        AdminUserOnlineBatch({ ids: list }).then(() => {
+        AdminUserOnlineBatch(list).then(() => {
             Message.success(t('禁用成功'))
+            getData()
         })
     }
 
 }
 // 批量禁用
 const handleBatchOffline = () => {
-    let list = TableViewRef.value.getSelectRecords().map((item: any) => item.id)
+    let list = TableViewRef.value.getSelectRecords().map((item: any) => {
+        return {
+            id: item.id
+        }
+    })
     console.log(list)
 
     if (list.length > 0) {
-        AdminUserOfflineBatch({ ids: list }).then(() => {
+        AdminUserOfflineBatch(list).then(() => {
             Message.success(t('禁用成功'))
+            getData()
         })
     }
 }
@@ -310,6 +320,7 @@ const handleBatchDelete = () => {
     if (list.length > 0) {
         AdminUserRemoveBatch({ ids: list }).then(() => {
             Message.success(t('删除成功'))
+            getData()
         })
     }
 }
@@ -322,7 +333,7 @@ const handleRoleDelete = (id: any) => {
         loading: true,
         onOk: () => {
             console.log(id)
-            AdminUserRemove({userId:id}).then(() => {
+            AdminUserRemove({ userId: id }).then(() => {
                 Message.success(t('删除成功'))
                 Modal.remove();
                 getData()
@@ -344,7 +355,7 @@ const handleUpdatePage = ({ currentPage, pageSize }: any) => {
 }
 
 
-const getData = (search={}) => {
+const getData = (search = {}) => {
     console.log("getData")
     AdminUserList(
         {

@@ -19,7 +19,7 @@ export function CheckSave(data:any) {
 // 删除入住
 export function CheckRemoveId(data:any) {
     return http.request({
-        url: `/admin/checkIn/${data.id}`,
+        url: `/admin/checkIn/remove/${data.bedId}`,
         method: 'delete',
     })
 }
@@ -48,6 +48,15 @@ export function CheckFocus(data:any) {
 export function CheckList(params:any) {
     return http.request({
         url: '/admin/checkIn/list',
+        method: 'get',
+        params
+    })
+}
+
+// 获取入住列表
+export function CheckAboutToExpireList(params:any) {
+    return http.request({
+        url: '/admin/checkIn/aboutToExpireList',
         method: 'get',
         params
     })

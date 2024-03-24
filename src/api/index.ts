@@ -38,10 +38,11 @@ http.interceptors.response.use(
         return Promise.reject(new Error(response.data.message));
     },
     (error) => {
+        Message.error(error.message);
         if (error.response.status === 401) {
             router.push('/login');
         }
-        // console.log(error)
+        //  console.log(error)
         //Message.error(error.message);
         //Message.error(error.response.data.message);
         return Promise.reject(error);

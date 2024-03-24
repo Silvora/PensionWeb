@@ -5,14 +5,14 @@
                 <span
                     :class="['t1', ['gary', 'green', 'yellow'][device?.status || 0]]">{{ ['空闲', '正常', '异常'][device?.status || 0] }}</span>
                 <span class="t2">{{ info?.roomBedNumber }}</span>
-                <span class="t3" @click="handleNavTo(`/add-elder?id=${info?.elderlyId}`)">
+                <span class="t3" @click="handleNavTo(`/add-elder?type=0&id=${info?.elderlyId}`)">
                     <img src="@/assets/images/room-setting.png" alt="" srcset="">
                 </span>
             </p>
             <div class="userBox">
                 <div class="imgInfo">
                     <img class="img" src="@/assets/images/screen.png" alt="" srcset=""
-                        @click="handleNavTo(`/add-elder?id=${info?.elderlyId}`)">
+                        @click="handleNavTo(`/add-elder?type=0&id=${info?.elderlyId}`)">
                     <div class="imgList" @click="handleNavTo(`/setting`)">
                         <img src="@/assets/images/睡眠监测@2x(4).png" alt="">
                         <img src="@/assets/images/位图@2x(2).png" alt="">

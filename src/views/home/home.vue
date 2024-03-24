@@ -29,26 +29,26 @@ import { useRouter } from 'vue-router';
 const menuList: any = ref([
   {
     logo: screen,
-    label: "看护大屏",
+    label: "看护预警",
     route: "/screen",
     color: "rgba(132, 190, 174, 1)",
 
   },
   {
     logo: date,
-    label: "数据预警",
+    label: "数据展示",
     route: "/date?type=home",
     color: "rgba(67, 140, 203, 1)",
   },
   {
     logo: room,
-    label: "房态图",
+    label: "房间设定",
     route: "/room",
     color: "rgba(199, 133, 164, 1)",
   },
   {
     logo: elder,
-    label: "长者信息",
+    label: "长者管理",
     route: "/elder",
     color: "rgba(102, 145, 99, 1)",
   },
@@ -60,7 +60,7 @@ const menuList: any = ref([
   },
   {
     logo: sys,
-    label: "设备中心",
+    label: "设备管理",
     route: "/setting",
     color: "rgba(211, 114, 114, 1)",
   }

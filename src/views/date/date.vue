@@ -1,12 +1,12 @@
 <template>
     <div class="date">
         <div class="box">
-            <p class="title">智能养老服务驾驶舱</p>
+            <p class="title">机构展示平台</p>
             <div class="continer">
                 <div class="left">
                     <!-- <p class="sum">坐席总数：245 在线坐席人数：25 今日呼入：62 今日呼出：84</p> -->
                     <div class="chart">
-                        <p>护理员人数分析</p>
+                        <p>{{ t('护理员人数分析') }}</p>
                         <div class="tabs">
                             <span class="tab">机构</span>
                             <span class="tab">证书</span>
@@ -17,11 +17,11 @@
                         <People></People>
                     </div>
                     <div class="chart">
-                        <p>护理员在线学习情况</p>
+                        <p>{{ t('护理员在线学习情况') }}</p>
                         <Study></Study>
                     </div>
                     <div class="chart">
-                        <p>护理员培训基地</p>
+                        <p>{{ t('连锁机构展示') }}</p>
                         <div class="swiperBox">
                             <!-- :centeredSlides="true" navigation -->
                             <SwiperBox></SwiperBox>
@@ -30,57 +30,57 @@
                 </div>
                 <div class="center">
                     <p class="tabs">
-                        <span :class="[type == 'home' ? 'activeTab' : '']" @click="handleRoute('home')">机构介绍</span>
+                        <span :class="[type == 'home' ? 'activeTab' : '']" @click="handleRoute('home')">{{ t('机构介绍') }}</span>
                         <span :class="[type == 'community' ? 'activeTab' : '']"
-                            @click="handleRoute('community')">机构数据大盘</span>
+                            @click="handleRoute('community')">{{ t('机构数据') }}</span>
                         <span :class="[type == 'mechanism' ? 'activeTab' : '']"
-                            @click="handleRoute('mechanism')">居家养老服务</span>
+                            @click="handleRoute('mechanism')">{{ t('居家养老社区地图展示') }}</span>
                     </p>
 
                     <div class="info_box">
 
                         <div v-if="type == 'home'">
-                        <div class="notes">
-                            爱以德养老护理连锁，先后在上海嘉定、黄浦、静安、杨浦、宝山、奉贤、浦东、虹口、普陀等地
-                            区开设共17家养老护理机构，拥有养老床位和护理床位7000余张，提供养老、医疗、康复、护理、
-                            临终关怀一站式服务。 【收治收住】自理老人、失能失智老人、老年痴呆、偏瘫、临终关怀等长者。
-                            【生活照料】24小时日常生活照料规范化流程，20余项护理流程 【营养膳食】营养师调配营养餐、
-                            每周不重样。
-                        </div>
-                        <div class="chart">
-                            <p>荣誉展示</p>
-                            <div class="center_box">
-                                <Space wrap>
-                                    <template v-for="(url, index) in urlList" :key="url">
-                                        <Image :src="url" fit="contain" width="120px" height="80px" preview
-                                            :preview-list="urlList" :initial-index="index" />
-                                    </template>
-                                </Space>
+                            <div class="notes">
+                                爱以德养老护理连锁，先后在上海嘉定、黄浦、静安、杨浦、宝山、奉贤、浦东、虹口、普陀等地
+                                区开设共17家养老护理机构，拥有养老床位和护理床位7000余张，提供养老、医疗、康复、护理、
+                                临终关怀一站式服务。 【收治收住】自理老人、失能失智老人、老年痴呆、偏瘫、临终关怀等长者。
+                                【生活照料】24小时日常生活照料规范化流程，20余项护理流程 【营养膳食】营养师调配营养餐、
+                                每周不重样。
+                            </div>
+                            <div class="chart">
+                                <p>{{ t('荣誉展示') }}</p>
+                                <div class="center_box">
+                                    <Space wrap>
+                                        <template v-for="(url, index) in urlList" :key="url">
+                                            <Image :src="url" fit="contain" width="120px" height="80px" preview
+                                                :preview-list="urlList" :initial-index="index" />
+                                        </template>
+                                    </Space>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div v-if="type == 'community'">
-                        <div class="notes">
-                            <Count></Count>
-                        </div>
-                        <div class="chart">
-                            <p>荣誉展示</p>
-                            <div class="center_box">
-                                <Institution></Institution>
+                        <div v-if="type == 'community'">
+                            <div class="notes">
+                                <Count></Count>
+                            </div>
+                            <div class="chart">
+                                <p>{{ t('荣誉展示') }}</p>
+                                <div class="center_box">
+                                    <Institution></Institution>
+                                </div>
                             </div>
                         </div>
+
+
+                        <div v-if="type == 'mechanism'">
+                            <div class="mechanism"></div>
+                        </div>
+
+
                     </div>
 
-
-                    <div v-if="type == 'mechanism'">
-                        <div class="mechanism"></div>
-                    </div>
-
-
-                    </div>
-
-<!-- 
+                    <!-- 
                     <div v-if="type == 'home'">
                         <div class="notes">
                             爱以德养老护理连锁，先后在上海嘉定、黄浦、静安、杨浦、宝山、奉贤、浦东、虹口、普陀等地
@@ -124,13 +124,13 @@
 
                     <div class="table">
                         <div class="box_table">
-                            <p style="text-align: right;padding-right: 15px;">预警信息</p>
+                            <p style="text-align: right;padding-right: 15px;">{{ t('预警信息') }}</p>
                             <Table :row-class-name="rowClassName" height="200" :columns="columns" :data="data">
                             </Table>
 
                         </div>
                         <div class="box_table">
-                            <p>机构养老院活动排期信息</p>
+                            <p>{{ t('机构养老院活动排期信息') }}</p>
                             <Table :row-class-name="rowClassName" height="200" :columns="columns2" :data="data2"></Table>
 
                         </div>
@@ -139,17 +139,17 @@
 
                 </div>
                 <div class="right">
-                    <p class="day">12:30:05</p>
+                    <p class="day">{{ day }}</p>
                     <div class="chart">
-                        <p>入住情况分析</p>
+                        <p>{{ t('入住情况分析') }}</p>
                         <Check></Check>
                     </div>
                     <div class="chart">
-                        <p>能力分析</p>
+                        <p>{{ t('行动能力分析') }}</p>
                         <Ability></Ability>
                     </div>
                     <div class="chart">
-                        <p>护理内容需求量</p>
+                        <p>{{ t('护理内容需求量') }}</p>
                         <Need></Need>
                     </div>
                 </div>
@@ -172,6 +172,10 @@ import Institution from "./components/Institution.vue"
 import { useRoute, useRouter } from "vue-router";
 import { onMounted, ref } from "vue";
 import { Image, Space } from 'view-ui-plus';
+import dayjs from 'dayjs';
+import { useI18n } from "vue-i18n"
+const {t} = useI18n()
+const day = ref('')
 const router = useRouter();
 const columns = [
     {
@@ -305,7 +309,9 @@ onMounted(() => {
 
     console.log(route.query.type)
 
-   
+    day.value = dayjs().format('YYYY-MM-DD HH:mm')
+
+
 })
 
 
@@ -321,7 +327,7 @@ onMounted(() => {
 }
 
 .date {
-     width: 100%;
+    width: 100%;
     //min-width: 1440px;
     height: 100%;
     // min-height: 780px;
@@ -358,7 +364,8 @@ onMounted(() => {
         .continer {
             display: flex;
             padding: 0 40px;
-            .tabs{
+
+            .tabs {
                 width: 100%;
                 height: 30px;
                 // background: red;
@@ -369,7 +376,8 @@ onMounted(() => {
                 color: #fff;
                 padding: 0 30px;
                 font-size: 12px;
-                .tab{
+
+                .tab {
                     background: #142C4B;
                     padding: 2px 12px;
                     border-radius: 15px;
@@ -421,7 +429,7 @@ onMounted(() => {
                 padding: 0 30px;
 
 
-                .info_box{
+                .info_box {
                     // background: red;
                     // height: 100px;
                     height: calc(100vh - 370px);

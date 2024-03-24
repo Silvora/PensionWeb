@@ -101,7 +101,7 @@ const room: any = [
         path: '/room',
         name: 'room',
         meta: {
-          title: '房态',
+          title: '房间设定',
           icon: 'md-home',
           //id: Date.now(),
           keepAlive: true,
@@ -118,7 +118,7 @@ const screen: any = [
        path: '/screen',
        name: 'screen',
        meta: {
-         title: '看护大屏',
+         title: '看护预警',
          icon: 'md-home',
          //id: Date.now(),
          keepAlive: true,
@@ -136,7 +136,7 @@ const setting: any = [
        path: '/setting',
        name: 'setting',
        meta: {
-         title: '看护大屏',
+         title: '设备管理',
          icon: 'md-home',
          //id: Date.now(),
          keepAlive: true,
@@ -171,7 +171,7 @@ const staffDetails: any = [
        path: '/staff-details',
        name: 'staff-details',
        meta: {
-         title: '员工详情',
+         title: '员工管理',
          icon: 'md-home',
          //id: Date.now(),
          keepAlive: true,
@@ -189,7 +189,7 @@ const elder: any = [
        path: '/elder',
        name: 'elder',
        meta: {
-         title: '长者信息',
+         title: '长者管理',
          icon: 'md-home',
          //id: Date.now(),
          keepAlive: true,
@@ -206,7 +206,7 @@ const addElder: any = [
       path: '/add-elder',
       name: 'add-elder',
       meta: {
-        title: '长者新增',
+        title: '长者信息',
         icon: 'md-home',
         //id: Date.now(),
         keepAlive: true,

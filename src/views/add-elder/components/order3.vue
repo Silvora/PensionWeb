@@ -9,16 +9,28 @@
 
 <script setup lang='ts'>
 import { healthyInfo } from "../data"
-import { ElderlyHealthSave, ElderlyHealthElderlyId } from '@/api/Elderly/Elderly';
+import { ElderlyHealthSave, ElderlyHealthElderlyId, ElderlyHealthUpdate } from '@/api/Elderly/Elderly';
 import { Message } from "view-ui-plus";
 import { ref, onMounted } from "vue";
-import { useRoute,useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 const route = useRoute()
 const router = useRouter()
 const data = ref<any>()
 const TableFormRef = ref<any>()
 const handleElderAdd = () => {
-    console.log(TableFormRef.value.FormData)
+    // console.log(TableFormRef.value.FormData,route.query.id,data.value)
+
+    // console.log(route.query.id && JSON.stringify(data.value)!="{}")
+    if (route.query.id && JSON.stringify(data.value)!="{}") {
+        ElderlyHealthUpdate
+            ({ ...TableFormRef.value.FormData, elderlyId: route.query.id }).then(_ => {
+                Message.success("修改成功")
+            })
+
+        return
+    }
+
+
 
     ElderlyHealthSave({ ...TableFormRef.value.FormData, elderlyId: route.query.id }).then(res => {
         console.log(res);
@@ -36,7 +48,7 @@ onMounted(() => {
         console.log("获取数据")
         ElderlyHealthElderlyId({ elderlyId: route.query.id }).then(res => {
             console.log(res);
-            data.value = res.data
+            data.value = res.data || {}
         })
     }
 })

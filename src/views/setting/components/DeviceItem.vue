@@ -60,7 +60,15 @@
                 </div> -->
 
             </div>
-            <Button type="error" size="small" class="stateBtn">一键布防</Button>
+            <Button size="small" class="stateBtn"
+                :style="{ background: 'rgba(224, 98, 85, 1)', color: '#fff', border: 'none' }"
+                v-if="props.info?.stateInfo?.eventType">{{ errInfo[props.info?.stateInfo?.eventType] }}</Button>
+            <Button size="small" class="stateBtn"
+                :style="{ background: 'rgba(224, 98, 85, 1)', color: '#fff', border: 'none' }"
+                v-else-if="props.info?.stateInfo?.onBedStatus">{{ ['不在床', '在床'][props.info?.stateInfo?.onBedStatus] }}</Button>
+            <Button size="small" class="stateBtn"
+                :style="{ background: 'rgba(18, 185, 135, 0.05)', color: 'rgba(18, 185, 135, 1)', border: 'none' }"
+                v-else>暂无连接设备</Button>
         </div>
     </Card>
 </template>
@@ -80,6 +88,14 @@ const props = defineProps({
         type: Boolean,
         default: false
     }
+})
+
+const errInfo = ref({
+    3001: "离床",
+    3006: "呼吸异常",
+    3007: "心率异常",
+    3012: "在床",
+    3008: "紧急拉绳通知",
 })
 
 watchEffect(() => {
@@ -103,7 +119,7 @@ const handleGet = () => {
     // DeviceDetailId({id:props.info.id}).then((res:any)=>{
     //     console.log(res)
     // })
-    emit('handleGetUser',props.info)
+    emit('handleGetUser', props.info)
 }
 </script>
 

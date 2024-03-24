@@ -11,12 +11,6 @@
                         {{ item.title }}</Button>
                     <span v-if="idx != 4">></span>
                 </span>
-                <!-- <Button type="text" icon="ios-person">家属信息登记</Button> >
-                <Button type="text" icon="ios-person">健康信息登记</Button> >
-                <Button type="text" icon="ios-person">健康信息登记</Button> >
-                <Button type="text" icon="ios-person">餐饮床位选择</Button> >
-                <Button type="text" icon="ios-person">合同管理</Button> >
-                <Button type="text" icon="ios-person">入院缴费</Button> -->
             </div>
             <div style="position: absolute;right: 10px;">
                 <Space>
@@ -42,13 +36,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watchEffect } from 'vue';
 import Order1 from './components/order1.vue';
 import Order2 from './components/order2.vue';
 import Order3 from './components/order3.vue';
 import Order4 from './components/order4.vue';
-import Order5 from './components/order5.vue';
-import Order6 from './components/order6.vue';
+// import Order5 from './components/order5.vue';
+// import Order6 from './components/order6.vue';
 import Order7 from './components/order7.vue';
 import { useRoute, useRouter } from 'vue-router';
 const route = useRoute()
@@ -80,12 +74,17 @@ const orderMenu = [
     //     icon: "ios-person",
     // },
     {
-        title: "入院缴费",
+        title: "出院办理",
         icon: "icon-5_round_solid",
     }
 ]
 
-const active = ref(0)
+const active = ref<any>(0)
+
+watchEffect(() => {
+    active.value = route.query.type
+})
+
 
 const handleSetActive = (idx: number) => {
     active.value = idx
@@ -96,10 +95,11 @@ onMounted(() => {
     if (route.query.type) {
         active.value = Number(route.query.type)
     }
+   
 })
-const handleSumbit = () => {
-    console.log("first")
-}
+// const handleSumbit = () => {
+//     console.log("first")
+// }
 
 
 </script>

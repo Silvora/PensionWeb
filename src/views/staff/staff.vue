@@ -7,9 +7,10 @@
             <span class="searchBtn">
                 <Space>
 
-                    <Select v-model="searchData.roleId" style="width:100px" placeholder="角色" clearable @on-change="handleSearchChange">
+                    <Select v-model="searchData.roleId" style="width:100px" placeholder="角色" clearable
+                        @on-change="handleSearchChange">
                         <Option :value="item.id" v-for="item in roleList" :key="item.id">{{ item.name }}</Option>
-                        </Select>
+                    </Select>
 
                     <!-- <Select v-model="model1" style="width:100px" placeholder="床位">
                         <Option value="beijing">New York</Option>
@@ -57,7 +58,7 @@
                 <!-- </div>
                 </div> -->
                 <div class="chart" style="margin-top: 10px;">
-                    <p class="title">职业等级分布</p>
+                    <p class="title">工种分类</p>
                     <LevelChart></LevelChart>
                 </div>
                 <div class="chart">
@@ -122,7 +123,7 @@
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
-            <Scheduling></Scheduling>
+            <Scheduling v-if="modal"></Scheduling>
         </Modal>
 
 
@@ -147,7 +148,7 @@
                     </Col>
                 </Row>
             </div>
-            <TableForm title="" :FormData="roleData.FormData" ref="TableFormRef" :data="info"></TableForm>
+            <TableForm title="" :FormData="roleDataList.FormData" ref="TableFormRef" :data="info"></TableForm>
             <p class="user_info">添加培训认证</p>
             <div class="up_box">
                 <Row justify="start">
@@ -198,14 +199,17 @@ import LevelChart from "./components/LevelChart.vue";
 import SexChart from "./components/SexChart.vue";
 import Scheduling from "./components/Scheduling.vue"
 import { FileUploadImage } from "@/api/File/File"
-import { StaffList, StaffRemoveId, StaffRemoveBatch } from "@/api/Staff/Staff"
+import { StaffList, StaffRemoveId, StaffRemoveBatch, StaffSave } from "@/api/Staff/Staff"
 import { MemoList, MemoSave } from "@/api/Memo/Memo";
-import {RoleList } from "@/api/RoleInfo/RoleInfo"
+import { RoleList } from "@/api/RoleInfo/RoleInfo"
 import { useI18n } from "vue-i18n";
+import dayjs from "dayjs";
 const { t } = useI18n();
 const searchData = ref<any>({
-    roleId:""
+    roleId: ""
 })
+
+const roleDataList = ref<any>({})
 const roleList = ref<any>([])
 const modal = ref(false)
 const addModal = ref(false)
@@ -238,7 +242,7 @@ const pagerConfig = ref({
     pageSize: 10 //数量
 })
 
-const handleExport = ()=>{
+const handleExport = () => {
     TableViewRef.value.exportAllDataEvent()
 }
 
@@ -252,10 +256,10 @@ const handleUpload = (type: string, file: any) => {
     // file.value = file;
 
     const formData = new FormData();
-    formData.append("file", file.value);
+    formData.append("file", file);
     FileUploadImage(formData).then((res: any) => {
-      //  console.log(res)
-        fileUrl.value[type] = "import.meta.env.VITE_APP_AXIOS_BASER" + res.data
+        //  console.log(res)
+        fileUrl.value[type] = import.meta.env.VITE_APP_AXIOS_BASER + res.data
         // file.value ='http://8.217.217.243:9000'+ res.data
     })
 
@@ -287,6 +291,26 @@ const handleRoleAdd = () => {
 }
 
 const handleRoleSumbit = () => {
+
+
+    let data = {
+
+        ...TableFormRef.value.FormData,
+        sentryTime: dayjs().format("YYYY-MM-DD HH:mm:ss"),
+        photo: fileUrl.value.proto,
+        certificateJson: JSON.stringify([
+            { i: 0, u: fileUrl.value.certUrl1 },
+            { i: 0, u: fileUrl.value.certUrl2 },
+            { i: 0, u: fileUrl.value.certUrl3 }
+        ])
+    }
+
+    StaffSave(data).then(() => {
+        Message.success('添加成功')
+        getData()
+        addModal.value = false
+    })
+
     console.log(TableFormRef.value.FormData)
 }
 
@@ -348,7 +372,7 @@ const handleDeleteAll = () => {
         }
     });
 
-   // console.log(ids)
+    // console.log(ids)
     // StaffRemoveBatch({ ids: [] }).then(() => {
 
     // })
@@ -377,6 +401,25 @@ const getData = () => {
         console.log(res)
         pagerConfig.value.total = res.data.total
         data.value = res.data.records
+
+
+        roleDataList.value.FormData.forEach((item: any) => {
+            if (item.prop == 'groupId' || item.prop == 'superiorId') {
+
+                // console.log("======", item.prop)
+
+                item.childs =
+                    res.data.records.map((it: any) => {
+                        return {
+                            label: it.name,
+                            value: it.id
+                        }
+                    })
+            }
+        })
+
+        // console.log("======", roleDataList.value)
+
     })
 
 }
@@ -399,19 +442,35 @@ const getMemo = () => {
     })
 }
 
-const getRoleList = ()=>{
+const getRoleList = () => {
     RoleList({
         current: 1,
         size: 9999
-    }).then((res:any)=>{
+    }).then((res: any) => {
         console.log(res)
         roleList.value = res.data.records
+        roleDataList.value.FormData.forEach((item: any) => {
+            if (item.prop == 'roleId') {
+                item.childs =
+                    res.data.records.map((it: any) => {
+                        return {
+                            label: it.name,
+                            value: it.id
+                        }
+                    })
+            }
+        })
+
+        // console.log("======", roleDataList.value)
     })
 }
 
 
+
 onMounted(() => {
-   // console.log("", pageBox.value?.clientHeight)//680
+
+    roleDataList.value = roleData
+    // console.log("", pageBox.value?.clientHeight)//680
     const h = pageBox.value?.clientHeight
 
     tableH.value = h - 165 + 'px'

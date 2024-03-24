@@ -12,7 +12,7 @@
             </div>
             <div class="btn">
                 <!-- <Button type="primary" v-if="type == 'mechanism'">保存</Button> -->
-                <Input prefix="ios-search" clearable enter-button="搜索" placeholder="搜索" />
+                <!-- <Input prefix="ios-search" clearable enter-button="搜索" placeholder="搜索" /> -->
 
             </div>
         </div>
@@ -36,7 +36,7 @@
 
                 <div class="roomItem">
                     <p class="roomTitle">
-                        <span class="tt">Aa01</span>
+                        <span class="tt"> {{ houseList.find((item: any) => item.id == houseActive)?.roomNumber }}</span>
                         <span>{{ checkInfo.check }}入住、{{ checkInfo.reserve }}预留、{{ checkInfo.free }}空闲、共{{ checkInfo.count
                         }}床</span>
                     </p>
@@ -46,23 +46,27 @@
                             <Card :bordered="false" :padding="0">
                                 <div class="roomBox">
                                     <p class="t1">
-                                        <span :class="['t2', 'green', 'yellow', 'gary']">{{ t('空闲') }}</span>
+                                        <span
+                                            :class="['t2', ['gary', 'yellow', 'green'][item.status]]">{{ [t('空闲'), t('预订'), t('入住')][item.status] }}</span>
                                         <span class="t3">{{ item.bedNumber }}</span>
-                                        <span class="t4">
+                                        <span class="t4"
+                                            @click="item.checkIn ? router.push(`/add-elder?type=0&id=${item?.checkIn?.elderlyId}`) : ''">
                                             <img src="@/assets/images/room-setting.png" alt="" srcset="">
                                         </span>
                                     </p>
                                     <!-- //item.checkIn -->
-                                    <div v-if="true" class="user" @click="handleGetUserInfo(item)">
-                                        <div class="t5" >
-                                            <span class="t6">{{ item.checkIn?.nursingGrade }}111</span>
+                                    <div v-if="item.checkIn" class="user" @click="handleGetUserInfo(item)">
+                                        <div class="t5">
+                                            <span class="t6">{{ item.checkIn?.nursingGrade }}</span>
                                             <img class="t7" src="@/assets/images/screen.png" alt="" srcset="">
                                         </div>
-                                        <p class="t8">{{ item.checkIn?.elderlyName }}李梅梅&nbsp;
-                                            <img class="t7" src="@/assets/images/ic_客户_男@2x(1).png" alt="" srcset="" v-if="item.checkIn?.elderlyGender==1">
-                                            <img class="t7" src="@/assets/images/ic_客户_女@2x(1).png" alt="" srcset="" v-if="item.checkIn?.elderlyGender==2">                                       
+                                        <p class="t8">{{ item.checkIn?.elderlyName }}&nbsp;
+                                            <img class="t7" src="@/assets/images/ic_客户_男@2x(1).png" alt="" srcset=""
+                                                v-if="item.checkIn?.elderlyGender == 1">
+                                            <img class="t7" src="@/assets/images/ic_客户_女@2x(1).png" alt="" srcset=""
+                                                v-if="item.checkIn?.elderlyGender == 2">
                                         </p>
-                                        <p class="t9">{{ item.checkIn?.birthDate }}1978-11-10</p>
+                                        <p class="t9">{{ item.checkIn?.birthDate.split(":")[0] }}</p>
                                         <p class="t10">
                                             <img src="@/assets/images/睡眠监测@2x(4).png" alt="">
                                             <img src="@/assets/images/位图@2x(2).png" alt="">
@@ -71,7 +75,7 @@
                                         </p>
                                     </div>
                                     <div v-else class="user noUser" @click="handleGetUserInfo(item)">
-                                        <img src="@/assets/images/room.png" alt="">
+                                        <img src="@/assets/images/room-whiter.png" alt="">
                                         等待入住
                                     </div>
                                 </div>
@@ -101,10 +105,10 @@
         </div>
 
 
-        <BuildingModal ref="BuildingModalRef" @handleUpdate="handleUpdate" :HostelList=typeList :floorList="floorList"
+        <BuildingModal ref="BuildingModalRef" @handleUpdate="handleUpdate" :HostelList="typeList" :floorList="floorList"
             :houseList="houseList" :bedList="bedList">
         </BuildingModal>
-        <DetailsModal ref="DetailsModalRef" :info="info"></DetailsModal>
+        <DetailsModal ref="DetailsModalRef" :info="info" @handleUpdate="handleUpdate"></DetailsModal>
     </div>
 </template>
 
@@ -132,7 +136,7 @@ const checkInfo = ref({
     free: 0,//空闲  
     reserve: 0,//预留
 })
-const info= ref<any>({})
+const info = ref<any>({})
 
 const keyDom = ref<any>(Date.now())
 
@@ -140,8 +144,12 @@ const handleShowModal = () => {
     BuildingModalRef.value.showModal()
 }
 
-const handleGetUserInfo = (item:any) => {
-    info.value = item
+const handleGetUserInfo = (item: any) => {
+    info.value = {
+        ...item, hostelId: type.value,
+        // houseActive,
+        floorId: floorActive.value
+    }
 
     DetailsModalRef.value.showModal()
 }
@@ -187,7 +195,7 @@ const getHostelList = () => {
     HostelList().then((res: any) => {
         console.log(res)
         typeList.value = res.data
-        type.value = res.data[0].id
+        type.value = res.data[0]?.id || ''
         getFloorlList()
     })
 }
@@ -202,7 +210,7 @@ const getFloorlList = () => {
         console.log(res)
 
         floorList.value = res.data
-        floorActive.value = res.data[0].id
+        floorActive.value = res.data[0]?.id || ''
         // typeList.value = res.data
         // type.value = res.data[0].name
 
@@ -216,10 +224,10 @@ const getRoomList = () => {
     HostelRoomListOfFloor({
         floorId: floorActive.value,
         needBed: true,
-        needDeviceInfo:false,
+        needDeviceInfo: false,
     }).then((res: any) => {
         houseList.value = res.data
-        houseActive.value = res.data[0].id
+        houseActive.value = res.data[0]?.id || ''
 
         getRoomBedList()
     })
@@ -249,7 +257,7 @@ const getRoomBedList = () => {
             check: 0,
             free: 0,
             reserve: 0,
-            count: (parseInt(res.data[0].cost)) * 1,
+            count: res.data.length || 0,
         }
     })
 }
@@ -373,12 +381,14 @@ onMounted(() => {
                     // width: 150px;
                     text-align: center;
                     margin-bottom: 10px;
-                    .user{
+
+                    .user {
                         width: 100%;
                         height: 210px;
                     }
-                    .noUser{
-                        img{
+
+                    .noUser {
+                        img {
                             width: 100%;
                             padding: 10px;
                         }
@@ -422,6 +432,8 @@ onMounted(() => {
                         box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.1);
                         padding: 0 10px;
                         width: 95px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
                     }
 
                     .t4 {
@@ -461,7 +473,8 @@ onMounted(() => {
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                        img{
+
+                        img {
                             width: 15px;
                             height: 15px;
                         }

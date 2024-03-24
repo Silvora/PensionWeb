@@ -12,8 +12,8 @@
                 </div> -->
 
                     <div style="width: 100%;height:100%" v-if="item.type == 'sort'">
-                        <InputNumber :disabled="item.disabled" :min="0" :max="item.max ? item.max : 9999999999" v-model="FormData[item.prop]"
-                            style="width: 100%;touch-action:none" />
+                        <InputNumber :disabled="item.disabled" :min="0" :max="item.max ? item.max : 9999999999"
+                            v-model="FormData[item.prop]" style="width: 100%;touch-action:none" />
                     </div>
 
                     <div style="width: 100%;height:100%" v-if="item.type == 'price'">
@@ -78,8 +78,16 @@
                     </div>
 
                     <div style="width: 100%;height:100%" v-if="item.type == 'date'">
-                        <DatePicker :editable="false"  format="yyyy-MM-dd" type="date" :placeholder="t('请输入') + t(item.label)"
-                            v-model="FormData[item.prop]" @on-change="(data: any) => handleDate(item.prop, data)">
+                        <DatePicker :editable="false" format="yyyy-MM-dd" type="date"
+                            :placeholder="t('请输入') + t(item.label)" v-model="FormData[item.prop]"
+                            @on-change="(data: any) => handleDate(item.prop, data)">
+                        </DatePicker>
+                    </div>
+
+                    <div style="width: 100%;height:100%" v-if="item.type == 'dateTime'">
+                        <DatePicker :editable="false" format="yyyy-MM-dd HH:mm:ss" type="datetime"
+                            :placeholder="t('请输入') + t(item.label)" v-model="FormData[item.prop]"
+                            @on-change="(data: any) => handleDate(item.prop, data)">
                         </DatePicker>
                     </div>
 
@@ -209,8 +217,9 @@ watchEffect(() => {
     // }
 
 
+
     props.FormData.forEach((item: any) => {
-        FormData.value[item.prop] = props.data[item.prop] ? props.data[item.prop] : item.default
+        FormData.value[item.prop] = props.data[item.prop] != undefined ? props.data[item.prop] : item.default
 
 
         if (item.type == 'radio') {
@@ -268,7 +277,7 @@ watchEffect(() => {
     rules.value = { ...rulesData, ...props.rules }
 
 
-    //console.log(FormData.value, props.data)
+    // console.log(FormData.value, props.data)
 
 })
 

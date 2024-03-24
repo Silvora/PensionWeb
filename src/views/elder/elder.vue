@@ -7,21 +7,24 @@
             </span>
             <span class="searchBtn">
                 <Space>
-                    <Select v-model="searchData.hostelId" style="width:100px" clearable placeholder="楼栋" @on-change="handleSearchChange('0')">
+                    <Select v-model="searchData.hostelId" style="width:100px" clearable placeholder="楼栋"
+                        @on-change="handleSearchChange('0')">
 
                         <Option :value="item.id" v-for="item in hostelList" :key="item.id">{{ item.name }}</Option>
                         <!-- <Option value="beijing">New York</Option>
                         <Option value="shanghai" disabled>London</Option>
                         <Option value="shenzhen">Sydney</Option> -->
                     </Select>
-                    <Select v-model="searchData.floorId" style="width:100px" clearable placeholder="楼层" @on-change="handleSearchChange('1')">
+                    <Select v-model="searchData.floorId" style="width:100px" clearable placeholder="楼层"
+                        @on-change="handleSearchChange('1')">
                         <Option :value="item.id" v-for="item in floorList" :key="item.id">{{ item.floorNumber }}</Option>
 
                         <!-- <Option value="beijing">New York</Option>
                         <Option value="shanghai" disabled>London</Option>
                         <Option value="shenzhen">Sydney</Option> -->
                     </Select>
-                    <Select v-model="searchData.roomId" style="width:100px" clearable placeholder="房间" @on-change="handleSearchChange('2')">
+                    <Select v-model="searchData.roomId" style="width:100px" clearable placeholder="房间"
+                        @on-change="handleSearchChange('2')">
                         <Option :value="item.id" v-for="item in roomList" :key="item.id">{{ item.roomNumber }}</Option>
 
                         <!-- <Option value="beijing">New York</Option>
@@ -64,7 +67,8 @@
                     </template>
 
                     <template #active="{ row }">
-                        <vxe-button type="text" size="mini" status="primary" @click="()=>router.push(`/add-elder?type=0&id=${row.id}`)">
+                        <vxe-button type="text" size="mini" status="primary"
+                            @click="() => router.push(`/add-elder?type=0&id=${row.id}`)">
                             查看
                         </vxe-button>
                         <vxe-button type="text" size="mini" status="primary" @click="handleElderEdit(row)">
@@ -90,10 +94,10 @@
                 <div class="chart" style="margin-bottom: 0px;">
                     <p class="title">临近续费提醒</p>
                     <div class="renewalList">
-                        <div v-for="item in Array.from({ length: 2 })" class="item">
-                            <p class="t1">{{ item }}李梅梅</p>
-                            <p class="t2">到期时间:2025-10-23</p>
-                            <p class="t3">3天</p>
+                        <div v-for="item in exprireList" class="item">
+                            <p class="t1">{{ item.elderlyName }}</p>
+                            <p class="t2">到期时间:{{ item.endTime.split(" ")[0] }}</p>
+                            <p class="t3">{{ dayjs(item.endTime).diff(dayjs(), 'day') }}天</p>
                         </div>
                     </div>
                 </div>
@@ -163,12 +167,12 @@ import { useI18n } from "vue-i18n";
 import { ElderlyList, ElderlyRemoveId, ElderlyHealthUpdate } from "@/api/Elderly/Elderly"
 import { MemoList, MemoSave, MemoUpdate, MemoRemoveId } from "@/api/Memo/Memo"
 import { HostelList, HostelFloorlList, HostelRoomListOfFloor, HostelRoomBedListOfRoom } from "@/api/Hostel/Hostel"
-import { AnyARecord } from "dns";
-
+import { CheckAboutToExpireList } from "@/api/Check/Check";
+import dayjs from "dayjs";
 const searchData = ref<any>({
-    hostelId:"",
-    floorId:"",
-    roomId:"",
+    hostelId: "",
+    floorId: "",
+    roomId: "",
 })
 const hostelList = ref<any>([])
 const floorList = ref<any>([])
@@ -183,6 +187,8 @@ const memoActive = ref(0)
 const memoList = ref<any>([])
 const data: any = ref([])
 
+const exprireList = ref<any>([])
+
 const model1 = ref<any>(null)
 
 onMounted(() => {
@@ -196,23 +202,24 @@ onMounted(() => {
     getMemoList()
 
     getHostelList()
+    getExpireList()
 })
 
-const handleSearchChange = (idx:any)=>{
-    if(idx == 0){
+const handleSearchChange = (idx: any) => {
+    if (idx == 0) {
         getFloorlList()
 
         searchData.value.roomId = ""
-        searchData.value.floorId=""
+        searchData.value.floorId = ""
     }
 
-    if(idx == 1){
+    if (idx == 1) {
         getRoomList()
-        searchData.value.roomId=""
+        searchData.value.roomId = ""
     }
 
     getData()
-    
+
 }
 
 const pagerConfig = ref({
@@ -317,6 +324,13 @@ const getMemoList = () => {
     })
 }
 
+
+const getExpireList = () => {
+    CheckAboutToExpireList({}).then((res: any) => {
+        exprireList.value = res.data
+    })
+}
+
 const getData = () => {
     ElderlyList({
         current: pagerConfig.value.currentPage,
@@ -349,7 +363,7 @@ const getHostelList = () => {
 const getFloorlList = () => {
     // 获取楼层列表
 
-    if(!searchData.value.hostelId){
+    if (!searchData.value.hostelId) {
         return
     }
 
@@ -371,14 +385,14 @@ const getFloorlList = () => {
 const getRoomList = () => {
     // 获取房间列表
 
-    if(!searchData.value.floorId){
+    if (!searchData.value.floorId) {
         return
     }
 
     HostelRoomListOfFloor({
         floorId: searchData.value.floorId,
         needBed: true,
-        needDeviceInfo:false,
+        needDeviceInfo: false,
     }).then((res: any) => {
         roomList.value = res.data
         // houseList.value = res.data

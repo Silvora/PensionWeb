@@ -17,11 +17,10 @@ export function HostelFloorlList(params: {hostelId:string}) {
 
 
 // 删除宿舍楼层
-export function HostelFloorlRemoveId(params: {id:string},data:any) {
+export function HostelFloorlRemoveId(data:any) {
     return http.request({
-        url: '/admin/hostel/floor/remove',
+        url: `/admin/hostel/floor/remove/${data.id}`,
         method: 'delete',
-        params:params,
         data
     })
 }
@@ -76,8 +75,8 @@ export function HostelRoomListOfFloor(params: any) {
 // 删除宿舍房间
 export function HostelRoomRemoveId(data:any) {
     return http.request({
-        url: '/admin/hostel/room/remove',
-        method: 'get',
+        url: `/admin/hostel/room/remove/${data.id}`,
+        method: 'delete',
         data
     })
 }
@@ -103,7 +102,8 @@ export function HostelRoomUpdate(data:any) {
 
 
 // 宿舍房间中床位列表
-export function HostelRoomBedListOfRoom(params: {roomId:string, needDeviceInfo:boolean,status:number}) {
+// {roomId:string, needDeviceInfo:boolean,status:number}
+export function HostelRoomBedListOfRoom(params:any ) {
     return http.request({
         url: '/admin/hostel/roomBed/listOfRoom',
         method: 'get',
@@ -113,11 +113,10 @@ export function HostelRoomBedListOfRoom(params: {roomId:string, needDeviceInfo:b
 
 
 // 删除宿舍房间床位
-export function HostelRoomBedRemoveId(params:{id:string},data:any) {
+export function HostelRoomBedRemoveId(data:any) {
     return http.request({
-        url: '/admin/hostel/roomBed/remove',
-        method: 'get',
-        params:params,
+        url: `/admin/hostel/roomBed/remove/${data.id}`,
+        method: 'delete',
         data
     })
 }

@@ -73,12 +73,12 @@ const roleTable: any = {
     },
     columns: [
         {
-            title: '角色',
+            title: '员工姓名',
             key: 'name',
             minWidth: 150,
         },
         {
-            title: '角色说明',
+            title: '工种',
             key: 'roleName',
             minWidth: 250,
         },
@@ -126,7 +126,11 @@ const roleData: any = {
             prop: "gender",
                 span: 1,
                 //disabled: false,
-                childs: [
+            childs: [
+                {
+                    label: '未知',
+                    value: '0'
+                },
                 {
                     label: '男',
                     value: '1'

@@ -42,7 +42,7 @@
                         <Input search clearable placeholder="搜索" />
                     </div> -->
                     <Button type="primary" @click="handleToNavLog">全部日志</Button>
-                    <Button type="primary" >重置</Button>
+                    <Button type="primary">重置</Button>
                 </Space>
             </span>
         </div>
@@ -55,7 +55,7 @@
                 </div>
                 <div class="list">
                     <div v-for="item in errList" :key="item.id">
-                        <ErrItem v-for="item in Array.from({ length: 1 })" :name="item"></ErrItem>
+                        <ErrItem :info="item" :name="item"></ErrItem>
                     </div>
                 </div>
             </div>
@@ -72,7 +72,8 @@
                 <div class="list">
                     <Row :gutter="10">
                         <Col span="6" v-for="item in data" :key="item.id">
-                        <DeviceItem :checkAll="checkAll" :info="item" @handleCheck="handleCheck" @handleGetUser="handleGetUser"></DeviceItem>
+                        <DeviceItem :checkAll="checkAll" :info="item" @handleCheck="handleCheck"
+                            @handleGetUser="handleGetUser"></DeviceItem>
                         </Col>
                     </Row>
                 </div>
@@ -83,10 +84,10 @@
                     <!-- <Button type="primary" class="btn" @click="handleShowModal">楼栋管理</Button> -->
                     <Card :bordered="false" :padding="6" class="btnList" style="border: 1px solid #98D2E1;">
                         <div class="list">
-                            <Button type="primary" @click="handleShowModal">设备关联</Button>
+                            <Button type="primary" @click="handleShowModal">添加设备</Button>
                             <!-- <Button type="primary">参数设置</Button> -->
-                            <Button type="primary" @click="handleDeviceOnline">一键布防</Button>
-                            <Button type="primary" @click="handleDeviceOffline">一键撤防</Button>
+                            <Button type="primary" @click="handleDeviceOnline">一键上线</Button>
+                            <Button type="primary" @click="handleDeviceOffline">一键下线</Button>
                             <Button type="error" @click="handleBatchDelete">批量删除</Button>
                         </div>
                     </Card>
@@ -118,7 +119,7 @@ import { onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { Cascader, Modal, Message } from 'view-ui-plus';
 import { HostelList, HostelFloorlList, HostelRoomListOfFloor, HostelRoomBedListOfRoom } from "@/api/Hostel/Hostel"
-import {DeviceOnlineBatch,DeviceOfflineBatch, DeviceStateratio, DeviceTypeRatio, DeviceList, DeviceUpdate, DeviceSave, DeviceRemoveBatch, DeviceStopUsage, DeviceUsageRecordList, DeviceAddUsageRecord } from "@/api/Device/Device";
+import { DeviceOnlineBatch, DeviceOfflineBatch, DeviceStateratio, DeviceTypeRatio, DeviceList, DeviceUpdate, DeviceSave, DeviceRemoveBatch, DeviceStopUsage, DeviceUsageRecordList, DeviceAddUsageRecord } from "@/api/Device/Device";
 import router from "@/router";
 const { t } = useI18n()
 const checkAll = ref<any>(false)
@@ -146,14 +147,13 @@ const checkList = ref<any>([])
 
 
 // 获取设备详情
-const handleGetUser = (data:any) => {
+const handleGetUser = (data: any) => {
     FormDataRef.value?.Open(data)
 }
 
-
 const handleShowModal = () => {
     // console.log("handleShowModal")
-    FormDataRef.value?.Open({})
+    FormDataRef.value?.Open(null)
 }
 
 // 选中
@@ -223,7 +223,7 @@ const getErrData = () => {
 
 // 获取房间数据
 const loadList = (item: any, callback: any) => {
-    console.log(item)
+    // console.log(item.type)
     item.loading = true
 
     if (item.type == 'floor') {
@@ -282,7 +282,14 @@ const getHome = () => {
 
 // 设备布防
 const handleDeviceOnline = () => {
-    DeviceOnlineBatch({idx:checkList.value}).then((res: any) => {
+
+    let data = checkList.value.map((it: any) => {
+        return {
+            id: it
+        }
+    })
+
+    DeviceOnlineBatch(data).then((res: any) => {
         console.log(res)
         Message.success("设备布防成功")
         getData()
@@ -290,7 +297,12 @@ const handleDeviceOnline = () => {
 }
 // 设备撤防
 const handleDeviceOffline = () => {
-    DeviceOfflineBatch({idx:checkList.value}).then((res: any) => {
+    let data = checkList.value.map((it: any) => {
+        return {
+            id: it
+        }
+    })
+    DeviceOfflineBatch(data).then((res: any) => {
         console.log(res)
         Message.success("设备撤防成功")
         getData()
@@ -310,11 +322,11 @@ const getRatio = () => {
 onMounted(() => {
     getData()
     getErrData()
-  //  getRatio()
+    //  getRatio()
     getHome()
 })
 
-const handleToNavLog = ()=>{
+const handleToNavLog = () => {
     router.push('/log')
 }
 

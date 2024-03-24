@@ -83,6 +83,7 @@ const handleCreateRole = (data: any) => {
     Role(data).then(() => {
         Message.success(t('创建成功'))
         TableCreateRef.value.closeModal()
+        getData()
     })
 }
 
@@ -136,18 +137,28 @@ const handleRoleEditModal = (data: any) => {
 
 // 批量启用
 const handleBatchOnline = () => {
-    let list = TableViewRef.value.getSelectRecords().map((item: any) => item.id)
+    let list = TableViewRef.value.getSelectRecords().map((item: any) => {
+        return {
+            id: item.id
+        }
+    })
     console.log(list)
-    RoleOnlineBatch({ ids: list }).then(() => {
-        Message.success(t('禁用成功'))
+    RoleOnlineBatch(list).then(() => {
+        Message.success(t('启用成功'))
+        getData()
     })
 }
 // 批量禁用
 const handleBatchOffline = () => {
-    let list = TableViewRef.value.getSelectRecords().map((item: any) => item.id)
+    let list = TableViewRef.value.getSelectRecords().map((item: any) => {
+        return {
+            id: item.id
+        }
+    })
     console.log(list)
-    RoleOfflineBatch({ ids: list }).then(() => {
+    RoleOfflineBatch(list).then(() => {
         Message.success(t('禁用成功'))
+        getData()
     })
 }
 

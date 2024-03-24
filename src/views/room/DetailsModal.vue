@@ -11,14 +11,14 @@
                         <Space>
                             <RadioGroup v-model="type" size="small" type="button" button-style="solid"
                                 @on-change="handleRadioType">
-                                <Radio label="0">
+                                <Radio label="2" :disabled="props.info?.status == 2 ? false : true">
                                     入住
                                 </Radio>
-                                <Radio label="1">
+                                <Radio label="1" :disabled="props.info?.status == 1 ? false : true">
                                     预留
                                 </Radio>
                             </RadioGroup>
-                            <Button type="error" size="small" class="btn">移除床位</Button>
+                            <Button type="error" size="small" class="btn" @click="handleOnCheck">移除床位</Button>
                         </Space>
                     </span>
                     <!-- <span>
@@ -32,7 +32,8 @@
                     <span>
                         <Space>
                             <span>床位信息</span>
-                            <span>一楼 A101 01</span>
+                            <!-- <span>一楼 A101 01</span> -->
+                            <span>{{ props.info.bedNumber }}</span>
                         </Space>
                     </span>
                     <span>
@@ -92,7 +93,7 @@
             </div>
         </Modal>
 
-        <Modal v-model="elderModal" title="老人选择" :footer-hide="true" width="270">
+        <Modal v-model="elderModal" title="老人选择" :footer-hide="true" width="300">
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
@@ -110,6 +111,14 @@
                             <p>{{ item.name }}</p>
                             <p>ID:{{ item.fileNo }}</p>
                         </div>
+                        <div class="">
+                            <Button type="text" size="small" style="color:#2d8cf0" class="btn"
+                                @click="handleCheckUser({ ...item, status: 2 })">入住</Button>
+                            <Button type="text" size="small" style="color:rgba(237, 144, 0, 1);" class="btn"
+                                @click="handleCheckUser({ ...item, status: 1 })">预留</Button>
+                            <!-- <p>{{ item.name }}</p>
+                                <p>ID:{{ item.fileNo }}</p> -->
+                        </div>
                     </div>
                 </Card>
 
@@ -119,71 +128,91 @@
 </template>
 
 <script setup lang='ts'>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watchEffect } from 'vue';
 import thermometer from "@/assets/images/thermometer.png"
 import bitmap from "@/assets/images/bitmap.png"
 import sleep from "@/assets/images/sleep.png"
 import errBtn from "@/assets/images/errBtn.png"
 import { ElderlyListNotCheckIn } from '@/api/Elderly/Elderly'
+import { CheckSave, CheckRemoveId } from "@/api/Check/Check"
+import { Message, Modal, Space } from 'view-ui-plus';
+import dayjs from "dayjs"
+const emit = defineEmits(['handleUpdate'])
 
 const detailsModal = ref(false)
 const elderModal = ref(false)
 const detailList = ref<any>([])
 const keyword = ref('')
-const descriptionList = ref([
-    {
-        label: '姓名',
-        value: '姓名'
-    },
-    {
-        label: '主要疾病',
-        value: '主要疾病'
-    },
-    {
-        label: '性别',
-        value: '性别'
-    },
-    {
-        label: '用药',
-        value: '用药'
-    },
-    {
-        label: '年龄',
-        value: '年龄'
-    },
-    {
-        label: '用餐规划',
-        value: '用餐规划'
-    },
-    {
-        label: '档案号',
-        value: '档案号'
-    },
-    {
-        label: '康复计划',
-        value: '康复计划'
-    },
-    {
-        label: '护理等级',
-        value: '护理等级'
-    },
-    {
-        label: '入住时间',
-        value: '入住时间'
-    },
-    {
-        label: '床位信息',
-        value: '床位信息'
-    },
-    {
-        label: '到期时间',
-        value: '到期时间'
-    },
-    {
-        label: '看护人',
-        value: '看护人'
-    },
-])
+const props = defineProps({
+    info: {
+        type: Object,
+        defined: {}
+    }
+})
+const descriptionList = ref([])
+const type = ref('0')
+
+watchEffect(() => {
+    type.value = props.info?.status + ''
+    descriptionList.value = [
+        {
+            label: '姓名',
+            value: props.info?.checkIn?.elderlyName
+        },
+        {
+            label: '主要疾病',
+            value: '主要疾病',
+        },
+        {
+            label: '性别',
+            value: props.info?.checkIn?.elderlyGender == 1 ? '男' : '女'
+        },
+        {
+            label: '用药',
+            value: '用药'
+        },
+        {
+            label: '年龄',
+            value: '年龄'
+        },
+        {
+            label: '用餐规划',
+            value: '用餐规划'
+        },
+        {
+            label: '档案号',
+            value: props.info?.checkIn?.elderlyFileNo
+        },
+        {
+            label: '康复计划',
+            value: '康复计划'
+        },
+        {
+            label: '护理等级',
+            value: '护理等级'
+        },
+        {
+            label: '入住时间',
+            value: '入住时间'
+        },
+        {
+            label: '床位信息',
+            value: '床位信息'
+        },
+        {
+            label: '到期时间',
+            value: '到期时间'
+        },
+        {
+            label: '看护人',
+            value: '看护人'
+        },
+    ]
+})
+
+
+console.log(props.info)
+
 
 const deviceList = ref([
     {
@@ -212,14 +241,57 @@ const deviceList = ref([
     }
 ])
 
-const type = ref('0')
 
-const props = defineProps({
-    info: {
-        type: Object,
-        defined: {}
+const handleOnCheck = () => {
+    console.log(props.info)
+
+    Modal.confirm({
+        title: '删除',
+        content: `是否删除入住人【${props.info?.checkIn?.elderlyName}】?`,
+        loading: true,
+        onOk: () => {
+            CheckRemoveId({
+                bedId: props.info.id
+            }).then((res) => {
+                Modal.remove();
+                Message.success('删除成功')
+                detailsModal.value = false
+
+                emit('handleUpdate', true)
+            })
+        }
+    });
+
+
+}
+
+const handleCheckUser = (item: any) => {
+    console.log(item, props.info)
+    let DAY = dayjs()
+
+    let data = {
+        bedId: props.info.id,
+        elderlyId: item.id,
+        endTimeStr: DAY.add(1, 'year').format("YYYY-MM-DD HH:mm:ss"),
+        floorId: props.info.floorId,
+        hostelId: props.info.hostelId,
+        notes: "",
+        roomBedNumber: `${props.info.floorId}-${props.info.roomId}-${props.info.id}`,
+        roomId: props.info.roomId,
+        startTimeStr: DAY.format("YYYY-MM-DD HH:mm:ss"),
+        status: item.status,
     }
-})
+
+    console.log(data)
+
+
+    CheckSave(data).then(() => {
+        Message.success('添加成功')
+        elderModal.value = false
+        detailsModal.value = false
+        emit('handleUpdate', true)
+    })
+}
 
 const handleOpenElderModal = () => {
     elderModal.value = true
@@ -229,6 +301,8 @@ const handleOpenElderModal = () => {
 
 const handleRadioType = (label: string) => {
     type.value = label
+
+    console.log(type.value)
 }
 
 const showModal = () => {
@@ -353,6 +427,7 @@ defineExpose({
     .userBox {
         display: flex;
         align-items: center;
+        justify-content: space-between;
         height: 40px;
         cursor: pointer;
 

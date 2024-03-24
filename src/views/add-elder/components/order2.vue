@@ -8,12 +8,14 @@
                 @handleUpdatePage="handleUpdatePage" @handleEdit="handleEdit">
 
                 <template #gender="{ row }">
-                    <Tag type="border" :color="row.guardian == 1 ? 'primary' : 'error'">{{ row.guardian == 1 ? '男' : '女' }}</Tag>
+                    <Tag type="border" :color="['','primary', 'error'][row.gender]">{{ ['未知','男' ,'女'][row.gender] }}
+                    </Tag>
 
                 </template>
                 <template #guardian="{ row }">
-                    <Tag type="border" :color="row.guardian == 1 ? 'primary' : 'error'">{{ row.guardian == 1 ? '是' : '否' }}</Tag>
-</template>
+                    <Tag type="border" :color="row.guardian == 1 ? 'primary' : 'error'">{{ row.guardian == 1 ? '是' : '否' }}
+                    </Tag>
+                </template>
 
                 <template #deviceStatus="{ row }">
                     <Switch :model-value="row.deviceStatus" true-color="RGBA(18, 185, 135, 1)"
@@ -60,7 +62,7 @@
 <script setup lang='ts'>
 import { ref, onMounted } from "vue"
 import { familyInfo, toolBarConfig } from "../data"
-import { Message, Modal,Tag } from "view-ui-plus";
+import { Message, Modal, Tag } from "view-ui-plus";
 import { useI18n } from "vue-i18n"
 import { FamilyList, FamilyRemoveId, FamilySave, FamilyUpdate } from "@/api/Family/Family"
 import { useRoute } from 'vue-router';
@@ -95,7 +97,7 @@ const handleAddFamily = () => {
 }
 const handleAddModalOk = (data: any) => {
     console.log(data)
-    FamilySave({...data,elderlyId:3}).then(() => {
+    FamilySave({ ...data, elderlyId: route.query.id }).then(() => {
         Message.success(t('添加成功'))
         TableAddRef.value.closeModal()
         getData()
@@ -115,8 +117,18 @@ const handleRoleEdit = (row: any) => {
 }
 const handleEdit = (data: any) => {
     console.log(data)
-    FamilyUpdate(data).then(() => {
+
+
+
+    let obj = JSON.parse(JSON.stringify(data))
+    delete obj._X_ROW_KEY
+
+    FamilyUpdate(obj).then(() => {
         Message.success(t('修改成功'))
+        TableViewRef.value.closeEditModal()
+        getData()
+    }).catch(() => {
+        TableViewRef.value.closeTextLoding()
     })
 }
 
@@ -175,7 +187,7 @@ onMounted(() => {
 })
 
 const getData = () => {
-    FamilyList({elderlyId:route.query.id}).then((res: any) => {
+    FamilyList({ elderlyId: route.query.id }).then((res: any) => {
         console.log(res)
         data.value = res.data
     })

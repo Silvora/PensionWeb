@@ -24,7 +24,7 @@
                         <Option value="shenzhen">Sydney</Option>
                     </Select> -->
                     <Select v-model="searchData.roomId" style="width:100px" clearable placeholder="房间号"
-                        @on-change="handleSearch">
+                        @on-change="getData">
                         <!-- <Option value="beijing">New York</Option>
                         <Option value="shanghai" disabled>London</Option>
                         <Option value="shenzhen">Sydney</Option> -->
@@ -39,7 +39,7 @@
 
 
                     <Select v-model="searchData.nursingGrade" style="width:100px" clearable placeholder="护理等级"
-                        @on-change="handleSearch">
+                        @on-change="getData">
                         <!-- <Option value="beijing">New York</Option>
                         <Option value="shanghai" disabled>London</Option>
                         <Option value="shenzhen">Sydney</Option> -->
@@ -47,9 +47,9 @@
                         <Option :value="idx" v-for="(item, idx) in jobLevelList" :key="idx">{{ item }}</Option>
                     </Select>
 
-                    <div>
-                        <Input search clearable placeholder="搜索" />
-                    </div>
+                    <!-- <div>
+                        <Input v-model="searchData.elderlyName" search placeholder="搜索" @on-search="getData" />
+                    </div> -->
                 </Space>
             </span>
         </div>
@@ -100,8 +100,8 @@
                             <img :src="item.photo" alt="">
                         </div>
                         <div class="name">
-                            <p>{{ item.name }}</p>
-                            <p>ID:{{ item.fileNo }}</p>
+                            <p>{{ item.elderlyName }}</p>
+                            <p>ID:{{ item.elderlyFileNo }}</p>
                         </div>
                     </div>
                 </Card>
@@ -139,14 +139,11 @@ const searchData = ref<any>({
     roomId: "",
     focus: "",
     nursingGrade: "",
+    // elderlyName: ''
 })
 
+
 const handleSearch = (value: any) => {
-
-    getData()
-
-
-
     if (value.length == 2) {
 
         searchData.value.floorId = value[1]
@@ -155,7 +152,15 @@ const handleSearch = (value: any) => {
         HostelRoomListOfFloor({ floorId: value[1], needBed: false }).then((res: any) => {
             roomList.value = res.data
         })
+    } else {
+        searchData.value.floorId = ''
     }
+
+
+    getData()
+
+
+
 
 }
 
@@ -215,7 +220,7 @@ const getData = () => {
 onMounted(() => {
 
     // let box = document.getElementById("#layoutBox")
-    
+
 
     getData()
     HostelList().then(res => {

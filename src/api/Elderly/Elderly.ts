@@ -108,5 +108,15 @@ export function ElderlyHealthElderlyId(data: any) {
 }
 
 
+// 获取长者出院办理
+export function ElderlyAdmissionLeave(data: any) { 
+    return http.request({
+        url: `/admin/elderly/admission/leave`,
+        method: 'post',
+        data
+    })
+}
+
+
 
 
