@@ -14,6 +14,7 @@ import vxe_hk from 'vxe-table/packages/locale/lang/zh-HK'
 import zh_info from './lang/zh.json'
 import en_info from './lang/en.json'
 import hk_info from './lang/hk.json'
+import { getToken, setToken } from '@/utils/token'
 //import { getToken, setToken } from '@/utils/token'
 // zh_CN: {
 //     ...zhCN
@@ -29,15 +30,28 @@ const messages = {
   "zh-HK": Object.assign(view_hk, vxe_hk, hk_info)
 }
 
+// let locale = 'zh-CN'
+
+
+// let lan = localStorage.getItem('language')
+
+// console.log(lan)
+// if (lan) {
+//   locale = lan
+// } else {
+//   localStorage.setItem('language', locale)
+// }
+
 
 // getToken('language').then((res: any) => {
 //   if (res) {
-//     locale = res
+//     // console.log(res)
+//     // locale = res
 //   } else {
-//     setToken('language', locale)
+//      setToken('language', 'zh-HK')
 //   }
-//   console.log(res)
-//   console.log(locale)
+//   // console.log(res)
+//   // console.log(locale)
 // })
 
 
@@ -52,9 +66,9 @@ const i18n:any = createI18n({
   silentTranslationWarn:true,//屏蔽翻译警报
   legacy: false,
   // locale: 'zh-CN',
-  fallbackLocale: 'zh-CN',
+  fallbackLocale: 'zh-HK',
   //locale: navigator.language,
-  locale: navigator.language,
+  locale: 'zh-HK',
   messages
 })
 

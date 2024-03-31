@@ -78,22 +78,28 @@ const roleTable: any = {
             minWidth: 150,
         },
         {
+            title: '性别',
+            key: 'gender',
+            minWidth: 150,
+            slot:'gender',
+        },
+        {
             title: '工种',
             key: 'roleName',
             minWidth: 250,
         },
         {
-            title: '创建时间',
-            key: 'groupId',
+            title: '入职时间',
+            key: 'entryTime',
             minWidth: 230,
         },
 
-        {
-            title: '角色状态',
-            key: 'superiorId',
-            slot: true,
-            minWidth: 100,
-        }
+        // {
+        //     title: '角色状态',
+        //     key: 'superiorId',
+        //     slot: true,
+        //     minWidth: 100,
+        // }
     ]
 }
 
@@ -129,15 +135,15 @@ const roleData: any = {
             childs: [
                 {
                     label: '未知',
-                    value: '0'
+                    value: 0
                 },
                 {
                     label: '男',
-                    value: '1'
+                    value: 1
                 },
                 {
                     label: '女',
-                    value: '2'
+                    value: 2
                 }
             ],
                 required: false,
@@ -230,32 +236,32 @@ const roleData: any = {
             childs: [
                 {
                     label: '三级',
-                    value: '0'
+                    value: 0
                 },
                 {
                     label: '二级',
-                    value: '1'
+                    value: 1
                 },
                 {
                     label: '一级',
-                    value: '2',
+                    value: 2,
 
                 },
                 {
                     label: '特一级',
-                    value: '3'
+                    value: 3
                 },
                 {
                     label: '特二级',
-                    value: '4'
+                    value: 4
                 },
                 {
                     label: '特三级',
-                    value: '5'
+                    value: 5
                 },
                 {
                     label: '专需护理',
-                    value: '6'
+                    value: 6
                 }
             ],
             span: 1,

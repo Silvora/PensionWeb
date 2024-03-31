@@ -1,9 +1,9 @@
 <template>
     <TableForm title="" :data="data" :FormData="healthyInfo.FormData" ref="TableFormRef"></TableForm>
     <div style="display: flex;justify-content: space-between;padding: 15px 0;">
-        <Button type="default" @click="data = {}" style="width: 25%;">重置</Button>
+        <Button type="default" @click="data = {}" style="width: 25%;">{{ t('重置') }}</Button>
 
-        <Button type="primary" @click="handleElderAdd" style="width: 25%;">保存</Button>
+        <Button type="primary" @click="handleElderAdd" style="width: 25%;">{{ t('保存') }}</Button>
     </div>
 </template>
 
@@ -13,6 +13,8 @@ import { ElderlyHealthSave, ElderlyHealthElderlyId, ElderlyHealthUpdate } from '
 import { Message } from "view-ui-plus";
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from 'vue-router';
+import { useI18n } from "vue-i18n";
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const data = ref<any>()
@@ -21,10 +23,10 @@ const handleElderAdd = () => {
     // console.log(TableFormRef.value.FormData,route.query.id,data.value)
 
     // console.log(route.query.id && JSON.stringify(data.value)!="{}")
-    if (route.query.id && JSON.stringify(data.value)!="{}") {
+    if (route.query.id && JSON.stringify(data.value) != "{}") {
         ElderlyHealthUpdate
             ({ ...TableFormRef.value.FormData, elderlyId: route.query.id }).then(_ => {
-                Message.success("修改成功")
+                Message.success(t('修改成功'))
             })
 
         return
@@ -35,7 +37,7 @@ const handleElderAdd = () => {
     ElderlyHealthSave({ ...TableFormRef.value.FormData, elderlyId: route.query.id }).then(res => {
         console.log(res);
 
-        Message.success("添加成功")
+        Message.success(t('添加成功'))
         router.replace({
             path: "/add-elder",
             query: { type: 3, id: route.query.id }

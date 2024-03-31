@@ -2,12 +2,12 @@
     <div class="saff" ref="pageBox">
         <div class="bar">
             <span class="Back" @click="() => $router.go(-1)">
-                <Icon type="md-navigate" style="transform: rotateZ(-90deg);" />返回上一页
+                <Icon type="md-navigate" style="transform: rotateZ(-90deg);" />{{ t('返回上一页') }}
             </span>
             <span class="searchBtn">
                 <Space>
 
-                    <Select v-model="searchData.roleId" style="width:100px" placeholder="角色" clearable
+                    <Select v-model="searchData.roleId" style="width:100px" :placeholder="t('角色')" clearable
                         @on-change="handleSearchChange">
                         <Option :value="item.id" v-for="item in roleList" :key="item.id">{{ item.name }}</Option>
                     </Select>
@@ -42,10 +42,10 @@
 
         <div class="infoBox">
             <div class="left">
-                <p class="title">排班情况</p>
+                <p class="title">{{ t('排班情况') }}</p>
                 <VCalendar :attributes="attrs" trim-weeks>
                     <template #footer>
-                        <Button type="primary" style="width: 100%;" @click="modal = true">当日排班</Button>
+                        <Button type="primary" style="width: 100%;" @click="modal = true">{{ t('当日排班') }}</Button>
                     </template>
                 </VCalendar>
                 <!-- <div class="chart">
@@ -58,11 +58,11 @@
                 <!-- </div>
                 </div> -->
                 <div class="chart" style="margin-top: 10px;">
-                    <p class="title">工种分类</p>
+                    <p class="title">{{ t('工种分类') }}</p>
                     <LevelChart></LevelChart>
                 </div>
                 <div class="chart">
-                    <p class="title">性别占比</p>
+                    <p class="title">{{ t('性别占比') }}</p>
                     <SexChart></SexChart>
                 </div>
                 <!-- <div class="chart" style="margin-bottom: 0px;">
@@ -74,18 +74,24 @@
                 <TableView ref="TableViewRef" :data="data" :tableConfig="roleTable" :tablePage="pagerConfig"
                     @handleUpdatePage="handleUpdatePage" :tableH="tableH">
 
+                    <template #gender="{ row }">
+                    <Tag :color="row.gender == 1 ? 'blue' : row.gender == 2 ? 'magenta' : 'warning'">
+                        {{ row.gender == 1 ? t('男') : row.gender == 2 ? t('女') : t('未知') }}
+                    </Tag>
+                </template>
+
                     <template #active="{ row }">
                         <vxe-button type="text" size="mini" status="primary" @click="handleGetUserInfo(row)">
-                            查看
+                            {{ t('查看') }}
                         </vxe-button>
                         <vxe-button type="text" size="mini" status="primary" @click="modal = true">
-                            排班
+                            {{ t('排班') }}
                         </vxe-button>
                         <vxe-button type="text" size="mini" status="primary" @click="handleRoleEdit(row)">
-                            编辑
+                            {{ t('编辑') }}
                         </vxe-button>
                         <vxe-button type="text" size="mini" status="danger" @click="handleRoleDelete(row.id)">
-                            删除
+                            {{ t('删除') }}
                         </vxe-button>
                     </template>
 
@@ -96,22 +102,22 @@
                     <!-- <Button type="primary" class="btn" @click="handleShowModal">楼栋管理</Button> -->
                     <Card :bordered="false" :padding="6" class="btnList" style="border: 1px solid #98D2E1;">
                         <div class="list">
-                            <Button type="primary" @click="handleRoleAdd">新增</Button>
+                            <Button type="primary" @click="handleRoleAdd">{{ t('新增') }}</Button>
                             <!-- <Button type="primary">导入</Button> -->
-                            <Button type="primary" @click="handleExport">导出</Button>
-                            <Button type="error" @click="handleDeleteAll">批量删除</Button>
+                            <Button type="primary" @click="handleExport">{{ t('导出') }}</Button>
+                            <Button type="error" @click="handleDeleteAll">{{ t('批量删除') }}</Button>
                         </div>
                     </Card>
                 </div>
                 <div class="chart" style="margin-bottom: 10px;">
-                    <p class="title">当班信息</p>
+                    <p class="title">{{ t('当班信息') }}</p>
                     <div class="info">
                         {{ notes.value1 }}
                     </div>
                 </div>
 
                 <div class="chart" style="margin-bottom: 0px;">
-                    <p class="title">交接班信息</p>
+                    <p class="title">{{ t('交接班信息') }}</p>
                     <div class="info">
                         {{ notes.value2 }}
                     </div>
@@ -119,7 +125,7 @@
             </div>
         </div>
 
-        <Modal v-model="modal" title="排班情况" :footer-hide="true" :width="1220">
+        <Modal v-model="modal" :title="t('排班情况')" :footer-hide="true" :width="1220">
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
@@ -127,14 +133,14 @@
         </Modal>
 
 
-        <Modal v-model="addModal" title="添加员工" :footer-hide="true" :width="802">
+        <Modal v-model="addModal" :title="t(info.id?'编辑员工':'添加员工')" :footer-hide="true" :width="802">
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
             <div class="up_box">
                 <Row justify="start">
                     <Col :span="8" class="col">
-                    <div class="label"> 员工头像 </div>
+                    <div class="label"> {{ t('员工头像') }} </div>
                     <div class="input upload1">
                         <!-- <div class="up4">1</div> -->
                         <Upload :show-upload-list="false" :before-upload="(f: any) => handleUpload('proto', f)" action="#">
@@ -149,11 +155,11 @@
                 </Row>
             </div>
             <TableForm title="" :FormData="roleDataList.FormData" ref="TableFormRef" :data="info"></TableForm>
-            <p class="user_info">添加培训认证</p>
+            <p class="user_info">{{ t('添加培训认证') }}</p>
             <div class="up_box">
                 <Row justify="start">
                     <Col :span="24" class="col">
-                    <div class="label"> 证书 </div>
+                    <div class="label"> {{ t('证书') }} </div>
                     <div class="input upload1">
                         <!-- <div class="up4">1</div>
                         <div class="up4">2</div>
@@ -183,7 +189,7 @@
                 </Row>
             </div>
 
-            <Button class="save_btn" type="primary" @click="handleRoleSumbit">保存</Button>
+            <Button class="save_btn" type="primary" @click="handleRoleSumbit">{{ t('保存') }}</Button>
 
         </Modal>
 
@@ -199,7 +205,7 @@ import LevelChart from "./components/LevelChart.vue";
 import SexChart from "./components/SexChart.vue";
 import Scheduling from "./components/Scheduling.vue"
 import { FileUploadImage } from "@/api/File/File"
-import { StaffList, StaffRemoveId, StaffRemoveBatch, StaffSave } from "@/api/Staff/Staff"
+import { StaffList, StaffRemoveId, StaffRemoveBatch, StaffSave,StaffDetailId ,StaffUpdate} from "@/api/Staff/Staff"
 import { MemoList, MemoSave } from "@/api/Memo/Memo";
 import { RoleList } from "@/api/RoleInfo/RoleInfo"
 import { useI18n } from "vue-i18n";
@@ -287,11 +293,24 @@ const handleGetUserInfo = (row: any) => {
 const handleRoleAdd = () => {
     info.value = {}
     //TableAddRef.value.openModal()
+    fileUrl.value = {
+        proto: "",
+        certUrl1: "",
+        certUrl2: "",
+        certUrl3: "",
+        certUrl4: ""
+    }
+
+
+
+
     addModal.value = true
 }
 
 const handleRoleSumbit = () => {
 
+
+  
 
     let data = {
 
@@ -305,8 +324,15 @@ const handleRoleSumbit = () => {
         ])
     }
 
+
+    if(data.id){
+        handleRoleEditSubmit(data)
+        return
+    }
+
+
     StaffSave(data).then(() => {
-        Message.success('添加成功')
+        Message.success(t('添加成功'))
         getData()
         addModal.value = false
     })
@@ -317,22 +343,50 @@ const handleRoleSumbit = () => {
 //编辑
 const handleRoleEdit = (item: any) => {
     //TableViewRef.value.handleOpenEditModal()
-    info.value = item
-    addModal.value = true
+    StaffDetailId({ id: item.id }).then((res: any) => {
+        console.log(item)
+        fileUrl.value.proto = res.data.photo
 
+        let imgList= JSON.parse(res.data.certificateJson)
+
+        fileUrl.value.certUrl1 = imgList[0].u
+        fileUrl.value.certUrl2 = imgList[1].u
+        fileUrl.value.certUrl3 = imgList[2].u
+
+        info.value = {...res.data,birthday:res.data.birthDate}
+        addModal.value = true
+    })
+
+   
+
+}
+
+const handleRoleEditSubmit = (data: any) => {
+    console.log(data)
+
+    delete data.orgId
+    delete data.superiorName
+    delete data.groupName
+    delete data.birthDate
+    delete data.entryTime
+    StaffUpdate(data).then(() => {
+        Message.success(t('编辑成功'))
+        getData()
+        addModal.value = false
+    })
 }
 
 // 删除单个
 const handleRoleDelete = (id: string) => {
     Modal.confirm({
-        title: '提示',
-        content: '确定要删除吗？',
-        okText: '确认',
-        cancelText: '取消',
+        title: t('提示'),
+        content: t('确定要删除吗？'),
+        okText: t('确认'),
+        cancelText: t('取消'),
         loading: true,
         onOk: () => {
             StaffRemoveId({ id: id }).then(() => {
-                Message.success("删除成功")
+                Message.success(t('删除成功'))
                 Modal.remove();
                 getData()
             })
@@ -353,15 +407,15 @@ const handleDeleteAll = () => {
     if (ids.length == 0) return
 
     Modal.confirm({
-        title: '提示',
-        content: '确定要删除吗？',
-        okText: '确认',
-        cancelText: '取消',
+        title: t('提示'),
+        content: t('确定要删除吗？'),
+        okText: t('确认'),
+        cancelText: t('取消'),
         loading: true,
         onOk: () => {
 
             StaffRemoveBatch({ ids: ids }).then(() => {
-                Message.success("删除成功")
+                Message.success(t('删除成功'))
                 Modal.remove();
                 getData()
             })

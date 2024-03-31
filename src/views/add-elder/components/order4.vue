@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="care">
-            <TableForm title="护理设置" :FormData="careInfoForm" ref="care_data"></TableForm>
+            <TableForm :title="t('护理设置')" :FormData="careInfoForm" ref="care_data"></TableForm>
             <!-- <p class="carePub">
             <span>其他费用</span>
             <Button type="primary">添加费用</Button>
@@ -19,14 +19,14 @@
                 <div class="label">{{ t('房间选择') }}</div>
                 <div class="input upload1">
                     <Cascader :data="RoomData" v-model="ROOM" :load-data="loadRoomData" style="width: 100%;"
-                        placeholder="楼栋/楼层/房间/床位" />
+                        :placeholder="t('楼栋/楼层/房间/床位')" />
                 </div>
                 </Col>
             </Row>
         </div>
 
         <div class="contract">
-            <TableForm title="合同设置" :FormData="contractInfo.FormData" ref="contract_data"></TableForm>
+            <TableForm :title="t('合同设置')" :FormData="contractInfo.FormData" ref="contract_data"></TableForm>
             <!-- <Row justify="start" style="width: 100%;">
                 <Col :span="24" class="col">
                 <div class="label">{{ t('附件') }}</div>
@@ -81,9 +81,9 @@
 
 
         <div style="display: flex;justify-content: space-between;padding: 15px 0;">
-            <Button type="default" @click="" style="width: 25%;">重置</Button>
+            <Button type="default" @click="" style="width: 25%;">{{ t('重置') }}</Button>
 
-            <Button type="primary" @click="handleSubmit" style="width: 25%;">保存</Button>
+            <Button type="primary" @click="handleSubmit" style="width: 25%;">{{ t('保存') }}</Button>
         </div>
     </div>
 </template>
@@ -354,7 +354,7 @@ const handleSubmit = () => {
 
     // return
     //console.log(data.value.FormData)
-  
+
 
     let nursing = {
         // nursingCustomizedCosts: care_data.value.FormData.nursingCustomizedCosts,
@@ -416,7 +416,7 @@ const handleSubmit = () => {
     ElderlyHealthSave(data).then(res => {
         //console.log(res);
 
-        Message.success("添加成功")
+        Message.success(t('添加成功'))
 
         router.replace({
             path: "/add-elder",

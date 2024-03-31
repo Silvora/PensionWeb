@@ -1,18 +1,20 @@
 <template>
     <TableForm title="" :FormData="FormData" ref="leaveInfo"></TableForm>
     <div style="display: flex;justify-content: space-between;padding: 15px 0;">
-            <Button type="default" @click="" style="width: 25%;">重置</Button>
+        <Button type="default" @click="" style="width: 25%;">{{ t('重置') }}</Button>
 
-            <Button type="primary" @click="handleSubmit" style="width: 25%;">保存</Button>
-        </div>
+        <Button type="primary" @click="handleSubmit" style="width: 25%;"> {{ t('保存') }}</Button>
+    </div>
 </template>
 
 <script setup lang='ts'>
-import {ElderlyAdmissionLeave} from "@/api/Elderly/Elderly"
+import { ElderlyAdmissionLeave } from "@/api/Elderly/Elderly"
 import { FamilyList } from "@/api/Family/Family";
 import { Message } from "view-ui-plus";
 import { onMounted, ref } from "vue";
-import {useRoute} from "vue-router"
+import { useRoute } from "vue-router"
+import { useI18n } from "vue-i18n";
+const { t } = useI18n()
 const FormData = ref<any>([
     {
         type: 'sort',
@@ -41,7 +43,7 @@ const FormData = ref<any>([
         required: false,
         default: "",
     },
-    
+
     {
         type: 'select',
         label: '接走人姓名',
@@ -93,7 +95,7 @@ const handleSubmit = () => {
 
     console.log(data)
     ElderlyAdmissionLeave(data).then(() => {
-        Message.success("保存成功")
+        Message.success(t('保存成功'))
     })
 }
 
@@ -106,7 +108,7 @@ const getData = () => {
     FamilyList({ elderlyId: route.query.id }).then((res: any) => {
         console.log(res)
         // data.value = res.data
-        FormData.value[3].childs = res.data.map((item:any)=>{
+        FormData.value[3].childs = res.data.map((item: any) => {
             return {
                 label: item.name,
                 value: item.id,

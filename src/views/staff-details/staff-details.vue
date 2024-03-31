@@ -7,15 +7,15 @@
             </div>
             <div class="btn">
                 <Space>
-                    <Button type="primary" @click="elderModal = true">绑定老人</Button>
-                    <Input prefix="ios-search" clearable enter-button="搜索" placeholder="搜索" />
+                    <Button type="primary" @click="elderModal = true">{{ t('绑定老人') }}</Button>
+                    <Input prefix="ios-search" clearable :enter-button="t('搜索')" :placeholder="t('搜索')" />
                 </Space>
             </div>
         </div>
         <div class="box">
 
             <div class="left">
-                <p class="title">员工信息</p>
+                <p class="title">{{ t('员工信息') }}</p>
                 <Card :bordered="false" :padding="20">
                     <div class="info">
                         <div class="img">
@@ -24,15 +24,15 @@
                         </div>
                         <div class="txt">
                             <p>
-                                <span class="t1">员工姓名</span>
+                                <span class="t1">{{ t('员工姓名') }}</span>
                                 <span class="t2">{{ userInfo.name }}</span>
                             </p>
                             <p>
-                                <span class="t1">性别</span>
+                                <span class="t1">{{ t('性别') }}</span>
                                 <span class="t2">{{ userInfo.gender == 1 ? '男' : '女' }}</span>
                             </p>
                             <p>
-                                <span class="t1">年龄</span>
+                                <span class="t1">{{ t('年龄') }}</span>
                                 <span class="t2">29</span>
                             </p>
                             <!-- <p>
@@ -44,29 +44,29 @@
                                 <span class="t2">{{ userInfo.idNumber }}</span>
                             </p> -->
                             <p>
-                                <span class="t1">学业水平</span>
+                                <span class="t1">{{ t('学业水平') }}</span>
                                 <span class="t2">{{ userInfo.educationLevel }}</span>
                             </p>
                             <p>
-                                <span class="t1">工作经验</span>
+                                <span class="t1">{{ t('工作经验') }}</span>
                                 <span class="t2">{{ userInfo.educationLevel }}</span>
                             </p>
                             <p>
-                                <span class="t1">工种</span>
+                                <span class="t1">{{ t('工种') }}</span>
                                 <span class="t2">{{ userInfo.roleId }}</span>
                             </p>
                             <p>
-                                <span class="t1">联系电话</span>
+                                <span class="t1">{{ t('联系电话') }}</span>
                                 <span class="t2">{{ userInfo.phone }}</span>
                             </p>
 
 
                             <p>
-                                <span class="t1">员工编号</span>
+                                <span class="t1">{{ t('员工编号') }}</span>
                                 <span class="t2">{{ userInfo.id }}</span>
                             </p>
                             <p>
-                                <span class="t1">雇佣模式</span>
+                                <span class="t1">{{ t('雇佣模式') }}</span>
                                 <span class="t2">{{ userInfo.groupId }}</span>
                             </p>
                             <!-- <p>
@@ -86,7 +86,7 @@
                 </Card>
             </div>
             <div class="right">
-                <p class="title">护理老人</p>
+                <p class="title">{{ t('护理老人') }}</p>
 
                 <TableView ref="TableViewRef" :data="data" :tableConfig="nursingTable" :tablePage="pagerConfig"
                     @handleUpdatePage="handleUpdatePage" :tableH="tableH">
@@ -97,10 +97,10 @@
 
                     <template #active="{ row }">
                         <vxe-button type="text" size="mini" status="primary" @click="handleElderLook(row)">
-                            查看服务
+                            {{ t('查看服务') }}
                         </vxe-button>
                         <vxe-button type="text" size="mini" status="danger" @click="handleElderDelete(row.id)">
-                            移除老人
+                            {{ t('移除老人') }}
                         </vxe-button>
                     </template>
 
@@ -108,14 +108,14 @@
             </div>
         </div>
 
-        <Modal v-model="elderModal" title="绑定老人" :footer-hide="true" :width="270">
+        <Modal v-model="elderModal" :title="t('绑定老人')" :footer-hide="true" :width="270">
             <template #close>
 
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
 
             <div class="elderBox">
-                <Input prefix="ios-search" clearable enter-button="搜索" placeholder="搜索" v-model="keyword" />
+                <Input prefix="ios-search" clearable :enter-button="t('搜索')" :placeholder="t('搜索')" v-model="keyword" />
 
                 <Card :bordered="false" :padding="5" style="background: rgba(19,100,248,0.05);margin: 5px 0;"
                     v-for="item in elderList" :key="item.id">
@@ -135,12 +135,13 @@
 
 
         <!--  护理列表 -->
-        <Modal v-model="nerseModal" title="护理任务" :footer-hide="true" :width="70">
+        <Modal v-model="nerseModal" :title="t('护理任务')" :footer-hide="true" :width="70">
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
             <!-- <div> -->
-            <Button style="float: right;margin-bottom: 15px;" type="primary" @click="handleAddNursing">新增护理任务</Button>
+            <Button style="float: right;margin-bottom: 15px;" type="primary"
+                @click="handleAddNursing">{{ t('新增护理任务') }}</Button>
             <!-- </div> -->
 
             <div class="nuresBox">
@@ -154,9 +155,9 @@
                     <template #action="{ row }">
                         <vxe-button type="text" size="mini" status="primary" @click="handleEditNursing(row)">编辑</vxe-button>
                         <vxe-button type="text" size="mini" :status="row.status == 0 ? 'primary' : 'danger'"
-                            @click="handleStatusNursing(row)">{{ row.status == 0 ? '开始任务' : '结束任务' }}</vxe-button>
+                            @click="handleStatusNursing(row)">{{ row.status == 0 ? t('开始任务') : t('结束任务') }}</vxe-button>
                         <vxe-button type="text" size="mini" status="danger"
-                            @click="handleDeleteNursing(row)">删除</vxe-button>
+                            @click="handleDeleteNursing(row)">{{ t('删除') }}</vxe-button>
                     </template>
                 </Table>
                 <!-- <TableView ref="TableViewRef" :data="data" :tableConfig="roleTable" :tablePage="pagerConfig"

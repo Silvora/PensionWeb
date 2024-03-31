@@ -15,7 +15,7 @@ body {
   /* overflow: hidden;
   overflow-y: auto;
   overflow-x: auto; */
-  background-image: url('../assets/images/login-bg.png') !important;
+  background-image: url('../assets/images/login-bg.png');
   /* background-size: contain; */
   background-position: center;
   background-size: 100% 100%;

@@ -5,8 +5,10 @@
 
 <script setup lang='ts'>
 import * as echarts from "echarts"
-import { onMounted, ref,nextTick } from "vue";
+import { onMounted, ref, nextTick } from "vue";
 import { StaffGenderRatio } from "@/api/Staff/Staff"
+import { useI18n } from "vue-i18n";
+const { t } = useI18n()
 const SexChartRef = ref(null)
 const myChart: any = ref(null)
 
@@ -29,10 +31,10 @@ onMounted(() => {
         let s: any = 0
         res.data.forEach((item: any) => {
             if (item.type == 1) {
-                obj.push({ value: item.totalCount || 0, name: '男', ...item })
+                obj.push({ value: item.totalCount || 0, name: t('男'), ...item })
             }
             if (item.type == 2) {
-                obj.push({ value: item.totalCount || 0, name: '女', ...item })
+                obj.push({ value: item.totalCount || 0, name: t('女'), ...item })
             }
             s += item.totalCount || 0
         })
@@ -41,8 +43,8 @@ onMounted(() => {
         sum.value = s
 
         nextTick(() => {
-        initChart()
-    })
+            initChart()
+        })
 
     })
 
@@ -92,7 +94,7 @@ const initChart = () => {
                     formatter: () => {
                         return [
                             `{a|${sum.value}}`,
-                            `{b|总数}`
+                            `{b|${t('总数')}}`
                         ].join('\n')
                     },
 

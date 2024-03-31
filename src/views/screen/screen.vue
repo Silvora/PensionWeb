@@ -2,49 +2,23 @@
     <div class="screen" id="screen">
         <div class="bar">
             <span class="Back" @click="() => $router.go(-1)">
-                <Icon type="md-navigate" style="transform: rotateZ(-90deg);" />返回上一页
+                <Icon type="md-navigate" style="transform: rotateZ(-90deg);" />{{ t('返回上一页') }}
             </span>
             <span class="searchBtn">
                 <Space>
 
                     <Cascader v-model="hostelTofloor" :data="hostelList" :load-data="loadData" v-width="200"
-                        placeholder="楼栋/楼层" @on-change="handleSearch" />
-
-                    <!-- <Select v-model="hostel" style="width:100px" placeholder="楼栋">
-
-                        <Option :value="item.id" v-for="item in hostelList" :item="item.key">{{ item.label }}</Option>
-
-                        <Option value="beijing">New York</Option>
-                        <Option value="shanghai" disabled>London</Option>
-                        <Option value="shenzhen">Sydney</Option>
-                    </Select> -->
-                    <!-- <Select v-model="floor" style="width:100px" placeholder="楼层">
-                        <Option value="beijing">New York</Option>
-                        <Option value="shanghai" disabled>London</Option>
-                        <Option value="shenzhen">Sydney</Option>
-                    </Select> -->
-                    <Select v-model="searchData.roomId" style="width:100px" clearable placeholder="房间号"
+                        :placeholder="t('楼栋/楼层')" @on-change="handleSearch" />
+                    <Select v-model="searchData.roomId" style="width:100px" clearable :placeholder="t('房间号')"
                         @on-change="getData">
-                        <!-- <Option value="beijing">New York</Option>
-                        <Option value="shanghai" disabled>London</Option>
-                        <Option value="shenzhen">Sydney</Option> -->
-
+                    
                         <Option :value="item.id" v-for="item in roomList" :key="item.id">{{ item.roomNumber }}</Option>
                     </Select>
-                    <!-- <Select v-model="model1" style="width:100px" placeholder="等级">
-                        <Option value="beijing">New York</Option>
-                        <Option value="shanghai" disabled>London</Option>
-                        <Option value="shenzhen">Sydney</Option>
-                    </Select> -->
-
-
-                    <Select v-model="searchData.nursingGrade" style="width:100px" clearable placeholder="护理等级"
+                    
+                    <Select v-model="searchData.nursingGrade" style="width:100px" clearable :placeholder="t('护理等级')"
                         @on-change="getData">
-                        <!-- <Option value="beijing">New York</Option>
-                        <Option value="shanghai" disabled>London</Option>
-                        <Option value="shenzhen">Sydney</Option> -->
-
-                        <Option :value="idx" v-for="(item, idx) in jobLevelList" :key="idx">{{ item }}</Option>
+                        
+                        <Option :value="idx" v-for="(item, idx) in jobLevelList" :key="idx">{{ t(item) }}</Option>
                     </Select>
 
                     <!-- <div>
@@ -53,24 +27,31 @@
                 </Space>
             </span>
         </div>
-        <div class="box">
+        <div class="box" id="screenBoxAll" ref="screenBoxAll">
             <div class="focus">
-                <div class="title">
-                    <span>重点关注老人</span>
+                <Space  class="title">
+                    <span>{{ t('重点关注老人') }}</span>
                     <span>
-                        <Button type="primary" @click="handleAddFocus">添加人员</Button>
+                        <Button type="primary" @click="handleAddFocus">{{ t('添加人员') }}</Button>
                     </span>
-                </div>
+                </Space>
                 <div class="list">
                     <UserItem v-for="item in FocusList" :info="item"></UserItem>
                 </div>
             </div>
             <div class="bed">
                 <div class="title">
-                    <span class="p">床位管理</span>
+                    <span class="p">{{ t('床位管理') }}</span>
                     <span class="alert">
                         <Alert type="error">An error prompt</Alert>
-                        <Button type="primary">全部日志</Button>
+                        <Button type="primary" @click="router.push('/log')" style="margin-left: 5px;">{{ t('全部日志') }}</Button>
+                        <span>
+                            <Icon v-if=" !isFullscreen" type="md-expand" color="#2d8cf0" size="26" @click="handleZoom"
+               />
+              
+                        <Icon v-else type="md-contract" color="#2d8cf0" size="26"
+              @click="handleZoom" />
+                        </span>
                     </span>
                 </div>
                 <div class="list">
@@ -85,13 +66,13 @@
         </div>
 
 
-        <Modal v-model="elderModal" title="老人选择" :footer-hide="true" width="270">
+        <Modal v-model="elderModal" :title="t('老人选择')" :footer-hide="true" width="270">
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
 
             <div class="elderBox">
-                <Input prefix="ios-search" clearable enter-button="搜索" placeholder="搜索" />
+                <Input prefix="ios-search" clearable :enter-button="t('搜索')" :placeholder="t('搜索')" />
 
                 <Card :bordered="false" :padding="5" style="background: rgba(19,100,248,0.05);margin: 5px 0;"
                     v-for="item in detailList" :key="item.id">
@@ -116,17 +97,28 @@ import UserItem from "./UserItem.vue"
 import { ref, onMounted } from 'vue';
 import { CheckFocus, CheckList, CheckCancelFocus, CheckSave, CheckRemoveId } from '@/api/Check/Check';
 import { HostelList, HostelFloorlList, HostelRoomListOfFloor, HostelRoomBedListOfRoom } from "@/api/Hostel/Hostel"
+import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
+import {Space} from 'view-ui-plus';
+const { t } = useI18n()
+const screenBoxAll = ref(null)
+import { useFullscreen } from '@vueuse/core'
+
+    // let box = document.getElementById("#layoutBox")
+    const { toggle, isFullscreen } = useFullscreen(screenBoxAll)
+
+    const handleZoom = () => {
+  toggle()
+}
+
 const elderModal = ref<boolean>(false)
 const detailList = ref<any>([])
 const hostelTofloor = ref<any>([])
 const hostelList = ref<any>([])
-const roomlList = ref<any>([])
-const hostel = ref<any>('')
-const floorList = ref<any>([])
-const floor = ref<any>('')
+
 const roomList = ref<any>([])
-const room = ref<any>('')
-const bed = ref<any>([])
+
+const router = useRouter()
 
 const UserList = ref<any>([])
 const FocusList = ref<any>([])
@@ -218,8 +210,6 @@ const getData = () => {
 
 
 onMounted(() => {
-
-    // let box = document.getElementById("#layoutBox")
 
 
     getData()
@@ -331,6 +321,7 @@ const handleAddFocus = () => {
         height: calc(100vh - 150px);
         display: flex;
         justify-content: space-around;
+        background: #D4F2FA;
 
         .focus {
             width: 21%;

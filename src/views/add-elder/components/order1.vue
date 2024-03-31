@@ -26,9 +26,9 @@
     <!-- <TableForm title="紧联系人" :FormData="urgentInforms.FormData" :data="data" ref="TableFormRef"></TableForm> -->
 
     <div style="display: flex;justify-content: space-between;padding: 15px 0;">
-        <Button type="default" @click="data = {}" style="width: 25%;">重置</Button>
+        <Button type="default" @click="data = {}" style="width: 25%;">{{ t('重置') }}</Button>
 
-        <Button type="primary" @click="handleElderAdd" style="width: 25%;">保存</Button>
+        <Button type="primary" @click="handleElderAdd" style="width: 25%;">{{ t('保存') }}</Button>
     </div>
 </template>
 
@@ -50,13 +50,13 @@ const { t } = useI18n()
 const handleElderAdd = () => {
     console.log(TableFormRef.value.FormData)
     let data = JSON.parse(JSON.stringify({ ...TableFormRef.value.FormData, photo: photo.value, }))
-    
+
 
     if (route.query.id) {
-        
-    data['birthday'] = data['birthDate']
 
-    delete data['birthDate']
+        data['birthday'] = data['birthDate']
+
+        delete data['birthDate']
 
         delete data.orgId
         delete data.fileNo
@@ -64,7 +64,7 @@ const handleElderAdd = () => {
         delete data.contractDate
         delete data.status
         ElderlyUpdate(data).then(_ => {
-            Message.success("修改成功")
+            Message.success(t('修改成功'))
         })
 
         return
@@ -86,7 +86,7 @@ const handleElderAdd = () => {
     ElderlySave(data).then(res => {
         console.log(res);
 
-        Message.success("添加成功")
+        Message.success(t('添加成功'))
 
         router.replace({
             path: "/add-elder",
@@ -102,7 +102,7 @@ onMounted(() => {
 
         ElderlyDetail({ elderlyId: route.query.id }).then((res: any) => {
             console.log(res)
-            data.value = { ...res.data,birthday:res.data.birthDate }
+            data.value = { ...res.data, birthday: res.data.birthDate }
         })
     }
 })

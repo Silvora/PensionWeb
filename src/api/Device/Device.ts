@@ -26,9 +26,9 @@ export function DeviceDetailId(data: any) {
 }
 
 // 设备状态比例
-export function DeviceStateratio(data: any) {
+export function DeviceStateRatio(data: any) {
     return http.request({
-        url: `/admin/device/deviceStateratio`,
+        url: `/admin/device/deviceStateRatio`,
         method: 'get',
         data
     })
@@ -132,6 +132,45 @@ export function DeviceOnlineBatch(data: any) {
     return http.request({
         url: '/admin/device/onlineBatch',
         method: 'put',
+        data
+    })
+}
+
+
+// 睡眠设备日报
+export function DeviceSleepDeviceDayReport(params: any) {
+    return http.request({
+        url: '/admin/device/sleepDevice/dayReport',
+        method: 'get',
+        params
+    })
+}
+
+
+// 睡眠设备连续监测天数
+export function DeviceSleepDeviceDetectionDays(params: any) {
+    return http.request({
+        url: '/admin/device/sleepDevice/detectionDays',
+        method: 'get',
+        params
+    })
+}
+
+
+// 睡眠设备日报 按分钟心率 呼吸数据
+export function DeviceSleepDeviceHeartRateByMinute(data: any) {
+    return http.request({
+        url: '/admin/device/sleepDevice/heartRateByMinute',
+        method: 'get',
+        data
+    })
+}
+
+// 睡眠设备日报信息
+export function DeviceSleepDeviceReportDate(data: any) {
+    return http.request({
+        url: '/admin/device/sleepDevice/reportDate',
+        method: 'get',
         data
     })
 }

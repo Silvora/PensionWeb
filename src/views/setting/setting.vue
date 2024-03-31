@@ -2,54 +2,32 @@
     <div class="setting">
         <div class="bar">
             <span class="Back" @click="() => $router.go(-1)">
-                <Icon type="md-navigate" style="transform: rotateZ(-90deg);" />返回上一页
+                <Icon type="md-navigate" style="transform: rotateZ(-90deg);" />{{ t('返回上一页') }}
             </span>
             <span class="searchBtn">
                 <Space>
-                    <Select v-model="searchData.online" clearable style="width:100px" placeholder="是否在线"
+                    <Select v-model="searchData.online" clearable style="width:100px" :placeholder="t('是否在线')"
                         @on-change="handleSearchData">
-                        <Option value="0">断开</Option>
-                        <Option value="1">在线</Option>
+                        <Option value="0">{{ t('断开') }}</Option>
+                        <Option value="1">{{ t('在线') }}</Option>
                     </Select>
-                    <Select v-model="searchData.status" clearable style="width:100px" placeholder="设备状态"
+                    <Select v-model="searchData.status" clearable style="width:100px" :placeholder="t('设备状态')"
                         @on-change="handleSearchData">
-                        <Option value="0">空闲</Option>
-                        <Option value="1">正常</Option>
-                        <Option value="10">异常</Option>
+                        <Option value="0">{{ t('空闲') }}</Option>
+                        <Option value="1">{{ t('正常') }}</Option>
+                        <Option value="10">{{ t('异常') }}</Option>
                     </Select>
-                    <Cascader :data="list" v-model="dataValue" :load-data="loadList" v-width="200" placeholder="楼栋/楼层/房间"
-                        @on-change="handleSearch" />
-
-                    <!-- <Select v-model="model1" style="width:100px" placeholder="楼栋">
-                        <Option value="beijing">New York</Option>
-                        <Option value="shanghai" disabled>London</Option>
-                        <Option value="shenzhen">Sydney</Option>
-                    </Select> -->
-                    <!-- <Select v-model="floorId" style="width:100px" placeholder="楼层">
-                        <Option :value="String(item.id)" v-for="item in floorList" :key="item.id">{{ item.floorNumber }}</Option>
-                       
-                    </Select>
-                    <Select v-model="roomId" style="width:100px" placeholder="房间">
-                        <Option :value="String(item.id)" v-for="item in roomList" :key="item.id">{{ item.roomNumber }}</Option>
-
-                    </Select> -->
-                    <!-- <Select v-model="model1" style="width:100px" placeholder="房间号">
-                        <Option value="beijing">New York</Option>
-                        <Option value="shanghai" disabled>London</Option>
-                        <Option value="shenzhen">Sydney</Option>
-                    </Select> -->
-                    <!-- <div>
-                        <Input search clearable placeholder="搜索" />
-                    </div> -->
-                    <Button type="primary" @click="handleToNavLog">全部日志</Button>
-                    <Button type="primary">重置</Button>
+                    <Cascader :data="list" v-model="dataValue" :load-data="loadList" v-width="200"
+                        :placeholder="t('楼栋/楼层/房间')" @on-change="handleSearch" />
+                    <Button type="primary" @click="handleToNavLog">{{ t('全部日志') }}</Button>
+                    <Button type="primary">{{ t('重置') }}</Button>
                 </Space>
             </span>
         </div>
         <div class="box">
             <div class="focus">
                 <div class="title">
-                    <span>预警信息</span>
+                    <span>{{ t('预警信息') }}</span>
                     <span>
                     </span>
                 </div>
@@ -62,7 +40,7 @@
             <div class="bed">
                 <div class="title">
                     <span class="p">
-                        <Checkbox v-model="checkAll">设备全选</Checkbox>
+                        <Checkbox v-model="checkAll">{{ t('设备全选') }}</Checkbox>
                     </span>
                     <span class="alert">
                         <!-- <Alert type="error">An error prompt</Alert>
@@ -73,7 +51,7 @@
                     <Row :gutter="10">
                         <Col span="6" v-for="item in data" :key="item.id">
                         <DeviceItem :checkAll="checkAll" :info="item" @handleCheck="handleCheck"
-                            @handleGetUser="handleGetUser"></DeviceItem>
+                            @handleGetUser="handleGetUser" @handleOpenInfo="handleOpenInfo"></DeviceItem>
                         </Col>
                     </Row>
                 </div>
@@ -84,27 +62,29 @@
                     <!-- <Button type="primary" class="btn" @click="handleShowModal">楼栋管理</Button> -->
                     <Card :bordered="false" :padding="6" class="btnList" style="border: 1px solid #98D2E1;">
                         <div class="list">
-                            <Button type="primary" @click="handleShowModal">添加设备</Button>
+                            <Button type="primary" @click="handleShowModal">{{ t('添加设备') }}</Button>
                             <!-- <Button type="primary">参数设置</Button> -->
-                            <Button type="primary" @click="handleDeviceOnline">一键上线</Button>
-                            <Button type="primary" @click="handleDeviceOffline">一键下线</Button>
-                            <Button type="error" @click="handleBatchDelete">批量删除</Button>
+                            <Button type="primary" @click="handleDeviceOnline">{{ t('一键上线') }}</Button>
+                            <Button type="primary" @click="handleDeviceOffline">{{ t('一键下线') }}</Button>
+                            <Button type="error" @click="handleBatchDelete">{{ t('批量删除') }}</Button>
                         </div>
                     </Card>
                 </div>
 
                 <div class="chart">
-                    <p>设备类型统计</p>
+                    <p>{{ t('设备类型统计') }}</p>
                     <CountChart></CountChart>
                 </div>
                 <div class="chart">
-                    <p>设备状态</p>
+                    <p>{{ t('设备状态') }}</p>
                     <StateChart></StateChart>
                 </div>
             </div>
         </div>
 
-        <FormData ref="FormDataRef"></FormData>
+        <FormData ref="FormDataRef" @handleResetData="handleResetData"></FormData>
+
+        <DeviceInfo ref="DeviceInfoRef"></DeviceInfo>
     </div>
 </template>
 
@@ -114,18 +94,21 @@ import ErrItem from "./components/ErrItem.vue";
 import CountChart from "./components/CountChart.vue"
 import StateChart from "./components/StateChart.vue"
 import FormData from "./components/Form.vue";
-import { ref } from 'vue';
+import DeviceInfo from "./components/DeviceInfo.vue"
+import { onBeforeUnmount, ref } from 'vue';
 import { onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { Cascader, Modal, Message } from 'view-ui-plus';
 import { HostelList, HostelFloorlList, HostelRoomListOfFloor, HostelRoomBedListOfRoom } from "@/api/Hostel/Hostel"
-import { DeviceOnlineBatch, DeviceOfflineBatch, DeviceStateratio, DeviceTypeRatio, DeviceList, DeviceUpdate, DeviceSave, DeviceRemoveBatch, DeviceStopUsage, DeviceUsageRecordList, DeviceAddUsageRecord } from "@/api/Device/Device";
+import {DeviceDetailId, DeviceOnlineBatch, DeviceOfflineBatch, DeviceStateRatio, DeviceTypeRatio, DeviceList, DeviceUpdate, DeviceSave, DeviceRemoveBatch, DeviceStopUsage, DeviceUsageRecordList, DeviceAddUsageRecord } from "@/api/Device/Device";
 import router from "@/router";
+
 const { t } = useI18n()
 const checkAll = ref<any>(false)
 const data = ref<any>([])
 const errList = ref<any>([])
 const FormDataRef = ref<InstanceType<typeof FormData>>()
+const DeviceInfoRef = ref<InstanceType<typeof DeviceInfo>>()
 
 const searchData = ref<any>({
     hostelId: '',
@@ -137,18 +120,30 @@ const searchData = ref<any>({
 // const online = ref<any>()
 const dataValue = ref<any>([])
 const floorId = ref<any>()
-const roomId = ref<any>()
 const list = ref<any>([])
 const hostelList = ref<any>([])
-const floorList = ref<any>([])
-const roomList = ref<any>([])
 
 const checkList = ref<any>([])
 
+const handleResetData = () => {
+    getData()
+}
 
 // 获取设备详情
 const handleGetUser = (data: any) => {
-    FormDataRef.value?.Open(data)
+
+
+    DeviceDetailId(data).then((res: any) => {
+        console.log(res)
+        // dataValue.value = res.data
+        FormDataRef.value?.Open(res.data)
+
+    })
+
+}
+
+const handleOpenInfo=(data:any)=>{
+    DeviceInfoRef.value?.Open(data)
 }
 
 const handleShowModal = () => {
@@ -184,15 +179,15 @@ const handleSearch = (value: any) => {
 const handleBatchDelete = () => {
     console.log(checkList.value)
     Modal.confirm({
-        title: '提示',
-        content: '确定要删除吗？',
-        okText: '确认',
-        cancelText: '取消',
+        title: t('提示'),
+        content: t('确定要删除吗？'),
+        okText: t('确认'),
+        cancelText: t('取消'),
         loading: true,
         onOk: () => {
 
             DeviceRemoveBatch({ ids: checkList.value }).then(() => {
-                Message.success("删除成功")
+                Message.success(t('删除成功'))
                 Modal.remove();
                 getData()
             })
@@ -291,7 +286,7 @@ const handleDeviceOnline = () => {
 
     DeviceOnlineBatch(data).then((res: any) => {
         console.log(res)
-        Message.success("设备布防成功")
+        Message.success(t('设备布防成功'))
         getData()
     })
 }
@@ -304,20 +299,13 @@ const handleDeviceOffline = () => {
     })
     DeviceOfflineBatch(data).then((res: any) => {
         console.log(res)
-        Message.success("设备撤防成功")
+        Message.success(t('设备撤防成功'))
         getData()
     })
 }
 
 
-const getRatio = () => {
-    DeviceStateratio({}).then((res: any) => {
-        console.log(res)
-    })
-    DeviceTypeRatio({}).then((res: any) => {
-        console.log(res)
-    })
-}
+
 
 onMounted(() => {
     getData()

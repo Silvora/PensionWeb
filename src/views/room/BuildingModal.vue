@@ -1,15 +1,16 @@
 <template>
     <div class="building">
-        <Modal v-model="modal" title="楼栋管理" :footer-hide="true">
+        <Modal v-model="modal" :title="t('楼栋管理')" :footer-hide="true">
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
             <div class="buildingBox">
                 <div class="box_1">
                     <p class="title">
-                        <span>楼栋</span>
+                        <span>{{ t('楼栋') }}</span>
                         <span>
-                            <Button type="primary" size="small" class="btn" @click="handleAddHouse(0)">添加楼栋</Button>
+                            <Button type="primary" size="small" class="btn"
+                                @click="handleAddHouse(0)">{{ t('添加楼栋') }}</Button>
                         </span>
                     </p>
                     <div class="info">
@@ -28,8 +29,10 @@
                             </Tag>
                             <template #content>
                                 <Space>
-                                    <Button type="primary" size="small" @click="handleOpenEdit(0, item)">编辑</Button>
-                                    <Button type="error" size="small" @click="handleTagClose(0, item)">删除</Button>
+                                    <Button type="primary" size="small"
+                                        @click="handleOpenEdit(0, item)">{{ t('编辑') }}</Button>
+                                    <Button type="error" size="small"
+                                        @click="handleTagClose(0, item)">{{ t('删除') }}</Button>
                                 </Space>
 
                             </template>
@@ -40,9 +43,10 @@
 
                 <div class="box_2" v-if="selectHostelId" :key="props.HostelList.length">
                     <p class="title">
-                        <span>{{ props.HostelList.find((it: any) => it.id == selectHostelId)?.name }} 楼栋</span>
+                        <span>{{ props.HostelList.find((it: any) => it.id == selectHostelId)?.name }} {{ t('楼栋') }}</span>
                         <span>
-                            <Button type="primary" size="small" class="btn" @click="handleAddHouse(1)">添加楼层</Button>
+                            <Button type="primary" size="small" class="btn"
+                                @click="handleAddHouse(1)">{{ t('添加楼层') }}</Button>
                         </span>
                     </p>
                     <div class="info">
@@ -55,8 +59,10 @@
                             </Tag>
                             <template #content>
                                 <Space>
-                                    <Button type="primary" size="small" @click="handleOpenEdit(1, item)">编辑</Button>
-                                    <Button type="error" size="small" @click="handleTagClose(1, item)">删除</Button>
+                                    <Button type="primary" size="small"
+                                        @click="handleOpenEdit(1, item)">{{ t('编辑') }}</Button>
+                                    <Button type="error" size="small"
+                                        @click="handleTagClose(1, item)">{{ t('删除') }}</Button>
                                 </Space>
                             </template>
                         </Tooltip>
@@ -66,9 +72,11 @@
 
                 <div class="box_3" v-if="selectHostelId && selectFloorId" :key="props.floorList.length">
                     <p class="title">
-                        <span>{{ props.floorList.find((it: any) => it.id == selectFloorId)?.floorNumber }} 楼层</span>
+                        <span>{{ props.floorList.find((it: any) => it.id == selectFloorId)?.floorNumber }}
+                            {{ t('楼层') }}</span>
                         <span>
-                            <Button type="primary" size="small" class="btn" @click="handleAddHouse(2)">添加房间</Button>
+                            <Button type="primary" size="small" class="btn"
+                                @click="handleAddHouse(2)">{{ t('添加房间') }}</Button>
                         </span>
                     </p>
                     <div class="info">
@@ -76,12 +84,14 @@
                             <Tag :style="{ background: item.id == selectRoomId ? '#1364f8' : '#fff', cursor: 'pointer' }"
                                 checkable @on-change="handleChangeName(2, item.id)" size="large">
                                 <span :style="{ color: item.id == selectRoomId ? '#fff' : '#515a6e' }">
-                                    {{ item.roomNumber }} -（{{ item.count }}人间）</span>
+                                    {{ item.roomNumber }} -（{{ item.count }}{{ t('人间') }}）</span>
                             </Tag>
                             <template #content>
                                 <Space>
-                                    <Button type="primary" size="small" @click="handleOpenEdit(2, item)">编辑</Button>
-                                    <Button type="error" size="small" @click="handleTagClose(2, item)">删除</Button>
+                                    <Button type="primary" size="small"
+                                        @click="handleOpenEdit(2, item)">{{ t('编辑') }}</Button>
+                                    <Button type="error" size="small"
+                                        @click="handleTagClose(2, item)">{{ t('删除') }}</Button>
                                 </Space>
                             </template>
                         </Tooltip>
@@ -98,7 +108,8 @@
 
                 <div class="box_3" v-if="selectHostelId && selectRoomId && selectFloorId" :key="props.floorList.length">
                     <p class="title">
-                        <span>{{ props.houseList.find((it: any) => it.id == selectRoomId)?.roomNumber }} 房间</span>
+                        <span>{{ props.houseList.find((it: any) => it.id == selectRoomId)?.roomNumber }}
+                            {{ t('房间') }}</span>
                         <span>
                             <!-- <Button type="primary" size="small" class="btn" @click="handleAddHouse(3)">添加床位</Button> -->
                         </span>
@@ -112,8 +123,10 @@
                             </Tag>
                             <template #content>
                                 <Space>
-                                    <Button type="primary" size="small" @click="handleOpenEdit(3, item)">编辑</Button>
-                                    <Button type="error" size="small" @click="handleTagClose(3, item)">删除</Button>
+                                    <Button type="primary" size="small"
+                                        @click="handleOpenEdit(3, item)">{{ t('编辑') }}</Button>
+                                    <Button type="error" size="small"
+                                        @click="handleTagClose(3, item)">{{ t('删除') }}</Button>
                                 </Space>
                             </template>
                         </Tooltip>
@@ -130,27 +143,27 @@
             </div>
         </Modal>
 
-        <Modal v-model="addModal" :title="['楼栋', '楼层', '房间', '床位'][roomType] + (isEdit ? '编辑' : '添加')" :footer-hide="true"
-            :styles="{ top: '150px' }">
+        <Modal v-model="addModal" :title="[t('楼栋'), t('楼层'), t('房间'), t('床位')][roomType] + (isEdit ? t('编辑') : t('添加'))"
+            :footer-hide="true" :styles="{ top: '150px' }">
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
 
-            <p style="padding-bottom: 10px;">{{ ['楼栋', '楼层', '房间', '床位'][roomType] }}名称</p>
+            <p style="padding-bottom: 10px;">{{ [t('楼栋'), t('楼层'), t('房间'), t('床位')][roomType] }}名称</p>
             <Input v-model="addInput" placeholder="" style="width: 100%" />
 
             <div v-if="roomType == 3" style="padding: 10px 0; ">
-                <p>床位费用¥</p>
-                <InputNumber :max="99999999" :min="0" v-model="roomCost" placeholder="床位费用" style="width: 100%;" />
+                <p>{{ t('床位费用') }}¥</p>
+                <InputNumber :max="99999999" :min="0" v-model="roomCost" :placeholder="t('床位费用')" style="width: 100%;" />
             </div>
 
 
 
             <div style="padding: 10px;" v-if="roomType == 2 && !isEdit">
-                <p style="padding-bottom: 10px;">{{ ['楼栋', '楼层', '房间', '床位'][roomType] }}名称</p>
+                <p style="padding-bottom: 10px;">{{ [t('楼栋'), t('楼层'), t('房间'), t('床位')][roomType] }}{{ t('名称') }}</p>
                 <RadioGroup v-model="count" @on-change="handleSetBedCount">
                     <Radio :label="idx + 1 + ''" v-for="(item, idx) in roomListType" :key="item">
-                        {{ item + '人间' }}
+                        {{ item + t('人间') }}
                     </Radio>
                 </RadioGroup>
             </div>
@@ -162,22 +175,22 @@
 
                     <template v-for="(it, idx) in bedFromData.list" :key="it.idx">
                         <FormItem :prop="it.idx">
-                            <div style="width: 50px;">床位{{ idx + 1 }}. </div>
+                            <div style="width: 50px;">{{ t('床位') }}{{ idx + 1 }}. </div>
                         </FormItem>
                         <FormItem prop="bedNumber">
 
-                            <Input type="text" v-model="it.bedNumber" placeholder="床位号"></Input>
+                            <Input type="text" v-model="it.bedNumber" :placeholder="t('床位号')"></Input>
                         </FormItem>
                         <FormItem prop="cost">
 
-                            <InputNumber :max="99999999" :min="0" v-model="it.cost" placeholder="床位费用"
+                            <InputNumber :max="99999999" :min="0" v-model="it.cost" :placeholder="t('床位费用')"
                                 style="width: 170px;" />
                         </FormItem>
                     </template>
                 </Form>
             </div>
 
-            <Button type="primary" class="addSumbit" @click="handleSumbitAdd">保存</Button>
+            <Button type="primary" class="addSumbit" @click="handleSumbitAdd">{{ t('保存') }}</Button>
         </Modal>
     </div>
 </template>
@@ -191,6 +204,8 @@ import {
 } from "@/api/Hostel/Hostel"
 import { Message, Poptip, Tooltip, Modal, Space } from 'view-ui-plus';
 import { reject } from 'lodash';
+import { useI18n } from "vue-i18n";
+const { t } = useI18n()
 import axios from 'axios';
 const modal = ref(false)
 const addModal = ref(false)
@@ -214,8 +229,8 @@ const bedFromData = ref<any>({
     }]
 })
 const rules = ref<any>({
-    bedNumber: [{ required: true, message: '请输入床位号', trigger: 'blur' }],
-    cost: [{ required: true, message: '请输入床位价格', trigger: 'blur' }],
+    bedNumber: [{ required: true, message: t('请输入床位号'), trigger: 'blur' }],
+    cost: [{ required: true, message: t('请输入床位价格'), trigger: 'blur' }],
 })
 
 //是否编辑
@@ -377,7 +392,7 @@ const handleSetRoomBed = () => {
         roomId: selectRoomId.value,
         status: 1,
     }).then(() => {
-        Message.success('保存成功')
+        Message.success(t('保存成功'))
         emit('handleUpdate', true)
     })
 }
@@ -428,14 +443,14 @@ const handleTagClose = (type: any, item: any) => {
     }
 
     Modal.confirm({
-        title: '删除',
-        content: `是否删除 【${name}】${title}?`,
+        title: t('删除'),
+        content: t(`是否删除 【${name}】${title}?`),
         loading: true,
         onOk: () => {
             request({ id: item.id }).then(() => {
                 emit('handleUpdate', true)
                 Modal.remove();
-                Message.success('删除成功')
+                Message.success(t('删除成功'))
                 handleChangeName(changeType, idx)
             })
         }
@@ -451,7 +466,7 @@ const handleEdit = () => {
         delete editData.value.orgId
         //楼栋
         HostelUpdate({ ...editData.value, name: addInput.value, }).then(() => {
-            Message.success('修改成功')
+            Message.success(t('修改成功'))
             addModal.value = false
             emit('handleUpdate', true)
         })
@@ -462,7 +477,7 @@ const handleEdit = () => {
     if (roomType.value == 1) {
         //楼层
         HostelFloorUpdate({ ...editData.value, floorNumber: addInput.value }).then(() => {
-            Message.success('修改成功')
+            Message.success(t('修改成功'))
             addModal.value = false
             emit('handleUpdate', true)
             handleChangeName(roomType.value - 1, editData.value.floorId)
@@ -478,7 +493,7 @@ const handleEdit = () => {
 
         //房间
         HostelRoomUpdate({ ...editData.value, roomNumber: addInput.value }).then(() => {
-            Message.success('修改成功')
+            Message.success(t('修改成功'))
             addModal.value = false
             emit('handleUpdate', true)
             handleChangeName(roomType.value - 1, editData.value.id)
@@ -500,11 +515,10 @@ const handleEdit = () => {
 
             }
         ).then(() => {
-            Message.success('修改成功')
+            Message.success(t('修改成功'))
             addModal.value = false
             emit('handleUpdate', true)
             handleChangeName(roomType.value - 1, editData.value.id)
-
         })
     }
 }
@@ -524,7 +538,7 @@ const handleSumbitAdd = () => {
     if (roomType.value == 0) {
         //楼栋
         HostelSave({ ...data }).then(() => {
-            Message.success('添加成功')
+            Message.success(t('添加成功'))
             addModal.value = false
             emit('handleUpdate', true)
         }).catch(() => {
@@ -533,20 +547,21 @@ const handleSumbitAdd = () => {
     }
 
     if (roomType.value == 1) {
-        selectHostelId.value = ''
+        // 
 
         //楼层
         HostelFloorSave({ hostelId: selectHostelId.value, floorNumber: data.name }).then(() => {
-            Message.success('添加成功')
+            Message.success(t('添加成功'))
             addModal.value = false
             emit('handleUpdate', true)
+            selectHostelId.value = ''
         })
         handleChangeName(roomType.value - 1, selectHostelId.value)
 
     }
 
     if (roomType.value == 2) {
-        selectFloorId.value = ''
+        // 
 
         bedFromDataRef.value.validate((valid: any) => {
 
@@ -560,7 +575,7 @@ const handleSumbitAdd = () => {
                 let roomId =
                     //房间
                     HostelRoomSave({ roomNumber: data.name, count: count.value, floorId: selectFloorId.value }).then((res: any) => {
-                        Message.success('添加成功')
+                        Message.success(t('添加成功'))
                         roomId = res.data
                         // addModal.value = false
                         // emit('handleUpdate', true)
@@ -579,13 +594,13 @@ const handleSumbitAdd = () => {
 
                         axios.all(request).then(axios.spread((...responses) => {
                             console.log(responses)
-                            Message.success('添加成功')
+                            Message.success(t('添加成功'))
                             addModal.value = false
                             emit('handleUpdate', true)
                         }))
 
                         handleChangeName(roomType.value - 1, selectFloorId.value)
-
+                        selectFloorId.value = ''
                     })
 
 

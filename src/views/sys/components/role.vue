@@ -10,10 +10,10 @@
                         false-color="RGBA(237, 144, 0, 1)" true-value="30" false-value="40"
                         :before-change="() => handleUpdateSwitch(row)">
                         <template #open>
-                            <span>开启</span>
+                            <span>{{ t('开启') }}</span>
                         </template>
                         <template #close>
-                            <span>禁用</span>
+                            <span>{{ t('禁用') }}</span>
                         </template>
                     </Switch>
                 </template>
@@ -30,10 +30,10 @@
                         查看
                     </vxe-button> -->
                     <vxe-button type="text" size="mini" status="primary" @click="handleRoleEdit(row)">
-                        编辑
+                        {{ t('编辑') }}
                     </vxe-button>
                     <vxe-button type="text" size="mini" status="danger" @click="handleRoleDelete(row.id)">
-                        删除
+                        {{ t('删除') }}
                     </vxe-button>
                 </template>
 
@@ -42,14 +42,14 @@
         <!-- <Pager class="pager" :tablePage="pagerConfig" @handlePageChange="handlePageChange" ref="PagerRef"></Pager> -->
         <Card :bordered="false" :padding="6" class="btnList">
             <div class="list">
-                <Button type="primary" @click="handleAddRole">新增</Button>
-                <Button type="primary" @click="handleBatchOnline">批量启用</Button>
-                <Button type="primary" @click="handleBatchOffline">批量禁用</Button>
-                <Button type="error" @click="handleBatchDelete">批量删除</Button>
+                <Button type="primary" @click="handleAddRole">{{ t('新增') }}</Button>
+                <Button type="primary" @click="handleBatchOnline">{{ t('批量启用') }}</Button>
+                <Button type="primary" @click="handleBatchOffline">{{ t('批量禁用') }}</Button>
+                <Button type="error" @click="handleBatchDelete">{{ t('批量删除') }}</Button>
             </div>
         </Card>
 
-        <FormModal title="创建用户" :rules="createRole.rules" :lableWidth="100" :FormData="createRole.FormData"
+        <FormModal :title="t('创建用户')" :rules="createRole.rules" :lableWidth="100" :FormData="createRole.FormData"
             ref="TableCreateRef" @handleModalOk="handleCreateRole">
         </FormModal>
     </div>
@@ -121,6 +121,7 @@ const handleUpdateSwitch = (row: any) => {
 }
 //编辑角色
 const handleRoleEdit = (row: any) => {
+
     TableViewRef.value.handleOpenEditModal(row)
 }
 const handleRoleEditModal = (data: any) => {

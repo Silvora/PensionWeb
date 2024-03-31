@@ -3,7 +3,7 @@
         <div class="toolBar">
             <div>
                 <span class="goBack" @click="() => $router.go(-1)">
-                    <Icon type="md-navigate" style="transform: rotateZ(-90deg);" />返回上一页
+                    <Icon type="md-navigate" style="transform: rotateZ(-90deg);" />{{ t('返回上一页') }}
                 </span>
             </div>
             <div class="bar">
@@ -11,21 +11,22 @@
                     <Radio v-for="item in  typeList" :key="item.label" :label="item.type">
                         <!-- <Icon :type="item.icon" /> -->
                         <i :class="['iconfont', item.icon]"></i>
-                        {{ item.label }}
+                        {{ t(item.label) }}
                     </Radio>
                 </RadioGroup>
             </div>
             <div class="btn">
-                <Button type="primary" v-if="type == 'agency'">保存</Button>
-                <Input v-if="type == 'role'||type == 'account'" @on-search="handleSearch" search clearable placeholder="搜索" />
+                <Button type="primary" v-if="type == 'agency'||type == 'system'" @click="handleSave">{{ t('保存') }}</Button>
+                <Input v-if="type == 'role' || type == 'account'" @on-search="handleSearch" search clearable
+                    :placeholder="t('搜索')" />
             </div>
         </div>
 
         <div class="formInfo" id="formInfo">
-            <Agency v-if="type == 'agency'"></Agency>
+            <Agency v-if="type == 'agency'" ref="agencyRef"></Agency>
             <Role v-if="type == 'role'"></Role>
             <Account v-if="type == 'account'" :searchData="name"></Account>
-            <System v-if="type == 'system'"></System>
+            <System v-if="type == 'system'" ref="systemRef"></System>
         </div>
     </div>
 </template>
@@ -37,9 +38,14 @@ import Agency from "./components/agency.vue"
 import Role from "./components/role.vue"
 import Account from "./components/account.vue"
 import System from "./components/system.vue"
+import { useI18n } from "vue-i18n";
+const { t } = useI18n()
 const router = useRouter()
 const route = useRoute()
 const type = ref(route.query.type)
+
+const agencyRef = ref<any>(null)
+const systemRef = ref<any>(null)
 
 const name = ref<any>('')
 
@@ -76,10 +82,25 @@ const handleRadioType = (label: any) => {
     router.replace('/sys?type=' + label)
 }
 
-const handleSearch = (value:any)=>{
+const handleSearch = (value: any) => {
     console.log(value)
     name.value = value
 }
+
+const handleSave = () => {
+    if(type.value == 'agency'){
+        agencyRef?.value?.handleSubmit()
+    }
+
+    if(type.value == 'system'){
+        systemRef?.value?.handleSubmit()
+    }
+}
+
+
+
+
+
 </script>
 
 <style scoped lang='less'>

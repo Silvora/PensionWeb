@@ -5,3 +5,20 @@
 */
 
 import http from '../index'
+
+
+export function GetBaseSetting(){
+    return http.request({
+        url: '/base/setting',
+        method: 'get',
+    })
+}
+
+
+export function BaseSetting(data:any){
+    return http.request({
+        url: '/base/setting',
+        method: 'post',
+        data
+    })
+}

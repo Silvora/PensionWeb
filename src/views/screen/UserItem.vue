@@ -3,7 +3,7 @@
         <div class="userInfo">
             <p class="title">
                 <span
-                    :class="['t1', ['gary', 'green', 'yellow'][device?.status || 0]]">{{ ['空闲', '正常', '异常'][device?.status || 0] }}</span>
+                    :class="['t1', ['gary', 'green', 'yellow'][device?.status || 0]]">{{ [t('空闲'), t('正常'), t('异常')][device?.status || 0] }}</span>
                 <span class="t2">{{ info?.roomBedNumber }}</span>
                 <span class="t3" @click="handleNavTo(`/add-elder?type=0&id=${info?.elderlyId}`)">
                     <img src="@/assets/images/room-setting.png" alt="" srcset="">
@@ -37,18 +37,18 @@
                         <p class="t5">
                             <!-- <Icon type="ios-checkmark" /> -->
                             <i class="iconfont icon-xindongzhi-manxin-" style="color:#E06255"></i>
-                            {{ stateInfo?.heartRate || 0 }}/次分
+                            {{ stateInfo?.heartRate || 0 }}/{{ t('次分') }}
 
                         </p>
                         <p class="t5">
                             <!-- <Icon type="ios-checkmark" /> -->
                             <i class="iconfont icon-tidong" style="color:#0160FF"></i>
-                            {{ stateInfo?.bodyMovement || 0 }}/次
+                            {{ stateInfo?.bodyMovement || 0 }}/{{ t('次') }}
                         </p>
                         <p class="t5">
                             <!-- <Icon type="ios-checkmark" /> -->
                             <i class="iconfont icon-wenduji" style="color:#ED9000"></i>
-                            {{ stateInfo?.bodyMovement || 0 }}/度
+                            {{ stateInfo?.bodyMovement || 0 }}/{{ t('度') }}
                         </p>
                     </div>
 
@@ -61,6 +61,8 @@
 <script setup lang='ts'>
 import { useRouter } from 'vue-router';
 import { ref, watchEffect } from 'vue';
+import { useI18n } from "vue-i18n";
+const { t } = useI18n()
 const router = useRouter()
 
 const info = ref<any>({})

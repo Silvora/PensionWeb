@@ -1,7 +1,7 @@
 <template>
     <div class="date">
         <div class="box">
-            <p class="title">机构展示平台</p>
+            <p class="title">{{ t('机构展示平台') }}</p>
             <div class="continer">
                 <div class="left">
                     <!-- <p class="sum">坐席总数：245 在线坐席人数：25 今日呼入：62 今日呼出：84</p> -->
@@ -139,7 +139,13 @@
 
                 </div>
                 <div class="right">
-                    <p class="day">{{ day }}</p>
+                    <p class="day">
+                        <span> {{ day }}</span>
+                        <span style="float: right;">
+                            <!-- <Icon type="md-home" /> -->
+                        
+                        </span>
+                       </p>
                     <div class="chart">
                         <p>{{ t('入住情况分析') }}</p>
                         <Check></Check>
@@ -156,6 +162,19 @@
             </div>
 
         </div>
+
+
+        <span class="zoom">
+            <Icon v-if=" !isFullscreen" type="md-expand" color="#32E7FF" size="32" @click="handleZoom"
+               />
+              
+                        <Icon v-else type="md-contract" color="#32E7FF" size="28"
+              @click="handleZoom" />
+        </span>
+        <span class="home">
+            <Icon type="md-home" color="#32E7FF" size="28" style="padding-left: 20px;" @click="router.push('/home')"/>
+
+        </span>
     </div>
 </template>
 
@@ -174,6 +193,13 @@ import { onMounted, ref } from "vue";
 import { Image, Space } from 'view-ui-plus';
 import dayjs from 'dayjs';
 import { useI18n } from "vue-i18n"
+import { useFullscreen } from '@vueuse/core'
+let app = document.getElementById('#screen')
+// console.log(app)
+const { toggle, isFullscreen } = useFullscreen(app)
+const handleZoom = () => {
+  toggle()
+}
 const {t} = useI18n()
 const day = ref('')
 const router = useRouter();
@@ -321,6 +347,12 @@ onMounted(() => {
 
 
 <style scoped lang='less'>
+
+.day{
+    display: block;
+    // background: red;
+    height: 21px;
+}
 .date::-webkit-scrollbar {
     display: none;
     /* 适用于Chrome、Safari和Opera */
@@ -340,6 +372,19 @@ onMounted(() => {
     scrollbar-width: none;
     /* 适用于Firefox */
     overflow-y: scroll;
+    position: relative;
+    .zoom{
+        position: absolute;
+        right: 20px;
+        top: 40px;
+        cursor: pointer;
+    }
+    .home{
+        position: absolute;
+        right: 55px;
+        top: 42px;
+        cursor: pointer;
+    }
 
     .box {
         width: 100%;

@@ -2,20 +2,23 @@
     <div class="sched">
         <div class="toolBar">
             <div>
-                <DatePicker :model-value="searchData.dateStr" type="date" :clearable="false" @on-change="() => { getData()}" :editable="false"/>
+                <DatePicker :model-value="searchData.dateStr" type="date" :clearable="false"
+                    @on-change="() => { getData() }" :editable="false" />
             </div>
             <div class="bar">
             </div>
             <div class="btn">
                 <Space>
-                    <Button type="primary" @click="notesModal = true">信息板</Button>
+                    <Button type="primary" @click="notesModal = true">{{ t('信息板') }}</Button>
 
-                    <Select v-model="searchData.shiftType" style="width:100px" placeholder="班次" clearable @on-change="() => { getData()}">
-                        <Option value="0">早班</Option>
-                        <Option value="1">中班</Option>
-                        <Option value="2">晚班</Option>
+                    <Select v-model="searchData.shiftType" style="width:100px" :placeholder="t('班次')" clearable
+                        @on-change="() => { getData() }">
+                        <Option value="0">{{ t('早班') }}</Option>
+                        <Option value="1">{{ t('中班') }}</Option>
+                        <Option value="2">{{ t('晚班') }}</Option>
                     </Select>
-                    <Input v-model="searchData.keyword" prefix="ios-search" clearable enter-button="搜索" placeholder="搜索" />
+                    <Input v-model="searchData.keyword" prefix="ios-search" clearable :enter-button="t('搜索')"
+                        :placeholder="t('搜索')" />
                 </Space>
             </div>
         </div>
@@ -30,7 +33,7 @@
                 <thead>
                     <tr height="45">
                         <th>
-                            <div style="width: 100px;">值班人员</div>
+                            <div style="width: 100px;">{{ t('值班人员') }}</div>
                         </th>
                         <th v-for="item in time" :key="item" width="45">
                             <div style="width: 45px;">{{ item }}</div>
@@ -58,16 +61,16 @@
                                 :style="{ width: item.isActiveBox[0] * 45 + 'px', height: '100%', borderRadius: '8px' }">
                             </div>
                             <!-- <Poptip > -->
-                                <div class="center hover" @click="handleSetTimeModal(item)"
-                                    :style="{ width: item.isActiveBox[1] * 45 + 'px', height: '100%', background: 'rgb(255, 238, 191)', borderRadius: '8px' }">
-                                    <div class="item" v-if="item.isActiveBox[1] >= item.isActiveBox[3]">
-                                        <span>
-                                            &nbsp;&nbsp;
-                                            {{ item.startTime }}~{{ item.endTime }}</span>
-                                        <span class="type">{{ item.shiftName }}</span>
-                                    </div>
+                            <div class="center hover" @click="handleSetTimeModal(item)"
+                                :style="{ width: item.isActiveBox[1] * 45 + 'px', height: '100%', background: 'rgb(255, 238, 191)', borderRadius: '8px' }">
+                                <div class="item" v-if="item.isActiveBox[1] >= item.isActiveBox[3]">
+                                    <span>
+                                        &nbsp;&nbsp;
+                                        {{ item.startTime }}~{{ item.endTime }}</span>
+                                    <span class="type">{{ item.shiftName }}</span>
                                 </div>
-                                <!-- <template #content>
+                            </div>
+                            <!-- <template #content>
                                     <Space>
                                         <Button size="small" type="primary" @click="handleSetTimeModal(item)">设置</Button>
                                         <Button size="small" type="error" @click="handleDelete(item)">删除</Button>
@@ -78,15 +81,15 @@
                                 :style="{ width: item.isActiveBox[2] * 45 + 'px', height: '100%', borderRadius: '8px' }">
                             </div>
                             <!-- <Poptip trigger="hover"> -->
-                                <div class="center hover" @click="handleSetTimeModal(item)"
-                                    :style="{ width: item.isActiveBox[3] * 45 + 'px', height: '100%', background: 'rgb(255, 238, 191)', borderRadius: '8px' }">
-                                    <div class="item" v-if="item.isActiveBox[1] < item.isActiveBox[3]">
-                                        <span>&nbsp;&nbsp;
-                                            {{ item.startTime }}~{{ item.endTime }}</span>
-                                        <span class="type">{{ item.shiftName }}</span>
-                                    </div>
+                            <div class="center hover" @click="handleSetTimeModal(item)"
+                                :style="{ width: item.isActiveBox[3] * 45 + 'px', height: '100%', background: 'rgb(255, 238, 191)', borderRadius: '8px' }">
+                                <div class="item" v-if="item.isActiveBox[1] < item.isActiveBox[3]">
+                                    <span>&nbsp;&nbsp;
+                                        {{ item.startTime }}~{{ item.endTime }}</span>
+                                    <span class="type">{{ item.shiftName }}</span>
                                 </div>
-                                <!-- <template #content>
+                            </div>
+                            <!-- <template #content>
                                     <Space>
                                         <Button size="small" type="primary" @click="handleSetTimeModal(item)">设置</Button>
                                         <Button size="small" type="error" @click="handleDelete(item)">删除</Button>
@@ -97,74 +100,77 @@
                         </div>
                         <div v-else
                             style="position: absolute;left: 100px;top: 5px;display: flex;height: 35px;border-radius:8px;background: #F1F1F5;width: 100%;justify-content: center;">
-                            <Button type="primary" @click="handleOpenModal(item)">设置排班</Button>
+                            <Button type="primary" @click="handleOpenModal(item)">{{ t('设置排班') }}</Button>
                         </div>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <Modal v-model="addModal" title="设置排班" :footer-hide="true" :width="340" style="z-index: 2000 !important;">
+        <Modal v-model="addModal" :title="t('设置排班')" :footer-hide="true" :width="340" style="z-index: 2000 !important;">
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
             <div class="userModal">
                 <div class="avatar" style="display: flex;
     align-items: center;justify-content: space-between;">
-                   <div style="display: flex;
+                    <div style="display: flex;
     align-items: center;">
-                    <div>
-                        <Avatar icon="ios-person" size="30" />
+                        <div>
+                            <Avatar icon="ios-person" size="30" />
+                        </div>
+                        <div class="txt">
+                            <p class="t1">倪杰</p>
+                            <p class="t2">护士</p>
+                        </div>
                     </div>
-                    <div class="txt">
-                        <p class="t1">倪杰</p>
-                        <p class="t2">护士</p>
-                    </div>
-                   </div>
 
-                    <Button size="small" type="error" @click="handleDelete(addForm)" style="float: right;">删除</Button>
+                    <Button size="small" type="error" @click="handleDelete(addForm)"
+                        style="float: right;">{{ t('删除') }}</Button>
 
                 </div>
-                <p class="label">排班名称</p>
-                <Select v-model="addForm.shiftType" placeholder="排班名称">
-                    <Option value="0">早班</Option>
-                    <Option value="1">中班</Option>
-                    <Option value="2">晚班</Option>
+                <p class="label">{{ t('排班名称') }}</p>
+                <Select v-model="addForm.shiftType" :placeholder="t('排班名称')">
+                    <Option value="0">{{ t('早班') }}</Option>
+                    <Option value="1">{{ t('中班') }}</Option>
+                    <Option value="2">{{ t('晚班') }}</Option>
                 </Select>
 
                 <div class="time">
-                    <span>开始时间</span>
-                    <TimePicker v-model="addForm.startTimeStr" format="HH:mm" placeholder="开始时间" style="width: 150px" />
+                    <span>{{ t('开始时间') }}</span>
+                    <TimePicker v-model="addForm.startTimeStr" format="HH:mm" :placeholder="t('开始时间')"
+                        style="width: 150px" />
                 </div>
 
                 <div class="time">
-                    <span>结束时间</span>
-                    <TimePicker v-model="addForm.endTimeStr" format="HH:mm" placeholder="结束时间" style="width: 150px" />
+                    <span>{{ t('结束时间') }}</span>
+                    <TimePicker v-model="addForm.endTimeStr" format="HH:mm" :placeholder="t('结束时间')" style="width: 150px" />
                     <!-- <TimePicker :model-value="addForm.end" format="HH’mm’ss" type="timerange" placement="bottom-end"
                         placeholder="Select time" /> -->
                 </div>
 
-                <Button type="primary" style="width: 100%;margin-top: 10px;" @click="handleEditSchedule">保存</Button>
+                <Button type="primary" style="width: 100%;margin-top: 10px;"
+                    @click="handleEditSchedule">{{ t('保存') }}</Button>
 
             </div>
         </Modal>
 
 
-        <Modal v-model="notesModal" title="信息板" :footer-hide="true" :width="340">
+        <Modal v-model="notesModal" :title="t('信息板')" :footer-hide="true" :width="340">
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
             <div>
                 <div>
-                    <p>当班信息</p>
+                    <p>{{ t('当班信息') }}</p>
                     <Input v-model="notes.value1" :autosize="{ minRows: 4, maxRows: 4 }" type="textarea"
                         placeholder="请输入当班信息" />
                 </div>
                 <br />
                 <div>
-                    <p>交接班信息</p>
+                    <p>{{ t('交接班信息') }}</p>
                     <Input v-model="notes.value2" :autosize="{ minRows: 4, maxRows: 4 }" type="textarea"
-                        placeholder="请输入交接班信息" />
+                        :placeholder="t('请输入交接班信息')" />
                 </div>
             </div>
             <Button type="primary" @click="handleSumbit" style="width: 100%;margin-top: 10px;">{{ $t('确定') }}</Button>
@@ -199,7 +205,7 @@ const addForm = ref<any>({
     startTimeStr: "",
     shiftType: "",
     staffId: "",
-    id:'',
+    id: '',
 })
 const notes = ref({
     value1: '',
@@ -228,7 +234,7 @@ let time = ['6am', "7am", "8am", "9am", "10am", "11am", "12am", "13pm", "14pm", 
 // })
 // 
 
-const handleOpenModal = (row:any) => {
+const handleOpenModal = (row: any) => {
     // addForm.value = {
     //     ...row,
     //     dateStr: addForm.value.dateStr
@@ -237,12 +243,12 @@ const handleOpenModal = (row:any) => {
     addForm.value = {
         dateStr: addForm.value.dateStr,
         staffId: row.staffId,
-        id:row.id,
+        id: row.id,
         // name: row.name,
         // date: row.date,
         startTimeStr: row.startTime,
         endTimeStr: row.endTime,
-        shiftType: row.shiftType+'',
+        shiftType: row.shiftType + '',
         // isActiveBox: row.isActiveBox,
         // notes: row.notes,
         // id: row.id,
@@ -274,18 +280,18 @@ const handleSetTimeModal = (row: any) => {
     //     dateStr: addForm.value.dateStr
     // }
 
-   
+
     // let data = {...addForm.value,staffId:row.id}
 
     addForm.value = {
         dateStr: addForm.value.dateStr,
         staffId: row.staffId,
-        id:row.id,
+        id: row.id,
         // name: row.name,
         // date: row.date,
         startTimeStr: row.startTime,
         endTimeStr: row.endTime,
-        shiftType: row.shiftType+'',
+        shiftType: row.shiftType + '',
         // isActiveBox: row.isActiveBox,
         // notes: row.notes,
         // id: row.id,
@@ -293,14 +299,14 @@ const handleSetTimeModal = (row: any) => {
 
     addModal.value = true
 
-  //  console.log(data)
+    //  console.log(data)
 }
 // 编辑排班
 const handleEditSchedule = () => {
     console.log(addForm.value)
 
     let request = addForm.value.id == undefined ? StaffScheduleSave : StaffScheduleUpdate
-    let msg = addForm.value.id == undefined ? '添加成功' : '编辑成功'
+    let msg = addForm.value.id == undefined ? t('添加成功') : t('编辑成功')
     // if (addForm.value.staffId === '') {
     //     StaffScheduleSave
     // } else {
@@ -318,8 +324,8 @@ const handleEditSchedule = () => {
 const handleDelete = (row: any) => {
     console.log(row)
     Modal.confirm({
-        title: '删除排班',
-        content: '确定要删除此员工排班',
+        title: t('删除排班'),
+        content: t('确定要删除此员工排班'),
         loading: true,
         onOk: () => {
             console.log(row)
@@ -418,69 +424,69 @@ const getData = () => {
         data: searchData.value.dateStr,
         shiftType: searchData.value.shiftType
     }).then(res => {
-       // console.log(res)
+        // console.log(res)
 
         let time = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 0, 1, 2, 3, 4, 5]
 
-        const list = res.data.records.map((item:any)=>{
-            
+        const list = res.data.records.map((item: any) => {
+
             let info = item.scheduleList?.[0]
 
-            let ssss:any = []
+            let ssss: any = []
 
             // 7-9 7-5 
-           if(info?.startTime && info?.endTime){
-            let ti = time.indexOf(info?.startTime?.split(":")[0] * 1)
-            let ei = time.indexOf(info?.endTime?.split(":")[0] * 1)
+            if (info?.startTime && info?.endTime) {
+                let ti = time.indexOf(info?.startTime?.split(":")[0] * 1)
+                let ei = time.indexOf(info?.endTime?.split(":")[0] * 1)
 
-            let s = info?.startTime?.split(":")[0] * 1
-            let e = info?.endTime?.split(":")[0] * 1
+                let s = info?.startTime?.split(":")[0] * 1
+                let e = info?.endTime?.split(":")[0] * 1
 
-            console.log(ti,ei,s,e)
-         //   if()
+                console.log(ti, ei, s, e)
+                //   if()
 
 
 
-            if(ti > ei){
+                if (ti > ei) {
+
+                }
+
+                if (ei >= ti) {
+                    // if(s>=6){
+                    //     ssss[0]=s-6
+                    // }
+                    // ssss[1]=ei-ti
+                    // ssss[2]=e-6
+
+                    ssss = [s - 6, ei - ti, 24 - s + 6 - ei + ti, 0]
+                }
+            } else {
+                ssss = []
 
             }
-               
-            if(ei>=ti){
-                // if(s>=6){
-                //     ssss[0]=s-6
-                // }
-                // ssss[1]=ei-ti
-                // ssss[2]=e-6
-                
-                ssss=[s-6,ei-ti,24-s+6-ei+ti,0]
-            }
-           }else{
-            ssss=[]
-
-           }
 
 
 
 
             let shift = ['早班', '中班', '晚班']
             let obj = {
-                id:info?.id,
-                staffId:item.id,
+                id: info?.id,
+                staffId: item.id,
                 date: info?.date,
                 startTime: info?.startTime,
                 endTime: info?.endTime,
                 notes: info?.notes,
-                shiftType:info?.shiftType,
+                shiftType: info?.shiftType,
                 shiftName: shift[info?.shiftType],
                 isActiveBox: ssss,
                 name: item.name,
                 type: item.roleName,
             }
-            
+
 
             return obj
         })
-       
+
 
         console.log(list)
         data.value = list

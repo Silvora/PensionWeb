@@ -6,24 +6,26 @@
           <img class="left-img" src="@/assets/images/logo.png" alt="" @click="() => router.push('/home')">
         </span>
         <span class="title">
-          {{ route.meta.title }}
+          {{ t(route.meta.title) }}
         </span>
         <div class="right-box" v-if="route.name != 'sys'">
           <!-- <span class="right" :style="{ 'background': route.name == 'home' ? 'rgba(19, 100, 248, 1)' : '#fff' }"> -->
-          <span v-if="['home','screen'].includes(route.name)" class="right" :style="{ 'background': 'rgba(19, 100, 248, 1)' }" @click="() => router.push('/sys?type=agency')">
-            <img  v-if="['home'].includes(route.name)"
-              class="right-img" src="@/assets/images/setting.png" alt="" >
+          <span v-if="['home', 'screen'].includes(route.name)" class="right"
+            :style="{ 'background': 'rgba(19, 100, 248, 1)' }">
+            <img v-if="['home'].includes(route.name)" class="right-img" src="@/assets/images/setting.png" alt=""  @click="() => router.push('/sys?type=agency')">
             <!-- <img v-if="route.name == 'screen'" class="right-img" src="@/assets/images/setting.png" alt=""
                 @click="() => router.push('/sys')"> -->
-            <Icon v-if="route.name == 'screen' && !isFullscreen" type="md-code" color="#fff" size="28" @click="handleZoom"
-              style="transform: rotateZ(-45deg);" />
-            <Icon v-if="route.name == 'screen' && isFullscreen" type="ios-contract" color="#fff" size="28"
-              @click="handleZoom" style="transform: rotateZ(-90deg);" />
+                <!-- <Icon type="md-expand" /> -->
+            <Icon v-if="route.name == 'screen' && !isFullscreen" type="md-expand" color="#fff" size="28" @click="handleZoom"
+               />
+               <!-- <Icon type="md-contract" /> -->
+            <Icon v-if="route.name == 'screen' && isFullscreen" type="md-contract" color="#fff" size="28"
+              @click="handleZoom" />
           </span>
         </div>
       </div>
     </div>
-    <div class="layout-box" id="layoutBox" :style="{width:route.name=='screen'?'100%':''}">
+    <div class="layout-box" id="layoutBox" :style="{ width: route.name == 'screen' ? '100%' : '' }">
       <Layout class="layout-content">
         <Content>
           <Suspense>
@@ -37,7 +39,7 @@
           </Suspense>
         </Content>
       </Layout>
-      <p class="footer" v-if="route.name != 'home'">深圳海吉雅健康科技有限公司 技术支持</p>
+      <p class="footer" v-if="route.name != 'home'">{{ t('深圳海吉雅健康科技有限公司 技术支持') }}</p>
     </div>
   </div>
 </template>
@@ -47,6 +49,8 @@ import { useRoute } from 'vue-router';
 import { onMounted, nextTick } from "vue"
 import { useAppStore } from '@/stores/modules/app'
 import { useFullscreen } from '@vueuse/core'
+import { useI18n } from "vue-i18n";
+const { t } = useI18n()
 const route = useRoute()
 const appStore = useAppStore()
 console.log(route)

@@ -5,7 +5,7 @@
             <Row justify="start">
                 <Col v-for="item in props.FormData" :span="String(item.span * props.span)" class="col">
                 <!-- <div style="width: 100%;height:100%"> -->
-                <FormItem :prop="item.prop" :label="item.label"
+                <FormItem :prop="item.prop" :label="t(item.label)"
                     :style="{ 'width': '100%', 'height': props.labelHeight ? props.labelHeight + 'px' : '32px' }">
                     <!-- <Input v-model="FormData[item.prop]" placeholder="请输入" />
                     </FormItem>

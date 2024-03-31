@@ -2,7 +2,7 @@
     <div class="log">
         <div class="bar">
             <span class="Back" @click="() => $router.go(-1)">
-                <Icon type="md-navigate" style="transform: rotateZ(-90deg);" />返回上一页
+                <Icon type="md-navigate" style="transform: rotateZ(-90deg);" />{{ t('返回上一页') }}
             </span>
             <span class="searchBtn">
                 <Space>
@@ -17,11 +17,12 @@
                         <Option value="1">正常</Option>
                         <Option value="10">异常</Option>
                     </Select> -->
-                    <Cascader :data="list" v-model="dataValue" :load-data="loadList" v-width="200" placeholder="楼栋/楼层/房间"
-                        @on-change="handleSearch" />
+                    <Cascader :data="list" v-model="dataValue" :load-data="loadList" v-width="200"
+                        :placeholder="t('楼栋/楼层/房间')" @on-change="handleSearch" />
 
 
-                    <DatePicker type="daterange" split-panels placeholder="选择日期" style="width: 200px" @on-change="handleSearchDate"></DatePicker>
+                    <DatePicker type="daterange" split-panels :placeholder="t('选择日期')" style="width: 200px"
+                        @on-change="handleSearchDate"></DatePicker>
 
                     <!-- <Select v-model="model1" style="width:100px" placeholder="楼栋">
                         <Option value="beijing">New York</Option>
@@ -110,13 +111,13 @@
 </template>
 
 <script setup lang="ts" name="log">
-import {LogTable} from "./data"
+import { LogTable } from "./data"
 import { ref } from 'vue';
 import { onMounted } from "vue";
 import { useI18n } from "vue-i18n";
-import { Cascader, Modal, Message,DatePicker } from 'view-ui-plus';
+import { Cascader, Modal, Message, DatePicker } from 'view-ui-plus';
 import { HostelList, HostelFloorlList, HostelRoomListOfFloor, HostelRoomBedListOfRoom } from "@/api/Hostel/Hostel"
-import { DeviceLogList,DeviceStateratio, DeviceTypeRatio, DeviceList, DeviceUpdate, DeviceSave, DeviceRemoveBatch, DeviceStopUsage, DeviceUsageRecordList, DeviceAddUsageRecord } from "@/api/Device/Device";
+import { DeviceLogList, DeviceStateratio, DeviceTypeRatio, DeviceList, DeviceUpdate, DeviceSave, DeviceRemoveBatch, DeviceStopUsage, DeviceUsageRecordList, DeviceAddUsageRecord } from "@/api/Device/Device";
 const { t } = useI18n()
 const checkAll = ref<any>(false)
 const data = ref<any>([])
@@ -128,8 +129,8 @@ const searchData = ref<any>({
     hostelId: '',
     floorId: '',
     roomId: '',
-    startTime:'',
-    endTime:''
+    startTime: '',
+    endTime: ''
 })
 
 const pagerConfig = ref({
@@ -212,7 +213,7 @@ const handleUpdatePage = ({ currentPage, pageSize }: any) => {
 
 
 // 搜索日期
-const handleSearchDate = (item:any) => {
+const handleSearchDate = (item: any) => {
     // getData()
     // console.log(item)
     searchData.value.startTime = item[0]
@@ -267,7 +268,7 @@ onMounted(() => {
         width: 80%;
         height: calc(100vh - 150px);
         margin: 10px auto;
-    
+
     }
 
 }

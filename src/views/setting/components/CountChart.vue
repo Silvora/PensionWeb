@@ -5,12 +5,12 @@
 <script setup lang='ts'>
 import * as echarts from "echarts"
 import { onMounted, ref } from "vue";
-import {DeviceStateratio} from "@/api/Device/Device"
+import {DeviceStateRatio} from "@/api/Device/Device"
 const CountChartRef = ref(null)
 const myChart: any = ref(null)
 onMounted(() => {
 
-    DeviceStateratio({}).then((res: any) => {
+    DeviceStateRatio({}).then((res: any) => {
         console.log(res)
     })
 

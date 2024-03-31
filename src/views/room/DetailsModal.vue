@@ -1,6 +1,6 @@
 <template>
     <div class="details">
-        <Modal v-model="detailsModal" title="床位信息" :footer-hide="true" width="650">
+        <Modal v-model="detailsModal" :title="t('床位信息')" :footer-hide="true" width="650">
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
@@ -12,13 +12,13 @@
                             <RadioGroup v-model="type" size="small" type="button" button-style="solid"
                                 @on-change="handleRadioType">
                                 <Radio label="2" :disabled="props.info?.status == 2 ? false : true">
-                                    入住
+                                    {{ t('入住') }}
                                 </Radio>
                                 <Radio label="1" :disabled="props.info?.status == 1 ? false : true">
-                                    预留
+                                    {{ t('预留') }}
                                 </Radio>
                             </RadioGroup>
-                            <Button type="error" size="small" class="btn" @click="handleOnCheck">移除床位</Button>
+                            <Button type="error" size="small" class="btn" @click="handleOnCheck">{{ t('移除床位') }}</Button>
                         </Space>
                     </span>
                     <!-- <span>
@@ -31,13 +31,14 @@
 
                     <span>
                         <Space>
-                            <span>床位信息</span>
+                            <span>{{ t('床位信息') }}</span>
                             <!-- <span>一楼 A101 01</span> -->
                             <span>{{ props.info.bedNumber }}</span>
                         </Space>
                     </span>
                     <span>
-                        <Button type="primary" size="small" class="btn" @click="handleOpenElderModal">选择老人</Button>
+                        <Button type="primary" size="small" class="btn"
+                            @click="handleOpenElderModal">{{ t('选择老人') }}</Button>
                     </span>
 
 
@@ -51,7 +52,7 @@
                             <Description v-for="item in descriptionList" :key="item.label">
                                 <template #default>
                                     <p class="descript">
-                                        <span class="t1">{{ item.label }}</span>
+                                        <span class="t1">{{ t(item.label) }}</span>
                                         <span class="t2">{{ item.value }}</span>
                                     </p>
                                 </template>
@@ -59,8 +60,8 @@
                         </DescriptionList>
                     </div>
                 </div>
-                <div class="info noBox" v-else>暂无老人</div>
-                <p style="padding:20px 0 ;">智能设备列表</p>
+                <div class="info noBox" v-else>{{ t('暂无老人') }}</div>
+                <p style="padding:20px 0 ;">{{ t('智能设备列表') }}</p>
                 <div class="device" v-if="props.info?.checkIn">
                     <Row :gutter="10">
                         <Col span="12" v-for="item in deviceList" :key="item.label">
@@ -72,15 +73,15 @@
                                 </div>
                                 <div>
                                     <p class="descript">
-                                        <span class="t1">设备名称</span>
+                                        <span class="t1">{{ t('设备名称') }}</span>
                                         <span class="t2"> {{ item.label }}</span>
                                     </p>
                                     <p class="descript">
-                                        <span class="t1">设备数量</span>
+                                        <span class="t1">{{ t('设备数量') }}</span>
                                         <span class="t2">{{ item.num }}</span>
                                     </p>
                                     <p class="descript">
-                                        <span class="t1">告警次数</span>
+                                        <span class="t1">{{ t('告警次数') }}</span>
                                         <span class="t2">{{ item.errorNum }}</span>
                                     </p>
                                 </div>
@@ -89,17 +90,17 @@
                         </Col>
                     </Row>
                 </div>
-                <div class="device noBox" v-else>暂无设备</div>
+                <div class="device noBox" v-else>{{ t('暂无设备') }}</div>
             </div>
         </Modal>
 
-        <Modal v-model="elderModal" title="老人选择" :footer-hide="true" width="300">
+        <Modal v-model="elderModal" :title="t('暂无设备')" :footer-hide="true" width="300">
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
 
             <div class="elderBox">
-                <Input prefix="ios-search" clearable enter-button="搜索" placeholder="搜索" v-model="keyword" />
+                <Input prefix="ios-search" clearable :enter-button="t('搜索')" :placeholder="t('搜索')" v-model="keyword" />
 
                 <Card :bordered="false" :padding="5" style="background: rgba(19,100,248,0.05);margin: 5px 0;"
                     v-for="item in detailList" :key="item.id">
@@ -113,9 +114,9 @@
                         </div>
                         <div class="">
                             <Button type="text" size="small" style="color:#2d8cf0" class="btn"
-                                @click="handleCheckUser({ ...item, status: 2 })">入住</Button>
+                                @click="handleCheckUser({ ...item, status: 2 })">{{ t('入住') }}</Button>
                             <Button type="text" size="small" style="color:rgba(237, 144, 0, 1);" class="btn"
-                                @click="handleCheckUser({ ...item, status: 1 })">预留</Button>
+                                @click="handleCheckUser({ ...item, status: 1 })">{{ t('预留') }}</Button>
                             <!-- <p>{{ item.name }}</p>
                                 <p>ID:{{ item.fileNo }}</p> -->
                         </div>
@@ -136,6 +137,8 @@ import errBtn from "@/assets/images/errBtn.png"
 import { ElderlyListNotCheckIn } from '@/api/Elderly/Elderly'
 import { CheckSave, CheckRemoveId } from "@/api/Check/Check"
 import { Message, Modal, Space } from 'view-ui-plus';
+import { useI18n } from "vue-i18n";
+const { t } = useI18n()
 import dayjs from "dayjs"
 const emit = defineEmits(['handleUpdate'])
 
@@ -246,15 +249,15 @@ const handleOnCheck = () => {
     console.log(props.info)
 
     Modal.confirm({
-        title: '删除',
-        content: `是否删除入住人【${props.info?.checkIn?.elderlyName}】?`,
+        title: t('删除'),
+        content: `${t('是否删除入住人')}【${props.info?.checkIn?.elderlyName}】?`,
         loading: true,
         onOk: () => {
             CheckRemoveId({
                 bedId: props.info.id
             }).then((res) => {
                 Modal.remove();
-                Message.success('删除成功')
+                Message.success(t('删除成功'))
                 detailsModal.value = false
 
                 emit('handleUpdate', true)
@@ -286,7 +289,7 @@ const handleCheckUser = (item: any) => {
 
 
     CheckSave(data).then(() => {
-        Message.success('添加成功')
+        Message.success(t('添加成功'))
         elderModal.value = false
         detailsModal.value = false
         emit('handleUpdate', true)

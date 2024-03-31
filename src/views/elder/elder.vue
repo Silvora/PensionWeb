@@ -3,11 +3,11 @@
 
         <div class="bar">
             <span class="Back" @click="() => $router.go(-1)">
-                <Icon type="md-navigate" style="transform: rotateZ(-90deg);" />返回上一页
+                <Icon type="md-navigate" style="transform: rotateZ(-90deg);" />{{ t('返回上一页') }}
             </span>
             <span class="searchBtn">
                 <Space>
-                    <Select v-model="searchData.hostelId" style="width:100px" clearable placeholder="楼栋"
+                    <Select v-model="searchData.hostelId" style="width:100px" clearable :placeholder="t('楼栋')"
                         @on-change="handleSearchChange('0')">
 
                         <Option :value="item.id" v-for="item in hostelList" :key="item.id">{{ item.name }}</Option>
@@ -15,7 +15,7 @@
                         <Option value="shanghai" disabled>London</Option>
                         <Option value="shenzhen">Sydney</Option> -->
                     </Select>
-                    <Select v-model="searchData.floorId" style="width:100px" clearable placeholder="楼层"
+                    <Select v-model="searchData.floorId" style="width:100px" clearable :placeholder="t('楼层')"
                         @on-change="handleSearchChange('1')">
                         <Option :value="item.id" v-for="item in floorList" :key="item.id">{{ item.floorNumber }}</Option>
 
@@ -23,7 +23,7 @@
                         <Option value="shanghai" disabled>London</Option>
                         <Option value="shenzhen">Sydney</Option> -->
                     </Select>
-                    <Select v-model="searchData.roomId" style="width:100px" clearable placeholder="房间"
+                    <Select v-model="searchData.roomId" style="width:100px" clearable :placeholder="t('房间')"
                         @on-change="handleSearchChange('2')">
                         <Option :value="item.id" v-for="item in roomList" :key="item.id">{{ item.roomNumber }}</Option>
 
@@ -46,15 +46,15 @@
         <div class="infoBox">
             <div class="left">
                 <div class="chart">
-                    <p class="title">年龄分布</p>
+                    <p class="title">{{ t('年龄分布') }}</p>
                     <AgeChart></AgeChart>
                 </div>
                 <div class="chart">
-                    <p class="title">性别占比</p>
+                    <p class="title">{{ t('性别占比') }}</p>
                     <SexChart></SexChart>
                 </div>
                 <div class="chart" style="margin-bottom: 0px;">
-                    <p class="title">空床比例</p>
+                    <p class="title">{{ t('空床比例') }}</p>
                     <EmptyChart></EmptyChart>
                 </div>
             </div>
@@ -69,13 +69,13 @@
                     <template #active="{ row }">
                         <vxe-button type="text" size="mini" status="primary"
                             @click="() => router.push(`/add-elder?type=0&id=${row.id}`)">
-                            查看
+                            {{ t('查看') }}
                         </vxe-button>
                         <vxe-button type="text" size="mini" status="primary" @click="handleElderEdit(row)">
-                            编辑
+                            {{ t('编辑') }}
                         </vxe-button>
                         <vxe-button type="text" size="mini" status="danger" @click="handleElderlyDelete(row.id)">
-                            删除
+                            {{ t('删除') }}
                         </vxe-button>
                     </template>
 
@@ -86,18 +86,19 @@
                     <!-- <Button type="primary" class="btn" @click="handleShowModal">楼栋管理</Button> -->
                     <Card :bordered="false" :padding="6" class="btnList" style="border: 1px solid #98D2E1;">
                         <div class="list">
-                            <Button type="primary" @click="() => router.push('/add-elder?type=0&id=')">新增</Button>
-                            <Button type="error">批量删除</Button>
+                            <Button type="primary"
+                                @click="() => router.push('/add-elder?type=0&id=')">{{ t('新增') }}</Button>
+                            <Button type="error">{{ t('批量删除') }}</Button>
                         </div>
                     </Card>
                 </div>
                 <div class="chart" style="margin-bottom: 0px;">
-                    <p class="title">临近续费提醒</p>
+                    <p class="title">{{ t('临近续费提醒') }}</p>
                     <div class="renewalList">
                         <div v-for="item in exprireList" class="item">
                             <p class="t1">{{ item.elderlyName }}</p>
-                            <p class="t2">到期时间:{{ item.endTime.split(" ")[0] }}</p>
-                            <p class="t3">{{ dayjs(item.endTime).diff(dayjs(), 'day') }}天</p>
+                            <p class="t2">{{ t('到期时间') }}:{{ item.endTime.split(" ")[0] }}</p>
+                            <p class="t3">{{ dayjs(item.endTime).diff(dayjs(), 'day') }}{{ t('天') }}</p>
                         </div>
                     </div>
                 </div>
@@ -106,19 +107,19 @@
         <div class="chartBox">
             <div class="left">
                 <div class="chart">
-                    <p class="title">护理等级统计</p>
+                    <p class="title">{{ t('护理等级统计') }}</p>
                     <LevelChart></LevelChart>
                 </div>
             </div>
             <div class="center">
                 <div class="chart">
-                    <p class="title">入住时间统计</p>
+                    <p class="title">{{ t('入住时间统计') }}</p>
                     <DateChart></DateChart>
                 </div>
             </div>
             <div class="right">
                 <div class="chart">
-                    <p class="title">备忘录 <span class="write" @click="handleOpenMemo">
+                    <p class="title">{{ t('备忘录') }} <span class="write" @click="handleOpenMemo">
                             <Icon type="md-brush" />
                         </span></p>
                     <div class="memo">
@@ -233,8 +234,8 @@ const handleDeleteMemo = (id: any) => {
 
 
     Modal.confirm({
-        title: '删除备忘录',
-        content: '确定要删除此条备忘录',
+        title: t('删除备忘录'),
+        content: t('确定要删除此条备忘录'),
         loading: true,
         onOk: () => {
             MemoRemoveId({ id }).then(() => {
@@ -288,14 +289,14 @@ const handleElderEditModal = (data: any) => {
 // 单项删除
 const handleElderlyDelete = (id: any) => {
     Modal.confirm({
-        title: '提示',
-        content: '确定要删除吗？',
-        okText: '确认',
-        cancelText: '取消',
+        title: t('提示'),
+        content: t('确定要删除吗？'),
+        okText: t('确认'),
+        cancelText: t('取消'),
         loading: true,
         onOk: () => {
             ElderlyRemoveId({ id: id }).then(() => {
-                Message.success("删除成功")
+                Message.success(t('删除成功'))
                 Modal.remove();
                 getData()
             })

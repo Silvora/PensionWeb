@@ -54,16 +54,20 @@
 </template>
 
 <script setup lang='ts'>
-import { getToken } from "@/utils/token";
+import {GetBaseSetting,BaseSetting} from "@/api/Base/Base"
+import { getToken, setToken } from "@/utils/token";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n"
 const { t, locale } = useI18n()
 import { FileUploadImage } from "@/api/File/File"
-const local = ref("zh-CN")
+import { onMounted } from "vue";
+import { Message } from "view-ui-plus";
+const local = ref("")
 
 const lan: any = {
     "zh": "zh-CN",
-    "zh-CN": "zh-CN"
+    "zh-CN": "zh-CN",
+    "zh-HK": "zh-HK",
 }
 
 ///statics/images/1709396330577.svg
@@ -76,14 +80,20 @@ const fileUrl = ref<any>({
     driveUrl4: ""
 })
 getToken('language').then((res: any) => {
-    // console.log(res)
+    console.log(res)
     res ? local.value = lan[res] : ''
     res ? locale.value = lan[res] : ''
+
+    setToken('language', local.value)
+
+    // appStore.setLanguage(lan[res])
 })
 
 const handleSetLocal = (lan: string) => {
     //console.log(lan)
+    lan ? local.value = lan : ''
     lan ? locale.value = lan : ''
+    setToken('language', local.value)
 
 }
 
@@ -97,10 +107,49 @@ const handleUpload = (type: string, file: any) => {
         console.log(res)
         fileUrl.value[type] = import.meta.env.VITE_APP_AXIOS_BASER + res.data
         // file.value ='http://8.217.217.243:9000'+ res.data
+        if(type == 'bgUrl'){
+            let app = document.getElementsByTagName('body')
+            console.log(app)
+            app[0].style.backgroundImage = `url(${fileUrl.value.bgUrl}) !important`
+            // console.log(app.style.backgroundImage)
+        }
+
     })
 
     return false;
 }
+
+const handleSubmit = () => {
+    console.log(fileUrl.value)
+    let cockpitImageJson = Object.keys(fileUrl.value).map((key: any,idx:any) => {
+        return {
+            i: idx,
+            u: fileUrl.value[key]
+        }
+    })
+    cockpitImageJson.splice(0,1)
+    console.log(cockpitImageJson)
+
+    BaseSetting({
+        background: fileUrl.value.bgUrl,
+        cockpitImageJson:JSON.stringify(cockpitImageJson),
+        language: local.value,
+    }).then((res: any) => {
+        console.log(res)
+        Message.success(t('保存成功'))
+    })
+}
+
+
+onMounted(() => {
+    GetBaseSetting().then((res: any) => {
+        console.log(res)
+    })
+})
+
+defineExpose({
+    handleSubmit
+})
 
 </script>
 

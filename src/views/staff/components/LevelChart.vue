@@ -4,8 +4,10 @@
 
 <script setup lang='ts'>
 import * as echarts from "echarts"
-import { onMounted, ref,nextTick } from "vue";
+import { onMounted, ref, nextTick } from "vue";
 import { StaffJobLevelRatio } from "@/api/Staff/Staff"
+import { useI18n } from "vue-i18n";
+const { t } = useI18n()
 
 const AgeChartRef = ref(null)
 const myChart: any = ref(null)
@@ -26,31 +28,31 @@ onMounted(() => {
         // let list = ["(三级)", "(二级)", "(一级)", "(特一级)", "(特二级)", "(特三级)", "(专需护理)"]
         let list = [{
             value: 0,
-            name: '三级',
+            name: t('三级'),
             percentage: '0'
         }, {
             value: 0,
-            name: '二级',
+            name: t('二级'),
             percentage: '0'
         }, {
             value: 0,
-            name: '一级',
+            name: t('一级'),
             percentage: '0'
         }, {
             value: 0,
-            name: '特一级',
+            name: t('特一级'),
             percentage: '0'
         }, {
             value: 0,
-            name: '特二级',
+            name: t('特二级'),
             percentage: '0'
         }, {
             value: 0,
-            name: '特三级',
+            name: t('特三级'),
             percentage: '0'
         }, {
             value: 0,
-            name: '专需护理',
+            name: t('专需护理'),
             percentage: '0'
         }]
         res.data.forEach((item: any) => {
@@ -81,10 +83,10 @@ onMounted(() => {
         map.value = list
         sum.value = s
 
-        
-    nextTick(() => {
-        initChart()
-    })
+
+        nextTick(() => {
+            initChart()
+        })
 
     })
 
@@ -102,7 +104,7 @@ onMounted(() => {
 // })
 
 const initChart = () => {
-    const myChart: any =  echarts.init(AgeChartRef.value);
+    const myChart: any = echarts.init(AgeChartRef.value);
 
     const option = {
         color: [
@@ -170,7 +172,7 @@ const initChart = () => {
                         //console.log(params.name)
                         return [
                             `{a|${sum.value}}`,
-                            `{b|总数}`,
+                            `{b|${t('总数')}}`,
                         ].join('\n')
                     },
 

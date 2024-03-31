@@ -13,7 +13,7 @@ const elderTable: any = {
         },
     },
     editConfig: {
-        title: '编辑门店',
+        title: '编辑长者',
         lableWidth: 100,
         rules: {},
         FormData: [

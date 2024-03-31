@@ -11,9 +11,9 @@
                     <img src="@/assets/images/room-setting.png" alt="" srcset="">
                 </span>
             </p>
-            <div class="deviceBox" @click="handleSetCheck">
-                <img class="img" src="@/assets/images/睡眠监测@2x(1).png" alt="" srcset="">
-                <div class="info">
+            <div class="deviceBox">
+                <img class="img" src="@/assets/images/睡眠监测@2x(1).png" alt="" srcset=""  @click="handleSetCheck">
+                <div class="info" @click="handleGetDeviceInfo">
                     <p class="t1">{{ props?.info.name }}
 
                     </p>
@@ -68,7 +68,7 @@
                 v-else-if="props.info?.stateInfo?.onBedStatus">{{ ['不在床', '在床'][props.info?.stateInfo?.onBedStatus] }}</Button>
             <Button size="small" class="stateBtn"
                 :style="{ background: 'rgba(18, 185, 135, 0.05)', color: 'rgba(18, 185, 135, 1)', border: 'none' }"
-                v-else>暂无连接设备</Button>
+                v-else>{{t('暂无连接设备') }}</Button>
         </div>
     </Card>
 </template>
@@ -78,6 +78,8 @@ import { ref } from 'vue'
 import { Checkbox } from "view-ui-plus"
 import { watchEffect } from 'vue';
 //import {DeviceDetailId} from "@/api/Device/Device"
+import { useI18n } from "vue-i18n";
+const { t } = useI18n()
 const check = ref(false)
 const props = defineProps({
     info: {
@@ -109,7 +111,7 @@ watchEffect(() => {
 
 })
 
-const emit = defineEmits(['handleCheck', 'handleGetUser'])
+const emit = defineEmits(['handleCheck', 'handleGetUser','handleOpenInfo'])
 const handleSetCheck = () => {
     check.value = !check.value
     emit('handleCheck', { id: props.info.id, check: check.value })
@@ -121,6 +123,13 @@ const handleGet = () => {
     // })
     emit('handleGetUser', props.info)
 }
+
+
+const handleGetDeviceInfo = ()=>{
+    emit('handleOpenInfo',props.info)
+}
+
+
 </script>
 
 <style scoped lang='less'>

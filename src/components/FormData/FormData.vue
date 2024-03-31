@@ -287,9 +287,12 @@ watchEffect(() => {
             }
         }
     })
+
     FormData.value = { ...props.data, ...FormData.value }
 
     rules.value = { ...rulesData, ...props.rules }
+
+    //console.log(rules.value)
 
 })
 // onMounted(() => {

@@ -104,9 +104,9 @@ onMounted(() => {
       appStore.setLanguage(res)
       locale.value = res
     } else {
-      locale.value = navigator.language
-      appStore.setLanguage(navigator.language)
-      setToken('language', navigator.language)
+      locale.value = 'zh-HK'
+      appStore.setLanguage('zh-HK')
+      setToken('language', 'zh-HK')
     }
 
   })

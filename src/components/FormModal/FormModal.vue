@@ -49,6 +49,8 @@ const FormId = ref<any>({})
 const modal = ref<any>(false)
 const textLoing = ref<any>(false)
 const openModal = (data: any, id: any) => {
+
+    console.log("=========",data)
     if (data) {
         defaultData.value = data
     }
@@ -86,7 +88,7 @@ const handleSumbit = () => {
 
             textLoing.value = true
             // console.log(FormRef.value.FormData)
-            emit('handleModalOk', { ...FormRef.value.FormData, ...FormId.value })
+            emit('handleModalOk', {  ...FormId.value ,...FormRef.value.FormData})
         }
     })
 }

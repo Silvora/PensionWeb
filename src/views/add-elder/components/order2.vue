@@ -8,12 +8,14 @@
                 @handleUpdatePage="handleUpdatePage" @handleEdit="handleEdit">
 
                 <template #gender="{ row }">
-                    <Tag type="border" :color="['','primary', 'error'][row.gender]">{{ ['未知','男' ,'女'][row.gender] }}
+                    <Tag type="border" :color="['', 'primary', 'error'][row.gender]">
+                        {{ [t('未知'), t('男'), t('女')][row.gender] }}
                     </Tag>
 
                 </template>
                 <template #guardian="{ row }">
-                    <Tag type="border" :color="row.guardian == 1 ? 'primary' : 'error'">{{ row.guardian == 1 ? '是' : '否' }}
+                    <Tag type="border" :color="row.guardian == 1 ? 'primary' : 'error'">
+                        {{ row.guardian == 1 ? t('是') : t('否') }}
                     </Tag>
                 </template>
 
@@ -34,10 +36,10 @@
                         查看
                     </vxe-button> -->
                     <vxe-button type="text" size="mini" status="primary" @click="handleRoleEdit(row)">
-                        编辑
+                        {{ t('编辑') }}
                     </vxe-button>
                     <vxe-button type="text" size="mini" status="danger" @click="handleRoleDelete(row.id)">
-                        删除
+                        {{ t('删除') }}
                     </vxe-button>
                 </template>
 
@@ -46,14 +48,14 @@
         <!-- <Pager class="pager" :tablePage="pagerConfig" @handlePageChange="handlePageChange" ref="PagerRef"></Pager> -->
         <Card :bordered="false" :padding="6" class="btnList">
             <div class="list">
-                <Button type="primary" @click="handleAddFamily">新增</Button>
+                <Button type="primary" @click="handleAddFamily">{{ t('新增') }}</Button>
                 <!-- <Button type="primary">批量启用</Button>
                 <Button type="primary">批量禁用</Button> -->
                 <!-- <Button type="error" @click="handleBatchDelete">批量删除</Button> -->
             </div>
         </Card>
 
-        <FormModal title="添加家属" :rules="toolBarConfig.rules" :lableWidth="toolBarConfig.lableWidth"
+        <FormModal :title="t('添加家属')" :rules="toolBarConfig.rules" :lableWidth="toolBarConfig.lableWidth"
             :FormData="toolBarConfig.FormData" ref="TableAddRef" @handleModalOk="handleAddModalOk">
         </FormModal>
     </div>
@@ -136,8 +138,8 @@ const handleEdit = (data: any) => {
 //删除角色
 const handleRoleDelete = (id: any) => {
     Modal.confirm({
-        title: '删除家属',
-        content: '确定要删除此家属',
+        title: t('删除家属'),
+        content: t('确定要删除此家属'),
         loading: true,
         onOk: () => {
             console.log(id)

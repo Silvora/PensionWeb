@@ -8,15 +8,15 @@
                         @click="handleSetActive(idx)">
 
                         <i :class="['iconfont', item.icon]"></i>
-                        {{ item.title }}</Button>
+                        {{ t(item.title) }}</Button>
                     <span v-if="idx != 4">></span>
                 </span>
             </div>
             <div style="position: absolute;right: 10px;">
                 <Space>
 
-                    <Button type="primary" @click="() => active--" v-if="active > 0">上一步</Button>
-                    <Button type="primary" @click="() => active++" v-if="active < 4">下一步</Button>
+                    <Button type="primary" @click="() => active--" v-if="active > 0">{{ t('上一步') }}</Button>
+                    <Button type="primary" @click="() => active++" v-if="active < 4">{{ t('下一步') }}</Button>
                     <!-- <Button type="primary" @click="() => active++" v-if="active == 4">打印</Button> -->
                 </Space>
             </div>
@@ -45,6 +45,8 @@ import Order4 from './components/order4.vue';
 // import Order6 from './components/order6.vue';
 import Order7 from './components/order7.vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useI18n } from "vue-i18n";
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const orderMenu = [
@@ -95,7 +97,7 @@ onMounted(() => {
     if (route.query.type) {
         active.value = Number(route.query.type)
     }
-   
+
 })
 // const handleSumbit = () => {
 //     console.log("first")

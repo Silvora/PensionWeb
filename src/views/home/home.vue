@@ -6,7 +6,7 @@
         @click="handleNav(item.route)">
         <div class="cardBody">
           <img :src="item.logo" alt="" srcset="">
-          <p>{{ item.label }}</p>
+          <p>{{ t(item.label) }}</p>
         </div>
       </Card>
       </Col>
@@ -23,6 +23,8 @@ import elder from "@/assets/images/elder.png"
 import staff from "@/assets/images/staff.png"
 import sys from "@/assets/images/sys.png"
 import { useRouter } from 'vue-router';
+import { useI18n } from "vue-i18n";
+const { t } = useI18n()
 // import { onMounted } from 'vue';
 // import { AdminUserInfo } from "@/api/AdminUserInfo/AdminUserInfo"
 

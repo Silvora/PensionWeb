@@ -9,17 +9,17 @@
                         false-color="RGBA(237, 144, 0, 1)" true-value="30" false-value="40"
                         :before-change="() => handleUpdateSwitch(row)">
                         <template #open>
-                            <span>开启</span>
+                            <span>{{ t('开启') }}</span>
                         </template>
                         <template #close>
-                            <span>禁用</span>
+                            <span>{{ t('禁用') }}</span>
                         </template>
                     </Switch>
                 </template>
 
                 <template #gender="{ row }">
                     <Tag :color="row.gender == 1 ? 'blue' : row.gender == 2 ? 'magenta' : 'warning'">
-                        {{ row.gender == 1 ? '男' : row.gender == 2 ? '女' : '未知' }}
+                        {{ row.gender == 1 ? t('男') : row.gender == 2 ? t('女') : t('未知') }}
                     </Tag>
                 </template>
 
@@ -35,23 +35,23 @@
                         查看
                     </vxe-button> -->
                     <vxe-button type="text" size="mini" status="primary" @click="handleRoleEdit(row)">
-                        编辑
+                        {{ t('编辑') }}
                     </vxe-button>
 
                     <vxe-button type="text" size="mini" status="primary" @click="handleRolePermissions(row)">
-                        权限
+                        {{ t('权限') }}
                     </vxe-button>
 
                     <vxe-button type="text" size="mini" status="primary" @click="handleUpdatePassword">
-                        修改密码
+                        {{ t('修改密码') }}
                     </vxe-button>
 
                     <vxe-button type="text" size="mini" status="primary" @click="handleResetPassword(row)">
-                        重置密码
+                        {{ t('重置密码') }}
                     </vxe-button>
 
                     <vxe-button type="text" size="mini" status="danger" @click="handleRoleDelete(row.id)">
-                        删除
+                        {{ t('删除') }}
                     </vxe-button>
                 </template>
 
@@ -60,27 +60,27 @@
         <!-- <Pager class="pager" :tablePage="pagerConfig" @handlePageChange="handlePageChange" ref="PagerRef"></Pager> -->
         <Card :bordered="false" :padding="6" class="btnList">
             <div class="list">
-                <Button type="primary" @click="handleAddUser">新增</Button>
-                <Button type="primary" @click="handleBatchOnline">批量启用</Button>
-                <Button type="primary" @click="handleBatchOffline">批量禁用</Button>
-                <Button type="error" @click="handleBatchDelete">批量删除</Button>
+                <Button type="primary" @click="handleAddUser">{{ t('新增') }}</Button>
+                <Button type="primary" @click="handleBatchOnline">{{ t('批量启用') }}</Button>
+                <Button type="primary" @click="handleBatchOffline">{{ t('批量禁用') }}</Button>
+                <Button type="error" @click="handleBatchDelete">{{ t('批量删除') }}</Button>
             </div>
         </Card>
 
 
-        <Modal v-model="isPermissions" title="权限修改" :width="30" @on-ok="handleSetPermissions"
+        <Modal v-model="isPermissions" :title="t('权限修改')" :width="30" @on-ok="handleSetPermissions"
             @on-cancel="isPermissions = false">
 
             <Tree :data="treeData" show-checkbox ref="TreeViewRef"></Tree>
         </Modal>
 
 
-        <FormModal title="修改密码" :rules="accountUpdate.rules" :lableWidth="100" :FormData="accountUpdate.FormData"
+        <FormModal :title="t('修改密码')" :rules="accountUpdate.rules" :lableWidth="100" :FormData="accountUpdate.FormData"
             ref="TablePasswordRef" @handleModalOk="handleEditModalOk">
         </FormModal>
 
 
-        <FormModal v-if="createData" title="创建用户" :rules="createData.rules" :lableWidth="100"
+        <FormModal v-if="createData" :title="t('创建用户')" :rules="createData.rules" :lableWidth="100"
             :FormData="createData.FormData" ref="TableCreateRef" @handleModalOk="handleCreateAdmin">
         </FormModal>
 
@@ -219,8 +219,8 @@ const handleResetPassword = (row: any) => {
 
     console.log(row)
     Modal.confirm({
-        title: '提示',
-        content: '确定要重置密码吗？',
+        title: t('提示'),
+        content: t('确定要重置密码吗？'),
         loading: true,
         onOk: () => {
             AdminUserResetPassword({ id: row.id }).then(() => {
@@ -270,7 +270,7 @@ const handleRoleEdit = (row: any) => {
     TableViewRef.value.handleOpenEditModal(row)
 }
 const handleRoleEditModal = (data: any) => {
-    // console.log(data)
+    console.log(data)
     AdminUserPutId(data).then(() => {
         Message.success(t('编辑成功'))
         getData()

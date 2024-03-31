@@ -6,7 +6,7 @@ const agencyData: any = {
             {
                 type: 'date',
                 label: '建档日期',
-                prop: "nadsadme",
+                prop: "createTime",
                 span: 1,
                 //disabled: false,
                 required: false,
@@ -15,7 +15,7 @@ const agencyData: any = {
             {
                 type: 'input',
                 label: '机构地址',
-                prop: "descdsription",
+                prop: "address",
                 span: 2,
                 //disabled: false,
                 required: false,
@@ -24,7 +24,7 @@ const agencyData: any = {
             {
                 type: 'input',
                 label: '注册名称',
-                prop: "oemvfdId",
+                prop: "name",
                 span: 3,
                 //disabled: false,
                 required: false,
@@ -42,7 +42,7 @@ const agencyData: any = {
             {
                 type: 'input',
                 label: '所属区域',
-                prop: "descrviption",
+                prop: "region",
                 span: 3,
                 //disabled: false,
                 required: false,
@@ -61,7 +61,7 @@ const agencyData: any = {
             {
                 type: 'select',
                 label: '运营模式',
-                prop: "oemIad",
+                prop: "operationMode",
                 span: 1,
                 //disabled: false,
                 required: false,
@@ -94,7 +94,7 @@ const agencyData: any = {
             {
                 type: 'input',
                 label: '邮政编码',
-                prop: "oemIasd",
+                prop: "postalCode",
                 span: 1,
                 //disabled: false,
                 required: false,
@@ -103,7 +103,7 @@ const agencyData: any = {
             {
                 type: 'input',
                 label: '联系电话',
-                prop: "oemIvfd",
+                prop: "telephone",
                 span: 1,
                 //disabled: false,
                 required: false,
@@ -128,7 +128,7 @@ const legalData = {
             {
                 type: 'input',
                 label: '负责人电话',
-                prop: "nadsadme",
+                prop: "directorPhone",
                 span: 1,
                 //disabled: false,
                 required: false,
@@ -137,7 +137,7 @@ const legalData = {
             {
                 type: 'sort',
                 label: '机构床位总数',
-                prop: "descdsription",
+                prop: "totalOrgBeds",
                 span: 1,
                 disabled: true,
                 required: false,
@@ -146,7 +146,7 @@ const legalData = {
             {
                 type: 'sort',
                 label: '床位使用总数',
-                prop: "oemvfdId",
+                prop: "totalBedsUsed",
                 span: 1,
                 disabled: true,
 
@@ -156,37 +156,37 @@ const legalData = {
             {
                 type: 'sort',
                 label: '护理床位数量',
-                prop: "namdae",
+                prop: "nursingBedsCount",
                 span: 1,
                 disabled: true,
 
                 required: false,
                 default: "",
             },
-            {
-                type: 'sort',
-                label: '家庭床位数量',
-                prop: "descrviption",
-                span: 1,
-                disabled: true,
+            // {
+            //     type: 'sort',
+            //     label: '家庭床位数量',
+            //     prop: "descrviption",
+            //     span: 1,
+            //     disabled: true,
 
-                required: false,
-                default: "",
-                // childs: [
-                //     {
-                //         label: '是',
-                //         value:'1'
-                //     },
-                //      {
-                //         label: '否',
-                //         value:'0'
-                //     }
-                // ]
-            },
+            //     required: false,
+            //     default: "",
+            //     // childs: [
+            //     //     {
+            //     //         label: '是',
+            //     //         value:'1'
+            //     //     },
+            //     //      {
+            //     //         label: '否',
+            //     //         value:'0'
+            //     //     }
+            //     // ]
+            // },
             {
                 type: 'sort',
                 label: '入住人员总数',
-                prop: "oemIad",
+                prop: "totalCheckIn",
                 span: 1,
                 disabled: true,
 
@@ -194,9 +194,9 @@ const legalData = {
                 default: "",
             },
             {
-                type: 'sort',
+                type: 'input',
                 label: '入住率',
-                prop: "oemIvddsadsa",
+                prop: "occupancyRate",
                 span: 1,
                 disabled: true,
 
@@ -707,7 +707,7 @@ const accountTable: any = {
                 value:0
             }
         ],
-        required: true,
+        // required: true,
         // default: "",
         },
        
