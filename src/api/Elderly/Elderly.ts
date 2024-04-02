@@ -66,8 +66,8 @@ export function ElderlyUpdate(data: any) {
 export function ElderlyAdmissionElderlyId(data: any) { 
     return http.request({
         url: `/admin/elderly/admission/${data.elderlyId}`,
-        method: 'post',
-        data
+        method: 'get',
+        // data
     })
 }
 

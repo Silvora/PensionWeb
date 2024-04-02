@@ -1,0 +1,122 @@
+<template>
+    <div class="box" ref="chartRef">
+
+    </div>
+</template>
+
+<script setup lang='ts'>
+import * as echarts from 'echarts';
+import { nextTick, onMounted, ref } from 'vue';
+const chartRef = ref<HTMLElement>()
+onMounted(() => {
+    nextTick(() => {
+        initChart()
+    })
+})
+
+const initChart = () => {
+    const myChart: any = echarts.init(chartRef.value);
+
+    const option = {
+        // title: {
+        //     text: 'Waterfall Chart',
+        //     subtext: 'Living Expenses in Shenzhen'
+        // },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            },
+            formatter: function (params: any) {
+                var tar = params[1];
+                return tar.name + '<br/>' + tar.seriesName + ' : ' + tar.value;
+            }
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'category',
+            splitLine: { show: false },
+            data: ['Total', 'Rent', 'Utilities', 'Transportation', 'Meals', 'Other'],
+            axisLine: {
+                show: false
+            },
+            axisTick: {
+                show: false
+            }
+        },
+        yAxis: {
+            type: 'value',
+            axisLabel: {
+                show: false
+            },
+            axisLine: {
+                show: false
+            },
+            axisTick: {
+                show: false
+            },
+            splitLine: {
+                show: false
+            }
+        },
+        series: [
+            {
+                name: 'Placeholder',
+                type: 'bar',
+                stack: 'Total',
+                itemStyle: {
+                    borderColor: 'transparent',
+                    color: 'transparent'
+                },
+                emphasis: {
+                    itemStyle: {
+                        borderColor: 'transparent',
+                        color: 'transparent'
+                    }
+                },
+                data: [0, 1700, 1400, 1200, 300, 0]
+            },
+            {
+                name: 'Life Cost',
+                type: 'bar',
+                stack: 'Total',
+                label: {
+                    show: true,
+                    position: 'inside'
+                },
+                itemStyle: {
+                    color: 'rgba(224, 98, 85, 1)',
+                    borderRadius: [15, 15, 15, 15]
+                },
+                // emphasis: {
+                //     itemStyle: {
+                //         color: '#5c6'
+                //     }
+                // },
+                data: [2900, 1200, 300, 200, 900, 300]
+            }
+        ]
+    };
+
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
+    }
+
+    window.addEventListener('resize', myChart.resize);
+    // option && myChart.setOption(option);
+
+}
+
+</script>
+
+<style scoped lang='less'>
+.box {
+    width: 100%;
+    height: 300px;
+}
+</style>

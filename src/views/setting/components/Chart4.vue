@@ -1,0 +1,190 @@
+<template>
+    <div style="width: 100%;">
+        <!-- <p>睡着时的体动介于0到100</p> -->
+        <p v-if="props.DeviceInfoListInfo.d3 && props.DeviceInfoListInfo.d6">睡着时的体动介于{{Math.min(...props.DeviceInfoListInfo.d6)}}到{{ Math.max(...props.DeviceInfoListInfo.d3) }}</p>
+
+        <div class="box" ref="chartRef">
+
+        </div>
+    </div>
+</template>
+
+<script setup lang='ts'>
+import * as echarts from 'echarts';
+import { watch } from 'vue';
+import { nextTick, onMounted, ref } from 'vue';
+const chartRef = ref<HTMLElement>()
+onMounted(() => {
+    nextTick(() => {
+        initChart()
+    })
+})
+
+const props:any = defineProps({
+    DeviceInfoListInfo: Object
+})
+
+watch(() => props.DeviceInfoListInfo, () => {
+    initChart()
+})
+
+console.log(props)
+
+const initChart = () => {
+    const myChart: any = echarts.init(chartRef.value);
+
+    const option = {
+        xAxis: {
+            type: 'category',
+            // data: ['21:00', '23:00', '01:00', '03:00', '05:00', '07:00', '09:00']
+            data:props.DeviceInfoListInfo.date
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
+            {
+                itemStyle: {
+                    color: '#FED3B5',
+                    borderRadius: [15, 15, 15, 15]
+                },
+                data: props.DeviceInfoListInfo.d3,
+                type: 'line'
+            }
+        ]
+    };
+
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
+    }
+
+    window.addEventListener('resize', myChart.resize);
+    // option && myChart.setOption(option);
+
+}
+
+</script>
+
+<style scoped lang='less'>
+.box {
+    width: 100%;
+    height: 200px;
+}
+</style>
+
+
+<!-- <template>
+    <div style="width: 100%;">
+        <p v-if="props.DeviceInfoListInfo.d3 && props.DeviceInfoListInfo.d6">睡着时的体动介于{{Math.min(...props.DeviceInfoListInfo.d6)}}到{{ Math.min(...props.DeviceInfoListInfo.d3) }}</p>
+
+        <div class="box" ref="chartRef">
+
+        </div>
+    </div>
+</template>
+
+<script setup lang='ts'>
+import * as echarts from 'echarts';
+import { nextTick, onMounted, ref, watch } from 'vue';
+const chartRef = ref<HTMLElement>()
+onMounted(() => {
+    nextTick(() => {
+        initChart()
+    })
+})
+
+
+const props:any = defineProps({
+    DeviceInfoListInfo: Object
+})
+
+watch(() => props.DeviceInfoListInfo, () => {
+    initChart()
+})
+
+const initChart = () => {
+    const myChart: any = echarts.init(chartRef.value);
+
+    const option = {
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'category',
+            splitLine: { show: false },
+            data:props.DeviceInfoListInfo.date,
+            axisLine: {
+                show: false
+            },
+            axisTick: {
+                show: false
+            }
+        },
+        yAxis: {
+            type: 'value',
+            axisLabel: {
+                show: false
+            },
+            axisLine: {
+                show: false
+            },
+            axisTick: {
+                show: false
+            },
+            splitLine: {
+                show: false
+            }
+        },
+        series: [
+            {
+                name: 'Placeholder',
+                type: 'bar',
+                stack: 'Total',
+                itemStyle: {
+                    borderColor: 'transparent',
+                    color: 'transparent'
+                },
+                emphasis: {
+                    itemStyle: {
+                        borderColor: 'transparent',
+                        color: 'transparent'
+                    }
+                },
+                data:props.DeviceInfoListInfo.d3
+            },
+            {
+                name: 'Life Cost',
+                type: 'bar',
+                stack: 'Total',
+                label: {
+                    show: true,
+                    position: 'inside'
+                },
+                itemStyle: {
+                    color: '#FED3B5',
+                    borderRadius: [15, 15, 15, 15]
+                },
+               
+                data:props.DeviceInfoListInfo.d6
+            }
+        ]
+    };
+
+    if (option && typeof option === 'object') {
+        myChart.setOption(option);
+    }
+
+    window.addEventListener('resize', myChart.resize);
+
+}
+
+</script>
+<style scoped lang='less'>
+.box {
+    width: 100%;
+    height: 200px;
+}
+</style> -->

@@ -50,7 +50,7 @@
                />
               
                         <Icon v-else type="md-contract" color="#2d8cf0" size="26"
-              @click="handleZoom" />
+                            @click="handleZoom" />
                         </span>
                     </span>
                 </div>
@@ -76,7 +76,7 @@
 
                 <Card :bordered="false" :padding="5" style="background: rgba(19,100,248,0.05);margin: 5px 0;"
                     v-for="item in detailList" :key="item.id">
-                    <div class="userBox">
+                    <div class="userBox" @click="handleCheck(item)">
                         <div>
                             <img :src="item.photo" alt="">
                         </div>
@@ -133,6 +133,18 @@ const searchData = ref<any>({
     nursingGrade: "",
     // elderlyName: ''
 })
+
+const handleCheck = (item: any) => {
+    // detailList.value = []
+    // detailList.value.push(item)
+    // elderModal.value = false
+    console.log(item)
+
+    // CheckFocus({
+    //     elderlyId: item.elderlyId,
+    //     checkInId: item.checkInId
+    // })
+}
 
 
 const handleSearch = (value: any) => {

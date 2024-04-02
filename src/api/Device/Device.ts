@@ -158,11 +158,11 @@ export function DeviceSleepDeviceDetectionDays(params: any) {
 
 
 // 睡眠设备日报 按分钟心率 呼吸数据
-export function DeviceSleepDeviceHeartRateByMinute(data: any) {
+export function DeviceSleepDeviceHeartRateByMinute(params: any) {
     return http.request({
         url: '/admin/device/sleepDevice/heartRateByMinute',
         method: 'get',
-        data
+        params
     })
 }
 

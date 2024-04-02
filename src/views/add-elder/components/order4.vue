@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="care">
-            <TableForm :title="t('护理设置')" :FormData="careInfoForm" ref="care_data"></TableForm>
+            <TableForm :title="t('护理设置')" :FormData="careInfoForm" ref="care_data" :data="data.obj"></TableForm>
             <!-- <p class="carePub">
             <span>其他费用</span>
             <Button type="primary">添加费用</Button>
@@ -13,7 +13,7 @@
 
         <div class="food">
             <!-- <TableForm title="餐饮信息" :FormData="foodInfoForm" ref="food_data"></TableForm> -->
-            <TableForm title="床位信息" :FormData="bedInfo.FormData" ref="bed_data"></TableForm>
+            <TableForm title="床位信息" :FormData="bedInfo.FormData" ref="bed_data" :data="data.bed"></TableForm>
             <Row justify="start" style="width: 100%;">
                 <Col :span="24" class="col">
                 <div class="label">{{ t('房间选择') }}</div>
@@ -26,7 +26,7 @@
         </div>
 
         <div class="contract">
-            <TableForm :title="t('合同设置')" :FormData="contractInfo.FormData" ref="contract_data"></TableForm>
+            <TableForm :title="t('合同设置')" :FormData="contractInfo.FormData" ref="contract_data" :data="data.contract"></TableForm>
             <!-- <Row justify="start" style="width: 100%;">
                 <Col :span="24" class="col">
                 <div class="label">{{ t('附件') }}</div>
@@ -95,7 +95,7 @@ import {
 } from "../data"
 import { Message } from "view-ui-plus";
 import { ref, onMounted } from "vue";
-import { ElderlyHealthSave, ElderlyAdmissionElderlyId } from "@/api/Elderly/Elderly"
+import { ElderlyAdmissionSave,ElderlyHealthSave, ElderlyAdmissionElderlyId } from "@/api/Elderly/Elderly"
 import { HostelList, HostelFloorlList, HostelRoomListOfFloor, HostelRoomBedListOfRoom } from "@/api/Hostel/Hostel"
 import { ChargeList } from "@/api/Charge/Charge"
 import { useI18n } from "vue-i18n";
@@ -120,6 +120,8 @@ const foodInfoForm = ref<any>([])
 
 const RoomData = ref<any>([])
 const ROOM = ref<any>([])
+
+const data = ref<any>({})
 
 const FormDataList = [
 
@@ -334,6 +336,28 @@ onMounted(() => {
         console.log("获取数据")
         ElderlyAdmissionElderlyId({ elderlyId: route.query.id }).then((res: any) => {
             console.log(res);
+            ROOM.value = res.data.checkIn.roomBedNumber.split('-')
+
+            let obj = {
+                care:{
+                    nursingDeviceType:'',
+                    serviceFee:'',
+                    roomCosts:'',
+                    nursingNotes:'',
+                },
+                bed:{
+                    startTimeStr: res.data.checkIn.startTime,
+
+                },
+                contract:{
+                    contractDateStr:''
+                },
+            }
+
+
+            data.value = obj
+
+
         })
     }
 
@@ -379,6 +403,7 @@ const handleSubmit = () => {
         roomId: ROOM.value[2],
         bedId: ROOM.value[3],
         roomBedNumber: `${ROOM.value[1]}-${ROOM.value[2]}-${ROOM.value[3]}`,
+        status:2,
     }
 
 
@@ -401,6 +426,7 @@ const handleSubmit = () => {
 
 
     let data = {
+        elderlyId: route.query.id,
         ...nursing,
         checkIn,
         ...contract,
@@ -412,8 +438,15 @@ const handleSubmit = () => {
     // console.log(contract_data.value.FormData)
 
 
+    // let obj = {
+    //     allergen: data.allergen,
 
-    ElderlyHealthSave(data).then(res => {
+    // }
+
+    console.log(data)
+
+
+    ElderlyAdmissionSave(data).then(res => {
         //console.log(res);
 
         Message.success(t('添加成功'))

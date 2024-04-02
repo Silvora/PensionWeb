@@ -27,9 +27,9 @@ export function AdminUserGetId(data:any) {
 
 
 // 修改用户
-export function AdminUserPutId(data:any) {
+export function AdminUserPutId(params:any,data:any) {
     return http.request({
-        url: `/adminUser/${data.id}`,
+        url: `/adminUser/${params.id}`,
         method: 'put',
         data
     })

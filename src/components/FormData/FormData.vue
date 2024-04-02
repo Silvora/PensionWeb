@@ -123,12 +123,12 @@
 
             <div v-if="item.type == 'date'">
                 <DatePicker v-model="FormData[item.prop]" type="date" :placeholder="t('请选择') + t(item.label)"
-                :editable="false" style="width: 100%" />
+                    :editable="false" style="width: 100%" />
             </div>
 
             <div v-if="item.type == 'time'">
                 <TimePicker v-model="FormData[item.prop]" format="HH:mm" :placeholder="t('请选择') + t(item.label)"
-                   :editable="false" style="width: 100%" />
+                    :editable="false" style="width: 100%" />
             </div>
 
             <!-- <div v-if="item.type == 'editor'">
@@ -144,14 +144,12 @@
 <script setup lang='ts'>
 import { useAppStore } from '@/stores/modules/app';
 import { nextTick, ref, shallowRef, watchEffect } from 'vue';
-import languages from '@/config/languages';
 // import UploadImg from '@/components/UploadImg.vue'
 // import { RegionSelects, RegionGroupCore, RegionGroup } from 'v-region'
 //import '@wangeditor/editor/dist/css/style.css'
 //import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 import { useI18n } from "vue-i18n"
 const { t } = useI18n()
-const appStore = useAppStore()
 
 // 编辑器实例，必须用 shallowRef
 // const mode = 'default'
@@ -218,6 +216,7 @@ const uploadImgName = (data: any) => {
 
 
 watchEffect(() => {
+    FormData.value = {}
     const validatePassCheck = (_rule: any, value: any, callback: any) => {
         console.log(value, FormData.value.password, FormDataRef.value)
         if (value !== FormData.value.password) {
@@ -244,7 +243,6 @@ watchEffect(() => {
     // } else {
     //     FormData.value = {}
     // }
-
 
     props.FormData.forEach((item: any) => {
 
@@ -290,6 +288,8 @@ watchEffect(() => {
 
     FormData.value = { ...props.data, ...FormData.value }
 
+    // console.log(FormData.value)
+
     rules.value = { ...rulesData, ...props.rules }
 
     //console.log(rules.value)
@@ -323,6 +323,8 @@ const reset = () => {
 }
 
 const validate = () => {
+
+    // console.log(FormData.value)
     return FormDataRef.value.validate((valid: any) => {
         return valid
     })

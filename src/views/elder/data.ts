@@ -6,7 +6,7 @@ const elderTable: any = {
         stripe: false, //斑马线条纹
         border: 'inner', //边框样式
         seq: true, //排序
-        checkbox: true,//复选框
+        checkbox: false,//复选框
         activeConfig: {
             active: true,
             width: 300,

@@ -10,7 +10,7 @@
                         <img :src="photo" class="up1" alt="" v-if="photo" />
                         <img src="@/assets/images/ic_荣誉照片@2x.png" class="up1" alt="" v-else />
                         <Icon type="md-close-circle" size="24" style="position: absolute;top:10px;right:10px;color:red"
-                            @click="handleDeleteImg()" v-if="photo" />
+                            @click.stop="handleDeleteImg()" v-if="photo" />
                     </div>
 
                 </Upload>
@@ -102,6 +102,7 @@ onMounted(() => {
 
         ElderlyDetail({ elderlyId: route.query.id }).then((res: any) => {
             console.log(res)
+            photo.value = res.data.photo
             data.value = { ...res.data, birthday: res.data.birthDate }
         })
     }

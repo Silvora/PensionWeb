@@ -71,9 +71,9 @@
                             @click="() => router.push(`/add-elder?type=0&id=${row.id}`)">
                             {{ t('查看') }}
                         </vxe-button>
-                        <vxe-button type="text" size="mini" status="primary" @click="handleElderEdit(row)">
+                        <!-- <vxe-button type="text" size="mini" status="primary" @click="handleElderEdit(row)">
                             {{ t('编辑') }}
-                        </vxe-button>
+                        </vxe-button> -->
                         <vxe-button type="text" size="mini" status="danger" @click="handleElderlyDelete(row.id)">
                             {{ t('删除') }}
                         </vxe-button>
@@ -88,7 +88,7 @@
                         <div class="list">
                             <Button type="primary"
                                 @click="() => router.push('/add-elder?type=0&id=')">{{ t('新增') }}</Button>
-                            <Button type="error">{{ t('批量删除') }}</Button>
+                            <!-- <Button type="error">{{ t('批量删除') }}</Button> -->
                         </div>
                     </Card>
                 </div>

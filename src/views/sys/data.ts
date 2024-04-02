@@ -6,7 +6,7 @@ const agencyData: any = {
             {
                 type: 'date',
                 label: '建档日期',
-                prop: "createTime",
+                prop: "createDate",
                 span: 1,
                 //disabled: false,
                 required: false,
@@ -109,6 +109,15 @@ const agencyData: any = {
                 required: false,
                 default: "",
             },
+             {
+                type: 'input',
+                label: '负责人电话',
+                prop: "directorPhone",
+                span: 3,
+                //disabled: false,
+                required: false,
+                default: "",
+            },
             // {
             //     type: 'textarea',
             //     label: '机构介绍',
@@ -125,15 +134,15 @@ const legalData = {
     rules: {},
     FormData:
         [
-            {
-                type: 'input',
-                label: '负责人电话',
-                prop: "directorPhone",
-                span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-            },
+            // {
+            //     type: 'input',
+            //     label: '负责人电话',
+            //     prop: "directorPhone",
+            //     span: 1,
+            //     //disabled: false,
+            //     required: false,
+            //     default: "",
+            // },
             {
                 type: 'sort',
                 label: '机构床位总数',
@@ -660,15 +669,15 @@ const accountTable: any = {
       //     required: false,
       //     // default: "",
     //   // },
-    //   {
-    //     type: 'input',
-    //     label: '账号',
-    //     prop: "account",
-    //     disabled: true,
-    //     //childs: [],
-    //     required: false,
-    //     // default: "",
-    // },
+      {
+        type: 'input',
+        label: '账号',
+        prop: "account",
+        disabled: true,
+        //childs: [],
+        required: false,
+        // default: "",
+    },
     {
         type: 'input',
         label: '手机号',
@@ -808,16 +817,16 @@ const accountUpdate = {
 const accountCreateAdmin = {
     rules:[],
     FormData: [
-        // {
-        //     type: 'input',
-        //     label: '账号',
-        //     prop: "account",
-        //     //password: true,
-        //     //disabled: false,
-        //     //childs: [],
-        //     required: true,
-        //     // default: 0,
-        // },
+        {
+            type: 'input',
+            label: '账号',
+            prop: "account",
+            //password: true,
+            //disabled: false,
+            //childs: [],
+            required: true,
+            // default: 0,
+        },
         {
             type: 'input',
             label: '手机号',

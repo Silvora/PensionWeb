@@ -126,10 +126,22 @@ const handleRoleEdit = (row: any) => {
 }
 const handleRoleEditModal = (data: any) => {
     // console.log(data)
-    RoleUpdateId(data).then(() => {
+    let obj = {
+        // code: data.code,
+description: data.description,
+// id: data.id,
+name: data.name,
+orgId: data.orgId,
+status: data.status,
+// type: data.type
+    }
+    RoleUpdateId({id: data.id},obj).then(() => {
         Message.success(t('编辑成功'))
-        getData()
-        TableViewRef.value.closeLoding()
+        // TableViewRef.value.closeLoding()
+       getData()
+
+        TableViewRef.value.closeEditModal()
+
     }).catch(() => {
         console.log("first", TableViewRef.value)
         TableViewRef.value.closeTextLoding()
@@ -171,7 +183,7 @@ const handleRoleDelete = (id: any) => {
         loading: true,
         onOk: () => {
             console.log(id)
-            RoleRemoveId(id).then(() => {
+            RoleRemoveId({id}).then(() => {
                 Message.success(t('重置成功'))
                 Modal.remove();
                 getData()
@@ -188,6 +200,7 @@ const handleBatchDelete = () => {
     console.log(list)
     RoleRemoveBatch({ ids: list }).then(() => {
         Message.success(t('删除成功'))
+        getData()
     })
 }
 

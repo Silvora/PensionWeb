@@ -88,7 +88,7 @@ const data: any = ref([
 ])
 
 const pagerConfig = ref({
-    total: 100,//总数
+    total: 10,//总数
     currentPage: 1,//当前页
     pageSize: 10 //数量
 })
@@ -192,6 +192,7 @@ const getData = () => {
     FamilyList({ elderlyId: route.query.id }).then((res: any) => {
         console.log(res)
         data.value = res.data
+        pagerConfig.value.total = res.data.total
     })
 }
 

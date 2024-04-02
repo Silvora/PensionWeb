@@ -42,7 +42,7 @@
                         {{ t('权限') }}
                     </vxe-button>
 
-                    <vxe-button type="text" size="mini" status="primary" @click="handleUpdatePassword">
+                    <vxe-button :disabled="row.phone != userPhone" type="text" size="mini" status="primary" @click="handleUpdatePassword">
                         {{ t('修改密码') }}
                     </vxe-button>
 
@@ -98,6 +98,7 @@ import { AdminUser, AdminUserResetPassword, AdminUserUpdatePassword, AdminUserRe
 import { RoleList } from "@/api/RoleInfo/RoleInfo"
 import md5 from 'js-md5';
 import { useI18n } from "vue-i18n";
+import { getToken } from "@/utils/token";
 const { t } = useI18n()
 
 const props = defineProps({
@@ -106,6 +107,7 @@ const props = defineProps({
         default: ''
     }
 })
+const userPhone = ref<any>(null)
 
 watch(() => props.searchData, () => {
     getData({ name: props.searchData })
@@ -267,14 +269,31 @@ const handleUpdateSwitch = (row: any) => {
 }
 //编辑角色
 const handleRoleEdit = (row: any) => {
+    console.log(".........", row)
     TableViewRef.value.handleOpenEditModal(row)
 }
 const handleRoleEditModal = (data: any) => {
     console.log(data)
-    AdminUserPutId(data).then(() => {
+
+    let obj: any = {
+        // id: data.id,
+        name: data.name,
+        // status: data.status,
+        account: data.account,
+        description: data.description,
+        gender: data.gender,
+        phone: data.phone,
+        roleIds: data.roleInfoVos.map((it: any) => {
+            return it.id
+        }),
+        status: data.status
+    }
+
+
+    AdminUserPutId({id: data.id},obj).then(() => {
         Message.success(t('编辑成功'))
         getData()
-        TableViewRef.value.closeLoding()
+        TableViewRef.value.closeEditModal()
     }).catch(() => {
         console.log("first", TableViewRef.value)
         TableViewRef.value.closeTextLoding()
@@ -373,6 +392,12 @@ const getData = (search = {}) => {
 
 
 onMounted(() => {
+
+    getToken('ing-User').then((res: any) => {
+        console.log(res)
+        userPhone.value = res
+    })
+
     getData()
     RoleList({
         current: 1,

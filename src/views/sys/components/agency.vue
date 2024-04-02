@@ -20,20 +20,60 @@
                     <div class="up4">3</div>
                     <div class="up4">4</div> -->
                     <Upload :show-upload-list="false" :before-upload="(f: any) => handleUpload('driveUrl1', f)" action="#">
+                        
+                        <div class="imgItem">
                         <img :src="fileUrl.driveUrl1" class="up4" alt="" v-if="fileUrl.driveUrl1" />
                         <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
+
+                        <Icon class="icon" size="22" type="md-close-circle"
+                            style="color: red;cursor: pointer;padding:6px 10px ;" v-if="fileUrl.driveUrl1"
+                            @click.stop="fileUrl.driveUrl1 = ''" />
+                    </div>
+                        
+                        <!-- <img :src="fileUrl.driveUrl1" class="up4" alt="" v-if="fileUrl.driveUrl1" />
+                        <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else /> -->
                     </Upload>
                     <Upload :show-upload-list="false" :before-upload="(f: any) => handleUpload('driveUrl2', f)" action="#">
+                       
+                        <div class="imgItem">
                         <img :src="fileUrl.driveUrl2" class="up4" alt="" v-if="fileUrl.driveUrl2" />
                         <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
+
+                        <Icon class="icon" size="22" type="md-close-circle"
+                            style="color: red;cursor: pointer;padding:6px 10px ;" v-if="fileUrl.driveUrl2"
+                            @click.stop="fileUrl.driveUrl2 = ''" />
+                    </div>
+                        <!-- <img :src="fileUrl.driveUrl2" class="up4" alt="" v-if="fileUrl.driveUrl2" />
+                        <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else /> -->
                     </Upload>
                     <Upload :show-upload-list="false" :before-upload="(f: any) => handleUpload('driveUrl3', f)" action="#">
+                        
+                        <div class="imgItem">
                         <img :src="fileUrl.driveUrl3" class="up4" alt="" v-if="fileUrl.driveUrl3" />
                         <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
+
+                        <Icon class="icon" size="22" type="md-close-circle"
+                            style="color: red;cursor: pointer;padding:6px 10px ;" v-if="fileUrl.driveUrl3"
+                            @click.stop="fileUrl.driveUrl3 = ''" />
+                    </div>
+                        
+                        <!-- <img :src="fileUrl.driveUrl3" class="up4" alt="" v-if="fileUrl.driveUrl3" />
+                        <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else /> -->
                     </Upload>
                     <Upload :show-upload-list="false" :before-upload="(f: any) => handleUpload('driveUrl4', f)" action="#">
+                        
+                         
+                        <div class="imgItem">
                         <img :src="fileUrl.driveUrl4" class="up4" alt="" v-if="fileUrl.driveUrl4" />
                         <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
+
+                        <Icon class="icon" size="22" type="md-close-circle"
+                            style="color: red;cursor: pointer;padding:6px 10px ;" v-if="fileUrl.driveUrl4"
+                            @click.stop="fileUrl.driveUrl4 = ''" />
+                    </div>
+                        
+                        <!-- <img :src="fileUrl.driveUrl4" class="up4" alt="" v-if="fileUrl.driveUrl4" />
+                        <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else /> -->
                     </Upload>
                 </div>
                 </Col>
@@ -41,7 +81,7 @@
         </div>
 
 
-        <TableForm :title="t('法人信息')" :FormData="legalData.FormData" ref="legalDataRef" :data="legal"></TableForm>
+        <TableForm :title="t('居住数据')" :FormData="legalData.FormData" ref="legalDataRef" :data="legal"></TableForm>
         <!-- <TableForm title="建设信息" :FormData="constructData.FormData" :labelHeight="constructData.labelHeight">
         </TableForm>
         <TableForm title="服务信息" :FormData="serveData.FormData" :labelHeight="serveData.labelHeight"></TableForm>
@@ -56,24 +96,24 @@ import { ref } from "vue";
 import { agencyData, legalData, constructData, serveData } from "../data"
 import { useI18n } from "vue-i18n"
 import { FileUploadImage } from "@/api/File/File"
-import {OrgUpdate,OrgDetail,OrgIncomeStatistics} from "@/api/Org/Org"
+import { OrgUpdate, OrgDetail, OrgIncomeStatistics } from "@/api/Org/Org"
 import { onMounted } from "vue";
 import { Message } from "view-ui-plus";
 const { t } = useI18n()
 const value = ref('')
 const legalDataRef = ref<any>(null)
 const legal = ref<any>({
-    directorPhone:"",
-    // nursingBedsCount: "",
-    // occupancyRate:"",
-    // totalBedFee:"",
-    // totalBedsUsed:"",
-    // totalCheckIn:"",
-    // totalDeposit:"",
-    // totalDietFee:"",
-    // totalFee:"",
-    // totalOrgBeds:"",
-    // totalOtherFee:""
+    // "directorPhone": "",
+    // "nursingBedsCount": 0,
+    // "occupancyRate": 0,
+    // "totalBedFee": 0,
+    // "totalBedsUsed": 0,
+    // "totalCheckIn": 0,
+    // "totalDeposit": 0,
+    // "totalDietFee": 0,
+    // "totalFee": 0,
+    // "totalOrgBeds": 0,
+    // "totalOtherFee": 0
 })
 const agencyDataRef = ref<any>(null)
 const agency = ref<any>({})
@@ -102,7 +142,7 @@ const handleUpload = (type: string, file: any) => {
 
 
 
-const handleSubmit = ()=>{
+const handleSubmit = () => {
 
     let jsonImg = Object.keys(fileUrl.value).map((item, idx) => {
         return {
@@ -110,15 +150,14 @@ const handleSubmit = ()=>{
             u: fileUrl.value[item]
         }
     })
-    console.log(jsonImg)
+    // console.log(jsonImg)
 
     let info = { ...legalDataRef.value.FormData, ...agencyDataRef.value.FormData }
-    console.log(info)
-
+    // console.log(info)
 
 
     let data = {
-        createTimeStr: info.createTime,
+        createDate: info.createDate,
         address: info.address,
         name: info.name,
         region: info.region,
@@ -127,11 +166,10 @@ const handleSubmit = ()=>{
         telephone: info.telephone,
         directorPhone: info.directorPhone,
         introduce: value.value,
-        pid: info.id,
         honorDisplayJson: JSON.stringify(jsonImg)
     }
 
-    // console.log(agencyData)
+    // console.log(data)
 
     OrgUpdate(data).then((res: any) => {
         console.log(res)
@@ -139,25 +177,28 @@ const handleSubmit = ()=>{
     })
 }
 
-const getData=()=>{
+const getData = () => {
     // console.log(agencyData)
 
     OrgDetail({}).then((res: any) => {
         console.log(res)
         agency.value = res.data
         value.value = res.data.introduce
+        // legal.value.directorPhone = res.data.directorPhone
 
-        JSON.parse(res.data.honorDisplayJson).forEach((item: any,idx:any) => {
-            fileUrl.value[`driveUrl${idx+1}`] = item.u
+        JSON.parse(res.data.honorDisplayJson).forEach((item: any, idx: any) => {
+            fileUrl.value[`driveUrl${idx + 1}`] = item.u
         })
         // agencyDataRef.value.FormData = res.data
+    }).then(() => {
+        OrgIncomeStatistics({}).then((res: any) => {
+            console.log(res, legal.value)
+            res.data.occupancyRate = (res.data.occupancyRate * 100).toFixed(2) + '%'
+            legal.value = res.data
+            // agencyDataRef.value.FormData = res.data
+        })
     })
-    OrgIncomeStatistics({}).then((res: any) => {
-        console.log(res)
-        res.data.occupancyRate = (res.data.occupancyRate * 100).toFixed(2)+'%'
-        legal.value ={...res.data,...legal.value}
-        // agencyDataRef.value.FormData = res.data
-    })
+
 
 }
 
@@ -211,17 +252,31 @@ defineExpose({
                 flex-direction: row;
                 flex-wrap: wrap;
             }
+            .imgItem {
+                position: relative;
+                top: 0;
+                left: 0;
+            }
+
+            // flex-direction: row;
+            // flex-wrap: wrap;
+            // justify-content: center;
+            .ivu-icon {
+                position: absolute;
+                top: 0px;
+                right: 0px;
+            }
 
             .up1 {
                 width: 210px;
-                height: 200px;
+                height: 100%;
                 text-align: center;
                 line-height: 200px;
             }
 
             .up4 {
                 width: 104px;
-                height: 100px;
+                height: 100%;
                 text-align: center;
                 line-height: 100px;
                 margin-right: 5px;

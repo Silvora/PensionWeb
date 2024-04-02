@@ -48,14 +48,16 @@ const defaultData = ref<any>({})
 const FormId = ref<any>({})
 const modal = ref<any>(false)
 const textLoing = ref<any>(false)
-const openModal = (data: any, id: any) => {
+const openModal = (data: any, id = null) => {
 
-    console.log("=========",data)
+    console.log("=========", data)
     if (data) {
         defaultData.value = data
     }
     if (id) {
         FormId.value = id
+    } else {
+        FormId.value = null
     }
 
     modal.value = true
@@ -81,14 +83,14 @@ const handleCancel = () => {
 }
 
 const handleSumbit = () => {
-    console.log(FormRef.value.validate(), { ...FormRef.value.FormData, ...FormId.value })
+    console.log(FormRef.value.validate(), { ...FormId.value, ...FormRef.value.FormData })
     FormRef.value.validate().then((valid: any) => {
         console.log(valid)
         if (valid) {
 
             textLoing.value = true
             // console.log(FormRef.value.FormData)
-            emit('handleModalOk', {  ...FormId.value ,...FormRef.value.FormData})
+            emit('handleModalOk', { ...FormId.value, ...FormRef.value.FormData })
         }
     })
 }

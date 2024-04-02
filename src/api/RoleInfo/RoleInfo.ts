@@ -76,7 +76,7 @@ export function RoleRemoveId (data:any) {
     return http.request({
         url: `/role/remove/${data.id}`,
         method: 'delete',
-        data
+        // data
     })
 }
 
@@ -91,9 +91,9 @@ export function RoleRemoveBatch(data:any) {
 
 
 // 更新角色
-export function RoleUpdateId(data:any) {
+export function RoleUpdateId(params:any,data:any) {
     return http.request({
-        url: `/role/update/${data.id}`,
+        url: `/role/update/${params.id}`,
         method: 'put',
         data
     })

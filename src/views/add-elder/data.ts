@@ -1108,7 +1108,7 @@ const bedInfo: any = {
      FormData:
         [
              {
-                type: 'date',
+                type: 'dateTime',
                 label: '入住日期',
                 prop: "startTimeStr",
                 span: 3,
@@ -1240,7 +1240,7 @@ const contractInfo: any = {
      FormData:
          [
             {
-                type: 'date',
+                type: 'dateTime',
                 label: '合约签订日期',
                 prop: "contractDateStr",
                 span: 2,
