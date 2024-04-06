@@ -1,11 +1,13 @@
 <template>
     <div style="width: 100%;">
         <!-- <p>睡着时的体动介于0到100</p> -->
-        <p v-if="props.DeviceInfoListInfo.d3 && props.DeviceInfoListInfo.d6">睡着时的体动介于{{Math.min(...props.DeviceInfoListInfo.d6)}}到{{ Math.max(...props.DeviceInfoListInfo.d3) }}</p>
-
-        <div class="box" ref="chartRef">
-
+        <p v-if="props.DeviceInfoListInfo.d3 && props.DeviceInfoListInfo.d6">
+            {{t('睡着时的体动介于')}} {{ props.DeviceInfoListInfo?.d6?.length?Math.min(...props.DeviceInfoListInfo.d6)||' - ':' - '  }}到{{ props.DeviceInfoListInfo?.d3?.length?Math.max(...props.DeviceInfoListInfo.d3)||' - ':' - '  }}{{t('之间')}}</p>
+        <div class="box" ref="chartRef" >
         </div>
+        <!-- <div v-else  class="box">
+            {{ t('暂无数据') }}
+        </div> -->
     </div>
 </template>
 
@@ -13,6 +15,8 @@
 import * as echarts from 'echarts';
 import { watch } from 'vue';
 import { nextTick, onMounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 const chartRef = ref<HTMLElement>()
 onMounted(() => {
     nextTick(() => {
@@ -20,12 +24,13 @@ onMounted(() => {
     })
 })
 
-const props:any = defineProps({
+const props: any = defineProps({
     DeviceInfoListInfo: Object
 })
 
 watch(() => props.DeviceInfoListInfo, () => {
     initChart()
+    console.log(props.DeviceInfoListInfo)
 })
 
 console.log(props)
@@ -34,13 +39,34 @@ const initChart = () => {
     const myChart: any = echarts.init(chartRef.value);
 
     const option = {
+        grid: {
+            left: '3%',
+            right: '3%',
+            bottom: '3%',
+            top: '8%',
+            containLabel: true
+        },
         xAxis: {
             type: 'category',
             // data: ['21:00', '23:00', '01:00', '03:00', '05:00', '07:00', '09:00']
-            data:props.DeviceInfoListInfo.date
+            data: props.DeviceInfoListInfo.date,
+            axisLine: {
+                show: false
+            },
+            axisTick: {
+                show: false
+            },
+            axisLabel: {
+                fontSize: 10
+            },
+            splitLine: {
+                show: false
+            }
         },
         yAxis: {
-            type: 'value'
+            type: 'value',
+
+
         },
         series: [
             {
@@ -48,6 +74,8 @@ const initChart = () => {
                     color: '#FED3B5',
                     borderRadius: [15, 15, 15, 15]
                 },
+                smooth: false,  // 取消圆点
+                symbol: 'none',  // 取消横线
                 data: props.DeviceInfoListInfo.d3,
                 type: 'line'
             }
@@ -68,7 +96,7 @@ const initChart = () => {
 <style scoped lang='less'>
 .box {
     width: 100%;
-    height: 200px;
+    height: 150px;
 }
 </style>
 

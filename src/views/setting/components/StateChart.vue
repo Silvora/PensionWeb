@@ -8,12 +8,15 @@ import { onMounted, ref } from "vue";
 import {DeviceTypeRatio} from "@/api/Device/Device"
 const StateChartRef = ref(null)
 const myChart: any = ref(null)
-import {} from "@/api/Device/Device"
+const sum = ref(0)
 onMounted(() => {
 
     initChart()
     DeviceTypeRatio({}).then((res: any) => {
         console.log(res)
+        res.data.forEach((item: any) => {
+            sum.value += item.count
+        })
     })
 
     // window.addEventListener('resize', () => {
@@ -71,7 +74,7 @@ const initChart = () => {
                     formatter: (params) => {
                        // console.log(params.name)
                         return [
-                            `{a|1111}`,
+                            `{a|${sum.value}}`,
                             `{b|设备状态}`
                         ].join('\n')
                     },

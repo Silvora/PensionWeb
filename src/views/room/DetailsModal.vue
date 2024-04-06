@@ -275,7 +275,7 @@ const handleCheckUser = (item: any) => {
     let data = {
         bedId: props.info.id,
         elderlyId: item.id,
-        endTimeStr: DAY.add(1, 'year').format("YYYY-MM-DD HH:mm:ss"),
+        // endTimeStr: DAY.add(1, 'year').format("YYYY-MM-DD HH:mm:ss"),
         floorId: props.info.floorId,
         hostelId: props.info.hostelId,
         notes: "",

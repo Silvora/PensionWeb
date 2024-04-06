@@ -5,7 +5,7 @@
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
-            <Form :label-width="90" ref="FormRef" :model="formData" :rules="rules" @submit.prevent>
+            <Form :label-width="100" ref="FormRef" :model="formData" :rules="rules" @submit.prevent>
                 <FormItem label="设备编号(imei或mac)" prop="mac">
                     <Input type="text" v-model="formData.mac" placeholder="请输入设备编号">
                     </Input>
@@ -30,15 +30,17 @@
 
                 <FormItem label="设备类型" prop="type">
                     <Select v-model="formData.type" clearable style="width:100%">
-                         <Option value="0">睡眠雷达</Option>
-                         <Option value="1">呼吸机</Option>
-                         <Option value="2">心电图机</Option>
+                         <Option value="ed713_type">{{ t('生命感知设备1代') }}</Option>
+                         <Option value="x1_type">{{ t('生命感知设备2代') }}</Option>
+                         <Option value="ed719_type">{{ t('行为感知设备') }}</Option>
+                         <!-- <Option value="1">呼吸机</Option>
+                         <Option value="2">心电图机</Option> -->
                 </Select>
                 </FormItem>
 
 
                 <FormItem label="楼栋/楼层/房间/床位" prop="dataValue">
-                    <Cascader :data="list" v-model="formData.dataValue" :load-data="loadList" placeholder="楼栋/楼层/房间/床位"
+                    <Cascader :data="list" v-model="formData.dataValue" :load-data="loadList" :placeholder="formData.roomBedNumber?formData.roomBedNumber:'楼栋/楼层/房间/床位'"
                         @on-change="handleSearch" />
                 </FormItem>
 
@@ -48,7 +50,7 @@
                 </FormItem> -->
 
 
-                <div>
+                <div v-if="formData.type == 'ed719_type'" style="background: rgba(0, 0, 0,.05);padding: 10px;border-radius: 15px;margin: 10px 0;">
                     <FormItem label="蜂鸣器报警" prop="beeper">
                         <Switch size="large" v-model="formData.fallParams.beeper" :true-value="1" :false-value="0">
                             <template #open>
@@ -61,26 +63,32 @@
                     </FormItem>
 
                     <FormItem label="灵敏度" prop="sensi">
-                        <InputNumber :max="999999" :min="0" v-model="formData.fallParams.sensi" placeholder="请输入灵敏度">
-                    </InputNumber>
+                        <!-- <InputNumber :max="999999" :min="0" v-model="formData.fallParams.sensi" placeholder="请输入灵敏度">
+                    </InputNumber> -->
 
-                        <!-- <Select v-model="formData.fallParams.sensi">
-                            <Option value="beijing">New York</Option>
-                            <Option value="shanghai">London</Option>
-                            <Option value="shenzhen">Sydney</Option>
-                        </Select> -->
+                        <Select v-model="formData.fallParams.sensi">
+                            <Option value="0">灵敏档</Option>
+                            <Option value="1">标准档</Option>
+                            <Option value="2">鲁棒档</Option>
+                        </Select>
                     </FormItem>
                     <FormItem label="延时状态" prop="stateDelay">
                         <InputNumber :max="999999" :min="0" v-model="formData.fallParams.stateDelay" style="width: 100%;" />
 
                     </FormItem>
-                    <!-- <FormItem label="安装方式" prop="dataValue">
-             <Select v-model="formData.select">
-                <Option value="beijing">New York</Option>
-                <Option value="shanghai">London</Option>
-                <Option value="shenzhen">Sydney</Option>
+
+                    <FormItem label="高度设置" prop="installHeight">
+                        <InputNumber :max="3" :min="2" v-model="formData.fallParams.installHeight" style="width: 100%;" />
+
+                    </FormItem>
+
+                    <FormItem label="安装方式" prop="installFlag">
+             <Select v-model="formData.fallParams.installFlag">
+                <Option value="0">顶装</Option>
+                <Option value="1">侧装</Option>
             </Select>
-        </FormItem> -->
+
+        </FormItem>
                     <!-- <FormItem label="灵敏度" prop="dataValue">
              <Select v-model="formData.select">
                 <Option value="beijing">New York</Option>
@@ -118,8 +126,8 @@
                 </div>
 
 
-                <div>
-                    <div>
+                <div v-if="formData.type =='ed713_type' || formData.type =='x1_type'">
+                    <div style="background: rgba(0, 0, 0,.05);padding: 10px;border-radius: 15px;margin: 10px 0;">
                         <FormItem label="离床报警" prop="leaveBedAlarm">
                             <Switch size="large" v-model="formData.sleepParams.leaveBedAlarm" :true-value="1" :false-value="0" 
                             >
@@ -134,17 +142,17 @@
 
                         <div class="Dist">
                            <div>
-                            <FormItem label="时间" prop="time">
+                            <FormItem label="最大时间范围" prop="time">
                             <!-- <TimePicker v-model="formData.sleepParams.leaveBedConfig.time" format="HH:mm" type="timerange"
                                 placement="bottom-end" :placeholder="t('时间段')" style="width: 100%" 
                                 @on-change="(e:any)=>handleTimeChange(e,'leaveBedConfig')"
                                 /> -->
 
-                            <TimePicker v-model="formData.sleepParams.leaveBedConfig.minTime" format="HH:mm" style="width: 120px;"></TimePicker>
+                            <TimePicker v-model="formData.sleepParams.leaveBedConfig.maxTime" format="HH:mm" style="width: 120px;"></TimePicker>
                         </FormItem>
                            </div>
                        <div>
-                        <FormItem label="时间" prop="time">
+                        <FormItem label="最小时间范围" prop="time">
                             <!-- <TimePicker v-model="formData.sleepParams.leaveBedConfig.time" format="HH:mm" type="timerange"
                                 placement="bottom-end" :placeholder="t('时间段')" style="width: 100%" 
                                 @on-change="(e:any)=>handleTimeChange(e,'leaveBedConfig')"
@@ -164,7 +172,7 @@
 
                         <div class="Dist">
                             <div>
-                                <FormItem label="高于" prop="max">
+                                <FormItem label="最大监测范围" prop="max">
                             <InputNumber :max="999999" :min="0" v-model="formData.sleepParams.leaveBedConfig.max"
                             style="width: 120px;" />
 
@@ -172,7 +180,7 @@
 
                             </div>
                             <div>
-                                <FormItem label="低于" prop="min">
+                                <FormItem label="最小监测范围" prop="min">
                             <InputNumber :max="999999" :min="0" v-model="formData.sleepParams.leaveBedConfig.min"
                             style="width: 120px;"/>
 
@@ -187,7 +195,7 @@
 
                     </div>
 
-                    <div>
+                    <div style="background: rgba(0, 0, 0,.05);padding: 10px;border-radius: 15px;margin: 10px 0;">
                         <FormItem label="心率报警" prop="heartRateAlarm">
                             <Switch size="large" v-model="formData.sleepParams.heartRateAlarm" :true-value="1" :false-value="0">
                                 <template #open>
@@ -202,12 +210,12 @@
 
                         <div class="Dist">
                            <div>
-                            <FormItem label="时间" prop="time">
-                            <TimePicker v-model="formData.sleepParams.heartRateConfig.minTime" format="HH:mm" style="width: 120px;"></TimePicker>
+                            <FormItem label="最大时间范围" prop="time">
+                            <TimePicker v-model="formData.sleepParams.heartRateConfig.maxTime" format="HH:mm" style="width: 120px;"></TimePicker>
                         </FormItem>
                            </div>
                        <div>
-                        <FormItem label="时间" prop="time">
+                        <FormItem label="最小时间范围" prop="time">
                             <TimePicker v-model="formData.sleepParams.heartRateConfig.minTime" format="HH:mm" style="width: 120px;"></TimePicker>
                         </FormItem>
                        </div>
@@ -224,14 +232,14 @@
 
         <div class="Dist">
             <div>
-                <FormItem label="高于" prop="max">
+                <FormItem label="最大监测范围" prop="max">
                             <InputNumber :max="999999" :min="0" v-model="formData.sleepParams.heartRateConfig.max"
                             style="width: 120px;"/>
 
                         </FormItem>
             </div>
             <div>
-                <FormItem label="低于" prop="min">
+                <FormItem label="最小时间范围" prop="min">
                             <InputNumber :max="999999" :min="0" v-model="formData.sleepParams.heartRateConfig.min"
                             style="width: 120px;"/>
 
@@ -246,7 +254,7 @@
 
                     </div>
 
-                    <div>
+                    <div style="background: rgba(0, 0, 0,.05);padding: 10px;border-radius: 15px;margin: 10px 0;">
                         <FormItem label="呼吸报警" prop="respiratoryAlarm">
                             <Switch size="large" v-model="formData.sleepParams.respiratoryAlarm" :true-value="1" :false-value="0">
                                 <template #open>
@@ -261,12 +269,12 @@
 
                         <div class="Dist">
                            <div>
-                            <FormItem label="时间" prop="time">
-                            <TimePicker v-model="formData.sleepParams.respiratoryConfig.minTime" format="HH:mm" style="width: 120px;"></TimePicker>
+                            <FormItem label="最大时间范围" prop="time">
+                            <TimePicker v-model="formData.sleepParams.respiratoryConfig.maxTime" format="HH:mm" style="width: 120px;"></TimePicker>
                         </FormItem>
                            </div>
                        <div>
-                        <FormItem label="时间" prop="time">
+                        <FormItem label="最小时间范围" prop="time">
                             <TimePicker v-model="formData.sleepParams.respiratoryConfig.minTime" format="HH:mm" style="width: 120px;"></TimePicker>
                         </FormItem>
                        </div>
@@ -285,14 +293,14 @@
 
         <div class="Dist">
             <div>
-                <FormItem label="高于" prop="max">
+                <FormItem label="最大监测范围" prop="max">
                             <InputNumber :max="999999" :min="0" v-model="formData.sleepParams.respiratoryConfig.max"
                             style="width: 120px;" />
 
                         </FormItem>
             </div>
             <div>
-                <FormItem label="低于" prop="min">
+                <FormItem label="最小时间范围" prop="min">
                             <InputNumber :max="999999" :min="0" v-model="formData.sleepParams.respiratoryConfig.min"
                             style="width: 120px;" />
 
@@ -327,6 +335,7 @@ import { useI18n } from 'vue-i18n';
 import { HostelList, HostelFloorlList, HostelRoomListOfFloor, HostelRoomBedListOfRoom } from "@/api/Hostel/Hostel"
 import {DeviceSave,DeviceUpdate} from "@/api/Device/Device"
 import { Message } from 'view-ui-plus';
+import { nextTick } from 'process';
 const FormRef = ref<any>(null)
 const { t } = useI18n()
 const modal = ref<boolean>(false)
@@ -390,12 +399,12 @@ const list = ref<any>([])
 const emit = defineEmits(['handleResetData'])
 
 
-const handleTimeChange = (time: any,type:string) => {
-    console.log(time,type)
+// const handleTimeChange = (time: any,type:string) => {
+//     console.log(time,type)
 
-    formData.value['sleepParams'][type].minTime = time[0]
-    formData.value['sleepParams'][type].maxTime = time[1]
-}
+//     formData.value['sleepParams'][type].minTime = time[0]
+//     formData.value['sleepParams'][type].maxTime = time[1]
+// }
 
 const handleSearch = (value: any,selectedData:any) => {
     // console.log(value)
@@ -521,17 +530,25 @@ const handleSubmit = () => {
 }
 
 const Open = (data: any) => {
-
     if (data) {
+        // formData.value.dataValue= []
         Object.keys(data).forEach((key: any) => {
             formData.value[key] = data[key]?data[key]:formData.value[key]
         })
 
-        formData.value.dataValue = [data.hostelId,data.floorId,data.roomId,data.bedId]
+        formData.value.dataValue = [
+             
+// {value: data.hostelId, label: data.hostelId, loading: false, type: 'hostel'},
+// {value: data.floorId, label: data.floorId, loading: false, type: 'floor'},
+// {value: data.roomId, label: data.roomId, loading: false, type: 'room'} ,
+// {value: data.bedId, label: data.bedId},
+            // data.hostelId,
+            // data.floorId,
+            // data.roomId,
+           // data.bedId
+        ]
 
-
-
-
+        console.log(formData.value.dataValue)
         // formData.value = data
         title.value = '编辑设备'
     }else{
@@ -591,11 +608,15 @@ const Open = (data: any) => {
         title.value = '添加设备'
     }
 
-    modal.value = true
+    nextTick(() => {
+        modal.value = true
+    })
 }
 const Close = () => {
     modal.value = false
 }
+
+
 
 onMounted(() => {
     getHome()

@@ -36,7 +36,7 @@ onMounted(() => {
             if (item.type == 2) {
                 obj.push({ value: item.totalCount || 0, name: t('女'), ...item })
             }
-            s += item.totalCount || 0
+            s += item.count || 0
         })
 
         map.value = obj

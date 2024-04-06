@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="care">
-            <TableForm :title="t('护理设置')" :FormData="careInfoForm" ref="care_data" :data="data.obj"></TableForm>
+            <TableForm :title="t('护理设置')" :FormData="careInfoForm" ref="care_data" :data="data.care"></TableForm>
             <!-- <p class="carePub">
             <span>其他费用</span>
             <Button type="primary">添加费用</Button>
@@ -19,7 +19,7 @@
                 <div class="label">{{ t('房间选择') }}</div>
                 <div class="input upload1">
                     <Cascader :data="RoomData" v-model="ROOM" :load-data="loadRoomData" style="width: 100%;"
-                        :placeholder="t('楼栋/楼层/房间/床位')" />
+                        :placeholder="data?.bed?.roomBedNumber?data?.bed?.roomBedNumber:t('楼栋/楼层/房间/床位')" />
                 </div>
                 </Col>
             </Row>
@@ -335,22 +335,24 @@ onMounted(() => {
     if (route.query.id) {
         console.log("获取数据")
         ElderlyAdmissionElderlyId({ elderlyId: route.query.id }).then((res: any) => {
-            console.log(res);
+            console.log(res,res.data.costList[0].price*1);
             ROOM.value = res.data.checkIn.roomBedNumber.split('-')
 
             let obj = {
                 care:{
                     nursingDeviceType:'',
-                    serviceFee:'',
-                    roomCosts:'',
+                    serviceFee:res.data.costList[0].price*1,
+                    roomCosts:res.data.costList[1].price*1,
                     nursingNotes:'',
                 },
                 bed:{
                     startTimeStr: res.data.checkIn.startTime,
+                    roomBedNumber: res.data.checkIn.roomBedNumber,
 
                 },
                 contract:{
-                    contractDateStr:''
+                    contractDateStr:'',
+
                 },
             }
 

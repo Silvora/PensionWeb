@@ -458,7 +458,7 @@ const roleTable: any = {
         checkbox:true,//复选框
         activeConfig: {
             active: true,
-             width: 300,
+             width: 150,
         },
     },
     editConfig: {
@@ -515,8 +515,6 @@ const roleTable: any = {
             required: false,
             open: '启用',
             close: '禁用',
-            
-            
             // default: "",
         }
         
@@ -536,12 +534,12 @@ const roleTable: any = {
         {
             title: '角色',
             key: 'name',
-            minWidth: 150,
+            minWidth: 100,
         },
         {
             title: '角色说明',
             key: 'description',
-            minWidth: 250,
+            minWidth: 100,
         },
         // {
         //     title: '创建时间',
@@ -639,7 +637,7 @@ const accountTable: any = {
       checkbox:true,//复选框
       activeConfig: {
           active: true,
-           width: 300,
+           width: 280,
       },
   },
   editConfig: {
@@ -757,26 +755,24 @@ const accountTable: any = {
       {
           title: '姓名',
           key: 'name',
-          minWidth: 150,
+          minWidth: 100,
       },
       {
         title: '性别',
         key: 'gender',
         slot: true,
-        minWidth: 100,
+        minWidth: 80,
     },
       {
           title: '手机号',
           key: 'phone',
-          minWidth: 250,
+          minWidth: 150,
       },
       // {
       //     title: '创建时间',
       //     key: 'freeObsNum',
       //     minWidth: 230,
       // },
-
-
       {
           title: '角色状态',
           key: 'status',

@@ -11,13 +11,13 @@
                         :placeholder="t('楼栋/楼层')" @on-change="handleSearch" />
                     <Select v-model="searchData.roomId" style="width:100px" clearable :placeholder="t('房间号')"
                         @on-change="getData">
-                    
+
                         <Option :value="item.id" v-for="item in roomList" :key="item.id">{{ item.roomNumber }}</Option>
                     </Select>
-                    
+
                     <Select v-model="searchData.nursingGrade" style="width:100px" clearable :placeholder="t('护理等级')"
                         @on-change="getData">
-                        
+
                         <Option :value="idx" v-for="(item, idx) in jobLevelList" :key="idx">{{ t(item) }}</Option>
                     </Select>
 
@@ -29,7 +29,7 @@
         </div>
         <div class="box" id="screenBoxAll" ref="screenBoxAll">
             <div class="focus">
-                <Space  class="title">
+                <Space class="title">
                     <span>{{ t('重点关注老人') }}</span>
                     <span>
                         <Button type="primary" @click="handleAddFocus">{{ t('添加人员') }}</Button>
@@ -43,14 +43,18 @@
                 <div class="title">
                     <span class="p">{{ t('床位管理') }}</span>
                     <span class="alert">
-                        <Alert type="error">An error prompt</Alert>
-                        <Button type="primary" @click="router.push('/log')" style="margin-left: 5px;">{{ t('全部日志') }}</Button>
+                        <Alert type="error">
+                            <span v-if="LogData.status==0 && LogData.createTime.includes(dayjs().format('YYYY-MM-DD'))">{{ LogData.roomBedNumber }} {{ t('紧急通知') }} </span>
+                            <span v-else>{{ t('暂无通知') }}</span>
+                        </Alert>
+                        <Button type="primary" @click="router.push('/log')"
+                            style="margin-left: 5px;">{{ t('全部日志') }}</Button>
+                            &nbsp;
                         <span>
-                            <Icon v-if=" !isFullscreen" type="md-expand" color="#2d8cf0" size="26" @click="handleZoom"
-               />
-              
-                        <Icon v-else type="md-contract" color="#2d8cf0" size="26"
-                            @click="handleZoom" />
+                            <Button v-if="!isFullscreen" type="primary" icon="md-expand" @click="handleZoom"></Button>
+                            <!-- <Icon v-if="!isFullscreen" type="md-expand" color="#2d8cf0" size="26" @click="handleZoom" /> -->
+                            <Button v-else type="primary" icon="md-contract" @click="handleZoom"></Button>
+                            <!-- <Icon v-else type="md-contract" color="#2d8cf0" size="26" @click="handleZoom" /> -->
                         </span>
                     </span>
                 </div>
@@ -94,23 +98,25 @@
 
 <script setup lang="ts">
 import UserItem from "./UserItem.vue"
-import { ref, onMounted } from 'vue';
+import { ref, onMounted,onBeforeUnmount } from 'vue';
 import { CheckFocus, CheckList, CheckCancelFocus, CheckSave, CheckRemoveId } from '@/api/Check/Check';
 import { HostelList, HostelFloorlList, HostelRoomListOfFloor, HostelRoomBedListOfRoom } from "@/api/Hostel/Hostel"
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
-import {Space} from 'view-ui-plus';
+import { Message, Space } from 'view-ui-plus';
 const { t } = useI18n()
 const screenBoxAll = ref(null)
+import dayjs from "dayjs"
 import { useFullscreen } from '@vueuse/core'
+import {DeviceLogList} from "@/api/Device/Device"
+// let box = document.getElementById("#layoutBox")
+const { toggle, isFullscreen } = useFullscreen(screenBoxAll)
 
-    // let box = document.getElementById("#layoutBox")
-    const { toggle, isFullscreen } = useFullscreen(screenBoxAll)
-
-    const handleZoom = () => {
-  toggle()
+const handleZoom = () => {
+    toggle()
 }
 
+const LogData = ref<any>({})
 const elderModal = ref<boolean>(false)
 const detailList = ref<any>([])
 const hostelTofloor = ref<any>([])
@@ -129,7 +135,7 @@ const searchData = ref<any>({
     size: 9999,
     floorId: "",
     roomId: "",
-    focus: "",
+    focus: 1,
     nursingGrade: "",
     // elderlyName: ''
 })
@@ -140,10 +146,15 @@ const handleCheck = (item: any) => {
     // elderModal.value = false
     console.log(item)
 
-    // CheckFocus({
-    //     elderlyId: item.elderlyId,
-    //     checkInId: item.checkInId
-    // })
+    CheckFocus({
+        elderlyId: item.elderlyId,
+        checkInId: item.id
+    }).then(() => {
+        Message.success(t('添加成功'))
+        // getData()
+        elderModal.value = false
+        getData()
+    })
 }
 
 
@@ -215,16 +226,53 @@ const getData = () => {
         // })
     })
 
+    CheckList({
+        current: 1,
+        size: 9999,
+        focus: 0,
+    }).then((res: any) => {
+        FocusList.value = res.data.records
+    })
+
+
 
 
 
 }
 
+const getLog=()=>{
+    DeviceLogList({
+        current: 1,
+        size: 1
+    }).then((res:any)=>{
+        console.log(res)
+        LogData.value =res.data?.records? res.data.records[0]:{}
+    })
+}
+
+//const time = ref<any>(null)
+
+
+
+// const handleTime = ()=>{
+
+
+//     time.value = setInterval(() => {
+//         getData()
+
+//         getLog()
+
+//     }, 6000)
+// } 
+
 
 onMounted(() => {
-
-
     getData()
+
+    getLog()
+    // handleTime()
+
+
     HostelList().then(res => {
         hostelList.value = res.data.map((item: any) => {
             return {
@@ -237,13 +285,15 @@ onMounted(() => {
         })
     })
 
-    CheckList({
-        current: 1,
-        size: 9999,
-        focus: 0,
-    }).then((res: any) => {
-        FocusList.value = res.data.records
-    })
+
+
+    // CheckList({
+    //     current: 1,
+    //     size: 9999,
+    //     focus: 0,
+    // }).then((res: any) => {
+    //     FocusList.value = res.data.records
+    // })
 
 
     // hostel.value.forEach((item: any) => {
@@ -258,6 +308,13 @@ onMounted(() => {
     //})
 })
 
+
+onBeforeUnmount(() => {
+
+console.log("sdasdasdasd")
+// clearInterval(time.value)
+// time.value = null
+})
 
 const handleAddFocus = () => {
     elderModal.value = true

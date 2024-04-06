@@ -276,7 +276,7 @@ defineExpose({
 
             .up4 {
                 width: 104px;
-                height: 100%;
+                height: 104px;
                 text-align: center;
                 line-height: 100px;
                 margin-right: 5px;

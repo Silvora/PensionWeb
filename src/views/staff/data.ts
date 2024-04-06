@@ -9,7 +9,7 @@ const roleTable: any = {
         checkbox:true,//复选框
         activeConfig: {
             active: true,
-             width: 300,
+             width: 200,
         },
     },
     
@@ -75,23 +75,23 @@ const roleTable: any = {
         {
             title: '员工姓名',
             key: 'name',
-            minWidth: 150,
+            minWidth: 100,
         },
         {
             title: '性别',
             key: 'gender',
-            minWidth: 150,
+            minWidth: 80,
             slot:'gender',
         },
         {
             title: '工种',
             key: 'roleName',
-            minWidth: 250,
+            minWidth: 100,
         },
         {
             title: '入职时间',
             key: 'entryTime',
-            minWidth: 230,
+            minWidth: 150,
         },
 
         // {

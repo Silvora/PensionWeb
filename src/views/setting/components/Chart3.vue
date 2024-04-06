@@ -1,16 +1,22 @@
 <template>
     <div style="width: 100%;">
-        <p v-if="props.DeviceInfoListInfo.d1 && props.DeviceInfoListInfo.d4">睡着时的呼吸频率介于{{Math.min(...props.DeviceInfoListInfo.d4)}}到{{ Math.max(...props.DeviceInfoListInfo.d1) }}次/分。</p>
+        <p v-if="props.DeviceInfoListInfo.d1 && props.DeviceInfoListInfo.d4">
+            {{ t('睡着时的呼吸频率介于') }} {{ props.DeviceInfoListInfo?.d4?.length?Math.min(...props.DeviceInfoListInfo.d4)||' - ':' - '  }}到{{ props.DeviceInfoListInfo?.d1?.length?Math.max(...props.DeviceInfoListInfo.d1)||' - ' :' - ' }}次/分。</p>
 
-        <div class="box" ref="chartRef">
+        <div class="box" ref="chartRef" >
 
         </div>
+        <!-- <div v-else  class="box">
+            {{ t('暂无数据') }}
+        </div> -->
     </div>
 </template>
 
 <script setup lang='ts'>
 import * as echarts from 'echarts';
 import { nextTick, onMounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 const chartRef = ref<HTMLElement>()
 onMounted(() => {
     nextTick(() => {
@@ -19,7 +25,7 @@ onMounted(() => {
 })
 
 
-const props:any = defineProps({
+const props: any = defineProps({
     DeviceInfoListInfo: Object
 })
 
@@ -47,20 +53,24 @@ const initChart = () => {
         // },
         grid: {
             left: '3%',
-            right: '4%',
+            right: '3%',
             bottom: '3%',
+            top: '1%',
             containLabel: true
         },
         xAxis: {
             type: 'category',
             splitLine: { show: false },
             // data: ['21:00', '23:00', '01:00', '03:00', '05:00', '07:00', '09:00'],
-            data:props.DeviceInfoListInfo.date,
+            data: props.DeviceInfoListInfo.date,
             axisLine: {
                 show: false
             },
             axisTick: {
                 show: false
+            },
+            axisLabel: {
+                fontSize: 10
             }
         },
         yAxis: {
@@ -94,7 +104,7 @@ const initChart = () => {
                     }
                 },
                 // data: [10, 10, 6, 8, 18, 15,18]
-                data:props.DeviceInfoListInfo.d1
+                data: props.DeviceInfoListInfo.d1
             },
             {
                 name: 'Life Cost',
@@ -102,7 +112,7 @@ const initChart = () => {
                 stack: 'Total',
                 label: {
                     show: true,
-                    position: 'inside'
+                    position: 'inside',
                 },
                 itemStyle: {
                     color: 'rgba(1, 96, 255, 1)',
@@ -114,7 +124,7 @@ const initChart = () => {
                 //     }
                 // },
                 // data: [10, 10, 6, 8, 18, 15,18]
-                data:props.DeviceInfoListInfo.d4
+                data: props.DeviceInfoListInfo.d4
             }
         ]
     };
@@ -132,6 +142,6 @@ const initChart = () => {
 <style scoped lang='less'>
 .box {
     width: 100%;
-    height: 200px;
+    height: 150px;
 }
 </style>

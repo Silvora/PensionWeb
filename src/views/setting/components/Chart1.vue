@@ -18,89 +18,82 @@ const initChart = () => {
     const myChart: any = echarts.init(chartRef.value);
 
     const option = {
-        // title: {
-        //     text: 'Waterfall Chart',
-        //     subtext: 'Living Expenses in Shenzhen'
-        // },
-        tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-                type: 'shadow'
-            },
-            formatter: function (params: any) {
-                var tar = params[1];
-                return tar.name + '<br/>' + tar.seriesName + ' : ' + tar.value;
-            }
-        },
+       
         grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-        },
-        xAxis: {
-            type: 'category',
-            splitLine: { show: false },
-            data: ['Total', 'Rent', 'Utilities', 'Transportation', 'Meals', 'Other'],
-            axisLine: {
-                show: false
-            },
-            axisTick: {
-                show: false
-            }
-        },
-        yAxis: {
-            type: 'value',
-            axisLabel: {
-                show: false
-            },
-            axisLine: {
-                show: false
-            },
-            axisTick: {
-                show: false
-            },
-            splitLine: {
-                show: false
-            }
-        },
-        series: [
-            {
-                name: 'Placeholder',
-                type: 'bar',
-                stack: 'Total',
-                itemStyle: {
-                    borderColor: 'transparent',
-                    color: 'transparent'
-                },
-                emphasis: {
-                    itemStyle: {
-                        borderColor: 'transparent',
-                        color: 'transparent'
-                    }
-                },
-                data: [0, 1700, 1400, 1200, 300, 0]
-            },
-            {
-                name: 'Life Cost',
-                type: 'bar',
-                stack: 'Total',
-                label: {
-                    show: true,
-                    position: 'inside'
-                },
-                itemStyle: {
-                    color: 'rgba(224, 98, 85, 1)',
-                    borderRadius: [15, 15, 15, 15]
-                },
-                // emphasis: {
-                //     itemStyle: {
-                //         color: '#5c6'
-                //     }
-                // },
-                data: [2900, 1200, 300, 200, 900, 300]
-            }
-        ]
+    left: '3%',
+    right: '4%',
+    bottom: '3%',
+    containLabel: true
+  },
+  xAxis: {
+    type: 'value'
+  },
+  yAxis: {
+    type: 'category',
+    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+  },
+  series: [
+    {
+      name: 'Direct',
+      type: 'bar',
+      stack: 'total',
+      label: {
+        show: true
+      },
+    //   emphasis: {
+    //     focus: 'series'
+    //   },
+      data: [0, 302, 301, 334, 390, 330, 320]
+    },
+    {
+      name: 'Mail Ad',
+      type: 'bar',
+      stack: 'total',
+      label: {
+        show: true
+      },
+      emphasis: {
+        focus: 'series'
+      },
+      data: [120, 132, 101, 0, 90, 230, 210]
+    },
+    {
+      name: 'Affiliate Ad',
+      type: 'bar',
+      stack: 'total',
+      label: {
+        show: true
+      },
+      emphasis: {
+        focus: 'series'
+      },
+      data: [220, 182, 191, 234, 290, 330, 310]
+    },
+    {
+      name: 'Video Ad',
+      type: 'bar',
+      stack: 'total',
+      label: {
+        show: true
+      },
+      emphasis: {
+        focus: 'series'
+      },
+      data: [150, 212, 201, 154, 190, 330, 410]
+    },
+    {
+      name: 'Search Engine',
+      type: 'bar',
+      stack: 'total',
+      label: {
+        show: true
+      },
+      emphasis: {
+        focus: 'series'
+      },
+      data: [820, 832, 901, 934, 1290, 1330, 1320]
+    }
+  ]
     };
 
     if (option && typeof option === 'object') {

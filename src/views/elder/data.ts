@@ -9,7 +9,7 @@ const elderTable: any = {
         checkbox: false,//复选框
         activeConfig: {
             active: true,
-            width: 300,
+            width: 150,
         },
     },
     editConfig: {
@@ -254,24 +254,24 @@ const elderTable: any = {
         {
             title: '姓名',
             key: 'name',
-            minWidth: 150,
+            minWidth: 100,
         },
         {
             title: '性别',
             slot: 'gender',
             key: 'gender',
-            minWidth: 150,
+            minWidth: 80,
         },
         {
             title: '联系电话',
             key: 'phone',
-            minWidth: 200,
+            minWidth: 150,
         },
 
         {
             title: '生日',
             key: 'birthDate',
-            minWidth: 150,
+            minWidth: 130,
         },
 
         // {
@@ -282,7 +282,7 @@ const elderTable: any = {
         {
             title: '经办人',
             key: 'operator',
-            minWidth: 150,
+            minWidth: 100,
         },
 
     ]

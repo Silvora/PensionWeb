@@ -71,7 +71,7 @@ onMounted(() => {
             list[item.type].percentage = item.percentage + '%'
 
 
-            s += item.totalCount || 0
+            s += item.count || 0
         })
         // obj.push({
         //     ...obj[0],
