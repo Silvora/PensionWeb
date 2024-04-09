@@ -63,7 +63,7 @@
                     @handleUpdatePage="handleUpdatePage" :tableH="tableH" @handleEdit="handleElderEditModal">
 
                     <template #gender="{ row }">
-                        <span>{{ row.gender == 1 ? '男' : row.gender == 2 ? '女' : '' }}</span>
+                        <span>{{ row.gender == 1 ? '男' : row.gender == 2 ? '女' : '未知' }}</span>
                     </template>
 
                     <template #active="{ row }">
@@ -518,6 +518,7 @@ const getRoomList = () => {
         .write {
             float: right;
             padding: 0 10px;
+            cursor: pointer;
         }
 
         .memo {

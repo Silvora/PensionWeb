@@ -77,7 +77,7 @@
 
                     </FormItem>
 
-                    <FormItem label="高度设置" prop="installHeight">
+                    <FormItem label="安装高度" prop="installHeight">
                         <InputNumber :max="3" :min="2" v-model="formData.fallParams.installHeight" style="width: 100%;" />
 
                     </FormItem>
@@ -142,7 +142,7 @@
 
                         <div class="Dist">
                            <div>
-                            <FormItem label="最大时间范围" prop="time">
+                            <FormItem label="开始时间" prop="time">
                             <!-- <TimePicker v-model="formData.sleepParams.leaveBedConfig.time" format="HH:mm" type="timerange"
                                 placement="bottom-end" :placeholder="t('时间段')" style="width: 100%" 
                                 @on-change="(e:any)=>handleTimeChange(e,'leaveBedConfig')"
@@ -152,7 +152,7 @@
                         </FormItem>
                            </div>
                        <div>
-                        <FormItem label="最小时间范围" prop="time">
+                        <FormItem label="结束时间" prop="time">
                             <!-- <TimePicker v-model="formData.sleepParams.leaveBedConfig.time" format="HH:mm" type="timerange"
                                 placement="bottom-end" :placeholder="t('时间段')" style="width: 100%" 
                                 @on-change="(e:any)=>handleTimeChange(e,'leaveBedConfig')"
@@ -163,6 +163,15 @@
                        </div>
                         </div>
 
+                        <FormItem label="离床时常" prop="time">
+                            <!-- <TimePicker v-model="formData.sleepParams.leaveBedConfig.time" format="HH:mm" type="timerange"
+                                placement="bottom-end" :placeholder="t('时间段')" style="width: 100%" 
+                                @on-change="(e:any)=>handleTimeChange(e,'leaveBedConfig')"
+                                /> -->
+
+                            <TimePicker v-model="formData.sleepParams.leaveBedConfig.sleep" format="HH:mm" style="width: 100%;"></TimePicker>
+                        </FormItem>
+
                        
 
                         <!-- <FormItem label="离床时长" prop="time">
@@ -170,7 +179,7 @@
                             :placeholder="t('离床时长')" style="width: 100%" />
                         </FormItem> -->
 
-                        <div class="Dist">
+                        <!-- <div class="Dist">
                             <div>
                                 <FormItem label="最大监测范围" prop="max">
                             <InputNumber :max="999999" :min="0" v-model="formData.sleepParams.leaveBedConfig.max"
@@ -186,7 +195,7 @@
 
                         </FormItem>
                             </div>
-                        </div>
+                        </div> -->
 
 
                        
@@ -208,7 +217,7 @@
                         </FormItem>
 
 
-                        <div class="Dist">
+                        <!-- <div class="Dist">
                            <div>
                             <FormItem label="最大时间范围" prop="time">
                             <TimePicker v-model="formData.sleepParams.heartRateConfig.maxTime" format="HH:mm" style="width: 120px;"></TimePicker>
@@ -219,7 +228,7 @@
                             <TimePicker v-model="formData.sleepParams.heartRateConfig.minTime" format="HH:mm" style="width: 120px;"></TimePicker>
                         </FormItem>
                        </div>
-                        </div>
+                        </div> -->
 
                         <!-- <FormItem label="时间" prop="time">
                             <TimePicker v-model="formData.sleepParams.heartRateConfig.time" format="HH:mm" type="timerange"
@@ -267,7 +276,7 @@
                         </FormItem>
 
 
-                        <div class="Dist">
+                        <!-- <div class="Dist">
                            <div>
                             <FormItem label="最大时间范围" prop="time">
                             <TimePicker v-model="formData.sleepParams.respiratoryConfig.maxTime" format="HH:mm" style="width: 120px;"></TimePicker>
@@ -278,7 +287,7 @@
                             <TimePicker v-model="formData.sleepParams.respiratoryConfig.minTime" format="HH:mm" style="width: 120px;"></TimePicker>
                         </FormItem>
                        </div>
-                        </div>
+                        </div> -->
 
                         <!-- <FormItem label="时间" prop="time">
                             <TimePicker v-model="formData.sleepParams.respiratoryConfig.time" format="HH:mm"

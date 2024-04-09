@@ -69,16 +69,16 @@ const agencyData: any = {
                 childs: [
                     {
                         label: '公立',
-                        value: '0',
+                        value: '公立',
 
                     },
                     {
                         label: '民营',
-                        value: '1',
+                        value: '民营',
                     },
                     {
                         label: '共建民营',
-                        value: '2',
+                        value: '共建民营',
                     }
                 ]
             },

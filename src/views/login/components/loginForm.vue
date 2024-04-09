@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang='ts'>
-import { Form, FormItem, Input, Button, Checkbox } from "view-ui-plus"
+import { Form, FormItem, Input, Button, Checkbox, Message } from "view-ui-plus"
 import { onMounted, ref } from "vue";
 import { Login } from "@/api/Login/Login"
 import { useRouter } from "vue-router";
@@ -37,6 +37,13 @@ import md5 from 'js-md5';
 const appStore = useAppStore()
 const size = 'large'
 const emit = defineEmits(['update:loginTitle'])
+const props = defineProps({
+  autoDesc: {
+    type: Boolean,
+    default: false
+  }
+})
+const loginForm = ref<any>(null)
 const loading = ref(false)
 const router = useRouter()
 const form = ref({
@@ -55,41 +62,54 @@ const rule = {
 const autoLogin = ref(true)
 const handleSubmit = () => {
 
-  if (autoLogin) {
-    setToken('identifier', form.value.identifier)
-    setToken('password', form.value.password)
-  } else {
-    clearItemToken('identifier')
-    clearItemToken('password')
-  }
-  setToken('ing-Token', "res.datas.access_token")
-  setToken('ing-User', "res.datas.user")
-  //router.push("/")
-
-  const data = {
-    identifier: form.value.identifier,
-    password: md5(form.value.password)
-
-  }
+  loginForm.value.validate((valid: boolean) => {
+    if (valid) {
+      if (!props.autoDesc) {
+        Message.warning(t('请先阅读并同意隐私协议'))
+        return
+      }
 
 
-  loading.value = true
-  Login(data).then((res: any) => {
-    console.log(res)
-    setToken('ing-Token', res.data)
-    setToken('ing-User', form.value.identifier)
+      if (autoLogin) {
+        setToken('identifier', form.value.identifier)
+        setToken('password', form.value.password)
+      } else {
+        clearItemToken('identifier')
+        clearItemToken('password')
+      }
+      setToken('ing-Token', "res.datas.access_token")
+      setToken('ing-User', "res.datas.user")
+      //router.push("/")
 
-    appStore.setUserInfo(form.value.identifier)
+      const data = {
+        identifier: form.value.identifier,
+        password: md5(form.value.password)
+
+      }
 
 
-    router.push("/")
-    loading.value = false
+      loading.value = true
+      Login(data).then((res: any) => {
+        console.log(res)
+        setToken('ing-Token', res.data)
+        setToken('ing-User', form.value.identifier)
+
+        appStore.setUserInfo(form.value.identifier)
 
 
-  }).finally(() => {
-    loading.value = false
-    //router.push("/")
+        router.push("/")
+        loading.value = false
+        Message.success(t('登录成功'))
+
+      }).finally(() => {
+        loading.value = false
+        //router.push("/")
+      })
+    }
   })
+
+
+
 }
 
 const handleRePassword = () => {

@@ -85,15 +85,15 @@ const baseInfo: any = {
             
                     {
                         label: '未婚',
-                        value: '0'
+                        value: '未婚'
                     },
                     {
                         label: '已婚',
-                        value: '1'
+                        value: '已婚'
                     },
                          {
                         label: '丧偶',
-                        value: '2'
+                        value: '丧偶'
                     }  
                     
                 ]
@@ -109,19 +109,19 @@ const baseInfo: any = {
                  childs: [
                     {
                         label: '中学以下',
-                        value: '0'
+                        value: '中学以下'
                     },
                     {
                         label: '中学',
-                        value: '1'
+                        value: '中学'
                     },
                          {
                         label: '大学',
-                        value: '2'
+                        value: '大学'
                      }  ,
                       {
                         label: '大学以上',
-                        value: '3'
+                        value: '大学以上'
                     }  
                     
                 ]
@@ -495,7 +495,7 @@ const toolBarConfig:any= {
             childs: [
                 {
                     label: '是',
-                    value: 1
+                    value: 0
                 },
                 {
                     label: '否',
@@ -706,15 +706,15 @@ const healthyInfo: any = {
                 childs: [
                     {
                         label: '正常',
-                        value: '0'
+                        value: '正常'
                     },
                     {
                         label: '一般',
-                        value: '1'
+                        value: '一般'
                     },
                     {
                         label: '困难',
-                        value: '2'
+                        value: '困难'
                     }
                 ]
             },
@@ -729,15 +729,15 @@ const healthyInfo: any = {
                 childs: [
                     {
                         label: '正常',
-                        value: '0'
+                        value: '正常'
                     },
                     {
                         label: '失能',
-                        value: '1'
+                        value: '失能'
                     },
                     {
                         label: '半失能',
-                        value: '2'
+                        value: '半失能'
                     }
                 ]
             },
@@ -752,15 +752,15 @@ const healthyInfo: any = {
                 childs: [
                     {
                         label: '正常',
-                        value: '0'
+                        value: '正常'
                     },
                     {
                         label: '一般',
-                        value: '1'
+                        value: '一般'
                     },
                     {
                         label: '失明',
-                        value: '2'
+                        value: '失明'
                     }
                 ]
             },
@@ -775,15 +775,15 @@ const healthyInfo: any = {
                 childs: [
                     {
                         label: '正常',
-                        value: '0'
+                        value: '正常'
                     },
                     {
                         label: '一般',
-                        value: '1'
+                        value: '一般'
                     },
                     {
-                        label: '失聪',
-                        value: '2'
+                        label: '一般',
+                        value: '一般'
                     }
                 ]
             },

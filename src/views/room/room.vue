@@ -1,7 +1,9 @@
 <template>
     <div class="room">
         <div class="toolBar">
-            <div></div>
+            <div> <span class="Back" @click="() => $router.go(-1)">
+                    <Icon type="md-navigate" style="transform: rotateZ(-90deg);" />{{ t('返回上一页') }}
+                </span></div>
             <div class="bar">
                 <RadioGroup v-model="type" type="button" button-style="solid" @on-change="handleRadioType">
                     <Radio v-for="item in  typeList" :key="item.id" :label="item.id">
@@ -285,6 +287,19 @@ onMounted(() => {
         background: #fff;
 
         position: relative;
+
+        .Back {
+            width: 260px;
+            cursor: pointer;
+            display: inline-block;
+            line-height: 60px;
+            height: 60px;
+            background-color: red;
+            padding: 0 20px;
+            color: #1364F8;
+            background: linear-gradient(90deg, rgba(19, 100, 248, 0.1) 0%, rgba(19, 100, 248, 0) 100%);
+        }
+
 
         .bar {
             margin: 0 auto;

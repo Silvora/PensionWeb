@@ -321,7 +321,10 @@ const handleRoleSumbit = () => {
             { i: 0, u: fileUrl.value.certUrl1 },
             { i: 0, u: fileUrl.value.certUrl2 },
             { i: 0, u: fileUrl.value.certUrl3 }
-        ])
+        ]),
+        superiorId:1,
+        groupId:1,
+
     }
 
 

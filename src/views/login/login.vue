@@ -8,14 +8,15 @@
         </div>
 
         <div class="form-con" v-if="loginTitle == '登录'">
-          <LoginForm v-model:loginTitle="loginTitle"></LoginForm>
+          <LoginForm v-model:loginTitle="loginTitle" :autoDesc="autoDesc"></LoginForm>
           <div class="demo-auto-login">
             <Checkbox v-model="autoDesc" style="margin: 0;"></Checkbox>
             {{ t('我已阅读并同意') }}<a @click="modal = true">{{ t(`${'《用户隐私协议》'}`) }}</a>
             <!-- <span>{{ t("尚未拥有账户？") }}<a @click="handleSetLoginTitle('注册')">{{ t('注册') }}</a></span> -->
           </div>
 
-          <div style="padding-top: 20px;text-align: center;">
+          <div style="padding-top: 20px;display: flex;justify-content: space-between;align-items: center;">
+            <a @click="() => loginTitle = '注册'">{{ t('注册账户') }}</a>
             <a @click="() => loginTitle = '修改密码'">{{ t('忘记密码') }}</a>
           </div>
         </div>

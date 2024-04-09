@@ -14,9 +14,9 @@
             <Row :gutter="8">
                 <Col span="8">
                 <Select v-model="select" style="width:100%" :size="size">
-                    <Option value="beijing">New York</Option>
-                    <Option value="shanghai" disabled>London</Option>
-                    <Option value="shenzhen">Sydney</Option>
+                    <Option value="beijing">86</Option>
+                    <!-- <Option value="shanghai" disabled>London</Option> -->
+                    <Option value="shenzhen">852</Option>
                 </Select>
                 </Col>
                 <Col span="16">
@@ -30,12 +30,12 @@
 
         <FormItem prop="yzm">
             <Row :gutter="8">
-                <Col span="16">
+                <Col span="14">
                 <Input style="width: 100%;" type="text" prefix="ios-lock-outline" v-model="form.yzm" placeholder="请输入验证码"
                     :size="size">
                 </Input>
                 </Col>
-                <Col span="8">
+                <Col span="10">
                 <Button @click="handleTimeVerify" :size="size" style="width: 100%;"
                     :disabled="time != 60">{{ time == 60 ? '获取验证码' : time + 's' }}</Button>
                 </Col>
@@ -60,7 +60,7 @@ const form = ref({
     yzm: ''
 })
 const gisterForm = ref<any>(null)
-const select = ref('beijing')
+const select = ref('')
 const time = ref(60)
 const rule = {
     username: [

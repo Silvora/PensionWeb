@@ -192,33 +192,21 @@ const roleData: any = {
             //disabled: false,
             childs: [
                 {
-                    label: '小学',
-                    value: '小学'
+                    label: '中学以下',
+                    value: '中学以下'
                 },
                 {
-                    label: '初中',
-                    value: '初中'
+                    label: '中学',
+                    value: '中学'
                 },
-                {
-                    label: '中专',
-                    value: '中专'
-                },
-                {
-                    label: '高中',
-                    value: '高中'
-                },
-                {
-                    label: '大专',
-                    value: '大专'
-                },
-                {
-                    label: '本科',
-                    value: '本科'
-                },
-                {
-                    label: '硕士',
-                    value: '硕士'
-                }
+                     {
+                    label: '大学',
+                    value: '大学'
+                 }  ,
+                  {
+                    label: '大学以上',
+                    value: '大学以上'
+                }  
             ],
             span: 1,
                 //disabled: false,

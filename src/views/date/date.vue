@@ -30,7 +30,8 @@
                 </div>
                 <div class="center">
                     <p class="tabs">
-                        <span :class="[type == 'home' ? 'activeTab' : '']" @click="handleRoute('home')">{{ t('机构介绍') }}</span>
+                        <span :class="[type == 'home' ? 'activeTab' : '']"
+                            @click="handleRoute('home')">{{ t('机构介绍') }}</span>
                         <span :class="[type == 'community' ? 'activeTab' : '']"
                             @click="handleRoute('community')">{{ t('机构数据') }}</span>
                         <span :class="[type == 'mechanism' ? 'activeTab' : '']"
@@ -143,9 +144,9 @@
                         <span> {{ day }}</span>
                         <span style="float: right;">
                             <!-- <Icon type="md-home" /> -->
-                        
+
                         </span>
-                       </p>
+                    </p>
                     <div class="chart">
                         <p>{{ t('入住情况分析') }}</p>
                         <Check></Check>
@@ -165,14 +166,12 @@
 
 
         <span class="zoom">
-            <Icon v-if=" !isFullscreen" type="md-expand" color="#32E7FF" size="32" @click="handleZoom"
-               />
-              
-                        <Icon v-else type="md-contract" color="#32E7FF" size="28"
-              @click="handleZoom" />
+            <Icon v-if="!isFullscreen" type="md-expand" color="#32E7FF" size="32" @click="handleZoom" />
+
+            <Icon v-else type="md-contract" color="#32E7FF" size="28" @click="handleZoom" />
         </span>
         <span class="home">
-            <Icon type="md-home" color="#32E7FF" size="28" style="padding-left: 20px;" @click="router.push('/home')"/>
+            <Icon type="md-home" color="#32E7FF" size="28" style="padding-left: 20px;" @click="router.push('/home')" />
 
         </span>
     </div>
@@ -198,9 +197,9 @@ let app = document.getElementById('#screen')
 // console.log(app)
 const { toggle, isFullscreen } = useFullscreen(app)
 const handleZoom = () => {
-  toggle()
+    toggle()
 }
-const {t} = useI18n()
+const { t } = useI18n()
 const day = ref('')
 const router = useRouter();
 const columns = [
@@ -208,10 +207,10 @@ const columns = [
         title: '姓名',
         key: 'name'
     },
-    {
-        title: '内容',
-        key: 'age'
-    },
+    // {
+    //     title: '内容',
+    //     key: 'age'
+    // },
     {
         title: '床位',
         key: 'address'
@@ -223,49 +222,49 @@ const columns = [
 ]
 const data = [
     {
-        name: 'John Brown',
-        age: 18,
-        address: 'New York',
-        date: '2016-10-03'
-    },
-    {
-        name: 'Jim Green',
-        age: 24,
-        address: 'Londo',
-        date: '2016-10-01'
-    },
-    {
-        name: 'Joe Black',
-        age: 30,
-        address: 'Sydne',
-        date: '2016-10-02'
-    },
-    {
-        name: 'Jon Snow',
-        age: 26,
-        address: 'Ottaw',
-        date: '2016-10-04'
-    },
-    {
-        name: 'John Brown',
+        name: 'John',
         age: 18,
         address: 'New',
         date: '2016-10-03'
     },
     {
-        name: 'Jim Green',
+        name: 'Jim',
         age: 24,
         address: 'Londo',
         date: '2016-10-01'
     },
     {
-        name: 'Joe Black',
+        name: 'Joe',
+        age: 30,
+        address: 'Sydne',
+        date: '2016-10-02'
+    },
+    {
+        name: 'Jon',
+        age: 26,
+        address: 'Ottaw',
+        date: '2016-10-04'
+    },
+    {
+        name: 'John',
+        age: 18,
+        address: 'New',
+        date: '2016-10-03'
+    },
+    {
+        name: 'Jim',
+        age: 24,
+        address: 'Londo',
+        date: '2016-10-01'
+    },
+    {
+        name: 'Joe',
         age: 30,
         address: 'Sydney',
         date: '2016-10-02'
     },
     {
-        name: 'Jon Snow',
+        name: 'Jon',
         age: 26,
         address: 'Ottawa',
         date: '2016-10-04'
@@ -277,10 +276,10 @@ const columns2 = [
         title: '姓名',
         key: 'name'
     },
-    {
-        title: '活动',
-        key: 'age'
-    },
+    // {
+    //     title: '活动',
+    //     key: 'age'
+    // },
     {
         title: '负责人',
         key: 'address'
@@ -292,9 +291,9 @@ const columns2 = [
 ]
 const data2 = [
     {
-        name: 'John Brown',
+        name: 'John',
         age: 18,
-        address: 'New York No. 1 Lake Park',
+        address: 'New',
         date: '2016-10-03'
     },
 
@@ -347,12 +346,12 @@ onMounted(() => {
 
 
 <style scoped lang='less'>
-
-.day{
+.day {
     display: block;
     // background: red;
     height: 21px;
 }
+
 .date::-webkit-scrollbar {
     display: none;
     /* 适用于Chrome、Safari和Opera */
@@ -373,13 +372,15 @@ onMounted(() => {
     /* 适用于Firefox */
     overflow-y: scroll;
     position: relative;
-    .zoom{
+
+    .zoom {
         position: absolute;
         right: 20px;
         top: 40px;
         cursor: pointer;
     }
-    .home{
+
+    .home {
         position: absolute;
         right: 55px;
         top: 42px;

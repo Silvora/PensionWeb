@@ -1,21 +1,23 @@
 <template>
     <Card :bordered="false" :padding="0" style="background: rgba(255, 255, 255, 1);margin-bottom: 10px;">
-        <div :class="['userInfo',info.focus==0?'focus':'',info?.deviceList[0]?.status==10?'error':'']">
+        <div :class="['userInfo', info.focus == 0 ? 'focus' : '', info?.deviceList[0]?.status == 10 ? 'error' : '']">
             <p class="title">
                 <span
                     :class="['t1', ['gary', 'green', 'yellow'][device?.status || 0]]">{{ [t('空闲'), t('正常'), t('异常')][device?.status || 0] }}</span>
                 <span class="t2">{{ info?.roomBedNumber }}</span>
                 <span class="t3">
-                    <img src="@/assets/images/room-setting.png" alt="" srcset="">
+                    <img src="@/assets/images/room-setting.png"
+                        @click="handleNavTo(`/add-elder?type=0&id=${info?.elderlyId}`)" alt="" srcset="">
                 </span>
             </p>
             <div class="userBox">
                 <div class="imgInfo">
-                    <img @click="handleOpenDeviceInfo(info)" class="img" v-if="info.elderlyPhoto" :src="info.elderlyPhoto" alt="" srcset="">
+                    <img @click="handleOpenDeviceInfo(info)" class="img" v-if="info.elderlyPhoto" :src="info.elderlyPhoto"
+                        alt="" srcset="">
 
                     <!-- @click="handleNavTo(`/add-elder?type=0&id=${info?.elderlyId}`)" -->
-                    <img @click="handleOpenDeviceInfo(info)"  v-else class="img" src="@/assets/images/screen.png" alt="" srcset=""
-                        >
+                    <img @click="handleOpenDeviceInfo(info)" v-else class="img" src="@/assets/images/screen.png" alt=""
+                        srcset="">
                     <div class="imgList" @click="handleNavTo(`/setting`)">
                         <img src="@/assets/images/睡眠监测@2x(4).png" alt="">
                         <img src="@/assets/images/位图@2x(2).png" alt="">
@@ -85,15 +87,15 @@ const props = defineProps({
     }
 })
 
-const handleOpenDeviceInfo = (item:any) => {
+const handleOpenDeviceInfo = (item: any) => {
 
-    if(!item?.deviceList[0]?.stateInfo?.mac){
+    if (!item?.deviceList[0]?.stateInfo?.mac) {
         Message.warning(t('该老人没有绑定设备'))
-    }else{
+    } else {
         console.log(item)
-    DeviceInfoRef.value.Open(item)
+        DeviceInfoRef.value.Open(item)
     }
-   
+
 }
 
 watchEffect(() => {
@@ -116,14 +118,16 @@ const handleNavTo = (path: string) => {
 </script>
 
 <style scoped lang='less'>
-.focus{
-    border:1px solid red;
+.focus {
+    border: 1px solid red;
     border-radius: 4px;
 }
-.error{
+
+.error {
     background: #ed4014;
     color: #fff;
 }
+
 .userInfo {
     width: 100%;
     padding-bottom: 1px;
@@ -232,5 +236,4 @@ const handleNavTo = (path: string) => {
         }
     }
 
-}
-</style>
+}</style>
