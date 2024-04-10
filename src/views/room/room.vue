@@ -256,9 +256,9 @@ const getRoomBedList = () => {
         // })
 
         checkInfo.value = {
-            check: 0,
-            free: 0,
-            reserve: 0,
+            check: res.data.filter((item: any) => item.status == 2).length || 0,
+            free: res.data.filter((item: any) => item.status == 0).length || 0,
+            reserve: res.data.filter((item: any) => item.status == 1).length || 0,
             count: res.data.length || 0,
         }
     })

@@ -1,6 +1,6 @@
 <template>
     <div class="details">
-        <Modal v-model="detailsModal" :title="t('床位信息')" :footer-hide="true" width="650">
+        <Modal v-model="detailsModal" :title="t('设备信息')" :footer-hide="true" width="650">
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
@@ -37,13 +37,13 @@
                         </Space>
                     </span>
                     <span>
-                        <Button type="primary" size="small" class="btn"
-                            @click="handleOpenElderModal">{{ t('选择老人') }}</Button>
+                        <!-- <Button type="primary" size="small" class="btn"
+                            @click="handleOpenElderModal">{{ t('选择老人') }}</Button> -->
                     </span>
 
 
                 </p>
-                <div class="info" v-if="props.info?.checkIn">
+                <div class="info" v-if="props.info">
                     <div class="img">
                         <img src="@/assets/images/screen.png" alt="" srcset="">
                     </div>
@@ -310,6 +310,7 @@ const handleRadioType = (label: string) => {
 
 const showModal = () => {
 
+    console.log(props.info)
     detailsModal.value = true
 }
 

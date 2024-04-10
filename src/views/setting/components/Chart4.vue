@@ -2,7 +2,7 @@
     <div style="width: 100%;">
         <!-- <p>睡着时的体动介于0到100</p> -->
         <p v-if="props.DeviceInfoListInfo.d3 && props.DeviceInfoListInfo.d6">
-            {{t('睡着时的体动介于')}} {{ props.DeviceInfoListInfo?.d6?.length?Math.min(...props.DeviceInfoListInfo.d6)||' - ':' - '  }}到{{ props.DeviceInfoListInfo?.d3?.length?Math.max(...props.DeviceInfoListInfo.d3)||' - ':' - '  }}{{t('之间')}}</p>
+            {{t('睡着时的体动介于')}} {{ Math.min(...props.DeviceInfoListInfo.d6) }}到{{ Math.max(...props.DeviceInfoListInfo.d3)}}{{t('之间')}}</p>
         <div class="box" ref="chartRef" >
         </div>
         <!-- <div v-else  class="box">

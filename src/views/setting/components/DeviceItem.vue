@@ -13,16 +13,18 @@
             </p>
             <div class="deviceBox">
                 <img class="img" src="@/assets/images/睡眠监测@2x(1).png" alt="" srcset=""  @click="handleSetCheck">
-                <div class="info" @click="handleGetDeviceInfo">
+                <div class="info" >
+                   <div @click="handleGetDeviceInfo">
                     <p class="t1">{{ props?.info.name }}
 
-                    </p>
-                    <p class="t2">
-                        ID:{{ props?.info.mac }}
-                    </p>
-                    <p class="t2">
-                        关联老人:{{ props?.info.elderlyInfo?.name }}
-                    </p>
+</p>
+<p class="t2">
+    ID:{{ props?.info.mac }}
+</p>
+<p class="t2">
+    关联老人:{{ props?.info.elderlyInfo?.name }}
+</p>
+                   </div>
 
                     <span class="check">
                         <Checkbox v-model="check">{{ }}</Checkbox>
@@ -228,6 +230,7 @@ const handleGetDeviceInfo = ()=>{
             position: absolute;
             top: 45px;
             left: 45px;
+            display: inline-block;
         }
 
         .info {

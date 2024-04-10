@@ -129,7 +129,7 @@
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
-            <Scheduling v-if="modal"></Scheduling>
+            <Scheduling v-if="modal" @handleUpdate="getMemo"></Scheduling>
         </Modal>
 
 

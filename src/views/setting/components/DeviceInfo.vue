@@ -115,8 +115,8 @@
                             {{ t('睡眠综合分析') }}
                         </p>
                         <p class="time1"><span
-                                class="big">{{ toHourMinute(logInfo?.sleepLong).split(":")[0] }}</span>{{ t('小时') }} <span
-                                class="big">{{ toHourMinute(logInfo?.sleepLong).split(":")[1] }}</span> {{ t('分钟') }}</p>
+                                class="big">{{ toHourSecond(logInfo?.sleepLong).split(":")[0] }}</span>{{ t('小时') }} <span
+                                class="big">{{ toHourSecond(logInfo?.sleepLong).split(":")[1] }}</span> {{ t('分钟') }}</p>
                         <p class="time2">{{ t('入睡时间') }} <span class="bold">{{ logInfo?.sleepStartTime?.split(" ")[1] }}</span>
                             {{ t('分') }}, {{ t('结束时间') }}<span class="bold">{{ logInfo?.sleepEndTime?.split(" ")[1] }}</span> {{ t('分') }}
                         </p>
@@ -129,7 +129,7 @@
                             <!-- {{ t('暂无数据') }} -->
                             <Row>
                                 <Col :span="12">
-                                    <p class="title">夜间睡眠{{toHourMinute(logInfo?.sleepLong).split(":")[0]||'-'}}小时</p>
+                                    <p class="title">夜间睡眠{{toHourSecond(logInfo?.sleepLong).split(":")[0]||'-'}}小时</p>
                                     <p class="d">{{ t('参考值:') }}6～10{{ t('小时') }}</p>
                                 </Col>
                                 <Col :span="12">
@@ -223,6 +223,11 @@ const toHourMinute = (minutes: any) => {
     // 也可以转换为json，以方便专外部使用属
     // return {hour:Math.floor(minutes/60),minute:(minutes%60)};
 }
+const toHourSecond = (second: any) => {
+    return (Math.floor(second / 60/60) + ":" + (second % 60));
+    // 也可以转换为json，以方便专外部使用属
+    // return {hour:Math.floor(minutes/60),minute:(minutes%60)};
+}   
 
 const handleLog = () => {
     modal.value = false
@@ -281,12 +286,12 @@ const getData = () => {
         let date: any = [] //时间
 
         res.data?.forEach((element: any) => {
-            d1.push(element?.highBreathRate)
-            d2.push(element?.highHeartRate)
-            d3.push(element?.highPhysical)
-            d4.push(element?.lowBreathRate)
-            d5.push(element?.lowHeartRate)
-            d6.push(element?.lowPhysical)
+            d1.push(element?.highBreathRate==null?0:element?.highBreathRate)
+            d2.push(element?.highHeartRate==null?0:element?.highHeartRate)
+            d3.push(element?.highPhysical==null?0:element?.highPhysical)
+            d4.push(element?.lowBreathRate==null?0:element?.lowBreathRate)
+            d5.push(element?.lowHeartRate==null?0:element?.lowHeartRate)
+            d6.push(element?.lowPhysical==null?0:element?.lowPhysical)
             date.push(element?.minute?.split(" ")[1]?.slice(0, 5)||'')
         });
 

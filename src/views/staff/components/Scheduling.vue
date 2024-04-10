@@ -120,8 +120,8 @@
                             <Avatar icon="ios-person" size="30" />
                         </div>
                         <div class="txt">
-                            <p class="t1">倪杰</p>
-                            <p class="t2">护士</p>
+                            <p class="t1">{{ addForm.name }}</p>
+                            <p class="t2">{{ addForm.type }}</p>
                         </div>
                     </div>
 
@@ -191,12 +191,14 @@ import { StaffScheduleListOfDay, StaffScheduleRemoveId, StaffScheduleSave, Staff
 import { MemoList, MemoSave } from "@/api/Memo/Memo";
 import { useI18n } from 'vue-i18n';
 import dayjs from 'dayjs';
+import { join } from 'path';
 const { t } = useI18n()
 const searchData = ref({
     shiftType: '',
     keyword: '',
     dateStr: dayjs().format("YYYY-MM-DD"),
 })
+const emit = defineEmits(['handleUpdate'])
 const addModal = ref(false)
 const notesModal = ref(false)
 const addForm = ref<any>({
@@ -244,7 +246,8 @@ const handleOpenModal = (row: any) => {
         dateStr: addForm.value.dateStr,
         staffId: row.staffId,
         id: row.id,
-        // name: row.name,
+        name: row.name,
+        type: row.type,
         // date: row.date,
         startTimeStr: row.startTime,
         endTimeStr: row.endTime,
@@ -255,7 +258,7 @@ const handleOpenModal = (row: any) => {
     }
     addModal.value = true
 
-    console.log(addForm.value)
+    console.log(row,addForm.value)
 }
 // 添加备忘录
 const handleSumbit = () => {
@@ -265,6 +268,7 @@ const handleSumbit = () => {
         MemoSave({ type: 2, name: "交接班信息", content: notes.value.value2 }).then(() => {
             //console.log(res)
             Message.success(t('添加成功'))
+            emit('handleUpdate')
             notesModal.value = false
         })
     })
@@ -312,9 +316,15 @@ const handleEditSchedule = () => {
     // } else {
     //     StaffScheduleUpdate
     // }
-    request(addForm.value).then(() => {
+
+    let data = JSON.parse(JSON.stringify(addForm.value))
+    delete data.name
+    delete data.type
+
+
+    request(data).then(() => {
         Message.success(t(msg))
-        getData('')
+        getData()
     })
 
     addModal.value = false

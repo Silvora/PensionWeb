@@ -18,7 +18,7 @@
                     <!-- @click="handleNavTo(`/add-elder?type=0&id=${info?.elderlyId}`)" -->
                     <img @click="handleOpenDeviceInfo(info)" v-else class="img" src="@/assets/images/screen.png" alt=""
                         srcset="">
-                    <div class="imgList" @click="handleNavTo(`/setting`)">
+                    <div class="imgList" @click="handleSetting">
                         <img src="@/assets/images/睡眠监测@2x(4).png" alt="">
                         <img src="@/assets/images/位图@2x(2).png" alt="">
                         <img src="@/assets/images/温度计@2x.png" alt="">
@@ -62,6 +62,7 @@
         </div>
 
         <DeviceInfo ref="DeviceInfoRef"></DeviceInfo>
+        <DetailsModal ref="DetailsModalRef" :info="props.info" @handleUpdate="handleUpdate"></DetailsModal>
     </Card>
 </template>
 
@@ -70,6 +71,7 @@ import { useRouter } from 'vue-router';
 import { ref, watchEffect } from 'vue';
 import { useI18n } from "vue-i18n";
 import DeviceInfo from '../setting/components/DeviceInfo.vue';
+import DetailsModal from "./DetailsModal.vue"
 import { Message } from 'view-ui-plus';
 const { t } = useI18n()
 const router = useRouter()
@@ -79,6 +81,7 @@ const device = ref<any>({})
 const elderlyInfo = ref<any>({})
 const stateInfo = ref<any>({})
 const DeviceInfoRef = ref<any>(null)
+const DetailsModalRef = ref<any>(null)
 
 const props = defineProps({
     info: {
@@ -87,7 +90,16 @@ const props = defineProps({
     }
 })
 
+const handleSetting = ()=>{
+    DetailsModalRef.value.showModal()
+}
+
+const handleUpdate = ()=>{
+    
+}
+
 const handleOpenDeviceInfo = (item: any) => {
+
 
     if (!item?.deviceList[0]?.stateInfo?.mac) {
         Message.warning(t('该老人没有绑定设备'))

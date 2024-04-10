@@ -1,7 +1,7 @@
 <template>
     <div style="width: 100%;">
         <p v-if="props.DeviceInfoListInfo.d1 && props.DeviceInfoListInfo.d4">
-            {{ t('睡着时的呼吸频率介于') }} {{ props.DeviceInfoListInfo?.d4?.length?Math.min(...props.DeviceInfoListInfo.d4)||' - ':' - '  }}到{{ props.DeviceInfoListInfo?.d1?.length?Math.max(...props.DeviceInfoListInfo.d1)||' - ' :' - ' }}次/分。</p>
+            {{ t('睡着时的呼吸频率介于') }} {{ Math.min(...props.DeviceInfoListInfo.d4)  }}到{{ Math.max(...props.DeviceInfoListInfo.d1) }}次/分。</p>
 
         <div class="box" ref="chartRef" >
 

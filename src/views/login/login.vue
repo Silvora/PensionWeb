@@ -15,10 +15,10 @@
             <!-- <span>{{ t("尚未拥有账户？") }}<a @click="handleSetLoginTitle('注册')">{{ t('注册') }}</a></span> -->
           </div>
 
-          <div style="padding-top: 20px;display: flex;justify-content: space-between;align-items: center;">
+          <!-- <div style="padding-top: 20px;display: flex;justify-content: space-between;align-items: center;">
             <a @click="() => loginTitle = '注册'">{{ t('注册账户') }}</a>
             <a @click="() => loginTitle = '修改密码'">{{ t('忘记密码') }}</a>
-          </div>
+          </div> -->
         </div>
         <div class="form-con" v-if="loginTitle == '注册'">
           <RegisterForm></RegisterForm>
