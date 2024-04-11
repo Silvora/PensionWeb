@@ -64,9 +64,10 @@
         <RouterView v-slot="{ Component }">
 
           <Transition name="slide-fade" mode="out-in">
-            <KeepAlive :include="routerStore.keepAliveList">
-              <component :is="Component" :key="$route.name" v-if="routerStore.keepAliveList.includes($route.name)" />
-            </KeepAlive>
+            <!-- <KeepAlive :include="routerStore.keepAliveList"> -->
+              <component :is="Component" :key="$route.name"  />
+              <!-- v-if="routerStore.keepAliveList.includes($route.name)" -->
+            <!-- </KeepAlive> -->
           </Transition>
           <!-- <Transition name="slide-fade" mode="out-in">
             <component :is="Component" :key="$route.name" v-if="!routerStore.keepAliveList.includes($route.name)" />

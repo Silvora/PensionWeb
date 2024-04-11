@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts" name="home">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import screen from "@/assets/images/screen.png"
 import date from "@/assets/images/date.png"
 import room from "@/assets/images/room.png"
@@ -73,12 +73,6 @@ const handleNav = (route: string) => {
   router.push(route)
 }
 
-
-// onMounted(() => {
-//   AdminUserInfo().then((res: any) => {
-//     console.log(res)
-//   })
-// })
 
 
 </script>

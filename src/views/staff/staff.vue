@@ -144,8 +144,14 @@
                     <div class="input upload1">
                         <!-- <div class="up4">1</div> -->
                         <Upload :show-upload-list="false" :before-upload="(f: any) => handleUpload('proto', f)" action="#">
+                        <div class="imgItem">
+                           
                             <img :src="fileUrl.proto" class="up4" alt="" v-if="fileUrl.proto" />
                             <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
+                            <Icon class="icon" size="24" type="md-close-circle"
+                                style="color: red;cursor: pointer;padding:10px ;" v-if="fileUrl.proto"
+                                @click.stop="fileUrl.proto = ''" />
+                        </div>
                         </Upload>
                         <!-- <div class="up4">2</div>
                         <div class="up4">3</div> -->
@@ -167,18 +173,33 @@
                         <!-- <div class="up4">4</div> -->
                         <Upload :show-upload-list="false" :before-upload="(f: any) => handleUpload('certUrl1', f)"
                             action="#">
+                            <div class="imgItem">
                             <img :src="fileUrl.certUrl1" class="up4" alt="" v-if="fileUrl.certUrl1" />
                             <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
+                            <Icon class="icon" size="24" type="md-close-circle"
+                                style="color: red;cursor: pointer;padding:10px ;" v-if="fileUrl.certUrl1"
+                                @click.stop="fileUrl.certUrl1 = ''" />
+                        </div>
                         </Upload>
                         <Upload :show-upload-list="false" :before-upload="(f: any) => handleUpload('certUrl2', f)"
                             action="#">
+                            <div class="imgItem">
                             <img :src="fileUrl.certUrl2" class="up4" alt="" v-if="fileUrl.certUrl2" />
                             <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
+                            <Icon class="icon" size="24" type="md-close-circle"
+                                style="color: red;cursor: pointer;padding:10px ;" v-if="fileUrl.certUrl2"
+                                @click.stop="fileUrl.certUrl2 = ''" />
+                        </div>
                         </Upload>
                         <Upload :show-upload-list="false" :before-upload="(f: any) => handleUpload('certUrl3', f)"
                             action="#">
+                            <div class="imgItem">
                             <img :src="fileUrl.certUrl3" class="up4" alt="" v-if="fileUrl.certUrl3" />
                             <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
+                            <Icon class="icon" size="24" type="md-close-circle"
+                                style="color: red;cursor: pointer;padding:10px ;" v-if="fileUrl.certUrl3"
+                                @click.stop="fileUrl.certUrl3 = ''" />
+                        </div>
                         </Upload>
                         <!-- <Upload :show-upload-list="false" :before-upload="(f:any)=>handleUpload('driveUrl4',f)" action="#">
                     <img :src="fileUrl.driveUrl4" class="up4" alt="" v-if="fileUrl.driveUrl4"/>
@@ -445,6 +466,7 @@ const handleUpdatePage = ({ currentPage, pageSize }: any) => {
         currentPage,
         pageSize
     }
+    getData()
 }
 
 // 数据列表
@@ -593,6 +615,20 @@ onMounted(() => {
             // background: red;
             // flex-direction: row;
             // flex-wrap: wrap;
+            .imgItem {
+                position: relative;
+                top: 0;
+                left: 0;
+            }
+
+            // flex-direction: row;
+            // flex-wrap: wrap;
+            // justify-content: center;
+            .ivu-icon {
+                position: absolute;
+                top: 0px;
+                right: 0px;
+            }
         }
 
 

@@ -2,7 +2,7 @@
     <div class="sys">
         <div class="toolBar">
             <div>
-                <span class="goBack" @click="() => $router.go(-1)">
+                <span class="goBack" @click="() => $router.push('/home')">
                     <Icon type="md-navigate" style="transform: rotateZ(-90deg);" />{{ t('返回上一页') }}
                 </span>
             </div>
@@ -111,15 +111,12 @@ const handleSave = () => {
     position: relative;
 
     .toolBar {
-
-
         height: 60px;
         width: 100%;
         display: flex;
         // justify-content: space-between;
         align-items: center;
         background: #fff;
-
         position: relative;
 
         .bar {

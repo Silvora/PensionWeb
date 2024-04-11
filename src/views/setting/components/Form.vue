@@ -29,18 +29,25 @@
                     }, -->
 
                 <FormItem label="设备类型" prop="type">
-                    <Select v-model="formData.type" clearable style="width:100%">
-                         <Option value="ed713_type">{{ t('生命感知设备1代') }}</Option>
-                         <Option value="x1_type">{{ t('生命感知设备2代') }}</Option>
-                         <Option value="ed719_type">{{ t('行为感知设备') }}</Option>
-                         <!-- <Option value="1">呼吸机</Option>
+                    <Select v-model="formData.type" clearable style="width:100%" @on-change="handleDeviceType">
+                        <Option value="ed713_type">{{ t('生命感知设备1代') }}</Option>
+                        <Option value="x1_type">{{ t('生命感知设备2代') }}</Option>
+                        <Option value="ed719_type">{{ t('行为感知设备') }}</Option>
+                        <!-- <Option value="1">呼吸机</Option>
                          <Option value="2">心电图机</Option> -->
-                </Select>
+                    </Select>
                 </FormItem>
 
 
-                <FormItem label="楼栋/楼层/房间/床位" prop="dataValue">
-                    <Cascader :data="list" v-model="formData.dataValue" :load-data="loadList" :placeholder="formData.roomBedNumber?formData.roomBedNumber:'楼栋/楼层/房间/床位'"
+              
+                <FormItem label="楼栋/楼层/房间" prop="dataValue" v-if="formData.type == 'ed719_type'">
+                    <Cascader :data="list" v-model="formData.dataValue" :load-data="loadList"
+                        :placeholder="formData.roomBedNumber ? formData.roomBedNumber : '楼栋/楼层/房间'"
+                        @on-change="handleSearch" />
+                </FormItem>
+                <FormItem label="楼栋/楼层/房间/床位" prop="dataValue" v-else>
+                    <Cascader :data="list" v-model="formData.dataValue" :load-data="loadList"
+                        :placeholder="formData.roomBedNumber ? formData.roomBedNumber : '楼栋/楼层/房间/床位'"
                         @on-change="handleSearch" />
                 </FormItem>
 
@@ -50,7 +57,8 @@
                 </FormItem> -->
 
 
-                <div v-if="formData.type == 'ed719_type'" style="background: rgba(0, 0, 0,.05);padding: 10px;border-radius: 15px;margin: 10px 0;">
+                <div v-if="formData.type == 'ed719_type'"
+                    style="background: rgba(0, 0, 0,.05);padding: 10px;border-radius: 15px;margin: 10px 0;">
                     <FormItem label="蜂鸣器报警" prop="beeper">
                         <Switch size="large" v-model="formData.fallParams.beeper" :true-value="1" :false-value="0">
                             <template #open>
@@ -83,12 +91,11 @@
                     </FormItem>
 
                     <FormItem label="安装方式" prop="installFlag">
-             <Select v-model="formData.fallParams.installFlag">
-                <Option value="0">顶装</Option>
-                <Option value="1">侧装</Option>
-            </Select>
-
-        </FormItem>
+                        <Select v-model="formData.fallParams.installFlag">
+                            <Option value="0">顶装</Option>
+                            <Option value="1">侧装</Option>
+                        </Select>
+                    </FormItem>
                     <!-- <FormItem label="灵敏度" prop="dataValue">
              <Select v-model="formData.select">
                 <Option value="beijing">New York</Option>
@@ -99,12 +106,14 @@
                     <div class="Dist">
                         <div>
                             <FormItem label="前侧" prop="frontDist">
-                                <InputNumber :max="999999" :min="0" v-model="formData.fallParams.frontDist" style="width: 120px;"/>
+                                <InputNumber :max="999999" :min="0" v-model="formData.fallParams.frontDist"
+                                    style="width: 120px;" />
                             </FormItem>
                         </div>
                         <div>
                             <FormItem label="后侧" prop="backDist">
-                                <InputNumber :max="999999" :min="0" v-model="formData.fallParams.backDist" style="width: 120px;"/>
+                                <InputNumber :max="999999" :min="0" v-model="formData.fallParams.backDist"
+                                    style="width: 120px;" />
                             </FormItem>
                         </div>
 
@@ -113,12 +122,14 @@
 
                         <div>
                             <FormItem label="左侧" prop="leftDist">
-                                <InputNumber :max="999999" :min="0" v-model="formData.fallParams.leftDist" style="width: 120px;"/>
+                                <InputNumber :max="999999" :min="0" v-model="formData.fallParams.leftDist"
+                                    style="width: 120px;" />
                             </FormItem>
                         </div>
                         <div>
                             <FormItem label="右侧" prop="rightDist">
-                                <InputNumber :max="999999" :min="0" v-model="formData.fallParams.rightDist" style="width: 120px;"/>
+                                <InputNumber :max="999999" :min="0" v-model="formData.fallParams.rightDist"
+                                    style="width: 120px;" />
                             </FormItem>
                         </div>
 
@@ -126,11 +137,11 @@
                 </div>
 
 
-                <div v-if="formData.type =='ed713_type' || formData.type =='x1_type'">
+                <div v-if="formData.type == 'ed713_type' || formData.type == 'x1_type'">
                     <div style="background: rgba(0, 0, 0,.05);padding: 10px;border-radius: 15px;margin: 10px 0;">
                         <FormItem label="离床报警" prop="leaveBedAlarm">
-                            <Switch size="large" v-model="formData.sleepParams.leaveBedAlarm" :true-value="1" :false-value="0" 
-                            >
+                            <Switch size="large" v-model="formData.sleepParams.leaveBedAlarm" :true-value="1"
+                                :false-value="0">
                                 <template #open>
                                     <span>开启</span>
                                 </template>
@@ -141,26 +152,28 @@
                         </FormItem>
 
                         <div class="Dist">
-                           <div>
-                            <FormItem label="开始时间" prop="time">
-                            <!-- <TimePicker v-model="formData.sleepParams.leaveBedConfig.time" format="HH:mm" type="timerange"
+                            <div>
+                                <FormItem label="开始时间" prop="time">
+                                    <!-- <TimePicker v-model="formData.sleepParams.leaveBedConfig.time" format="HH:mm" type="timerange"
                                 placement="bottom-end" :placeholder="t('时间段')" style="width: 100%" 
                                 @on-change="(e:any)=>handleTimeChange(e,'leaveBedConfig')"
                                 /> -->
 
-                            <TimePicker v-model="formData.sleepParams.leaveBedConfig.maxTime" format="HH:mm" style="width: 120px;"></TimePicker>
-                        </FormItem>
-                           </div>
-                       <div>
-                        <FormItem label="结束时间" prop="time">
-                            <!-- <TimePicker v-model="formData.sleepParams.leaveBedConfig.time" format="HH:mm" type="timerange"
+                                    <TimePicker v-model="formData.sleepParams.leaveBedConfig.maxTime" format="HH:mm"
+                                        style="width: 120px;"></TimePicker>
+                                </FormItem>
+                            </div>
+                            <div>
+                                <FormItem label="结束时间" prop="time">
+                                    <!-- <TimePicker v-model="formData.sleepParams.leaveBedConfig.time" format="HH:mm" type="timerange"
                                 placement="bottom-end" :placeholder="t('时间段')" style="width: 100%" 
                                 @on-change="(e:any)=>handleTimeChange(e,'leaveBedConfig')"
                                 /> -->
 
-                            <TimePicker v-model="formData.sleepParams.leaveBedConfig.minTime" format="HH:mm" style="width: 120px;"></TimePicker>
-                        </FormItem>
-                       </div>
+                                    <TimePicker v-model="formData.sleepParams.leaveBedConfig.minTime" format="HH:mm"
+                                        style="width: 120px;"></TimePicker>
+                                </FormItem>
+                            </div>
                         </div>
 
                         <FormItem label="离床时常" prop="time">
@@ -169,10 +182,11 @@
                                 @on-change="(e:any)=>handleTimeChange(e,'leaveBedConfig')"
                                 /> -->
 
-                            <TimePicker v-model="formData.sleepParams.leaveBedConfig.sleep" format="HH:mm" style="width: 100%;"></TimePicker>
+                            <TimePicker v-model="formData.sleepParams.leaveBedConfig.sleep" format="mm:ss"
+                                style="width: 100%;"></TimePicker>
                         </FormItem>
 
-                       
+
 
                         <!-- <FormItem label="离床时长" prop="time">
                             <TimePicker v-model="formData.sleepParams.leaveBedConfig.time" format="HH:mm"
@@ -198,15 +212,16 @@
                         </div> -->
 
 
-                       
-                       
+
+
 
 
                     </div>
 
                     <div style="background: rgba(0, 0, 0,.05);padding: 10px;border-radius: 15px;margin: 10px 0;">
                         <FormItem label="心率报警" prop="heartRateAlarm">
-                            <Switch size="large" v-model="formData.sleepParams.heartRateAlarm" :true-value="1" :false-value="0">
+                            <Switch size="large" v-model="formData.sleepParams.heartRateAlarm" :true-value="1"
+                                :false-value="0">
                                 <template #open>
                                     <span>开启</span>
                                 </template>
@@ -239,33 +254,34 @@
             <TimePicker v-model="formData.fallParams.time" format="HH:mm" placeholder="Select time" style="width: 100%" />
         </FormItem> -->
 
-        <div class="Dist">
-            <div>
-                <FormItem label="最大监测范围" prop="max">
-                            <InputNumber :max="999999" :min="0" v-model="formData.sleepParams.heartRateConfig.max"
-                            style="width: 120px;"/>
+                        <div class="Dist">
+                            <div>
+                                <FormItem label="最大监测范围" prop="max">
+                                    <InputNumber :max="999999" :min="0" v-model="formData.sleepParams.heartRateConfig.max"
+                                        style="width: 120px;" />
 
-                        </FormItem>
-            </div>
-            <div>
-                <FormItem label="最小时间范围" prop="min">
-                            <InputNumber :max="999999" :min="0" v-model="formData.sleepParams.heartRateConfig.min"
-                            style="width: 120px;"/>
+                                </FormItem>
+                            </div>
+                            <div>
+                                <FormItem label="最小时间范围" prop="min">
+                                    <InputNumber :max="999999" :min="0" v-model="formData.sleepParams.heartRateConfig.min"
+                                        style="width: 120px;" />
 
-                        </FormItem>
+                                </FormItem>
 
-            </div>
-        </div>
+                            </div>
+                        </div>
 
-                       
 
-                       
+
+
 
                     </div>
 
                     <div style="background: rgba(0, 0, 0,.05);padding: 10px;border-radius: 15px;margin: 10px 0;">
                         <FormItem label="呼吸报警" prop="respiratoryAlarm">
-                            <Switch size="large" v-model="formData.sleepParams.respiratoryAlarm" :true-value="1" :false-value="0">
+                            <Switch size="large" v-model="formData.sleepParams.respiratoryAlarm" :true-value="1"
+                                :false-value="0">
                                 <template #open>
                                     <span>开启</span>
                                 </template>
@@ -300,26 +316,26 @@
             <TimePicker v-model="formData.fallParams.time" format="HH:mm" placeholder="Select time" style="width: 100%" />
         </FormItem> -->
 
-        <div class="Dist">
-            <div>
-                <FormItem label="最大监测范围" prop="max">
-                            <InputNumber :max="999999" :min="0" v-model="formData.sleepParams.respiratoryConfig.max"
-                            style="width: 120px;" />
+                        <div class="Dist">
+                            <div>
+                                <FormItem label="最大监测范围" prop="max">
+                                    <InputNumber :max="999999" :min="0" v-model="formData.sleepParams.respiratoryConfig.max"
+                                        style="width: 120px;" />
 
-                        </FormItem>
-            </div>
-            <div>
-                <FormItem label="最小时间范围" prop="min">
-                            <InputNumber :max="999999" :min="0" v-model="formData.sleepParams.respiratoryConfig.min"
-                            style="width: 120px;" />
+                                </FormItem>
+                            </div>
+                            <div>
+                                <FormItem label="最小时间范围" prop="min">
+                                    <InputNumber :max="999999" :min="0" v-model="formData.sleepParams.respiratoryConfig.min"
+                                        style="width: 120px;" />
 
-                        </FormItem>
-            </div>
-        </div>
+                                </FormItem>
+                            </div>
+                        </div>
 
-                       
 
-                       
+
+
 
 
                     </div>
@@ -342,7 +358,7 @@
 import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { HostelList, HostelFloorlList, HostelRoomListOfFloor, HostelRoomBedListOfRoom } from "@/api/Hostel/Hostel"
-import {DeviceSave,DeviceUpdate} from "@/api/Device/Device"
+import { DeviceSave, DeviceUpdate } from "@/api/Device/Device"
 import { Message } from 'view-ui-plus';
 import { nextTick } from 'process';
 const FormRef = ref<any>(null)
@@ -381,7 +397,9 @@ const formData = ref<any>({
             "max": 0,
             "maxTime": "",
             "min": 0,
-            "minTime": ""
+            "minTime": "",
+            "sleep": "",
+
         },
         "id": 0,
         "leaveBedAlarm": 0,
@@ -390,7 +408,8 @@ const formData = ref<any>({
             "max": 0,
             "maxTime": "",
             "min": 0,
-            "minTime": ""
+            "minTime": "",
+            "sleep": "",
         },
         "respiratoryAlarm": 0,
         "respiratoryConfig": {
@@ -398,7 +417,8 @@ const formData = ref<any>({
             "max": 0,
             "maxTime": "",
             "min": 0,
-            "minTime": ""
+            "minTime": "",
+            "sleep": "",
         }
     },
     "type": ""
@@ -408,6 +428,13 @@ const list = ref<any>([])
 const emit = defineEmits(['handleResetData'])
 
 
+const handleDeviceType = ()=>{
+    console.log("first")
+
+    formData.value.dataValue=[]
+    getHome()
+}
+
 // const handleTimeChange = (time: any,type:string) => {
 //     console.log(time,type)
 
@@ -415,14 +442,15 @@ const emit = defineEmits(['handleResetData'])
 //     formData.value['sleepParams'][type].maxTime = time[1]
 // }
 
-const handleSearch = (value: any,selectedData:any) => {
+const handleSearch = (value: any, selectedData: any) => {
     // console.log(value)
+    
     formData.value['hostelId'] = value[0]
     formData.value['floorId'] = value[1]
     formData.value['roomId'] = value[2]
     formData.value['bedId'] = value[3]
     console.log(selectedData)
-    formData.value.roomBedNumber =  selectedData[1].label+'-'+selectedData[2].label+'-'+selectedData[3].label
+    formData.value.roomBedNumber = selectedData[1].label + '-' + selectedData[2].label + '-' + selectedData[3]?.label
 
 }
 
@@ -435,13 +463,27 @@ const loadList = (item: any, callback: any) => {
         HostelRoomListOfFloor({ floorId: item.value, needBed: false }).then((res: any) => {
             //console.log(res)
             item.children = res.data.map((item: any) => {
-                return {
+
+                let data:any = {
                     value: item.id,
                     label: item.roomNumber,
                     children: [],
                     loading: false,
                     type: 'room'
                 }
+
+                console.log(formData.value.type,"==========")
+                if(formData.value.type == 'ed719_type'){
+                    data = {
+                    value: item.id,
+                    label: item.roomNumber,
+                    // loading: false,
+                    // type: 'room'
+                }
+                    
+                }
+
+                return data
             })
             item.loading = false;
             callback();
@@ -512,108 +554,118 @@ const handleSubmit = () => {
     let data = JSON.parse(JSON.stringify(formData.value))
 
     delete data.dataValue
-        delete data.sleepParams.heartRateConfig.time
-        delete data.sleepParams.leaveBedConfig.time
-        delete data.sleepParams.respiratoryConfig.time
+    delete data.sleepParams.heartRateConfig.time
+    delete data.sleepParams.leaveBedConfig.time
+    delete data.sleepParams.respiratoryConfig.time
     //编辑
-    if(data.id){
+    if (data.id) {
 
-       
+
+        console.log(data)
 
         DeviceUpdate(data).then(() => {
             Message.success(t('编辑成功'))
             modal.value = false
-            emit('handleResetData')
+            // emit('handleResetData')
         })
-    }else{
-    //添加
-    DeviceSave(data).then((res: any) => {
-        if (res.code == 0) {
-            Message.success(t('添加成功'))
-            modal.value = false
-            emit('handleResetData')
-        }
-    })
+    } else {
+        //添加
+        DeviceSave(data).then((res: any) => {
+            if (res.code == 0) {
+                Message.success(t('添加成功'))
+                modal.value = false
+                emit('handleResetData')
+            }
+        })
 
     }
 }
 
 const Open = (data: any) => {
     if (data) {
+
+        if (data.sleepParams) {
+            data.sleepParams.heartRateConfig = JSON.parse(data?.sleepParams?.heartRateConfig)
+            data.sleepParams.leaveBedConfig = JSON.parse(data?.sleepParams?.leaveBedConfig)
+            data.sleepParams.respiratoryConfig = JSON.parse(data?.sleepParams?.respiratoryConfig)
+        }
+
+
+
         // formData.value.dataValue= []
         Object.keys(data).forEach((key: any) => {
-            formData.value[key] = data[key]?data[key]:formData.value[key]
+            formData.value[key] = data[key] ? data[key] : formData.value[key]
         })
 
         formData.value.dataValue = [
-             
-// {value: data.hostelId, label: data.hostelId, loading: false, type: 'hostel'},
-// {value: data.floorId, label: data.floorId, loading: false, type: 'floor'},
-// {value: data.roomId, label: data.roomId, loading: false, type: 'room'} ,
-// {value: data.bedId, label: data.bedId},
+
+            // {value: data.hostelId, label: data.hostelId, loading: false, type: 'hostel'},
+            // {value: data.floorId, label: data.floorId, loading: false, type: 'floor'},
+            // {value: data.roomId, label: data.roomId, loading: false, type: 'room'} ,
+            // {value: data.bedId, label: data.bedId},
             // data.hostelId,
             // data.floorId,
             // data.roomId,
-           // data.bedId
+            // data.bedId
         ]
 
         console.log(formData.value.dataValue)
         // formData.value = data
         title.value = '编辑设备'
-    }else{
+    } else {
 
         console.log(data)
         formData.value = {
-    // user: "",
-    dataValue: [],
-    "bedId": 0,
-    "fallParams": {
-        "backDist": 0,
-        "beeper": 0,
-        "frontDist": 0,
-        "id": 0,
-        "installFlag": 0,
-        "installHeight": 0,
-        "leftDist": 0,
-        "rightDist": 0,
-        "sensi": 0,
-        "stateDelay": 0
-    },
-    "floorId": 0,
-    "hostelId": 0,
-    "mac": "",
-    "name": "",
-    "roomBedNumber": "",
-    "roomId": 0,
-    "sleepParams": {
-        "heartRateAlarm": 0,
-        "heartRateConfig": {
-            time: "",
-            "max": 0,
-            "maxTime": "",
-            "min": 0,
-            "minTime": ""
-        },
-        "id": 0,
-        "leaveBedAlarm": 0,
-        "leaveBedConfig": {
-            time: "",
-            "max": 0,
-            "maxTime": "",
-            "min": 0,
-            "minTime": ""
-        },
-        "respiratoryAlarm": 0,
-        "respiratoryConfig": {
-            time: "",
-            "max": 0,
-            "maxTime": "",
-            "min": 0,
-            "minTime": ""
+            // user: "",
+            dataValue: [],
+            "bedId": 0,
+            "fallParams": {
+                "backDist": 0,
+                "beeper": 0,
+                "frontDist": 0,
+                "id": 0,
+                "installFlag": 0,
+                "installHeight": 0,
+                "leftDist": 0,
+                "rightDist": 0,
+                "sensi": 0,
+                "stateDelay": 0
+            },
+            "floorId": 0,
+            "hostelId": 0,
+            "mac": "",
+            "name": "",
+            "roomBedNumber": "",
+            "roomId": 0,
+            "sleepParams": {
+                "heartRateAlarm": 0,
+                "heartRateConfig": {
+                    time: "",
+                    "max": 0,
+                    "maxTime": "",
+                    "min": 0,
+                    "minTime": ""
+                },
+                "id": 0,
+                "leaveBedAlarm": 0,
+                "leaveBedConfig": {
+                    time: "",
+                    "max": 0,
+                    "maxTime": "",
+                    "min": 0,
+                    "minTime": ""
+                },
+                "respiratoryAlarm": 0,
+                "respiratoryConfig": {
+                    time: "",
+                    "max": 0,
+                    "maxTime": "",
+                    "min": 0,
+                    "minTime": ""
+                }
+            },
+            "type": ""
         }
-    },
-    "type": ""
-}
         title.value = '添加设备'
     }
 

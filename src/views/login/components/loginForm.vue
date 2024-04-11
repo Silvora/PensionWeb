@@ -32,6 +32,7 @@ import { useRouter } from "vue-router";
 import { clearItemToken, getToken, setToken } from "@/utils/token";
 import { useAppStore } from "@/stores/modules/app"
 import { useI18n } from "vue-i18n"
+import { GetBaseSetting } from "@/api/Base/Base"
 const { t } = useI18n()
 import md5 from 'js-md5';
 const appStore = useAppStore()
@@ -104,6 +105,20 @@ const handleSubmit = () => {
       }).finally(() => {
         loading.value = false
         //router.push("/")
+
+        GetBaseSetting().then((res: any) => {
+        console.log(res)
+        // fileUrl.value.bgUrl = res.data?.background
+        if (res.data?.background) {
+            document.body.style.backgroundImage = `url(${res.data.background})`;
+        }
+        // if (res.data?.cockpitImageJson) {
+        //     JSON.parse(res.data.cockpitImageJson).forEach((item: any, idx: any) => {
+        //         fileUrl.value['driveUrl' + (idx + 1)] = item.u
+
+        //     })
+        // }
+    })
       })
     }
   })

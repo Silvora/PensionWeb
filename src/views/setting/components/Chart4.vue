@@ -1,9 +1,13 @@
 <template>
     <div style="width: 100%;">
         <!-- <p>睡着时的体动介于0到100</p> -->
-        <p v-if="props.DeviceInfoListInfo.d3 && props.DeviceInfoListInfo.d6">
-            {{t('睡着时的体动介于')}} {{ Math.min(...props.DeviceInfoListInfo.d6) }}到{{ Math.max(...props.DeviceInfoListInfo.d3)}}{{t('之间')}}</p>
-        <div class="box" ref="chartRef" >
+        <p v-if="isInfo">
+            {{ t('睡着时的体动介于') }} {{ min }} 到 {{ max }} {{ t('之间') }}
+        </p>
+        <p v-else>
+            {{ t('暂无数据') }}
+        </p>
+        <div class="box" ref="chartRef">
         </div>
         <!-- <div v-else  class="box">
             {{ t('暂无数据') }}
@@ -24,14 +28,24 @@ onMounted(() => {
     })
 })
 
+const isInfo = ref(true)
+const max = ref(0)
+const min = ref(0)
 const props: any = defineProps({
     DeviceInfoListInfo: Object
 })
 
 watch(() => props.DeviceInfoListInfo, () => {
+    if (props.DeviceInfoListInfo) {
+        isInfo.value = true
+        max.value = Math.max(...props.DeviceInfoListInfo?.d6)
+        min.value = Math.min(...props.DeviceInfoListInfo?.d3)
+    } else {
+        isInfo.value = false
+    }
     initChart()
-    console.log(props.DeviceInfoListInfo)
-})
+
+}, { deep: true })
 
 console.log(props)
 
@@ -49,7 +63,7 @@ const initChart = () => {
         xAxis: {
             type: 'category',
             // data: ['21:00', '23:00', '01:00', '03:00', '05:00', '07:00', '09:00']
-            data: props.DeviceInfoListInfo.date,
+            data: props.DeviceInfoListInfo ? props.DeviceInfoListInfo.date : [],
             axisLine: {
                 show: false
             },
@@ -76,7 +90,7 @@ const initChart = () => {
                 },
                 smooth: false,  // 取消圆点
                 symbol: 'none',  // 取消横线
-                data: props.DeviceInfoListInfo.d3,
+                data: props.DeviceInfoListInfo ? props.DeviceInfoListInfo.d3 : [],
                 type: 'line'
             }
         ]

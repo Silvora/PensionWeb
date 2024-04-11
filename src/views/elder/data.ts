@@ -262,11 +262,11 @@ const elderTable: any = {
             key: 'gender',
             minWidth: 80,
         },
-        {
-            title: '联系电话',
-            key: 'phone',
-            minWidth: 150,
-        },
+        // {
+        //     title: '联系电话',
+        //     key: 'phone',
+        //     minWidth: 150,
+        // },
 
         {
             title: '生日',

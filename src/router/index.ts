@@ -102,7 +102,7 @@ router.beforeEach((to, _from, next) => {
   }else {
     getToken('ing-Token').then((token: any) => {
    
-      console.log("-------",token)
+      // console.log("-------",token)
     //判断是否有token
     if (token) {
       // if (!isRoutes) {

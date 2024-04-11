@@ -1,9 +1,13 @@
 <template>
     <div style="width: 100%;">
-        <p v-if="props.DeviceInfoListInfo.d1 && props.DeviceInfoListInfo.d4">
-            {{ t('睡着时的呼吸频率介于') }} {{ Math.min(...props.DeviceInfoListInfo.d4)  }}到{{ Math.max(...props.DeviceInfoListInfo.d1) }}次/分。</p>
+        <p v-if="isInfo">
+            {{ t('睡着时的呼吸频率介于') }} {{ min }} 到 {{ max }} 次/分。
+        </p>
+        <p v-else>
+            {{ t('暂无数据') }}
+        </p>
 
-        <div class="box" ref="chartRef" >
+        <div class="box" ref="chartRef">
 
         </div>
         <!-- <div v-else  class="box">
@@ -24,14 +28,23 @@ onMounted(() => {
     })
 })
 
-
+const isInfo = ref(true)
+const max = ref(0)
+const min = ref(0)
 const props: any = defineProps({
     DeviceInfoListInfo: Object
 })
-
 watch(() => props.DeviceInfoListInfo, () => {
+    if (props.DeviceInfoListInfo) {
+        isInfo.value = true
+        max.value = Math.max(...props.DeviceInfoListInfo?.d1)
+        min.value = Math.min(...props.DeviceInfoListInfo?.d4)
+    } else {
+        isInfo.value = false
+    }
     initChart()
-})
+
+}, { deep: true })
 
 const initChart = () => {
     const myChart: any = echarts.init(chartRef.value);
@@ -62,7 +75,7 @@ const initChart = () => {
             type: 'category',
             splitLine: { show: false },
             // data: ['21:00', '23:00', '01:00', '03:00', '05:00', '07:00', '09:00'],
-            data: props.DeviceInfoListInfo.date,
+            data: props.DeviceInfoListInfo ? props.DeviceInfoListInfo.date : [],
             axisLine: {
                 show: false
             },
@@ -104,7 +117,7 @@ const initChart = () => {
                     }
                 },
                 // data: [10, 10, 6, 8, 18, 15,18]
-                data: props.DeviceInfoListInfo.d1
+                data: props.DeviceInfoListInfo ? props.DeviceInfoListInfo.d1 : []
             },
             {
                 name: 'Life Cost',
@@ -113,6 +126,7 @@ const initChart = () => {
                 label: {
                     show: true,
                     position: 'inside',
+                    color: '#fff'
                 },
                 itemStyle: {
                     color: 'rgba(1, 96, 255, 1)',
@@ -124,7 +138,7 @@ const initChart = () => {
                 //     }
                 // },
                 // data: [10, 10, 6, 8, 18, 15,18]
-                data: props.DeviceInfoListInfo.d4
+                data: props.DeviceInfoListInfo ? props.DeviceInfoListInfo.d4 : []
             }
         ]
     };

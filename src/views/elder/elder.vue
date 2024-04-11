@@ -316,6 +316,7 @@ const handleUpdatePage = ({ currentPage, pageSize }: any) => {
         currentPage,
         pageSize
     }
+    getData()
 }
 
 const getMemoList = () => {

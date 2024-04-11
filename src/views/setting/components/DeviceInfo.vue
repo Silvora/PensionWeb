@@ -10,30 +10,30 @@
                 </div>
                 <div class="info">
                     <Grid border :col="6" :padding="'10px'" style="border: 1px solid #ebeef5;">
-                    <GridItem style="background: #fafafa;color: #909399;">{{ t('姓名') }}</GridItem>
-                    <GridItem>{{ userInfo?.name||'&nbsp;'}}</GridItem>
-                    <GridItem style="background: #fafafa;color: #909399;">{{ t('性别') }}</GridItem>
-                    <GridItem >                            
-                        <span>{{ userInfo?.gender == 1 ? t('男') : userInfo?.gender == 2 ? t('女') : t('未知') }}</span>
-</GridItem>
-                    <GridItem style="background: #fafafa;color: #909399;">{{ t('居住信息') }}</GridItem>
-                    <GridItem>{{ userInfo?.roomBedNumber||'&nbsp;' }}</GridItem>
+                        <GridItem style="background: #fafafa;color: #909399;">{{ t('姓名') }}</GridItem>
+                        <GridItem>{{ userInfo?.name || '&nbsp;' }}</GridItem>
+                        <GridItem style="background: #fafafa;color: #909399;">{{ t('性别') }}</GridItem>
+                        <GridItem>
+                            <span>{{ userInfo?.gender == 1 ? t('男') : userInfo?.gender == 2 ? t('女') : t('未知') }}</span>
+                        </GridItem>
+                        <GridItem style="background: #fafafa;color: #909399;">{{ t('居住信息') }}</GridItem>
+                        <GridItem>{{ userInfo?.roomBedNumber || '&nbsp;' }}</GridItem>
 
-                    <GridItem style="background: #fafafa;color: #909399;">{{ t('护理等级') }}</GridItem>
-                    <GridItem>{{ userInfo?.nursingGrade||'&nbsp;'}}</GridItem>
+                        <GridItem style="background: #fafafa;color: #909399;">{{ t('护理等级') }}</GridItem>
+                        <GridItem>{{ userInfo?.nursingGrade || '&nbsp;' }}</GridItem>
 
-                    <GridItem style="background: #fafafa;color: #909399;">{{ t('护理员') }}</GridItem>
-                    <GridItem>{{ userInfo?.staffName||'&nbsp;' }}</GridItem>
+                        <GridItem style="background: #fafafa;color: #909399;">{{ t('护理员') }}</GridItem>
+                        <GridItem>{{ userInfo?.staffName || '&nbsp;' }}</GridItem>
 
-                    <GridItem style="background: #fafafa;color: #909399;">{{ t('入住时间') }}</GridItem>
-                    <GridItem>{{ userInfo?.startTime?.split(" ")[0]||'&nbsp;' }}</GridItem>
-                </Grid>
+                        <GridItem style="background: #fafafa;color: #909399;">{{ t('入住时间') }}</GridItem>
+                        <GridItem>{{ userInfo?.startTime?.split(" ")[0] || '&nbsp;' }}</GridItem>
+                    </Grid>
                 </div>
-                    
-                <!-- <p class="title">{{ t('老人详情') }}</p> -->
-               
 
-                    <!-- <div v-if="userInfo">
+                <!-- <p class="title">{{ t('老人详情') }}</p> -->
+
+
+                <!-- <div v-if="userInfo">
                         <img :src="userInfo.photo" alt="">
                         <p class="item">
                             <span>{{ t('姓名') }}</span>
@@ -63,9 +63,9 @@
                     <div v-else>
                         {{ t('暂无数据') }}
                     </div> -->
-                </div>
-            <div class="context" v-if="DeviceInfoListInfo && modal">
-                
+            </div>
+            <div class="context" v-if="modal">
+
                 <!-- <div class="userInfo">
                     <p class="title">{{ t('老人详情') }}</p>
                     <div v-if="userInfo">
@@ -107,7 +107,8 @@
                             <Button type="primary" @click="handleLog">{{ t('日志') }}</Button>
                         </div>
                         <div class="date">
-                            <VDatePicker v-model.string="date" mode="date" :masks="masks" is-required style="width: 100%;height: auto;">
+                            <VDatePicker v-model.string="date" mode="date" :masks="masks" is-required
+                                style="width: 100%;height: auto;">
                             </VDatePicker>
                         </div>
                         <p class="sub_title">
@@ -117,44 +118,46 @@
                         <p class="time1"><span
                                 class="big">{{ toHourSecond(logInfo?.sleepLong).split(":")[0] }}</span>{{ t('小时') }} <span
                                 class="big">{{ toHourSecond(logInfo?.sleepLong).split(":")[1] }}</span> {{ t('分钟') }}</p>
-                        <p class="time2">{{ t('入睡时间') }} <span class="bold">{{ logInfo?.sleepStartTime?.split(" ")[1] }}</span>
-                            {{ t('分') }}, {{ t('结束时间') }}<span class="bold">{{ logInfo?.sleepEndTime?.split(" ")[1] }}</span> {{ t('分') }}
+                        <p class="time2">{{ t('入睡时间') }} <span
+                                class="bold">{{ logInfo?.sleepStartTime?.split(" ")[1] }}</span>
+                            {{ t('分') }}, {{ t('结束时间') }}<span
+                                class="bold">{{ logInfo?.sleepEndTime?.split(" ")[1] }}</span> {{ t('分') }}
                         </p>
                         <p class="desc">{{ t('睡眠质量不佳,加强欲动可以帮助你改善睡眠') }}</p>
                         <div>
                             <!-- <Chart1 :logInfoTime="{}"></Chart1> -->
                         </div>
                         <div class="info" style="width: 100%;">
-                            
+
                             <!-- {{ t('暂无数据') }} -->
                             <Row>
                                 <Col :span="12">
-                                    <p class="title">夜间睡眠{{toHourSecond(logInfo?.sleepLong).split(":")[0]||'-'}}小时</p>
-                                    <p class="d">{{ t('参考值:') }}6～10{{ t('小时') }}</p>
+                                <p class="title">夜间睡眠{{ toHourSecond(logInfo?.sleepLong).split(":")[0] || '-' }}小时</p>
+                                <p class="d">{{ t('参考值:') }}6～10{{ t('小时') }}</p>
                                 </Col>
                                 <Col :span="12">
-                                    <p class="title">清醒比例{{(logInfo?.awakeLong/logInfo?.sleepLong).toFixed(0) || '-' }}%</p>
-                                    <p class="d">{{ t('参考值:') }}0～10%</p>
+                                <p class="title">清醒比例{{ (logInfo?.awakeLong / logInfo?.sleepLong).toFixed(0) || '-' }}%</p>
+                                <p class="d">{{ t('参考值:') }}0～10%</p>
                                 </Col>
                                 <Col :span="12">
-                                    <p class="title">浅睡比例{{(logInfo?.sleepLight/logInfo?.sleepLong).toFixed(0) || '-'}}%</p>
-                                    <p class="d">{{ t('参考值:') }}20～60%</p>
+                                <p class="title">浅睡比例{{ (logInfo?.sleepLight / logInfo?.sleepLong).toFixed(0) || '-' }}%</p>
+                                <p class="d">{{ t('参考值:') }}20～60%</p>
                                 </Col>
                                 <Col :span="12">
-                                    <p class="title">深睡比例{{' '}}%</p>
-                                    <p class="d">{{ t('参考值:') }}20～80%</p>
+                                <p class="title">深睡比例{{ ' ' }}%</p>
+                                <p class="d">{{ t('参考值:') }}20～80%</p>
                                 </Col>
                                 <Col :span="12">
-                                    <p class="title">睡眠次数{{logInfo.sleepLong || '-'}}次</p>
-                                    <p class="d">{{ t('参考值:') }}1{{ t('次') }}</p>
+                                <p class="title">睡眠次数{{ logInfo.sleepLong || '-' }}次</p>
+                                <p class="d">{{ t('参考值:') }}1{{ t('次') }}</p>
                                 </Col>
                                 <Col :span="12">
-                                    <p class="title">翻身次数{{logInfo?.turnOverNumber || '-'}}次</p>
-                                    <p class="d">{{ t('参考值:') }}20～45{{ t('次') }}</p>
+                                <p class="title">翻身次数{{ logInfo?.turnOverNumber || '-' }}次</p>
+                                <p class="d">{{ t('参考值:') }}20～45{{ t('次') }}</p>
                                 </Col>
                                 <Col :span="12">
-                                    <p class="title">离床次数{{logInfo?.leaveBedNumber || '-'}}次</p>
-                                    <p class="d">{{ t('参考值:') }}0～2{{ t('次') }}</p>
+                                <p class="title">离床次数{{ logInfo?.leaveBedNumber || '-' }}次</p>
+                                <p class="d">{{ t('参考值:') }}0～2{{ t('次') }}</p>
                                 </Col>
                             </Row>
                         </div>
@@ -192,6 +195,7 @@ import { onMounted, ref, nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
 import dayjs from "dayjs"
 import { useRouter } from "vue-router"
+import { Message } from "view-ui-plus";
 const router = useRouter()
 const { t } = useI18n()
 const modal = ref<boolean>(false)
@@ -205,13 +209,21 @@ const masks = ref({
 });
 const logDay = ref<any>(null)
 const DeviceInfoListInfo = ref<any>({})
+// const msg = ref<any>(null)
 const Open = (data: any) => {
     userInfo.value = data.elderlyInfo
     mac.value = data.mac
     console.log(data)
-    modal.value = true
+
+    // msg.value = Message.loading({
+    //     content: 'Loading...',
+    //     duration: 0
+    // });
+    // setTimeout(msg, 3000);
 
     getData()
+
+    modal.value = true
 
 }
 const Close = () => {
@@ -224,14 +236,14 @@ const toHourMinute = (minutes: any) => {
     // return {hour:Math.floor(minutes/60),minute:(minutes%60)};
 }
 const toHourSecond = (second: any) => {
-    return (Math.floor(second / 60/60) + ":" + (second % 60));
+    return (Math.floor(second / 60 / 60) + ":" + (second % 60));
     // 也可以转换为json，以方便专外部使用属
     // return {hour:Math.floor(minutes/60),minute:(minutes%60)};
-}   
+}
 
 const handleLog = () => {
     modal.value = false
-   router.push({ path: '/log' })
+    router.push({ path: '/log' })
 }
 
 onMounted(() => {
@@ -259,7 +271,7 @@ const getData = () => {
             [],
             []
         ]
-        let t= new Set()
+        let t = new Set()
         // 	integer($int32状态 0:无人 1:清醒 2:浅睡 3:深睡
         res.data?.sleepRangeList?.forEach((element: any) => {
             // time.push(element.time)
@@ -267,7 +279,7 @@ const getData = () => {
             t.add(new Date(element.endTime))
             time[element.type].push()
         });
-    
+
 
     })
 
@@ -285,14 +297,24 @@ const getData = () => {
         let d6: any = []//最低体动
         let date: any = [] //时间
 
+        if (!res.data) {
+            console.log("=================")
+            DeviceInfoListInfo.value = null
+
+            // msg.value = null
+            // modal.value = true
+
+            return
+        }
+
         res.data?.forEach((element: any) => {
-            d1.push(element?.highBreathRate==null?0:element?.highBreathRate)
-            d2.push(element?.highHeartRate==null?0:element?.highHeartRate)
-            d3.push(element?.highPhysical==null?0:element?.highPhysical)
-            d4.push(element?.lowBreathRate==null?0:element?.lowBreathRate)
-            d5.push(element?.lowHeartRate==null?0:element?.lowHeartRate)
-            d6.push(element?.lowPhysical==null?0:element?.lowPhysical)
-            date.push(element?.minute?.split(" ")[1]?.slice(0, 5)||'')
+            d1.push(element?.highBreathRate || 0)
+            d2.push(element?.highHeartRate || 0)
+            d3.push(element?.highPhysical || 0)
+            d4.push(element?.lowBreathRate || 0)
+            d5.push(element?.lowHeartRate || 0)
+            d6.push(element?.lowPhysical || 0)
+            date.push(element?.minute?.split(" ")[1]?.slice(0, 5) || '')
         });
 
         DeviceInfoListInfo.value = {
@@ -304,6 +326,10 @@ const getData = () => {
             d6,
             date
         }
+
+        // msg.value = null
+        // modal.value = true
+
 
 
     })
@@ -318,18 +344,20 @@ defineExpose({
 </script>
 
 <style lang="less" scoped>
-
-.userInfo{
+.userInfo {
     display: flex;
-    .photo{
+
+    .photo {
         width: 84px;
         height: 84px;
-        img{
+
+        img {
             width: 100%;
             height: 100%;
         }
     }
-    .info{
+
+    .info {
         width: 100%;
     }
 }
@@ -400,15 +428,17 @@ defineExpose({
             font-weight: bold;
         }
 
-        .info{
+        .info {
             margin-top: 10px;
-            .title{
+
+            .title {
                 font-weight: bold;
                 display: flex;
                 align-items: center;
                 // justify-content: center;
             }
-            .title::before{
+
+            .title::before {
                 content: " ";
                 display: inline-block;
                 width: 3px;
@@ -416,7 +446,8 @@ defineExpose({
                 background: #1890ff;
                 margin-right: 5px
             }
-            .d{
+
+            .d {
                 font-size: 12px;
                 color: #8B8A96;
                 padding: 4px 0;

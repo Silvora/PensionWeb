@@ -31,9 +31,9 @@
           <Suspense>
             <RouterView v-slot="{ Component }">
               <Transition name="slide-fade" mode="out-in">
-                <KeepAlive>
+                <!-- <KeepAlive> -->
                   <component :is="Component" :key="$route.name" />
-                </KeepAlive>
+                <!-- </KeepAlive> -->
               </Transition>
             </RouterView>
           </Suspense>

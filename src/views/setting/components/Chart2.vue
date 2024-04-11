@@ -1,13 +1,17 @@
 <template>
     <div style="width: 100%;">
-        <p v-if="props.DeviceInfoListInfo.d5 && props.DeviceInfoListInfo.d2">
-            {{ t('睡眠期间的心率介于') }} {{ Math.min(...props.DeviceInfoListInfo?.d5)}}到{{ Math.max(...props.DeviceInfoListInfo?.d2)}}{{t('之间')}}</p>
+        <p v-if="isInfo">
+            {{ t('睡眠期间的心率介于') }} {{ min }} 到 {{ max }} {{ t('之间') }}
+        </p>
+        <p v-else>
+            {{ t('暂无数据') }}
+        </p>
+
+        <!-- {{ props.DeviceInfoListInfo?.d5 }}{{ props.DeviceInfoListInfo?.d2 }} -->
         <div class="box" ref="chartRef">
 
         </div>
-        <!-- <div v-else  class="box">
-            {{ t('暂无数据') }}
-        </div> -->
+
     </div>
 </template>
 
@@ -23,14 +27,32 @@ onMounted(() => {
     })
 })
 
-
+const isInfo = ref(true)
+const max = ref(0)
+const min = ref(0)
 const props: any = defineProps({
     DeviceInfoListInfo: Object
 })
 
 watch(() => props.DeviceInfoListInfo, () => {
+    if (props.DeviceInfoListInfo) {
+        isInfo.value = true
+        max.value = Math.max(...props.DeviceInfoListInfo?.d2)
+        min.value = Math.min(...props.DeviceInfoListInfo?.d5)
+    } else {
+        isInfo.value = false
+
+    }
     initChart()
-})
+
+}, { deep: true })
+
+
+
+
+// watch(() => props.DeviceInfoListInfo, () => {
+//     initChart()
+// })
 
 const initChart = () => {
     const myChart: any = echarts.init(chartRef.value);
@@ -62,7 +84,7 @@ const initChart = () => {
             type: 'category',
             splitLine: { show: false },
             // data: ['21:00', '23:00', '01:00', '03:00', '05:00', '07:00', '09:00'],
-            data: props.DeviceInfoListInfo.date,
+            data: props.DeviceInfoListInfo ? props.DeviceInfoListInfo.date : [],
             axisLine: {
                 show: false
             },
@@ -104,7 +126,7 @@ const initChart = () => {
                     }
                 },
                 // data: [30, 45, 48, 52, 38, 35,49]
-                data: props.DeviceInfoListInfo.d2
+                data: props.DeviceInfoListInfo ? props.DeviceInfoListInfo.d2 : []
             },
             {
                 name: 'Life Cost',
@@ -113,7 +135,7 @@ const initChart = () => {
                 label: {
                     show: true,
                     position: 'inside',
-                    color:'#fff'
+                    color: '#fff'
 
                 },
                 itemStyle: {
@@ -126,7 +148,7 @@ const initChart = () => {
                 //     }
                 // },
                 // data: [30, 45, 48, 52, 38, 35,49]
-                data: props.DeviceInfoListInfo.d5
+                data: props.DeviceInfoListInfo ? props.DeviceInfoListInfo.d5 : []
             }
         ]
     };

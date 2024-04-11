@@ -10,6 +10,7 @@ import { useAppStore } from "@/stores/modules/app"
 //import { useMagicKeys } from '@vueuse/core'
 import { useRoute } from 'vue-router'
 import setPageDomTitle from './utils/domTitle'
+import { GetBaseSetting } from "@/api/Base/Base"
 //const keys = useMagicKeys()
 //const shiftP = keys['ShiftLeft+S']
 
@@ -108,8 +109,33 @@ onMounted(() => {
       appStore.setLanguage('zh-HK')
       setToken('language', 'zh-HK')
     }
-
   })
+
+
+  getToken('ing-Token').then((res: any) => {
+    if (res) {
+      // setToken('ing-Token', res)
+
+
+  GetBaseSetting().then((res: any) => {
+        console.log(res)
+        // fileUrl.value.bgUrl = res.data?.background
+        if (res.data?.background) {
+            document.body.style.backgroundImage = `url(${res.data.background})`;
+        }
+        // if (res.data?.cockpitImageJson) {
+        //     JSON.parse(res.data.cockpitImageJson).forEach((item: any, idx: any) => {
+        //         fileUrl.value['driveUrl' + (idx + 1)] = item.u
+
+        //     })
+        // }
+    })
+    }
+  })
+
+
+
+
 })
 </script>
 

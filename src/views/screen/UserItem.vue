@@ -7,7 +7,8 @@
                 <span class="t2">{{ info?.roomBedNumber }}</span>
                 <span class="t3">
                     <img src="@/assets/images/room-setting.png"
-                        @click="handleNavTo(`/add-elder?type=0&id=${info?.elderlyId}`)" alt="" srcset="">
+                        alt="" srcset="">
+                        <!--  @click="handleNavTo(`/add-elder?type=0&id=${info?.elderlyId}`)" -->
                 </span>
             </p>
             <div class="userBox">
@@ -26,7 +27,8 @@
                     </div>
                 </div>
                 <div class="info">
-                    <div @click="handleNavTo(`/elder`)">
+                    <!-- @click="handleNavTo(`/elder`)" -->
+                    <div >
                         <p class="t4">{{ info?.elderlyName }}
                             <!-- <Icon type="ios-checkmark" /> -->
                             <i v-if="info?.elderlyGender == 1" class="iconfont icon-nan" style="color:#0160FF"></i>
@@ -38,7 +40,8 @@
                             {{ elderlyInfo?.staffName }}
                         </p>
                     </div>
-                    <div @click="handleNavTo(`/setting`)">
+                    <!-- @click="handleNavTo(`/setting`)" -->
+                    <div >
                         <p class="t5">
                             <!-- <Icon type="ios-checkmark" /> -->
                             <i class="iconfont icon-xindongzhi-manxin-" style="color:#E06255"></i>

@@ -167,9 +167,7 @@ const handleUpload = (type: string, file: any) => {
             app[0].style.backgroundImage = `url(${fileUrl.value.bgUrl}) !important`
             // console.log(app.style.backgroundImage)
         }
-
     })
-
     return false;
 }
 
@@ -209,9 +207,6 @@ onMounted(() => {
 
             })
         }
-
-
-
     })
 })
 
