@@ -100,8 +100,12 @@ import { onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { Cascader, Modal, Message } from 'view-ui-plus';
 import { HostelList, HostelFloorlList, HostelRoomListOfFloor, HostelRoomBedListOfRoom } from "@/api/Hostel/Hostel"
-import {DeviceDetailId, DeviceOnlineBatch, DeviceOfflineBatch, DeviceStateRatio, DeviceTypeRatio, DeviceList, DeviceUpdate, DeviceSave, DeviceRemoveBatch, DeviceStopUsage, DeviceUsageRecordList, DeviceAddUsageRecord } from "@/api/Device/Device";
+import { DeviceDetailId, DeviceOnlineBatch, DeviceOfflineBatch, DeviceStateRatio, DeviceTypeRatio, DeviceList, DeviceUpdate, DeviceSave, DeviceRemoveBatch, DeviceStopUsage, DeviceUsageRecordList, DeviceAddUsageRecord } from "@/api/Device/Device";
 import router from "@/router";
+// import mqtt from 'mqtt/dist/mqtt';
+import * as mqtt from "mqtt/dist/mqtt";
+// import MQTT from 'vue-mqtt';
+import MQTT from '@/utils/mqtt';
 
 const { t } = useI18n()
 const checkAll = ref<any>(false)
@@ -142,7 +146,7 @@ const handleGetUser = (data: any) => {
 
 }
 
-const handleOpenInfo=(data:any)=>{
+const handleOpenInfo = (data: any) => {
     DeviceInfoRef.value?.Open(data)
 }
 
@@ -304,14 +308,117 @@ const handleDeviceOffline = () => {
     })
 }
 
-
-
-
 onMounted(() => {
     getData()
     getErrData()
     //  getRatio()
     getHome()
+
+
+    // const client = createMqttClient({
+    //     host: 'localhost',
+    //     port: 1883,
+    //     secure: true,
+    //     username: 'hjy',
+    //     password: 'hjy123',
+    //     protocol: 'ws',
+    //     tls: {
+    //         protocol: 'TLSv1_2',
+    //         rejectUnauthorized: false
+    //     }
+    // });
+
+    // client.connect((error: any) => {
+    //     if (!error) {
+    //         console.log('订阅成功')
+    //     } else {
+    //         console.log('订阅失败')
+    //     }
+    // });
+
+
+
+    // var client: any
+    // const options = {
+    //     protocol: "ws",
+    //     host: "8.217.217.243",
+    //     port: 15675,
+    //     clientId: "emqx_vue3_" + Math.random().toString(16).substring(2, 8),
+    //     username: "hjy",
+    //     password: "hjy123",
+    //     clean: true,
+    //     connectTimeout: 6 * 1000,
+    //     reconnectPeriod: 6000,
+    //     // connectTimeout: 6000,
+    //     // cleanSession: false,
+    //     // keepAlive: 60,
+    //     // clientId: 'vue3-mqtt-client' + Date.now(),
+    //     // username: 'hjy',
+    //     // password: 'hjy123',
+    //     // clean: true,
+    // }
+    // const connectUrl = `${options.protocol}://${options.host}:${options.port}/ws`;
+
+    // client = mqtt.connect(connectUrl, options)
+
+    // client.on('connect', (e: any) => {
+    //     console.log("连接成功！！！", e)
+    //     client.subscribe([
+    //         'retirement/device/offline/1',
+    //         'retirement/device/eventData/1',
+    //         'retirement/device/currentDataReply/1'], { qos: 1,retain: true }, (error: any) => {
+    //         if (!error) {
+    //             console.log('订阅成功')
+    //         } else {
+    //             console.log('订阅失败')
+    //         }
+    //     })
+    // })
+
+   
+
+   
+
+    // client.on('message', (topic: any, message: any) => {
+    //     console.log('收到来自', topic, '的消息', message.toString())
+    // })
+    // client.on('reconnect', (error: any) => {
+    //     console.log('正在重连', error)
+    // })
+    // // 链接异常处理（非必须）
+    // client.on('error', (error: any) => {
+    //     console.log('连接失败', error)
+    // })
+
+    // let mqtt = new MQTT('retirement/deviceOffline/1');
+    // mqtt.init()
+    // mqtt.link()
+
+    // const mqttClient = new MQTT({
+    //     host: '127.0.0.1', // 替换为你的MQTT broker地址
+    //     port: 8900,
+    //     clientId: 'vue3-mqtt-client' + Date.now(), // 替换为你的客户端ID
+    //     reconnectPeriod: 1000,
+    //     connectTimeout: 30 * 1000,
+    // });
+
+    // mqttClient.connect();
+
+    // mqttClient.on('connect', () => {
+    //     console.log('MQTT连接成功');
+    //     // 你可以在这里订阅主题  
+    //     mqttClient.subscribe('retirement/deviceOffline/1'); // 替换为你想要订阅的主题  
+    // });
+
+    // mqttClient.on('message', (topic, message) => {
+    //     console.log(`收到消息: ${message.toString()} 在主题: ${topic}`);
+    // });
+
+    // mqttClient.on('error', (error) => {
+    //     console.error('MQTT连接错误:', error);
+    // });
+
+
 })
 
 const handleToNavLog = () => {

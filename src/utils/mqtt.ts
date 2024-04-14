@@ -1,26 +1,31 @@
-import * as mqtt from 'mqtt';
+import * as mqtt from "mqtt/dist/mqtt";
+
 class MQTT {
-  url: string; // mqtt地址
-  topic: string; //订阅地址
-  client!: any;
-  constructor(topic: string) {
+  topic: any; //订阅地址
+  client: any;
+  constructor(topic: any) {
     this.topic = topic;
     // 虽然是mqtt但是在客户端这里必须采用websock的链接方式
-    this.url = 'ws://8.217.217.243:1883';
+    // this.url = 'ws://127.0.0.1:1883/mqtt';
   }
 
   //初始化mqtt
   init() {
     const options = {
-      clean: true,
-      clientId: 'client_'+Math.random()*10000000,
-      password: 'hjy123',
-      username: 'hjy',
-      reconnectPeriod: 1000, // 重连时间间隔
-      connectTimeout: 10000, // 超时时间
+        protocol: "ws",
+        host: "8.217.217.243",
+        port: 15675,
+        clientId: "mqtt_" + Math.random().toString(16).substring(2, 8),
+        username: "hjy",
+        password: "hjy123",
+        clean: true,
+        connectTimeout: 6 * 1000,
+        reconnectPeriod: 6000,
     };
 
-    this.client = mqtt.connect(this.url, options);
+    const connectUrl = `${options.protocol}://${options.host}:${options.port}/ws`;
+
+    this.client = mqtt.connect(connectUrl, options)
     this.client.on('error', (error: any) => {
       console.log(error);
     });
@@ -42,7 +47,8 @@ class MQTT {
 
    //连接
    link() {
-    this.client.on('connect', () => {
+    this.client.on('connect', (e:any) => {
+      console.log("连接成功！！！", e)
       this.client.subscribe(this.topic, (error: any) => {
         if (!error) {
           console.log('订阅成功');

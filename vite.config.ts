@@ -53,7 +53,15 @@ export default defineConfig({
           //console.log(path)
           return path.replace(/^\/api/, "")
         }
-      }
+      },
+      // "/mqtt": {
+      //   target: "http://8.217.217.243:15675/ws",
+      //   changeOrigin: true,
+      //   rewrite: (path) => {
+      //     //console.log(path)
+      //     return path.replace(/^\/api/, "")
+      //   }
+      // }
     }
   },
   build: {

@@ -161,12 +161,11 @@ const handleUpload = (type: string, file: any) => {
         console.log(res)
         fileUrl.value[type] = import.meta.env.VITE_APP_AXIOS_BASER + res.data
         // file.value ='http://8.217.217.243:9000'+ res.data
-        if (type == 'bgUrl') {
-            let app = document.getElementsByTagName('body')
-            console.log(app)
-            app[0].style.backgroundImage = `url(${fileUrl.value.bgUrl}) !important`
-            // console.log(app.style.backgroundImage)
-        }
+
+        // if (type == 'bgUrl') {
+
+        //     // console.log(app.style.backgroundImage)
+        // }
     })
     return false;
 }
@@ -189,18 +188,26 @@ const handleSubmit = () => {
     }).then((res: any) => {
         console.log(res)
         Message.success(t('保存成功'))
+
+        getBg()
     })
 }
 
 
-onMounted(() => {
+const getBg = () => {
     GetBaseSetting().then((res: any) => {
         console.log(res)
         fileUrl.value.bgUrl = res.data?.background
         if (res.data?.background) {
             document.body.style.backgroundImage = `url(${res.data.background})`;
 
+        } else {
+            document.body.style.backgroundImage = ``;
+
         }
+
+        setToken('ing-Bg', fileUrl.value.bgUrl)
+
         if (res.data?.cockpitImageJson) {
             JSON.parse(res.data.cockpitImageJson).forEach((item: any, idx: any) => {
                 fileUrl.value['driveUrl' + (idx + 1)] = item.u
@@ -208,6 +215,11 @@ onMounted(() => {
             })
         }
     })
+}
+
+
+onMounted(() => {
+    getBg()
 })
 
 defineExpose({

@@ -10,10 +10,12 @@ import { useAppStore } from "@/stores/modules/app"
 //import { useMagicKeys } from '@vueuse/core'
 import { useRoute } from 'vue-router'
 import setPageDomTitle from './utils/domTitle'
-import { GetBaseSetting } from "@/api/Base/Base"
+import MQTT from './utils/mqtt'
 //const keys = useMagicKeys()
 //const shiftP = keys['ShiftLeft+S']
+import { useMqttStore } from "@/stores/modules/mqtt"
 
+const mqttStore = useMqttStore()
 //切换语言
 const { locale, t } = useI18n()
 const appStore = useAppStore()
@@ -111,31 +113,45 @@ onMounted(() => {
     }
   })
 
-
-  getToken('ing-Token').then((res: any) => {
-    if (res) {
-      // setToken('ing-Token', res)
-
-
-  GetBaseSetting().then((res: any) => {
-        console.log(res)
-        // fileUrl.value.bgUrl = res.data?.background
-        if (res.data?.background) {
-            document.body.style.backgroundImage = `url(${res.data.background})`;
-        }
-        // if (res.data?.cockpitImageJson) {
-        //     JSON.parse(res.data.cockpitImageJson).forEach((item: any, idx: any) => {
-        //         fileUrl.value['driveUrl' + (idx + 1)] = item.u
-
-        //     })
-        // }
+  getToken('ing-Token').then((token) => {
+    token &&getToken('ing-Bg').then((res: any) => {
+      if (res) {
+        document.body.style.backgroundImage = `url(${res})`;
+   
+      }
     })
+
+    if(token){
+      let mqtt = new MQTT([
+            'retirement/device/offline/1',
+            'retirement/device/eventData/1',
+            'retirement/device/currentDataReply/1']);
+          mqtt.init()
+          mqtt.link()
+
+          mqtt.get((topic: any, message: any) => {
+              console.log('收到来自', topic, '的消息', JSON.parse(message.toString()))
+
+              let data = JSON.parse(message.toString())
+              //设备下线
+              if(topic === 'retirement/device/offline/1'){
+                mqttStore.setData('offline',data)
+              }
+              //异常警告
+              if(topic === 'retirement/device/eventData/1'){
+                mqttStore.setData('error',data)
+              }
+              //设备实时数据
+              if(topic === 'retirement/device/currentDataReply/1'){
+                mqttStore.setData('device',data)
+              }
+          })
     }
+
+
+
+
   })
-
-
-
-
 })
 </script>
 

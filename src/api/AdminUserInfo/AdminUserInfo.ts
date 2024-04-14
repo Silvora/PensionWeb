@@ -117,7 +117,7 @@ export function AdminUserResetPassword(data:any) {
    return http.request({
         url: `/adminUser/resetPassword/${data.id}`,
         method: 'put',
-        data
+        // data
     })
 }
 
