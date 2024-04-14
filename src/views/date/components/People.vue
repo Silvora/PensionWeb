@@ -48,7 +48,7 @@ const initChart = () => {
     {
       name: 'Access From',
       type: 'pie',
-      radius: ['60%', '90%'],
+      radius: ['60%', '30%'],
     //   radius: '70%',  //图的大小
       center: ['30%', '50%'],
       

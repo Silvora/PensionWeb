@@ -32,7 +32,7 @@ const initChart = () => {
         series: [
           {
             type: 'pie',
-            radius: ['50%', '70%'],
+            radius: ['50%', '30%'],
             center: ['50%', '45%'],
             label: {
               show: true,

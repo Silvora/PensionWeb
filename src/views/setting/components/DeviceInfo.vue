@@ -101,27 +101,28 @@
                 </div> -->
                 <div class="log">
                     <p class="title">{{ t('睡眠记录') }}</p>
-                    <div v-if="logInfo">
+                    <div >
                         <div class="logDay">
                             <p>{{ t('连续测量天数') }}: {{ logDay }}</p>
                             <Button type="primary" @click="handleLog">{{ t('日志') }}</Button>
                         </div>
                         <div class="date">
                             <VDatePicker v-model.string="date" mode="date" :masks="masks" is-required
-                                style="width: 100%;height: auto;">
+                                style="width: 100%;height: auto;" >
                             </VDatePicker>
                         </div>
-                        <p class="sub_title">
+                        <div v-if="logInfo">
+                            <p class="sub_title">
                             <i class="iconfont icon-huobifenxi" style="color:#0160FF"></i>
                             {{ t('睡眠综合分析') }}
                         </p>
                         <p class="time1"><span
-                                class="big">{{ toHourSecond(logInfo?.sleepLong).split(":")[0] }}</span>{{ t('小时') }} <span
-                                class="big">{{ toHourSecond(logInfo?.sleepLong).split(":")[1] }}</span> {{ t('分钟') }}</p>
+                                class="big">{{ toHourSecond(logInfo?.sleepLong).split(":")[0]|| '-' }}</span>{{ t('小时') }} <span
+                                class="big">{{ toHourSecond(logInfo?.sleepLong).split(":")[1]|| '-' }}</span> {{ t('分钟') }}</p>
                         <p class="time2">{{ t('入睡时间') }} <span
-                                class="bold">{{ logInfo?.sleepStartTime?.split(" ")[1] }}</span>
+                                class="bold">{{ logInfo?.sleepStartTime?.split(" ")[1]|| '-' }}</span>
                             {{ t('分') }}, {{ t('结束时间') }}<span
-                                class="bold">{{ logInfo?.sleepEndTime?.split(" ")[1] }}</span> {{ t('分') }}
+                                class="bold">{{ logInfo?.sleepEndTime?.split(" ")[1]|| '-' }}</span> {{ t('分') }}
                         </p>
                         <p class="desc">{{ t('睡眠质量不佳,加强欲动可以帮助你改善睡眠') }}</p>
                         <div>
@@ -136,11 +137,11 @@
                                 <p class="d">{{ t('参考值:') }}6～10{{ t('小时') }}</p>
                                 </Col>
                                 <Col :span="12">
-                                <p class="title">清醒比例{{ (logInfo?.awakeLong / logInfo?.sleepLong).toFixed(0) || '-' }}%</p>
+                                <p class="title">清醒比例{{ logInfo?.sleepLong?(logInfo?.awakeLong / logInfo?.sleepLong).toFixed(0) : '-' }}%</p>
                                 <p class="d">{{ t('参考值:') }}0～10%</p>
                                 </Col>
                                 <Col :span="12">
-                                <p class="title">浅睡比例{{ (logInfo?.sleepLight / logInfo?.sleepLong).toFixed(0) || '-' }}%</p>
+                                <p class="title">浅睡比例{{logInfo?.sleepLong? (logInfo?.sleepLight / logInfo?.sleepLong).toFixed(0) : '-' }}%</p>
                                 <p class="d">{{ t('参考值:') }}20～60%</p>
                                 </Col>
                                 <Col :span="12">
@@ -161,10 +162,13 @@
                                 </Col>
                             </Row>
                         </div>
-                    </div>
-                    <div v-else>
+                        </div>
+                        <div v-else>
                         {{ t('暂无数据') }}
                     </div>
+                       
+                    </div>
+                   
                 </div>
                 <div class="chat">
                     <!-- <p class="title">{{ t('健康数据') }}</p> -->
@@ -196,6 +200,7 @@ import { useI18n } from 'vue-i18n';
 import dayjs from "dayjs"
 import { useRouter } from "vue-router"
 import { Message } from "view-ui-plus";
+import { watch } from "vue";
 const router = useRouter()
 const { t } = useI18n()
 const modal = ref<boolean>(false)
@@ -210,6 +215,12 @@ const masks = ref({
 const logDay = ref<any>(null)
 const DeviceInfoListInfo = ref<any>({})
 // const msg = ref<any>(null)
+
+
+watch(date, () => {
+    getData()
+})
+
 const Open = (data: any) => {
     userInfo.value = data.elderlyInfo
     mac.value = data.mac
@@ -231,11 +242,13 @@ const Close = () => {
 }
 
 const toHourMinute = (minutes: any) => {
+    if(!minutes)return '-'
     return (Math.floor(minutes / 60) + ":" + (minutes % 60));
     // 也可以转换为json，以方便专外部使用属
     // return {hour:Math.floor(minutes/60),minute:(minutes%60)};
 }
 const toHourSecond = (second: any) => {
+    if(!second)return '-'
     return (Math.floor(second / 60 / 60) + ":" + (second % 60));
     // 也可以转换为json，以方便专外部使用属
     // return {hour:Math.floor(minutes/60),minute:(minutes%60)};
@@ -284,7 +297,7 @@ const getData = () => {
     })
 
     DeviceSleepDeviceHeartRateByMinute({
-        startTime: oldDate.value,
+        startTime: dayjs(date.value).subtract(1, 'day').format('YYYY-MM-DD'),
         endTime: date.value,
         mac: mac.value
     }).then((res: any) => {

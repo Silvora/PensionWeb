@@ -94,7 +94,7 @@
             </div>
         </Modal>
 
-        <Modal v-model="elderModal" :title="t('暂无设备')" :footer-hide="true" width="300">
+        <Modal v-model="elderModal" :title="t('暂无设备')" :footer-hide="true" :width="300">
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
@@ -160,55 +160,55 @@ watchEffect(() => {
     descriptionList.value = [
         {
             label: '姓名',
-            value: props.info?.checkIn?.elderlyName
+            value: props.info?.elderlyName
         },
-        {
-            label: '主要疾病',
-            value: '主要疾病',
-        },
+        // {
+        //     label: '主要疾病',
+        //     value: '主要疾病',
+        // },
         {
             label: '性别',
-            value: props.info?.checkIn?.elderlyGender == 1 ? '男' : '女'
+            value: props.info?.elderlyGender == 1 ? '男' : props.info?.elderlyGender == 2 ?'女':'未知'
         },
-        {
-            label: '用药',
-            value: '用药'
-        },
-        {
-            label: '年龄',
-            value: '年龄'
-        },
-        {
-            label: '用餐规划',
-            value: '用餐规划'
-        },
+        // {
+        //     label: '用药',
+        //     value: '用药'
+        // },
+        // {
+        //     label: '年龄',
+        //     value: '年龄'
+        // },
+        // {
+        //     label: '用餐规划',
+        //     value: '用餐规划'
+        // },
         {
             label: '档案号',
-            value: props.info?.checkIn?.elderlyFileNo
+            value: props.info?.elderlyFileNo
         },
-        {
-            label: '康复计划',
-            value: '康复计划'
-        },
+        // {
+        //     label: '康复计划',
+        //     value: '康复计划'
+        // },
         {
             label: '护理等级',
-            value: '护理等级'
+            value:props.info?.nursingGrade
         },
-        {
-            label: '入住时间',
-            value: '入住时间'
-        },
+        // {
+        //     label: '入住时间',
+        //     value: '入住时间'
+        // },
         {
             label: '床位信息',
-            value: '床位信息'
+            value: props.info?.roomBedNumber
         },
-        {
-            label: '到期时间',
-            value: '到期时间'
-        },
+        // {
+        //     label: '到期时间',
+        //     value: '到期时间'
+        // },
         {
             label: '看护人',
-            value: '看护人'
+            value: props.info?.nursingName
         },
     ]
 })

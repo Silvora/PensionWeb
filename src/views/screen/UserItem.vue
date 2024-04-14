@@ -13,11 +13,12 @@
             </p>
             <div class="userBox">
                 <div class="imgInfo">
-                    <img @click="handleOpenDeviceInfo(info)" class="img" v-if="info.elderlyPhoto" :src="info.elderlyPhoto"
+                    <img @click="handleSetting" class="img" v-if="info.elderlyPhoto" :src="info.elderlyPhoto"
                         alt="" srcset="">
 
+                        <!-- handleOpenDeviceInfo -->
                     <!-- @click="handleNavTo(`/add-elder?type=0&id=${info?.elderlyId}`)" -->
-                    <img @click="handleOpenDeviceInfo(info)" v-else class="img" src="@/assets/images/screen.png" alt=""
+                    <img @click="handleSetting" v-else class="img" src="@/assets/images/screen.png" alt=""
                         srcset="">
                     <div class="imgList" @click="handleSetting">
                         <img src="@/assets/images/睡眠监测@2x(4).png" alt="">

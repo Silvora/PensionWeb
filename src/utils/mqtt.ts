@@ -3,8 +3,13 @@ import * as mqtt from "mqtt/dist/mqtt";
 class MQTT {
   topic: any; //订阅地址
   client: any;
-  constructor(topic: any) {
-    this.topic = topic;
+
+  constructor() {
+    this.topic = [
+      'retirement/device/offline/1',
+      'retirement/device/eventData/1',
+      'retirement/device/currentDataReply/1']
+    // this.topic = topic;
     // 虽然是mqtt但是在客户端这里必须采用websock的链接方式
     // this.url = 'ws://127.0.0.1:1883/mqtt';
   }

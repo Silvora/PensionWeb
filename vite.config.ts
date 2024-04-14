@@ -66,7 +66,7 @@ export default defineConfig({
   },
   build: {
     //target: 'modules',
-    target: 'es2015', // 浏览器兼容性
+    target: 'es2020', // 浏览器兼容性
     outDir: 'dist', //指定输出路径
     assetsDir: 'assets', // 指定生成静态资源的存放路径
     minify: 'terser', // 混淆器，terser构建后文件体积更小

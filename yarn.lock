@@ -767,6 +767,11 @@
   dependencies:
     vue-demi ">=0.14.6"
 
+"@wcjiang/notify@^2.1.3":
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/@wcjiang/notify/-/notify-2.1.3.tgz#66ae05b7618f86f176902d5542302a169127d675"
+  integrity sha512-2sbn09FsGlMEC72KhlT7ASCp5apTWo6pub3GHesg3+kULMqYiuJSkIBVQohsxL1voat2IPIfzz2pg/uM/fqEyw==
+
 abort-controller@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/abort-controller/-/abort-controller-3.0.0.tgz#eaf54d53b62bae4138e809ca225c8439a6efb392"

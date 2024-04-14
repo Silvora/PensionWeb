@@ -33,6 +33,8 @@ import { clearItemToken, getToken, setToken } from "@/utils/token";
 import { useAppStore } from "@/stores/modules/app"
 import { useI18n } from "vue-i18n"
 import { GetBaseSetting } from "@/api/Base/Base"
+
+
 const { t } = useI18n()
 import md5 from 'js-md5';
 const appStore = useAppStore()
@@ -51,6 +53,9 @@ const form = ref({
   identifier: '',
   password: ''
 })
+import { useMqttStore } from "@/stores/modules/mqtt"
+
+const mqttStore = useMqttStore()
 const rule = {
   identifier: [
     { required: true, message: t('请输入') + t('用户名'), trigger: 'blur' }
@@ -102,7 +107,7 @@ const handleSubmit = () => {
         loading.value = false
         Message.success(t('登录成功'))
 
-      }).finally(() => {
+      }).then(() => {
         loading.value = false
         //router.push("/")
 
@@ -112,6 +117,12 @@ const handleSubmit = () => {
         if (res.data?.background) {
             document.body.style.backgroundImage = `url(${res.data.background})`;
         }
+
+        mqttStore.initMqtt()
+        mqttStore.link()
+        mqttStore.get()
+
+     
         // if (res.data?.cockpitImageJson) {
         //     JSON.parse(res.data.cockpitImageJson).forEach((item: any, idx: any) => {
         //         fileUrl.value['driveUrl' + (idx + 1)] = item.u
@@ -140,6 +151,11 @@ onMounted(() => {
     console.log(res)
     form.value.password = res
   })
+  mqttStore.client = null
+console.log(mqttStore.client)
+
+  setToken('ing-Token', "")
+
 })
 </script>
 
