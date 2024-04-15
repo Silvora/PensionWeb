@@ -65,13 +65,38 @@ const baseInfo: any = {
                 default: "",
             },
             {
-                type: 'input',
+                type: 'select',
                 label: '血型',
                 prop: "bloodType",
                 span: 1,
                 //disabled: false,
                 required: false,
                 default: "",
+                childs: [
+            
+                    {
+                        label: 'A',
+                        value: 'A'
+                    },
+                    {
+                        label: 'B',
+                        value: 'B'
+                    },
+                         {
+                        label: 'AB',
+                        value: 'AB'
+                    },
+                    {
+                        label: 'O',
+                        value: 'O'
+                    },
+                         {
+                        label: 'RH',   
+                        value: 'RH'
+                         } 
+
+                    
+                ]
             },
             {
                 type: 'select',
@@ -495,7 +520,7 @@ const toolBarConfig:any= {
             childs: [
                 {
                     label: '是',
-                    value: 0
+                    value: 1
                 },
                 {
                     label: '否',

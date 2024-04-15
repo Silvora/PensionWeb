@@ -45,7 +45,8 @@
                 </p>
                 <div class="info" v-if="props.info">
                     <div class="img">
-                        <img src="@/assets/images/screen.png" alt="" srcset="">
+                        <img :src="props.info?.elderlyPhoto" alt="" srcset="" v-if="props.info?.elderlyPhoto" >
+                        <img src="@/assets/images/screen.png" alt="" srcset="" v-else>
                     </div>
                     <div class="user">
                         <DescriptionList title="" :col="2">

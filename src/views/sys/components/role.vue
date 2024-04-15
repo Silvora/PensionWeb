@@ -156,10 +156,15 @@ const handleBatchOnline = () => {
         }
     })
     console.log(list)
-    RoleOnlineBatch(list).then(() => {
-        Message.success(t('启用成功'))
-        getData()
-    })
+    if (list.length > 0) {
+        RoleOnlineBatch(list).then(() => {
+            Message.success(t('启用成功'))
+            getData()
+        })
+        
+    }else{
+        Message.warning(t('请选择要启用的角色'))
+    }
 }
 // 批量禁用
 const handleBatchOffline = () => {
@@ -169,10 +174,14 @@ const handleBatchOffline = () => {
         }
     })
     console.log(list)
+   if(list.length > 0){
     RoleOfflineBatch(list).then(() => {
         Message.success(t('禁用成功'))
         getData()
     })
+   }else{
+    Message.warning(t('请选择要禁用的角色'))
+   }
 }
 
 //删除角色

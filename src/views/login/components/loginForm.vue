@@ -108,7 +108,7 @@ const handleSubmit = () => {
         Message.success(t('登录成功'))
 
       }).then(() => {
-        loading.value = false
+       
         //router.push("/")
 
         GetBaseSetting().then((res: any) => {
@@ -129,6 +129,8 @@ const handleSubmit = () => {
 
         //     })
         // }
+    }).finally(() => {
+      loading.value = false
     })
       })
     }

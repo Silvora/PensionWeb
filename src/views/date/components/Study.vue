@@ -9,8 +9,10 @@
 import * as echarts from "echarts"
 import { onMounted, ref,nextTick } from "vue";
 import { StaffJobLevelRatio } from "@/api/Staff/Staff"
+import { useI18n } from "vue-i18n"
 const LeftChartRef = ref(null)
 const RightChartRef = ref(null)
+const { t } = useI18n()
 
 
 onMounted(() => {
@@ -155,7 +157,7 @@ const initLeftChart = () => {
       },
       data: [{
     value: 20,
-    name: '平均在线学习时长',
+    name: t('平均在线学习时长'),
     title: {
       offsetCenter: ['0%', '120%'],
       color: '#fff'
@@ -247,7 +249,7 @@ const initRightChart = () => {
       },
       data: [{
     value: 20,
-    name: '累计在线学习时长',
+    name: t('累计在线学习时长'),
     title: {
       offsetCenter: ['0%', '120%'],
       color: '#fff'

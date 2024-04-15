@@ -31,10 +31,10 @@ onMounted(() => {
         let s: any = 0
         res.data.forEach((item: any) => {
             if (item.type == 1) {
-                obj.push({ value: item.totalCount || 0, name: t('男'), ...item })
+                obj.push({ value: item.count || 0, name: t('男'), ...item })
             }
-            if (item.type == 2) {
-                obj.push({ value: item.totalCount || 0, name: t('女'), ...item })
+            if (item.type == 0) {
+                obj.push({ value: item.count || 0, name: t('女'), ...item })
             }
             s += item.count || 0
         })

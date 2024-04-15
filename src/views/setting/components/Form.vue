@@ -86,8 +86,17 @@
                     </FormItem>
 
                     <FormItem label="安装高度" prop="installHeight">
-                        <InputNumber :max="3" :min="2" v-model="formData.fallParams.installHeight" style="width: 100%;" />
+                        <!-- <InputNumber :step="0.2" :max="3" :min="2" v-model="formData.fallParams.installHeight" style="width: 100%;" /> -->
 
+                        <Select v-model="formData.fallParams.installHeight">
+                            <Option value="2.2">2.2</Option>
+                            <Option value="2.4">2.4</Option>
+                            <Option value="2.6">2.6</Option>
+                            <Option value="2.8">2.8</Option>
+                            <Option value="3">3</Option>
+
+
+                        </Select>
                     </FormItem>
 
                     <FormItem label="安装方式" prop="installFlag">
@@ -159,7 +168,7 @@
                                 @on-change="(e:any)=>handleTimeChange(e,'leaveBedConfig')"
                                 /> -->
 
-                                    <TimePicker v-model="formData.sleepParams.leaveBedConfig.maxTime" format="HH:mm"
+                                    <TimePicker v-model="formData.sleepParams.leaveBedConfig.maxTime" format="HH:mm:ss"
                                         style="width: 120px;"></TimePicker>
                                 </FormItem>
                             </div>
@@ -170,7 +179,7 @@
                                 @on-change="(e:any)=>handleTimeChange(e,'leaveBedConfig')"
                                 /> -->
 
-                                    <TimePicker v-model="formData.sleepParams.leaveBedConfig.minTime" format="HH:mm"
+                                    <TimePicker v-model="formData.sleepParams.leaveBedConfig.minTime" format="HH:mm:ss"
                                         style="width: 120px;"></TimePicker>
                                 </FormItem>
                             </div>
@@ -182,7 +191,7 @@
                                 @on-change="(e:any)=>handleTimeChange(e,'leaveBedConfig')"
                                 /> -->
 
-                            <TimePicker v-model="formData.sleepParams.leaveBedConfig.sleep" format="mm:ss"
+                            <TimePicker v-model="formData.sleepParams.leaveBedConfig.sleep" format="HH:mm:ss"
                                 style="width: 100%;"></TimePicker>
                         </FormItem>
 
@@ -557,6 +566,9 @@ const handleSubmit = () => {
     delete data.sleepParams.heartRateConfig.time
     delete data.sleepParams.leaveBedConfig.time
     delete data.sleepParams.respiratoryConfig.time
+
+    console.log(data)
+
     //编辑
     if (data.id) {
 

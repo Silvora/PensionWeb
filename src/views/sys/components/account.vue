@@ -310,9 +310,11 @@ const handleBatchOnline = () => {
     console.log(list)
     if (list.length > 0) {
         AdminUserOnlineBatch(list).then(() => {
-            Message.success(t('禁用成功'))
+            Message.success(t('启用成功'))
             getData()
         })
+    }else{
+        Message.warning(t('请选择要启用的用户'))
     }
 
 }
@@ -330,6 +332,8 @@ const handleBatchOffline = () => {
             Message.success(t('禁用成功'))
             getData()
         })
+    }else{
+        Message.warning(t('请选择要禁用的用户'))
     }
 }
 // 批量删除

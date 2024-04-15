@@ -67,7 +67,7 @@ onMounted(() => {
             //     ...item
             // })
 
-            list[item.type].value = item.totalCount || 0
+            list[item.type].value = item.count || 0
             list[item.type].percentage = item.percentage + '%'
 
 

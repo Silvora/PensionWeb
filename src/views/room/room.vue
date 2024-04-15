@@ -60,7 +60,9 @@
                                     <div v-if="item.checkIn" class="user" @click="handleGetUserInfo(item)">
                                         <div class="t5">
                                             <span class="t6">{{ item.checkIn?.nursingGrade }}</span>
-                                            <img class="t7" src="@/assets/images/screen.png" alt="" srcset="">
+                                            <img class="t7" :src="item.checkIn.elderlyPhoto" alt="" srcset="" v-if="item.checkIn.elderlyPhoto">
+                                            <img class="t7" src="@/assets/images/screen.png" alt="" srcset="" v-else>
+
                                         </div>
                                         <p class="t8">{{ item.checkIn?.elderlyName }}&nbsp;
                                             <img class="t7" src="@/assets/images/ic_客户_男@2x(1).png" alt="" srcset=""

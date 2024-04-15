@@ -8,11 +8,11 @@
                     <div class="chart">
                         <p>{{ t('护理员人数分析') }}</p>
                         <div class="tabs">
-                            <span class="tab">机构</span>
-                            <span class="tab">证书</span>
-                            <span class="tab">年龄</span>
-                            <span class="tab">性别</span>
-                            <span class="tab">学历</span>
+                            <span class="tab">{{ t('机构') }}</span>
+                            <span class="tab">{{ t('证书') }}</span>
+                            <span class="tab">{{ t('年龄') }}</span>
+                            <span class="tab">{{ t('性别') }}</span>
+                            <span class="tab">{{ t('学历') }}</span>
                         </div>
                         <People></People>
                     </div>

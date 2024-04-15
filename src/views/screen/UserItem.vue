@@ -7,7 +7,7 @@
                 <span class="t2">{{ info?.roomBedNumber }}</span>
                 <span class="t3">
                     <img src="@/assets/images/room-setting.png"
-                        alt="" srcset="">
+                        alt="" srcset="" @click="handleNavTo(`/add-elder?type=0&id=${info?.elderlyId}`)">
                         <!--  @click="handleNavTo(`/add-elder?type=0&id=${info?.elderlyId}`)" -->
                 </span>
             </p>
