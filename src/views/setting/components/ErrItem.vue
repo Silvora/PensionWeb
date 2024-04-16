@@ -2,8 +2,10 @@
     <Card :bordered="false" :padding="0" style="background: rgba(255, 255, 255, 1);margin-bottom: 10px;">
         <div class="errInfo">
             <p class="title">
-                <span :class="['t1', 'green', 'yellow', 'gary']">空闲</span>
-                <span class="t2">a102</span>
+                <span
+                    :class="['t1', props.info?.online == 1 ? 'green' : 'gary']">{{ ['离线', '在线'][props.info?.online] }}</span>
+
+                <span class="t2">{{ props.info?.type == 'ed719_type' ? t('行为感知') : t('睡眠感知') }}</span>
                 <span class="t3">
                     <img src="@/assets/images/room-setting.png" alt="" srcset="">
                 </span>
@@ -11,28 +13,60 @@
             <div class="errBox">
                 <img class="img" src="@/assets/images/screen.png" alt="" srcset="">
                 <div class="info">
-                    <p class="t1">张玲
+                    <p class="t1">{{ props.info?.name }}
+
                     </p>
                     <p class="t2">
-                        <img src="@/assets/images/pad-processing@2x.png" alt="">
-                        倪杰
+                        <img :src="props.info?.elderlyInfo?.elderlyPhoto" alt=""
+                            v-if="props.info?.elderlyInfo?.elderlyPhoto">
+                        <img src="@/assets/images/pad-processing@2x.png" alt="" v-else>
+                        {{ props.info?.elderlyInfo?.name }}
                     </p>
                 </div>
             </div>
-            <p class="roomTitle">床位：一楼 A101 06床</p>
+            <p class="roomTitle">{{ t('床位') }}:{{ props.info?.roomBedNumber }}</p>
             <div class="imgList">
                 <img src="@/assets/images/睡眠监测@2x(4).png" alt="">
                 <img src="@/assets/images/位图@2x(2).png" alt="">
                 <img src="@/assets/images/温度计@2x.png" alt="">
                 <img src="@/assets/images/紧急按钮@2x.png" alt="">
             </div>
-            <Button type="error" size="small" class="stateBtn">心率异常</Button>
+            <!-- <Button type="error" size="small" class="stateBtn">心率异常</Button> -->
+            <Button size="small" class="stateBtn"
+                :style="{ background: 'rgba(224, 98, 85, 1)', color: '#fff', border: 'none' }"
+                v-if="props.info?.stateInfo?.eventType">{{ errInfo[props.info?.stateInfo?.eventType] }}</Button>
+            <Button size="small" class="stateBtn"
+                :style="{ background: 'rgba(224, 98, 85, 1)', color: '#fff', border: 'none' }"
+                v-else-if="props.info?.stateInfo?.onBedStatus">{{ ['不在床', '在床'][props.info?.stateInfo?.onBedStatus] }}</Button>
+            <Button size="small" class="stateBtn"
+                :style="{ background: 'rgba(18, 185, 135, 0.05)', color: 'rgba(18, 185, 135, 1)', border: 'none' }"
+                v-else>{{ t('暂无连接设备') }}</Button>
         </div>
     </Card>
 </template>
 
 <script setup lang='ts'>
-
+import { ref } from 'vue'
+//import {DeviceDetailId} from "@/api/Device/Device"
+import { useI18n } from "vue-i18n";
+const { t } = useI18n()
+const props = defineProps({
+    info: {
+        type: Object,
+        defined: {}
+    },
+    checkAll: {
+        type: Boolean,
+        default: false
+    }
+})
+const errInfo = ref({
+    3001: "离床",
+    3006: "呼吸异常",
+    3007: "心率异常",
+    3012: "在床",
+    3008: "紧急拉绳通知",
+})
 </script>
 
 <style scoped lang='less'>
@@ -110,11 +144,13 @@
 
             .t2 {
                 img {
-            width: 12px;
-            height: 12px;
-        }
+                    width: 12px;
+                    height: 12px;
+                }
+
                 font-size: 14px;
-                font-family: PingFangSC, PingFang SC;
+                font-family: PingFangSC,
+                PingFang SC;
                 font-weight: 400;
                 color: #1C1B1B;
             }

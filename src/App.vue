@@ -105,8 +105,8 @@ watch(route, (v: any) => {
 
   // console.log("===============")
 
-  if(v.name == 'login') {
-    mqtt.value.unsubscribes()
+  if (v.name == 'login') {
+    mqtt && mqtt.value?.unsubscribes()
 
     // console.log("===============")
   }
@@ -129,88 +129,88 @@ onMounted(() => {
   })
 
   getToken('ing-Token').then((token) => {
-    token &&getToken('ing-Bg').then((res: any) => {
+    token && getToken('ing-Bg').then((res: any) => {
       if (res) {
         document.body.style.backgroundImage = `url(${res})`;
-   
+
       }
 
-    //   if(token && mqttStore.client){
-    //   // mqttStore.over()
-    //   // mqttStore.client = null
-    //   mqttStore.unsubscribes()
-    //   mqttStore.initMqtt()
-    //   mqttStore.link()
-    //   mqttStore.get()
-    // }else{
-    //   mqttStore.initMqtt()
-    //   mqttStore.link()
-    //   mqttStore.get()
-    // }
+      //   if(token && mqttStore.client){
+      //   // mqttStore.over()
+      //   // mqttStore.client = null
+      //   mqttStore.unsubscribes()
+      //   mqttStore.initMqtt()
+      //   mqttStore.link()
+      //   mqttStore.get()
+      // }else{
+      //   mqttStore.initMqtt()
+      //   mqttStore.link()
+      //   mqttStore.get()
+      // }
 
 
     })
-   mqtt.value = new MQTT()
+    mqtt.value = new MQTT()
 
 
-   if(route.name =='login'){
-    return
-   }
+    if (route.name == 'login') {
+      return
+    }
 
 
-   if(token) {
-    mqtt.value.init()
-    mqtt.value.link()
-    mqtt.value.get((topic: any, message: any) => {
-      console.log('收到来自', topic, '的消息', JSON.parse(message.toString()))
-           let data = JSON.parse(message.toString())
-              //设备下线
-              if(topic === 'retirement/device/offline/1'){
-                mqttStore.setData('offline',data)
-              }
-              //异常警告
-              if(topic === 'retirement/device/eventData/1'){
-                mqttStore.setData('error',data)
-              }
-              //设备实时数据
-              if(topic === 'retirement/device/currentDataReply/1'){
-                mqttStore.setData('device',data)
-              }
-    })
-   }else{
-    mqtt.value.unsubscribes()
-   }
-      // let mqtt = new MQTT([
-      //       'retirement/device/offline/1',
-      //       'retirement/device/eventData/1',
-      //       'retirement/device/currentDataReply/1']);
-          // mqtt.value.init()
-          // mqtt.value.link()
+    if (token) {
+      mqtt.value.init()
+      mqtt.value.link()
+      mqtt.value.get((topic: any, message: any) => {
+        console.log('收到来自', topic, '的消息', JSON.parse(message.toString()))
+        let data = JSON.parse(message.toString())
+        //设备下线
+        if (topic === 'retirement/device/offline/1') {
+          mqttStore.setData('offline', data)
+        }
+        //异常警告
+        if (topic === 'retirement/device/eventData/1') {
+          mqttStore.setData('error', data)
+        }
+        //设备实时数据
+        if (topic === 'retirement/device/currentDataReply/1') {
+          mqttStore.setData('device', data)
+        }
+      })
+    } else {
+      mqtt && mqtt.value?.unsubscribes()
+    }
+    // let mqtt = new MQTT([
+    //       'retirement/device/offline/1',
+    //       'retirement/device/eventData/1',
+    //       'retirement/device/currentDataReply/1']);
+    // mqtt.value.init()
+    // mqtt.value.link()
 
-          // mqtt.value.get((topic: any, message: any) => {
-          //     console.log('收到来自', topic, '的消息', JSON.parse(message.toString()))
+    // mqtt.value.get((topic: any, message: any) => {
+    //     console.log('收到来自', topic, '的消息', JSON.parse(message.toString()))
 
-          //     let data = JSON.parse(message.toString())
-          //     //设备下线
-          //     if(topic === 'retirement/device/offline/1'){
-          //       mqttStore.setData('offline',data)
-          //     }
-          //     //异常警告
-          //     if(topic === 'retirement/device/eventData/1'){
-          //       mqttStore.setData('error',data)
-          //     }
-          //     //设备实时数据
-          //     if(topic === 'retirement/device/currentDataReply/1'){
-          //       mqttStore.setData('device',data)
-          //     }
-          // })
+    //     let data = JSON.parse(message.toString())
+    //     //设备下线
+    //     if(topic === 'retirement/device/offline/1'){
+    //       mqttStore.setData('offline',data)
+    //     }
+    //     //异常警告
+    //     if(topic === 'retirement/device/eventData/1'){
+    //       mqttStore.setData('error',data)
+    //     }
+    //     //设备实时数据
+    //     if(topic === 'retirement/device/currentDataReply/1'){
+    //       mqttStore.setData('device',data)
+    //     }
+    // })
 
-          // setTimeout(() => {
-          //     mqtt.value.unsubscribes()
-          // },5000)
+    // setTimeout(() => {
+    //     mqtt.value.unsubscribes()
+    // },5000)
     // }
 
-    
+
 
 
 
@@ -220,8 +220,8 @@ onMounted(() => {
 
 
 onBeforeUnmount(() => {
-    console.log("first")
-    // mqtt.value.over()
+  console.log("first")
+  // mqtt.value.over()
 })
 </script>
 

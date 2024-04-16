@@ -12,19 +12,24 @@
                 </span>
             </p>
             <div class="deviceBox">
-                <img class="img" src="@/assets/images/睡眠监测@2x(1).png" alt="" srcset=""  @click="handleSetCheck">
-                <div class="info" >
-                   <div @click="handleGetDeviceInfo">
-                    <p class="t1">{{ props?.info.name }}
+                <img class="img" v-if="props.info?.type == 'ed719_type'" src="@/assets/images/setting_active.png" alt="" srcset="" @click="handleSetCheck">
+                <img class="img" v-else src="@/assets/images/setting_sleep2.png" alt="" srcset="" @click="handleSetCheck">
+                
+                <div class="info">
+                    <div @click="handleGetDeviceInfo">
+                        <p class="t1">
 
-</p>
-<p class="t2">
-    ID:{{ props?.info.mac }}
-</p>
-<p class="t2">
-    关联老人:{{ props?.info.elderlyInfo?.name }}
-</p>
-                   </div>
+                            <!-- {{ props?.info.name }} -->
+                            {{ props.info?.type == 'ed719_type' ? t('行为感知') : t('睡眠感知') }}
+
+                        </p>
+                        <p class="t2">
+                            ID:{{ props?.info.mac }}
+                        </p>
+                        <p class="t2">
+                            关联老人:{{ props?.info.elderlyInfo?.name }}
+                        </p>
+                    </div>
 
                     <span class="check">
                         <Checkbox v-model="check">{{ }}</Checkbox>
@@ -70,7 +75,7 @@
                 v-else-if="props.info?.stateInfo?.onBedStatus">{{ ['不在床', '在床'][props.info?.stateInfo?.onBedStatus] }}</Button>
             <Button size="small" class="stateBtn"
                 :style="{ background: 'rgba(18, 185, 135, 0.05)', color: 'rgba(18, 185, 135, 1)', border: 'none' }"
-                v-else>{{t('暂无连接设备') }}</Button>
+                v-else>{{ t('暂无连接设备') }}</Button>
         </div>
     </Card>
 </template>
@@ -113,7 +118,7 @@ watchEffect(() => {
 
 })
 
-const emit = defineEmits(['handleCheck', 'handleGetUser','handleOpenInfo'])
+const emit = defineEmits(['handleCheck', 'handleGetUser', 'handleOpenInfo'])
 const handleSetCheck = () => {
     check.value = !check.value
     emit('handleCheck', { id: props.info.id, check: check.value })
@@ -127,8 +132,8 @@ const handleGet = () => {
 }
 
 
-const handleGetDeviceInfo = ()=>{
-    emit('handleOpenInfo',props.info)
+const handleGetDeviceInfo = () => {
+    emit('handleOpenInfo', props.info)
 }
 
 

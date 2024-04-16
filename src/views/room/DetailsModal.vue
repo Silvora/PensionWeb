@@ -133,6 +133,7 @@ import { onMounted, ref, watchEffect } from 'vue';
 import thermometer from "@/assets/images/thermometer.png"
 import bitmap from "@/assets/images/bitmap.png"
 import sleep from "@/assets/images/sleep.png"
+import sleep2 from "@/assets/images/setting_sleep2.png"
 import errBtn from "@/assets/images/errBtn.png"
 import { ElderlyListNotCheckIn } from '@/api/Elderly/Elderly'
 import { CheckSave, CheckRemoveId } from "@/api/Check/Check"
@@ -219,7 +220,7 @@ console.log(props.info)
 
 const deviceList = ref([
     {
-        img: sleep,
+        img: sleep2,
         label: '睡眠监测',
         num: 1,
         errorNum: 3,

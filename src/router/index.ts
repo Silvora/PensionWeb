@@ -2,8 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import routes from './routes'
 import ViewUIPlus from 'view-ui-plus'
 import { getToken,clearItemToken } from '@/utils/token'
-import { SysMenuQueryByUser } from '@/api/SysMenu/SysMenu'
-import setPageDomTitle from '@/utils/domTitle'
+// import { SysMenuQueryByUser } from '@/api/SysMenu/SysMenu'
+// import setPageDomTitle from '@/utils/domTitle'
 const modulesR = import.meta.glob('../views/**/**.vue', {
   import: 'default',
   //import: 'setup',
@@ -15,7 +15,7 @@ const modulesR = import.meta.glob('../views/**/**.vue', {
 
 const router = createRouter({
   //history: createWebHashHistory(import.meta.env.VITE_BASE_URL),
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(),
   routes
 })
 
