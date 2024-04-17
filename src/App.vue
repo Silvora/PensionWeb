@@ -21,6 +21,8 @@ const mqttStore = useMqttStore()
 const { locale, t } = useI18n()
 const appStore = useAppStore()
 
+const oss = ref<any>(import.meta.env.VITE_APP_AXIOS_BASER)
+
 // const mqtt = ref(new MQTT([
 //   'retirement/device/offline/1',
 //   'retirement/device/eventData/1',
@@ -131,7 +133,7 @@ onMounted(() => {
   getToken('ing-Token').then((token) => {
     token && getToken('ing-Bg').then((res: any) => {
       if (res) {
-        document.body.style.backgroundImage = `url(${res})`;
+        document.body.style.backgroundImage = `url(${oss + res})`;
 
       }
 

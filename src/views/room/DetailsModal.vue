@@ -45,7 +45,9 @@
                 </p>
                 <div class="info" v-if="props.info?.checkIn">
                     <div class="img">
-                        <img src="@/assets/images/screen.png" alt="" srcset="">
+                        <img v-if="props.info?.checkIn?.elderlyPhoto" :src="oss + props.info?.checkIn?.elderlyPhoto" alt=""
+                            srcset="">
+                        <img v-else src="@/assets/images/screen.png" alt="" srcset="">
                     </div>
                     <div class="user">
                         <DescriptionList title="" :col="2">
@@ -142,6 +144,9 @@ import { useI18n } from "vue-i18n";
 const { t } = useI18n()
 import dayjs from "dayjs"
 const emit = defineEmits(['handleUpdate'])
+
+const oss = ref<any>(import.meta.env.VITE_APP_AXIOS_BASER)
+
 
 const detailsModal = ref(false)
 const elderModal = ref(false)
@@ -383,7 +388,9 @@ defineExpose({
             width: 130px;
 
             img {
+                display: inline-block;
                 width: 130px;
+                height: 130px;
             }
         }
 

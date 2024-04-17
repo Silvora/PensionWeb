@@ -7,7 +7,7 @@
 
                 <Upload :show-upload-list="false" :before-upload="(f: any) => handleUpload('photo', f)" action="#">
                     <div style="position: relative;">
-                        <img :src="photo" class="up1" alt="" v-if="photo" />
+                        <img :src="oss + photo" class="up1" alt="" v-if="photo" />
                         <img src="@/assets/images/ic_荣誉照片@2x.png" class="up1" alt="" v-else />
                         <Icon type="md-close-circle" size="24" style="position: absolute;top:10px;right:10px;color:red"
                             @click.stop="handleDeleteImg()" v-if="photo" />
@@ -45,6 +45,10 @@ const router = useRouter()
 const TableFormRef = ref<any>()
 const data = ref<any>({})
 const photo = ref<any>('')
+
+const oss = ref<any>(import.meta.env.VITE_APP_AXIOS_BASER)
+
+
 
 const { t } = useI18n()
 const handleElderAdd = () => {
@@ -120,7 +124,9 @@ const handleUpload = (type: string, file: any) => {
     formData.append("file", file);
     FileUploadImage(formData).then((res: any) => {
         console.log(res)
-        photo.value = import.meta.env.VITE_APP_AXIOS_BASER + res.data
+        photo.value = res.data
+        Message.success(t("上传成功"));
+
         // file.value ='http://8.217.217.243:9000'+ res.data
     })
 

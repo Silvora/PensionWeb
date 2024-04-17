@@ -12,13 +12,14 @@
           <!-- <span class="right" :style="{ 'background': route.name == 'home' ? 'rgba(19, 100, 248, 1)' : '#fff' }"> -->
           <span v-if="['home', 'screen'].includes(route.name)" class="right"
             :style="{ 'background': 'rgba(19, 100, 248, 1)' }">
-            <img v-if="['home'].includes(route.name)" class="right-img" src="@/assets/images/setting.png" alt=""  @click="() => router.push('/sys?type=agency')">
+            <img v-if="['home'].includes(route.name)" class="right-img" src="@/assets/images/setting.png" alt=""
+              @click="() => router.push('/sys?type=agency')">
             <!-- <img v-if="route.name == 'screen'" class="right-img" src="@/assets/images/setting.png" alt=""
                 @click="() => router.push('/sys')"> -->
-                <!-- <Icon type="md-expand" /> -->
-            <Icon v-if="route.name == 'screen' && !isFullscreen" type="md-expand" color="#fff" size="28" @click="handleZoom"
-               />
-               <!-- <Icon type="md-contract" /> -->
+            <!-- <Icon type="md-expand" /> -->
+            <Icon v-if="route.name == 'screen' && !isFullscreen" type="md-expand" color="#fff" size="28"
+              @click="handleZoom" />
+            <!-- <Icon type="md-contract" /> -->
             <Icon v-if="route.name == 'screen' && isFullscreen" type="md-contract" color="#fff" size="28"
               @click="handleZoom" />
           </span>
@@ -32,7 +33,7 @@
             <RouterView v-slot="{ Component }">
               <Transition name="slide-fade" mode="out-in">
                 <!-- <KeepAlive> -->
-                  <component :is="Component" :key="$route.name" />
+                <component :is="Component" :key="$route.name" />
                 <!-- </KeepAlive> -->
               </Transition>
             </RouterView>
@@ -71,7 +72,7 @@ onMounted(() => {
     //appStore.setTableHeight(content.value.offsetHeight - 172)
     let conH: any = document.getElementById('layoutBox')
     console.log("------", conH.clientHeight)
-    appStore.setTableHeight(conH.offsetHeight - 190)
+    appStore.setTableHeight(conH.offsetHeight - 200)
   })
 })
 window.addEventListener('resize', () => {
@@ -81,7 +82,7 @@ window.addEventListener('resize', () => {
     // appStore.setTableHeight(content.value.offsetHeight - 172)
     let conH: any = document.getElementById('layoutBox')
     console.log("------", conH.clientHeight)
-    appStore.setTableHeight(conH.offsetHeight - 190)
+    appStore.setTableHeight(conH.offsetHeight - 200)
   })
   //appStore.setTableHeight(content.value.offsetHeight - 172)
 })

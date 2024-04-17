@@ -12,9 +12,10 @@
                 </span>
             </p>
             <div class="deviceBox">
-                <img class="img" v-if="props.info?.type == 'ed719_type'" src="@/assets/images/setting_active.png" alt="" srcset="" @click="handleSetCheck">
+                <img class="img" v-if="props.info?.type == 'ed719_type'" src="@/assets/images/setting_active.png" alt=""
+                    srcset="" @click="handleSetCheck">
                 <img class="img" v-else src="@/assets/images/setting_sleep2.png" alt="" srcset="" @click="handleSetCheck">
-                
+
                 <div class="info">
                     <div @click="handleGetDeviceInfo">
                         <p class="t1">
@@ -32,7 +33,7 @@
                     </div>
 
                     <span class="check">
-                        <Checkbox v-model="check">{{ }}</Checkbox>
+                        <Checkbox v-model="check" @click="handleSetCheck">{{ }}</Checkbox>
                     </span>
                 </div>
 

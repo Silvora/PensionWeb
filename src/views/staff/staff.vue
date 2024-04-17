@@ -75,10 +75,10 @@
                     @handleUpdatePage="handleUpdatePage" :tableH="tableH">
 
                     <template #gender="{ row }">
-                    <Tag :color="row.gender == 1 ? 'blue' : row.gender == 2 ? 'magenta' : 'warning'">
-                        {{ row.gender == 1 ? t('男') : row.gender == 2 ? t('女') : t('未知') }}
-                    </Tag>
-                </template>
+                        <Tag :color="row.gender == 1 ? 'blue' : row.gender == 2 ? 'magenta' : 'warning'">
+                            {{ row.gender == 1 ? t('男') : row.gender == 2 ? t('女') : t('未知') }}
+                        </Tag>
+                    </template>
 
                     <template #active="{ row }">
                         <vxe-button type="text" size="mini" status="primary" @click="handleGetUserInfo(row)">
@@ -133,7 +133,7 @@
         </Modal>
 
 
-        <Modal v-model="addModal" :title="t(info.id?'编辑员工':'添加员工')" :footer-hide="true" :width="802">
+        <Modal v-model="addModal" :title="t(info.id ? '编辑员工' : '添加员工')" :footer-hide="true" :width="802">
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
@@ -144,14 +144,14 @@
                     <div class="input upload1">
                         <!-- <div class="up4">1</div> -->
                         <Upload :show-upload-list="false" :before-upload="(f: any) => handleUpload('proto', f)" action="#">
-                        <div class="imgItem">
-                           
-                            <img :src="fileUrl.proto" class="up4" alt="" v-if="fileUrl.proto" />
-                            <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
-                            <Icon class="icon" size="24" type="md-close-circle"
-                                style="color: red;cursor: pointer;padding:10px ;" v-if="fileUrl.proto"
-                                @click.stop="fileUrl.proto = ''" />
-                        </div>
+                            <div class="imgItem">
+
+                                <img :src="oss + fileUrl.proto" class="up4" alt="" v-if="fileUrl.proto" />
+                                <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
+                                <Icon class="icon" size="24" type="md-close-circle"
+                                    style="color: red;cursor: pointer;padding:10px ;" v-if="fileUrl.proto"
+                                    @click.stop="fileUrl.proto = ''" />
+                            </div>
                         </Upload>
                         <!-- <div class="up4">2</div>
                         <div class="up4">3</div> -->
@@ -174,32 +174,32 @@
                         <Upload :show-upload-list="false" :before-upload="(f: any) => handleUpload('certUrl1', f)"
                             action="#">
                             <div class="imgItem">
-                            <img :src="fileUrl.certUrl1" class="up4" alt="" v-if="fileUrl.certUrl1" />
-                            <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
-                            <Icon class="icon" size="24" type="md-close-circle"
-                                style="color: red;cursor: pointer;padding:10px ;" v-if="fileUrl.certUrl1"
-                                @click.stop="fileUrl.certUrl1 = ''" />
-                        </div>
+                                <img :src="oss + fileUrl.certUrl1" class="up4" alt="" v-if="fileUrl.certUrl1" />
+                                <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
+                                <Icon class="icon" size="24" type="md-close-circle"
+                                    style="color: red;cursor: pointer;padding:10px ;" v-if="fileUrl.certUrl1"
+                                    @click.stop="fileUrl.certUrl1 = ''" />
+                            </div>
                         </Upload>
                         <Upload :show-upload-list="false" :before-upload="(f: any) => handleUpload('certUrl2', f)"
                             action="#">
                             <div class="imgItem">
-                            <img :src="fileUrl.certUrl2" class="up4" alt="" v-if="fileUrl.certUrl2" />
-                            <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
-                            <Icon class="icon" size="24" type="md-close-circle"
-                                style="color: red;cursor: pointer;padding:10px ;" v-if="fileUrl.certUrl2"
-                                @click.stop="fileUrl.certUrl2 = ''" />
-                        </div>
+                                <img :src="oss + fileUrl.certUrl2" class="up4" alt="" v-if="fileUrl.certUrl2" />
+                                <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
+                                <Icon class="icon" size="24" type="md-close-circle"
+                                    style="color: red;cursor: pointer;padding:10px ;" v-if="fileUrl.certUrl2"
+                                    @click.stop="fileUrl.certUrl2 = ''" />
+                            </div>
                         </Upload>
                         <Upload :show-upload-list="false" :before-upload="(f: any) => handleUpload('certUrl3', f)"
                             action="#">
                             <div class="imgItem">
-                            <img :src="fileUrl.certUrl3" class="up4" alt="" v-if="fileUrl.certUrl3" />
-                            <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
-                            <Icon class="icon" size="24" type="md-close-circle"
-                                style="color: red;cursor: pointer;padding:10px ;" v-if="fileUrl.certUrl3"
-                                @click.stop="fileUrl.certUrl3 = ''" />
-                        </div>
+                                <img :src="oss + fileUrl.certUrl3" class="up4" alt="" v-if="fileUrl.certUrl3" />
+                                <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
+                                <Icon class="icon" size="24" type="md-close-circle"
+                                    style="color: red;cursor: pointer;padding:10px ;" v-if="fileUrl.certUrl3"
+                                    @click.stop="fileUrl.certUrl3 = ''" />
+                            </div>
                         </Upload>
                         <!-- <Upload :show-upload-list="false" :before-upload="(f:any)=>handleUpload('driveUrl4',f)" action="#">
                     <img :src="fileUrl.driveUrl4" class="up4" alt="" v-if="fileUrl.driveUrl4"/>
@@ -226,7 +226,7 @@ import LevelChart from "./components/LevelChart.vue";
 import SexChart from "./components/SexChart.vue";
 import Scheduling from "./components/Scheduling.vue"
 import { FileUploadImage } from "@/api/File/File"
-import { StaffList, StaffRemoveId, StaffRemoveBatch, StaffSave,StaffDetailId ,StaffUpdate} from "@/api/Staff/Staff"
+import { StaffList, StaffRemoveId, StaffRemoveBatch, StaffSave, StaffDetailId, StaffUpdate } from "@/api/Staff/Staff"
 import { MemoList, MemoSave } from "@/api/Memo/Memo";
 import { RoleList } from "@/api/RoleInfo/RoleInfo"
 import { useI18n } from "vue-i18n";
@@ -235,6 +235,7 @@ const { t } = useI18n();
 const searchData = ref<any>({
     roleId: ""
 })
+const oss = ref<any>(import.meta.env.VITE_APP_AXIOS_BASER)
 
 const roleDataList = ref<any>({})
 const roleList = ref<any>([])
@@ -286,7 +287,9 @@ const handleUpload = (type: string, file: any) => {
     formData.append("file", file);
     FileUploadImage(formData).then((res: any) => {
         //  console.log(res)
-        fileUrl.value[type] = import.meta.env.VITE_APP_AXIOS_BASER + res.data
+        fileUrl.value[type] = res.data
+        Message.success(t("上传成功"));
+
         // file.value ='http://8.217.217.243:9000'+ res.data
     })
 
@@ -331,7 +334,7 @@ const handleRoleAdd = () => {
 const handleRoleSumbit = () => {
 
 
-  
+
 
     let data = {
 
@@ -343,13 +346,13 @@ const handleRoleSumbit = () => {
             { i: 0, u: fileUrl.value.certUrl2 },
             { i: 0, u: fileUrl.value.certUrl3 }
         ]),
-        superiorId:1,
-        groupId:1,
+        superiorId: 1,
+        groupId: 1,
 
     }
 
 
-    if(data.id){
+    if (data.id) {
         handleRoleEditSubmit(data)
         return
     }
@@ -371,17 +374,17 @@ const handleRoleEdit = (item: any) => {
         console.log(item)
         fileUrl.value.proto = res.data.photo
 
-        let imgList= JSON.parse(res.data.certificateJson)
+        let imgList = JSON.parse(res.data.certificateJson)
 
         fileUrl.value.certUrl1 = imgList[0].u
         fileUrl.value.certUrl2 = imgList[1].u
         fileUrl.value.certUrl3 = imgList[2].u
 
-        info.value = {...res.data,birthday:res.data.birthDate}
+        info.value = { ...res.data, birthday: res.data.birthDate }
         addModal.value = true
     })
 
-   
+
 
 }
 
@@ -612,6 +615,7 @@ onMounted(() => {
 
             height: 140px;
             display: flex;
+
             // background: red;
             // flex-direction: row;
             // flex-wrap: wrap;

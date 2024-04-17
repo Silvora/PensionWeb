@@ -50,6 +50,8 @@ import Order4 from './components/order4.vue';
 import Order7 from './components/order7.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from "vue-i18n";
+
+
 const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()

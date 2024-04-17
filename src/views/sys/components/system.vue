@@ -20,7 +20,7 @@
                         <!-- <img :src="fileUrl.bgUrl" class="up1" alt="" v-if="fileUrl.bgUrl" />
                     <img src="@/assets/images/ic_荣誉照片@2x.png" class="up1" alt="" v-else /> -->
                         <div class="imgItem">
-                            <img :src="fileUrl.bgUrl" class="up4" alt="" v-if="fileUrl.bgUrl" />
+                            <img :src="oss + fileUrl.bgUrl" class="up4" alt="" v-if="fileUrl.bgUrl" />
                             <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
 
                             <Icon class="icon" size="24" type="md-close-circle"
@@ -37,7 +37,7 @@
 
                     <Upload :show-upload-list="false" :before-upload="(f: any) => handleUpload('driveUrl1', f)" action="#">
                         <div class="imgItem">
-                            <img :src="fileUrl.driveUrl1" class="up4" alt="" v-if="fileUrl.driveUrl1" />
+                            <img :src="oss + fileUrl.driveUrl1" class="up4" alt="" v-if="fileUrl.driveUrl1" />
                             <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
 
                             <Icon class="icon" size="24" type="md-close-circle"
@@ -47,7 +47,7 @@
                     </Upload>
                     <Upload :show-upload-list="false" :before-upload="(f: any) => handleUpload('driveUrl2', f)" action="#">
                         <div class="imgItem">
-                            <img :src="fileUrl.driveUrl2" class="up4" alt="" v-if="fileUrl.driveUrl2" />
+                            <img :src="oss + fileUrl.driveUrl2" class="up4" alt="" v-if="fileUrl.driveUrl2" />
                             <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
 
                             <Icon class="icon" size="24" type="md-close-circle"
@@ -59,7 +59,7 @@
                     </Upload>
                     <Upload :show-upload-list="false" :before-upload="(f: any) => handleUpload('driveUrl3', f)" action="#">
                         <div class="imgItem">
-                            <img :src="fileUrl.driveUrl3" class="up4" alt="" v-if="fileUrl.driveUrl3" />
+                            <img :src="oss + fileUrl.driveUrl3" class="up4" alt="" v-if="fileUrl.driveUrl3" />
                             <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
 
                             <Icon class="icon" size="24" type="md-close-circle"
@@ -71,7 +71,7 @@
                     </Upload>
                     <Upload :show-upload-list="false" :before-upload="(f: any) => handleUpload('driveUrl4', f)" action="#">
                         <div class="imgItem">
-                            <img :src="fileUrl.driveUrl4" class="up4" alt="" v-if="fileUrl.driveUrl4" />
+                            <img :src="oss + fileUrl.driveUrl4" class="up4" alt="" v-if="fileUrl.driveUrl4" />
                             <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
 
                             <Icon class="icon" size="24" type="md-close-circle"
@@ -109,7 +109,7 @@ import { Message } from "view-ui-plus";
 import { useRouter } from "vue-router"
 const router = useRouter()
 const local = ref("")
-
+const oss = ref<any>(import.meta.env.VITE_APP_AXIOS_BASER)
 const lan: any = {
     "zh": "zh-CN",
     "zh-CN": "zh-CN",
@@ -159,7 +159,9 @@ const handleUpload = (type: string, file: any) => {
     formData.append("file", file);
     FileUploadImage(formData).then((res: any) => {
         console.log(res)
-        fileUrl.value[type] = import.meta.env.VITE_APP_AXIOS_BASER + res.data
+        fileUrl.value[type] = res.data
+        Message.success(t("上传成功"));
+
         // file.value ='http://8.217.217.243:9000'+ res.data
 
         // if (type == 'bgUrl') {
@@ -199,7 +201,7 @@ const getBg = () => {
         console.log(res)
         fileUrl.value.bgUrl = res.data?.background
         if (res.data?.background) {
-            document.body.style.backgroundImage = `url(${res.data.background})`;
+            document.body.style.backgroundImage = `url(${oss + res.data.background})`;
 
         } else {
             document.body.style.backgroundImage = ``;

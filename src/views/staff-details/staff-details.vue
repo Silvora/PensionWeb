@@ -3,8 +3,8 @@
         <div class="toolBar">
             <div>
                 <span class="Back" @click="() => $router.go(-1)">
-                <Icon type="md-navigate" style="transform: rotateZ(-90deg);" />{{ t('返回上一页') }}
-            </span>
+                    <Icon type="md-navigate" style="transform: rotateZ(-90deg);" />{{ t('返回上一页') }}
+                </span>
             </div>
             <div class="bar">
 
@@ -23,7 +23,7 @@
                 <Card :bordered="false" :padding="20">
                     <div class="info">
                         <div class="img">
-                            <img :src="userInfo.photo" alt="" srcset="" v-if="userInfo.photo">
+                            <img :src="oss + userInfo.photo" alt="" srcset="" v-if="userInfo.photo">
                             <img src="@/assets/images/screen.png" alt="" srcset="" v-else>
                         </div>
                         <div class="txt">
@@ -125,7 +125,7 @@
                     v-for="item in elderList" :key="item.id">
                     <div class="userBox" @click="handleConnect(item)">
                         <div>
-                            <img :src="item.photo" alt="">
+                            <img :src="oss + item.photo" alt="">
                         </div>
                         <div class="name">
                             <p>{{ item.name }}</p>
@@ -216,6 +216,8 @@ import { Modal, Message, Table } from "view-ui-plus";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n()
 const route = useRoute()
+const oss = ref<any>(import.meta.env.VITE_APP_AXIOS_BASER)
+
 const statusList: any = {
     0: {
         text: '未开始',
@@ -462,6 +464,7 @@ const getData = () => {
         justify-content: space-between;
         background: #fff;
         padding-right: 20px;
+
         .Back {
             width: 260px;
             cursor: pointer;

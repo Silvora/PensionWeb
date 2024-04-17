@@ -60,7 +60,8 @@
                                     <div v-if="item.checkIn" class="user" @click="handleGetUserInfo(item)">
                                         <div class="t5">
                                             <span class="t6">{{ item.checkIn?.nursingGrade }}</span>
-                                            <img class="t7" :src="item.checkIn.elderlyPhoto" alt="" srcset="" v-if="item.checkIn.elderlyPhoto">
+                                            <img class="t7" :src="oss + item.checkIn.elderlyPhoto" alt="" srcset=""
+                                                v-if="item.checkIn.elderlyPhoto">
                                             <img class="t7" src="@/assets/images/screen.png" alt="" srcset="" v-else>
 
                                         </div>
@@ -127,6 +128,8 @@ import { useI18n } from "vue-i18n"
 import { onMounted } from 'vue';
 const { t } = useI18n()
 import { HostelList, HostelFloorlList, HostelRoomListOfFloor, HostelRoomBedListOfRoom } from "@/api/Hostel/Hostel"
+
+const oss = ref<any>(import.meta.env.VITE_APP_AXIOS_BASER)
 
 const BuildingModalRef: any = ref(null)
 const DetailsModalRef: any = ref(null)

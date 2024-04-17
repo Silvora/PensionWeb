@@ -6,20 +6,19 @@
                     :class="['t1', ['gary', 'green', 'yellow'][device?.status || 0]]">{{ [t('空闲'), t('正常'), t('异常')][device?.status || 0] }}</span>
                 <span class="t2">{{ info?.roomBedNumber }}</span>
                 <span class="t3">
-                    <img src="@/assets/images/room-setting.png"
-                        alt="" srcset="" @click="handleNavTo(`/add-elder?type=0&id=${info?.elderlyId}`)">
-                        <!--  @click="handleNavTo(`/add-elder?type=0&id=${info?.elderlyId}`)" -->
+                    <img src="@/assets/images/room-setting.png" alt="" srcset=""
+                        @click="handleNavTo(`/add-elder?type=0&id=${info?.elderlyId}`)">
+                    <!--  @click="handleNavTo(`/add-elder?type=0&id=${info?.elderlyId}`)" -->
                 </span>
             </p>
             <div class="userBox">
                 <div class="imgInfo">
-                    <img @click="handleSetting" class="img" v-if="info.elderlyPhoto" :src="info.elderlyPhoto"
-                        alt="" srcset="">
-
-                        <!-- handleOpenDeviceInfo -->
-                    <!-- @click="handleNavTo(`/add-elder?type=0&id=${info?.elderlyId}`)" -->
-                    <img @click="handleSetting" v-else class="img" src="@/assets/images/screen.png" alt=""
+                    <img @click="handleSetting" class="img" v-if="info.elderlyPhoto" :src="oss + info.elderlyPhoto" alt=""
                         srcset="">
+
+                    <!-- handleOpenDeviceInfo -->
+                    <!-- @click="handleNavTo(`/add-elder?type=0&id=${info?.elderlyId}`)" -->
+                    <img @click="handleSetting" v-else class="img" src="@/assets/images/screen.png" alt="" srcset="">
                     <div class="imgList" @click="handleSetting">
                         <img src="@/assets/images/睡眠监测@2x(4).png" alt="">
                         <img src="@/assets/images/位图@2x(2).png" alt="">
@@ -29,7 +28,7 @@
                 </div>
                 <div class="info">
                     <!-- @click="handleNavTo(`/elder`)" -->
-                    <div >
+                    <div>
                         <p class="t4">{{ info?.elderlyName }}
                             <!-- <Icon type="ios-checkmark" /> -->
                             <i v-if="info?.elderlyGender == 1" class="iconfont icon-nan" style="color:#0160FF"></i>
@@ -42,7 +41,7 @@
                         </p>
                     </div>
                     <!-- @click="handleNavTo(`/setting`)" -->
-                    <div >
+                    <div>
                         <p class="t5">
                             <!-- <Icon type="ios-checkmark" /> -->
                             <i class="iconfont icon-xindongzhi-manxin-" style="color:#E06255"></i>
@@ -79,6 +78,7 @@ import DetailsModal from "./DetailsModal.vue"
 import { Message } from 'view-ui-plus';
 const { t } = useI18n()
 const router = useRouter()
+const oss = ref<any>(import.meta.env.VITE_APP_AXIOS_BASER)
 
 const info = ref<any>({})
 const device = ref<any>({})
@@ -94,12 +94,12 @@ const props = defineProps({
     }
 })
 
-const handleSetting = ()=>{
+const handleSetting = () => {
     DetailsModalRef.value.showModal()
 }
 
-const handleUpdate = ()=>{
-    
+const handleUpdate = () => {
+
 }
 
 const handleOpenDeviceInfo = (item: any) => {
@@ -207,7 +207,9 @@ const handleNavTo = (path: string) => {
             width: 130px;
 
             .img {
+                display: inline-block;
                 width: 130px;
+                height: 130px;
             }
 
             .imgList {
@@ -252,4 +254,5 @@ const handleNavTo = (path: string) => {
         }
     }
 
-}</style>
+}
+</style>

@@ -558,7 +558,7 @@ const familyInfo: any = {
         checkbox:true,//复选框
         activeConfig: {
             active: true,
-             width: 300,
+             width: 150,
         },
     },
     
@@ -665,29 +665,29 @@ const familyInfo: any = {
         {
             title: '姓名',
             key: 'name',
-            minWidth: 150,
+            minWidth: 90,
         },
         {
             title: '性别',
             key: 'gender',
             slot:'gender',
-            minWidth: 100,
+            minWidth: 50,
         },
         {
             title: '联系电话',
             key: 'phone',
-            minWidth: 230,
+            minWidth: 150,
         },
           {
             title: '是否监护人',
             key: 'guardian',
             slot:'guardian',
-            minWidth: 100,
+            minWidth: 50,
         },
              {
             title: '联系地址',
             key: 'address',
-            minWidth: 230,
+            minWidth: 150,
         },
 
 

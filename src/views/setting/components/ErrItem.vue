@@ -17,7 +17,7 @@
 
                     </p>
                     <p class="t2">
-                        <img :src="props.info?.elderlyInfo?.elderlyPhoto" alt=""
+                        <img :src="oss + props.info?.elderlyInfo?.elderlyPhoto" alt=""
                             v-if="props.info?.elderlyInfo?.elderlyPhoto">
                         <img src="@/assets/images/pad-processing@2x.png" alt="" v-else>
                         {{ props.info?.elderlyInfo?.name }}
@@ -49,6 +49,8 @@
 import { ref } from 'vue'
 //import {DeviceDetailId} from "@/api/Device/Device"
 import { useI18n } from "vue-i18n";
+const oss = ref<any>(import.meta.env.VITE_APP_AXIOS_BASER)
+
 const { t } = useI18n()
 const props = defineProps({
     info: {

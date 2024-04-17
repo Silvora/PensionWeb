@@ -20,58 +20,58 @@
                     <div class="up4">3</div>
                     <div class="up4">4</div> -->
                     <Upload :show-upload-list="false" :before-upload="(f: any) => handleUpload('driveUrl1', f)" action="#">
-                        
-                        <div class="imgItem">
-                        <img :src="fileUrl.driveUrl1" class="up4" alt="" v-if="fileUrl.driveUrl1" />
-                        <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
 
-                        <Icon class="icon" size="22" type="md-close-circle"
-                            style="color: red;cursor: pointer;padding:6px 10px ;" v-if="fileUrl.driveUrl1"
-                            @click.stop="fileUrl.driveUrl1 = ''" />
-                    </div>
-                        
+                        <div class="imgItem">
+                            <img :src="oss + fileUrl.driveUrl1" class="up4" alt="" v-if="fileUrl.driveUrl1" />
+                            <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
+
+                            <Icon class="icon" size="22" type="md-close-circle"
+                                style="color: red;cursor: pointer;padding:6px 10px ;" v-if="fileUrl.driveUrl1"
+                                @click.stop="fileUrl.driveUrl1 = ''" />
+                        </div>
+
                         <!-- <img :src="fileUrl.driveUrl1" class="up4" alt="" v-if="fileUrl.driveUrl1" />
                         <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else /> -->
                     </Upload>
                     <Upload :show-upload-list="false" :before-upload="(f: any) => handleUpload('driveUrl2', f)" action="#">
-                       
-                        <div class="imgItem">
-                        <img :src="fileUrl.driveUrl2" class="up4" alt="" v-if="fileUrl.driveUrl2" />
-                        <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
 
-                        <Icon class="icon" size="22" type="md-close-circle"
-                            style="color: red;cursor: pointer;padding:6px 10px ;" v-if="fileUrl.driveUrl2"
-                            @click.stop="fileUrl.driveUrl2 = ''" />
-                    </div>
+                        <div class="imgItem">
+                            <img :src="oss + fileUrl.driveUrl2" class="up4" alt="" v-if="fileUrl.driveUrl2" />
+                            <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
+
+                            <Icon class="icon" size="22" type="md-close-circle"
+                                style="color: red;cursor: pointer;padding:6px 10px ;" v-if="fileUrl.driveUrl2"
+                                @click.stop="fileUrl.driveUrl2 = ''" />
+                        </div>
                         <!-- <img :src="fileUrl.driveUrl2" class="up4" alt="" v-if="fileUrl.driveUrl2" />
                         <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else /> -->
                     </Upload>
                     <Upload :show-upload-list="false" :before-upload="(f: any) => handleUpload('driveUrl3', f)" action="#">
-                        
-                        <div class="imgItem">
-                        <img :src="fileUrl.driveUrl3" class="up4" alt="" v-if="fileUrl.driveUrl3" />
-                        <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
 
-                        <Icon class="icon" size="22" type="md-close-circle"
-                            style="color: red;cursor: pointer;padding:6px 10px ;" v-if="fileUrl.driveUrl3"
-                            @click.stop="fileUrl.driveUrl3 = ''" />
-                    </div>
-                        
+                        <div class="imgItem">
+                            <img :src="oss + fileUrl.driveUrl3" class="up4" alt="" v-if="fileUrl.driveUrl3" />
+                            <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
+
+                            <Icon class="icon" size="22" type="md-close-circle"
+                                style="color: red;cursor: pointer;padding:6px 10px ;" v-if="fileUrl.driveUrl3"
+                                @click.stop="fileUrl.driveUrl3 = ''" />
+                        </div>
+
                         <!-- <img :src="fileUrl.driveUrl3" class="up4" alt="" v-if="fileUrl.driveUrl3" />
                         <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else /> -->
                     </Upload>
                     <Upload :show-upload-list="false" :before-upload="(f: any) => handleUpload('driveUrl4', f)" action="#">
-                        
-                         
-                        <div class="imgItem">
-                        <img :src="fileUrl.driveUrl4" class="up4" alt="" v-if="fileUrl.driveUrl4" />
-                        <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
 
-                        <Icon class="icon" size="22" type="md-close-circle"
-                            style="color: red;cursor: pointer;padding:6px 10px ;" v-if="fileUrl.driveUrl4"
-                            @click.stop="fileUrl.driveUrl4 = ''" />
-                    </div>
-                        
+
+                        <div class="imgItem">
+                            <img :src="oss + fileUrl.driveUrl4" class="up4" alt="" v-if="fileUrl.driveUrl4" />
+                            <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
+
+                            <Icon class="icon" size="22" type="md-close-circle"
+                                style="color: red;cursor: pointer;padding:6px 10px ;" v-if="fileUrl.driveUrl4"
+                                @click.stop="fileUrl.driveUrl4 = ''" />
+                        </div>
+
                         <!-- <img :src="fileUrl.driveUrl4" class="up4" alt="" v-if="fileUrl.driveUrl4" />
                         <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else /> -->
                     </Upload>
@@ -102,6 +102,7 @@ import { Message } from "view-ui-plus";
 const { t } = useI18n()
 const value = ref('')
 const legalDataRef = ref<any>(null)
+const oss = ref<any>(import.meta.env.VITE_APP_AXIOS_BASER)
 const legal = ref<any>({
     // "directorPhone": "",
     // "nursingBedsCount": 0,
@@ -132,8 +133,9 @@ const handleUpload = (type: string, file: any) => {
     formData.append("file", file);
     FileUploadImage(formData).then((res: any) => {
         console.log(res)
-        fileUrl.value[type] = import.meta.env.VITE_APP_AXIOS_BASER + res.data
+        fileUrl.value[type] = res.data
         // file.value ='http://8.217.217.243:9000'+ res.data
+        Message.success(t("上传成功"));
     })
 
     return false;
@@ -252,6 +254,7 @@ defineExpose({
                 flex-direction: row;
                 flex-wrap: wrap;
             }
+
             .imgItem {
                 position: relative;
                 top: 0;

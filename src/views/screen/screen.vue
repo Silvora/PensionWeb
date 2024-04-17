@@ -84,7 +84,7 @@
                     v-for="item in detailList" :key="item.id">
                     <div class="userBox" @click="handleCheck(item)">
                         <div>
-                            <img :src="item.photo" alt="">
+                            <img :src="oss + item.photo" alt="">
                         </div>
                         <div class="name">
                             <p>{{ item.elderlyName }}</p>
@@ -117,6 +117,9 @@ const { toggle, isFullscreen } = useFullscreen(screenBoxAll)
 const handleZoom = () => {
     toggle()
 }
+
+const oss = ref<any>(import.meta.env.VITE_APP_AXIOS_BASER)
+
 
 const LogData = ref<any>({})
 const elderModal = ref<boolean>(false)

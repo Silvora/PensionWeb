@@ -45,7 +45,7 @@
                 </p>
                 <div class="info" v-if="props.info">
                     <div class="img">
-                        <img :src="props.info?.elderlyPhoto" alt="" srcset="" v-if="props.info?.elderlyPhoto" >
+                        <img :src="oss + props.info?.elderlyPhoto" alt="" srcset="" v-if="props.info?.elderlyPhoto">
                         <img src="@/assets/images/screen.png" alt="" srcset="" v-else>
                     </div>
                     <div class="user">
@@ -107,7 +107,7 @@
                     v-for="item in detailList" :key="item.id">
                     <div class="userBox">
                         <div>
-                            <img :src="item.photo" alt="">
+                            <img :src="oss + item.photo" alt="">
                         </div>
                         <div class="name">
                             <p>{{ item.name }}</p>
@@ -142,6 +142,7 @@ import { useI18n } from "vue-i18n";
 const { t } = useI18n()
 import dayjs from "dayjs"
 const emit = defineEmits(['handleUpdate'])
+const oss = ref<any>(import.meta.env.VITE_APP_AXIOS_BASER)
 
 const detailsModal = ref(false)
 const elderModal = ref(false)
@@ -169,7 +170,7 @@ watchEffect(() => {
         // },
         {
             label: '性别',
-            value: props.info?.elderlyGender == 1 ? '男' : props.info?.elderlyGender == 2 ?'女':'未知'
+            value: props.info?.elderlyGender == 1 ? '男' : props.info?.elderlyGender == 2 ? '女' : '未知'
         },
         // {
         //     label: '用药',
@@ -193,7 +194,7 @@ watchEffect(() => {
         // },
         {
             label: '护理等级',
-            value:props.info?.nursingGrade
+            value: props.info?.nursingGrade
         },
         // {
         //     label: '入住时间',
@@ -383,8 +384,13 @@ defineExpose({
         .img {
             width: 130px;
 
+
             img {
+                display: inline-block;
+
                 width: 130px;
+                height: 130px;
+
             }
         }
 

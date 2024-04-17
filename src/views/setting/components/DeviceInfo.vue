@@ -6,7 +6,7 @@
             </template>
             <div class="userInfo">
                 <div class="photo">
-                    <img :src="userInfo?.photo" alt="">
+                    <img :src="oss + userInfo?.photo" alt="">
                 </div>
                 <div class="info">
                     <Grid border :col="6" :padding="'10px'" style="border: 1px solid #ebeef5;">
@@ -101,74 +101,77 @@
                 </div> -->
                 <div class="log">
                     <p class="title">{{ t('睡眠记录') }}</p>
-                    <div >
+                    <div>
                         <div class="logDay">
                             <p>{{ t('连续测量天数') }}: {{ logDay }}</p>
                             <Button type="primary" @click="handleLog">{{ t('日志') }}</Button>
                         </div>
                         <div class="date">
                             <VDatePicker v-model.string="date" mode="date" :masks="masks" is-required
-                                style="width: 100%;height: auto;" >
+                                style="width: 100%;height: auto;">
                             </VDatePicker>
                         </div>
                         <div v-if="logInfo">
                             <p class="sub_title">
-                            <i class="iconfont icon-huobifenxi" style="color:#0160FF"></i>
-                            {{ t('睡眠综合分析') }}
-                        </p>
-                        <p class="time1"><span
-                                class="big">{{ toHourSecond(logInfo?.sleepLong).split(":")[0]|| '-' }}</span>{{ t('小时') }} <span
-                                class="big">{{ toHourSecond(logInfo?.sleepLong).split(":")[1]|| '-' }}</span> {{ t('分钟') }}</p>
-                        <p class="time2">{{ t('入睡时间') }} <span
-                                class="bold">{{ logInfo?.sleepStartTime?.split(" ")[1]|| '-' }}</span>
-                            {{ t('分') }}, {{ t('结束时间') }}<span
-                                class="bold">{{ logInfo?.sleepEndTime?.split(" ")[1]|| '-' }}</span> {{ t('分') }}
-                        </p>
-                        <p class="desc">{{ t('睡眠质量不佳,加强欲动可以帮助你改善睡眠') }}</p>
-                        <div>
-                            <!-- <Chart1 :logInfoTime="{}"></Chart1> -->
-                        </div>
-                        <div class="info" style="width: 100%;">
+                                <i class="iconfont icon-huobifenxi" style="color:#0160FF"></i>
+                                {{ t('睡眠综合分析') }}
+                            </p>
+                            <p class="time1"><span
+                                    class="big">{{ toHourSecond(logInfo?.sleepLong).split(":")[0] || '-' }}</span>{{ t('小时') }}
+                                <span class="big">{{ toHourSecond(logInfo?.sleepLong).split(":")[1] || '-' }}</span>
+                                {{ t('分钟') }}</p>
+                            <p class="time2">{{ t('入睡时间') }} <span
+                                    class="bold">{{ logInfo?.sleepStartTime?.split(" ")[1] || '-' }}</span>
+                                {{ t('分') }}, {{ t('结束时间') }}<span
+                                    class="bold">{{ logInfo?.sleepEndTime?.split(" ")[1] || '-' }}</span> {{ t('分') }}
+                            </p>
+                            <p class="desc">{{ t('睡眠质量不佳,加强欲动可以帮助你改善睡眠') }}</p>
+                            <div>
+                                <!-- <Chart1 :logInfoTime="{}"></Chart1> -->
+                            </div>
+                            <div class="info" style="width: 100%;">
 
-                            <!-- {{ t('暂无数据') }} -->
-                            <Row>
-                                <Col :span="12">
-                                <p class="title">夜间睡眠{{ toHourSecond(logInfo?.sleepLong).split(":")[0] || '-' }}小时</p>
-                                <p class="d">{{ t('参考值:') }}6～10{{ t('小时') }}</p>
-                                </Col>
-                                <Col :span="12">
-                                <p class="title">清醒比例{{ logInfo?.sleepLong?(logInfo?.awakeLong / logInfo?.sleepLong).toFixed(0) : '-' }}%</p>
-                                <p class="d">{{ t('参考值:') }}0～10%</p>
-                                </Col>
-                                <Col :span="12">
-                                <p class="title">浅睡比例{{logInfo?.sleepLong? (logInfo?.sleepLight / logInfo?.sleepLong).toFixed(0) : '-' }}%</p>
-                                <p class="d">{{ t('参考值:') }}20～60%</p>
-                                </Col>
-                                <Col :span="12">
-                                <p class="title">深睡比例{{ ' ' }}%</p>
-                                <p class="d">{{ t('参考值:') }}20～80%</p>
-                                </Col>
-                                <Col :span="12">
-                                <p class="title">睡眠次数{{ logInfo.sleepLong || '-' }}次</p>
-                                <p class="d">{{ t('参考值:') }}1{{ t('次') }}</p>
-                                </Col>
-                                <Col :span="12">
-                                <p class="title">翻身次数{{ logInfo?.turnOverNumber || '-' }}次</p>
-                                <p class="d">{{ t('参考值:') }}20～45{{ t('次') }}</p>
-                                </Col>
-                                <Col :span="12">
-                                <p class="title">离床次数{{ logInfo?.leaveBedNumber || '-' }}次</p>
-                                <p class="d">{{ t('参考值:') }}0～2{{ t('次') }}</p>
-                                </Col>
-                            </Row>
-                        </div>
+                                <!-- {{ t('暂无数据') }} -->
+                                <Row>
+                                    <Col :span="12">
+                                    <p class="title">夜间睡眠{{ toHourSecond(logInfo?.sleepLong).split(":")[0] || '-' }}小时</p>
+                                    <p class="d">{{ t('参考值:') }}6～10{{ t('小时') }}</p>
+                                    </Col>
+                                    <Col :span="12">
+                                    <p class="title">清醒比例{{ logInfo?.sleepLong ? (logInfo?.awakeLong /
+                                        logInfo?.sleepLong).toFixed(0) : '-' }}%</p>
+                                    <p class="d">{{ t('参考值:') }}0～10%</p>
+                                    </Col>
+                                    <Col :span="12">
+                                    <p class="title">浅睡比例{{ logInfo?.sleepLong ? (logInfo?.sleepLight /
+                                        logInfo?.sleepLong).toFixed(0) : '-' }}%</p>
+                                    <p class="d">{{ t('参考值:') }}20～60%</p>
+                                    </Col>
+                                    <Col :span="12">
+                                    <p class="title">深睡比例{{ ' ' }}%</p>
+                                    <p class="d">{{ t('参考值:') }}20～80%</p>
+                                    </Col>
+                                    <Col :span="12">
+                                    <p class="title">睡眠次数{{ logInfo.sleepLong || '-' }}次</p>
+                                    <p class="d">{{ t('参考值:') }}1{{ t('次') }}</p>
+                                    </Col>
+                                    <Col :span="12">
+                                    <p class="title">翻身次数{{ logInfo?.turnOverNumber || '-' }}次</p>
+                                    <p class="d">{{ t('参考值:') }}20～45{{ t('次') }}</p>
+                                    </Col>
+                                    <Col :span="12">
+                                    <p class="title">离床次数{{ logInfo?.leaveBedNumber || '-' }}次</p>
+                                    <p class="d">{{ t('参考值:') }}0～2{{ t('次') }}</p>
+                                    </Col>
+                                </Row>
+                            </div>
                         </div>
                         <div v-else>
-                        {{ t('暂无数据') }}
+                            {{ t('暂无数据') }}
+                        </div>
+
                     </div>
-                       
-                    </div>
-                   
+
                 </div>
                 <div class="chat">
                     <!-- <p class="title">{{ t('健康数据') }}</p> -->
@@ -215,6 +218,7 @@ const masks = ref({
 const logDay = ref<any>(null)
 const DeviceInfoListInfo = ref<any>({})
 // const msg = ref<any>(null)
+const oss = ref<any>(import.meta.env.VITE_APP_AXIOS_BASER)
 
 
 watch(date, () => {
@@ -242,13 +246,13 @@ const Close = () => {
 }
 
 const toHourMinute = (minutes: any) => {
-    if(!minutes)return '-'
+    if (!minutes) return '-'
     return (Math.floor(minutes / 60) + ":" + (minutes % 60));
     // 也可以转换为json，以方便专外部使用属
     // return {hour:Math.floor(minutes/60),minute:(minutes%60)};
 }
 const toHourSecond = (second: any) => {
-    if(!second)return '-'
+    if (!second) return '-'
     return (Math.floor(second / 60 / 60) + ":" + (second % 60));
     // 也可以转换为json，以方便专外部使用属
     // return {hour:Math.floor(minutes/60),minute:(minutes%60)};
@@ -479,5 +483,4 @@ defineExpose({
     }
 
 
-}
-</style>
+}</style>

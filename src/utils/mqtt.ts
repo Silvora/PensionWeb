@@ -18,8 +18,8 @@ class MQTT {
   init() {
     const options = {
         protocol: "ws",
-        host: "8.217.217.243",
-        port: 15675,
+        host: "www.hylgeai.com",
+        port: '15675',
         clientId: "mqtt_" + Math.random().toString(16).substring(2, 8),
         username: "hjy",
         password: "hjy123",
