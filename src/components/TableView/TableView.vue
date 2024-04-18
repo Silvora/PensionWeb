@@ -245,6 +245,8 @@ const getSelectRecords = () => {
 
 const exportAllDataEvent = () => {
     const $table = tableRef.value
+
+    console.log(props.data.value)
   if ($table) {
     $table.exportData({
       filename: '员工数据-'+ Date.now(),
@@ -252,7 +254,11 @@ const exportAllDataEvent = () => {
       isHeader: true,
       isFooter: true,
       // 自定义导出的数据源
-      data: props.data.value
+      data: props.data.value,
+      columnFilterMethod ({ column }:any) {
+        // console.log(column)
+        return ['seq', 'name','gender','roleName','entryTime'].includes(column.field)
+      }
     })
   }
 }

@@ -3,6 +3,7 @@ import { ref } from "vue";
 // import Notify from "@wcjiang/notify";
 import logo from '@/assets/images/logo.png'
 import * as mqtt from "mqtt/dist/mqtt";
+import {Notice } from "view-ui-plus"
 
 export const useMqttStore = defineStore("mqttStore", () => {
     //异常数据
@@ -23,6 +24,13 @@ export const useMqttStore = defineStore("mqttStore", () => {
         'retirement/device/currentDataReply/1']);
 
     const player = (msg:any,data:any) => {
+
+      Notice.warning({
+        title: `乎感消息提示`,
+        desc: `乎感提醒：${msg}`
+      })
+
+
         const notice = new Notification('乎感消息提示', {
             body: `乎感提醒：${msg}`,
             icon: logo,

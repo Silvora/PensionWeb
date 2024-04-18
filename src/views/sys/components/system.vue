@@ -201,11 +201,9 @@ const getBg = () => {
         console.log(res)
         fileUrl.value.bgUrl = res.data?.background
         if (res.data?.background) {
-            document.body.style.backgroundImage = `url(${oss + res.data.background})`;
-
+            document.body.style.backgroundImage = `url(${oss.value + res.data.background})`;
         } else {
             document.body.style.backgroundImage = ``;
-
         }
 
         setToken('ing-Bg', fileUrl.value.bgUrl)

@@ -9,7 +9,7 @@ const nursingTable: any = {
         checkbox:false,//复选框
         activeConfig: {
             active: false,
-             width: 300,
+             width: 200,
         },
     },
     editConfig: {
@@ -74,24 +74,24 @@ const nursingTable: any = {
         {
             title: '姓名',
             key: 'elderlyName',
-            minWidth: 150,
+            minWidth: 100,
         },
         {
             title: '档案号',
             key: 'elderlyFileNo',
-            minWidth: 250,
+            minWidth: 150,
         },
         {
             title: '护理等级',
             key: 'nursingGrade',
             slot: true,
-            minWidth: 200,
+            minWidth: 100,
         },
 
         {
             title: '服务项目数量',
             key: 'serviceCount',
-            minWidth: 150,
+            minWidth: 100,
         }
     ]
 }

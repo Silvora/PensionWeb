@@ -133,7 +133,8 @@ onMounted(() => {
   getToken('ing-Token').then((token) => {
     token && getToken('ing-Bg').then((res: any) => {
       if (res) {
-        document.body.style.backgroundImage = `url(${oss + res})`;
+        // console.log("//////",res,`url(${oss.value + res})`)
+        document.body.style.backgroundImage = `url(${oss.value + res})`;
 
       }
 

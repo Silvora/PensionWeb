@@ -1,9 +1,8 @@
 <template>
     <div class="need">
-
         <div v-for="(item, idx) in  data " :key="idx" class="box">
             <img :src="item.img" alt="">
-            <p class="t" :style="{ background: item.color, color: '#fff' }">{{ item.title }}</p>
+            <p class="t" :style="{ background: item.color, color: '#fff' }">{{ t(item.title) }}</p>
             <p class="b">{{ item.count }} <span>个</span></p>
         </div>
 
@@ -11,6 +10,8 @@
 </template>
 
 <script setup lang='ts'>
+import { useI18n } from "vue-i18n"
+const { t } = useI18n()
 
 import i1 from "@/assets/date/组 1584@2x.png"
 import i2 from "@/assets/date/组 1587@2x.png"

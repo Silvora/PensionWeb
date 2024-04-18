@@ -307,7 +307,12 @@ onMounted(() => {
 
 
         .bar {
-            margin: 0 auto;
+            // margin: 0 auto;
+            position: absolute;
+            display: flex;
+            width: 100%;
+            align-items: center;
+            justify-content: center;
         }
 
         .btn {
