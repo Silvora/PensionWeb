@@ -34,10 +34,14 @@ onMounted(() => {
                 obj.push({ value: item.count || 0, name: t('男'), ...item })
             }
             if (item.type == 0) {
+                obj.push({ value: item.count || 0, name: t('未知'), ...item })
+            }
+            if (item.type == 2) {
                 obj.push({ value: item.count || 0, name: t('女'), ...item })
             }
             s += item.count || 0
         })
+
 
         map.value = obj
         sum.value = s
@@ -56,6 +60,7 @@ const initChart = () => {
 
     const option = {
         color: [
+            "rgba(206, 295, 198, 1)",
             "rgba(246, 205, 158, 1)",
             "rgba(239, 135, 135, 1)",
         ],
