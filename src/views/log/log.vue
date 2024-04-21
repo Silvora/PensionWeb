@@ -201,6 +201,25 @@ const loadList = (item: any, callback: any) => {
 }
 
 
+// 获取楼栋
+const getHome = () => {
+    HostelList().then((res: any) => {
+        hostelList.value = res.data
+        floorId.value = res.data[0]?.id + ''
+
+        list.value = res.data.map((item: any) => {
+            return {
+                value: item.id,
+                label: item.name,
+                children: [],
+                loading: false,
+                type: 'hostel'
+            }
+        })
+    })
+
+}
+
 
 const handleUpdatePage = ({ currentPage, pageSize }: any) => {
     console.log(currentPage, pageSize)
@@ -223,6 +242,7 @@ const handleSearchDate = (item: any) => {
 
 onMounted(() => {
     getData()
+    getHome()
 })
 
 </script>

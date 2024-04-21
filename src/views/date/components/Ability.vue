@@ -24,7 +24,7 @@ const initChart = () => {
             trigger: 'item'
         },
         legend: {
-            bottom: '-3%',
+            bottom: '0%',
             textStyle:{
                 color: '#fff'
             }

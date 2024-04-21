@@ -19,10 +19,8 @@
                 <div class="info">
                     <div @click="handleGetDeviceInfo">
                         <p class="t1">
-
                             <!-- {{ props?.info.name }} -->
                             {{ props.info?.type == 'ed719_type' ? t('行为感知') : t('睡眠感知') }}
-
                         </p>
                         <p class="t2">
                             ID:{{ props?.info.mac }}
@@ -205,8 +203,13 @@ const handleGetDeviceInfo = () => {
         position: relative;
 
         img {
-            width: 60px;
+            // display: inline-block;
+            min-width: 60px;
             height: 60px;
+            .img{
+                width: 100%;
+                height: 100%;
+            }
         }
 
         // .imgInfo {

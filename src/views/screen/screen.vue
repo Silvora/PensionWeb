@@ -28,6 +28,32 @@
             </span>
         </div>
         <div class="box" id="screenBoxAll" ref="screenBoxAll">
+
+
+            <Modal v-model="elderModal" :title="t('老人选择')" :footer-hide="true" width="270" :transfer="false">
+            <template #close>
+                <Icon type="md-close-circle" color="#000" size="16" />
+            </template>
+
+            <div class="elderBox">
+                <Input prefix="ios-search" clearable :enter-button="t('搜索')" :placeholder="t('搜索')" />
+
+                <Card :bordered="false" :padding="5" style="background: rgba(19,100,248,0.05);margin: 5px 0;"
+                    v-for="item in detailList" :key="item.id">
+                    <div class="userBox" @click="handleCheck(item)">
+                        <div>
+                            <img :src="oss + item.photo" alt="">
+                        </div>
+                        <div class="name">
+                            <p>{{ item.elderlyName }}</p>
+                            <p>ID:{{ item.elderlyFileNo }}</p>
+                        </div>
+                    </div>
+                </Card>
+
+            </div>
+        </Modal>
+
             <div class="focus">
                 <Space class="title">
                     <span>{{ t('重点关注老人') }}</span>
@@ -72,29 +98,7 @@
         </div>
 
 
-        <Modal v-model="elderModal" :title="t('老人选择')" :footer-hide="true" width="270">
-            <template #close>
-                <Icon type="md-close-circle" color="#000" size="16" />
-            </template>
-
-            <div class="elderBox">
-                <Input prefix="ios-search" clearable :enter-button="t('搜索')" :placeholder="t('搜索')" />
-
-                <Card :bordered="false" :padding="5" style="background: rgba(19,100,248,0.05);margin: 5px 0;"
-                    v-for="item in detailList" :key="item.id">
-                    <div class="userBox" @click="handleCheck(item)">
-                        <div>
-                            <img :src="oss + item.photo" alt="">
-                        </div>
-                        <div class="name">
-                            <p>{{ item.elderlyName }}</p>
-                            <p>ID:{{ item.elderlyFileNo }}</p>
-                        </div>
-                    </div>
-                </Card>
-
-            </div>
-        </Modal>
+    
     </div>
 </template>
 
@@ -201,6 +205,8 @@ const loadData = (item: any, callback: any) => {
     })
 }
 
+const timer = ref<any>(null)
+
 
 
 const getData = () => {
@@ -218,17 +224,6 @@ const getData = () => {
         UserList.value = res.data.records
 
         console.log(UserList.value)
-
-
-        // hostelList.value = res.data.map((item: any) => {
-        //     return {
-        //         value: item.id,
-        //         label: item.name,
-        //         children: [],
-        //         loading: false,
-        //         type: 'hostel'
-        //     }
-        // })
     })
 
     CheckList({
@@ -271,8 +266,20 @@ const getLog = () => {
 // } 
 
 
+onBeforeUnmount(() => {
+    clearInterval(timer.value)
+    timer.value=null
+})
+
+
+
 onMounted(() => {
+
     getData()
+    timer.value = setInterval(() => {
+        getData()
+    }, 6000)
+
 
     getLog()
     // handleTime()

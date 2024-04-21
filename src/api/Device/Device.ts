@@ -175,3 +175,30 @@ export function DeviceSleepDeviceReportDate(data: any) {
     })
 }
 
+
+// 获取睡眠设备-实时心率、呼吸率
+export function DeviceSleepDeviceStatus() {
+    return http.request({
+        url: '/admin/device/sleepDevice/status',
+        method: 'get',
+    })
+}
+
+
+// mac获取睡眠设备-实时心率、呼吸率
+export function DeviceSleepDeviceCurrentData(params: any) {
+    return http.request({
+        url: '/admin/device/sleepDevice/status',
+        method: 'get',
+        params
+    })
+}
+
+// 警告日志
+export function DeviceWarningLog(params:any) {
+    return http.request({
+        url: '/admin/device/warningLog',
+        method: 'get',
+        params
+    })
+}

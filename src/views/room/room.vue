@@ -39,12 +39,12 @@
                 <div class="roomItem">
                     <p class="roomTitle">
                         <span class="tt"> {{ houseList.find((item: any) => item.id == houseActive)?.roomNumber }}</span>
-                        <span>{{ checkInfo.check }}入住、{{ checkInfo.reserve }}预留、{{ checkInfo.free }}空闲、共{{ checkInfo.count
-                        }}床</span>
+                        <span>{{ checkInfo.check }}{{t('入住')}}、{{ checkInfo.reserve }}{{t('预留')}}、{{ checkInfo.free }}{{t('空闲')}}、{{t('共')}}{{ checkInfo.count
+                        }}{{t('床')}}</span>
                     </p>
                     <div class="roomContiner">
                         <Row :gutter="8">
-                            <Col span="4" v-for="item in bedList" :key="item">
+                            <Col :xs="4" :sm="4" :md="6" :lg="8" v-for="item in bedList" :key="item">
                             <Card :bordered="false" :padding="0">
                                 <div class="roomBox">
                                     <p class="t1">
@@ -410,10 +410,11 @@ onMounted(() => {
                     // width: 150px;
                     text-align: center;
                     margin-bottom: 10px;
+                    min-width: 150px;
 
                     .user {
                         width: 100%;
-                        height: 210px;
+                        min-height: 210px;
                     }
 
                     .noUser {
@@ -437,6 +438,7 @@ onMounted(() => {
                     }
 
                     .t2 {
+                        border-radius: 4px 0 0 0 ;
                         font-size: 10px;
                         font-family: PingFangSC, PingFang SC;
                         font-weight: 400;

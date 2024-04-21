@@ -355,79 +355,6 @@ const handleDelete = (row: any) => {
 
 
 
-// const handleAdd = () => {
-//     //console.log(addForm.value)
-
-//     let time = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 0, 1, 2, 3, 4, 5]
-
-//     let obj = {
-//         start: addForm.value.start,
-//         end: addForm.value.end,
-//         ml: 0,
-//         len: 0,
-//         isSched: true,
-//         name: '倪杰',
-//         type: '护士',
-//         calss: addForm.value.class,
-//     }
-
-
-//     if (addForm.value.start == "06:00") {
-//         obj.ml = 0
-//     } else {
-//         //time = time.concat(time)
-//         let s = parseInt(addForm.value.start)
-//         let e = parseInt(addForm.value.end)
-
-
-//         let l = time.indexOf(s)
-//         let r = time.indexOf(e)
-
-//         let b1 = addForm.value.start.split(":")[1] * 1 > 0
-//         let b2 = addForm.value.end.split(":")[1] * 1 > 0
-
-
-//         console.log(b1)
-//         console.log(b2)
-//         obj.ml = l
-
-//         if (l > r) {
-//             let t0 = 24 - l
-//             let t1 = r
-
-
-//             if (b1) {
-//                 obj.ml = l + 0.5
-//             }
-//             if (b2) {
-//                 t1 = t1 + 0.5
-//             }
-
-//             obj.len = [t0, t1]
-//         }
-
-//         if (r > l) {
-//             obj.len = r - l
-
-//             if (b1) {
-//                 obj.ml = l + 0.5
-//             }
-//             if (b2) {
-//                 obj.len = obj.len + 0.5
-//             }
-//         }
-
-//     }
-
-//     console.log(obj)
-
-//     data.value.push(obj)
-
-
-// }
-
-
-
 const getData = () => {
     StaffScheduleListOfDay({
         current: 1,
@@ -458,8 +385,12 @@ const getData = () => {
 
 
 
-                if (ti > ei) {
+                //23 13  ------5 19   5-19
 
+                // 18 3 0 9  [15, 9, 9, 6]
+                if (ti > ei) { 
+                    ssss = [0, ei,24-ei-(24-ti)  , 24-ti]
+                            // 0,13,x,1
                 }
 
                 if (ei >= ti) {
@@ -469,12 +400,15 @@ const getData = () => {
                     // ssss[1]=ei-ti
                     // ssss[2]=e-6
 
+                    //[5, 8, 11, 0] 5 13 11 19
                     ssss = [s - 6, ei - ti, 24 - s + 6 - ei + ti, 0]
                 }
             } else {
                 ssss = []
 
             }
+
+            console.log("======",ssss)
 
 
 

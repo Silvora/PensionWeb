@@ -154,6 +154,7 @@ const props = defineProps({
         defined: {}
     }
 })
+const jobLevelList = ref(["三级", "二级", "一级", "特一级", "特二级", "特三级", "专需护理"])
 const descriptionList = ref<any>([])
 const type = ref('0')
 
@@ -194,7 +195,7 @@ watchEffect(() => {
         // },
         {
             label: '护理等级',
-            value: props.info?.nursingGrade
+            value: props.info?.nursingGrade?jobLevelList[props.info?.nursingGrade-1]:''
         },
         // {
         //     label: '入住时间',

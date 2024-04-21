@@ -56,7 +56,7 @@
 </template>
 
 <script setup lang='ts'>
-import { ref } from "vue"
+import { ref, watch } from "vue"
 import { roleTable, createRole } from "../data"
 import { Modal, Message } from "view-ui-plus";
 import { onMounted } from "vue";
@@ -67,6 +67,13 @@ const TableCreateRef = ref<any>(null)
 const { t } = useI18n()
 const data: any = ref([])
 
+const props = defineProps({
+    searchData: {
+        type: String,
+        default: ''
+    }
+})
+
 const pagerConfig = ref({
     total: 10,//总数
     currentPage: 1,//当前页
@@ -76,6 +83,10 @@ const pagerConfig = ref({
 const handleAddRole = () => {
     TableCreateRef.value.openModal({ status: 30 })
 }
+
+watch(() => props.searchData, () => {
+    getData({ name: props.searchData })
+})
 
 // 创建角色
 const handleCreateRole = (data: any) => {
@@ -224,10 +235,11 @@ const handleUpdatePage = ({ currentPage, pageSize }: any) => {
         pageSize
     }
 }
-const getData = () => {
+const getData = (search = {}) => {
     RoleList({
         current: pagerConfig.value.currentPage,
-        size: pagerConfig.value.pageSize
+        size: pagerConfig.value.pageSize,
+        ...search
     }).then((res: any) => {
         console.log(res, res.data.total)
         data.value = res.data.records

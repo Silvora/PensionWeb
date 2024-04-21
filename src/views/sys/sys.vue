@@ -18,13 +18,20 @@
             <div class="btn">
                 <Button type="primary" v-if="type == 'agency'||type == 'system'" @click="handleSave">{{ t('保存') }}</Button>
                 <Input v-if="type == 'role' || type == 'account'" @on-search="handleSearch" search clearable
-                    :placeholder="t('搜索')" />
+                    :placeholder="t('名称/姓名')" v-model="value">
+                    <template #prepend>
+              <span>{{ t('名称/姓名') }}</span>
+            </template>
+            <template #append>
+              <Button icon="ios-search" @click="handleSearch(value)"></Button>
+            </template>
+                </Input>
             </div>
         </div>
 
         <div class="formInfo" id="formInfo">
-            <Agency v-if="type == 'agency'" ref="agencyRef"></Agency>
-            <Role v-if="type == 'role'"></Role>
+            <Agency v-if="type == 'agency'" ref="agencyRef" ></Agency>
+            <Role v-if="type == 'role'" :searchData="name"></Role>
             <Account v-if="type == 'account'" :searchData="name"></Account>
             <System v-if="type == 'system'" ref="systemRef"></System>
         </div>
@@ -46,7 +53,7 @@ const type = ref(route.query.type)
 
 const agencyRef = ref<any>(null)
 const systemRef = ref<any>(null)
-
+const value = ref<any>('')
 const name = ref<any>('')
 
 const typeList = ref([

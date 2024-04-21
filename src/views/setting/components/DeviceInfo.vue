@@ -4,6 +4,10 @@
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
+
+            <div style="width: 100%;display: flex;justify-content: flex-end;margin-bottom: 10px;">
+                <DatePicker type="daterange" format="yyyy-MM-dd"  split-panels :placeholder="t('选择日期')" v-model="dateSearch" style="width: 200px" @on-change="getData"></DatePicker>
+            </div>
             <div class="userInfo">
                 <div class="photo">
                     <img :src="oss + userInfo?.photo" alt="">
@@ -29,176 +33,28 @@
                         <GridItem>{{ userInfo?.startTime?.split(" ")[0] || '&nbsp;' }}</GridItem>
                     </Grid>
                 </div>
-
-                <!-- <p class="title">{{ t('老人详情') }}</p> -->
-
-
-                <!-- <div v-if="userInfo">
-                        <img :src="userInfo.photo" alt="">
-                        <p class="item">
-                            <span>{{ t('姓名') }}</span>
-                            <span>{{ userInfo.name }}</span>
-                        </p>
-                        <p class="item">
-                            <span>{{ t('性别') }}</span>
-                            <span>{{ userInfo.gender == 1 ? t('男') : userInfo.gender == 2 ? t('女') : t('未知') }}</span>
-                        </p>
-                        <p class="item">
-                            <span>{{ t('居住信息') }}</span>
-                            <span>{{ userInfo.roomBedNumber }}</span>
-                        </p>
-                        <p class="item">
-                            <span>{{ t('护理等级') }}</span>
-                            <span>{{ userInfo.nursingGrade }}</span>
-                        </p>
-                        <p class="item">
-                            <span>{{ t('护理员') }}</span>
-                            <span>{{ userInfo.staffName }}</span>
-                        </p>
-                        <p class="item">
-                            <span>{{ t('入住时间') }}</span>
-                            <span>{{ userInfo.startTime }}</span>
-                        </p>
-                    </div>
-                    <div v-else>
-                        {{ t('暂无数据') }}
-                    </div> -->
             </div>
-            <div class="context" v-if="modal">
+            <div class="context">
+                <Table :columns="columns" :data="data" height="300">
+                
+                    <template #deviceType="{ row, index }">
+                        <span>{{ row.deviceType== 'ed719_type' ? t('行为感知') : t('睡眠感知') }}</span>
+               </template>
+                
 
-                <!-- <div class="userInfo">
-                    <p class="title">{{ t('老人详情') }}</p>
-                    <div v-if="userInfo">
-                        <img :src="userInfo.photo" alt="">
-                        <p class="item">
-                            <span>{{ t('姓名') }}</span>
-                            <span>{{ userInfo.name }}</span>
-                        </p>
-                        <p class="item">
-                            <span>{{ t('性别') }}</span>
-                            <span>{{ userInfo.gender == 1 ? t('男') : userInfo.gender == 2 ? t('女') : t('未知') }}</span>
-                        </p>
-                        <p class="item">
-                            <span>{{ t('居住信息') }}</span>
-                            <span>{{ userInfo.roomBedNumber }}</span>
-                        </p>
-                        <p class="item">
-                            <span>{{ t('护理等级') }}</span>
-                            <span>{{ userInfo.nursingGrade }}</span>
-                        </p>
-                        <p class="item">
-                            <span>{{ t('护理员') }}</span>
-                            <span>{{ userInfo.staffName }}</span>
-                        </p>
-                        <p class="item">
-                            <span>{{ t('入住时间') }}</span>
-                            <span>{{ userInfo.startTime }}</span>
-                        </p>
-                    </div>
-                    <div v-else>
-                        {{ t('暂无数据') }}
-                    </div>
-                </div> -->
-                <div class="log">
-                    <p class="title">{{ t('睡眠记录') }}</p>
-                    <div>
-                        <div class="logDay">
-                            <p>{{ t('连续测量天数') }}: {{ logDay }}</p>
-                            <Button type="primary" @click="handleLog">{{ t('日志') }}</Button>
-                        </div>
-                        <div class="date">
-                            <VDatePicker v-model.string="date" mode="date" :masks="masks" is-required
-                                style="width: 100%;height: auto;">
-                            </VDatePicker>
-                        </div>
-                        <div v-if="logInfo">
-                            <p class="sub_title">
-                                <i class="iconfont icon-huobifenxi" style="color:#0160FF"></i>
-                                {{ t('睡眠综合分析') }}
-                            </p>
-                            <p class="time1"><span
-                                    class="big">{{ toHourSecond(logInfo?.sleepLong).split(":")[0] || '-' }}</span>{{ t('小时') }}
-                                <span class="big">{{ toHourSecond(logInfo?.sleepLong).split(":")[1] || '-' }}</span>
-                                {{ t('分钟') }}</p>
-                            <p class="time2">{{ t('入睡时间') }} <span
-                                    class="bold">{{ logInfo?.sleepStartTime?.split(" ")[1] || '-' }}</span>
-                                {{ t('分') }}, {{ t('结束时间') }}<span
-                                    class="bold">{{ logInfo?.sleepEndTime?.split(" ")[1] || '-' }}</span> {{ t('分') }}
-                            </p>
-                            <p class="desc">{{ t('睡眠质量不佳,加强欲动可以帮助你改善睡眠') }}</p>
-                            <div>
-                                <!-- <Chart1 :logInfoTime="{}"></Chart1> -->
-                            </div>
-                            <div class="info" style="width: 100%;">
+               <template #eventType="{ row, index }">
+                        <span>{{ eventTypeMap[row.eventType] }}</span>
+               </template>
 
-                                <!-- {{ t('暂无数据') }} -->
-                                <Row>
-                                    <Col :span="12">
-                                    <p class="title">夜间睡眠{{ toHourSecond(logInfo?.sleepLong).split(":")[0] || '-' }}小时</p>
-                                    <p class="d">{{ t('参考值:') }}6～10{{ t('小时') }}</p>
-                                    </Col>
-                                    <Col :span="12">
-                                    <p class="title">清醒比例{{ logInfo?.sleepLong ? (logInfo?.awakeLong /
-                                        logInfo?.sleepLong).toFixed(0) : '-' }}%</p>
-                                    <p class="d">{{ t('参考值:') }}0～10%</p>
-                                    </Col>
-                                    <Col :span="12">
-                                    <p class="title">浅睡比例{{ logInfo?.sleepLong ? (logInfo?.sleepLight /
-                                        logInfo?.sleepLong).toFixed(0) : '-' }}%</p>
-                                    <p class="d">{{ t('参考值:') }}20～60%</p>
-                                    </Col>
-                                    <Col :span="12">
-                                    <p class="title">深睡比例{{ ' ' }}%</p>
-                                    <p class="d">{{ t('参考值:') }}20～80%</p>
-                                    </Col>
-                                    <Col :span="12">
-                                    <p class="title">睡眠次数{{ logInfo.sleepLong || '-' }}次</p>
-                                    <p class="d">{{ t('参考值:') }}1{{ t('次') }}</p>
-                                    </Col>
-                                    <Col :span="12">
-                                    <p class="title">翻身次数{{ logInfo?.turnOverNumber || '-' }}次</p>
-                                    <p class="d">{{ t('参考值:') }}20～45{{ t('次') }}</p>
-                                    </Col>
-                                    <Col :span="12">
-                                    <p class="title">离床次数{{ logInfo?.leaveBedNumber || '-' }}次</p>
-                                    <p class="d">{{ t('参考值:') }}0～2{{ t('次') }}</p>
-                                    </Col>
-                                </Row>
-                            </div>
-                        </div>
-                        <div v-else>
-                            {{ t('暂无数据') }}
-                        </div>
-
-                    </div>
-
-                </div>
-                <div class="chat">
-                    <!-- <p class="title">{{ t('健康数据') }}</p> -->
-                    <div style="width: 100%;">
-                        <p class="title"> <i class="iconfont icon-xindongzhi-manxin-"
-                                style="color:#E06255"></i>{{ t('心率') }}</p>
-                        <Chart2 :DeviceInfoListInfo="DeviceInfoListInfo"></Chart2>
-                        <br>
-                        <p class="title"><i class="iconfont icon-huxizhuanke" style="color:#0160FF"></i>{{ t('呼吸频率') }}</p>
-                        <Chart3 :DeviceInfoListInfo="DeviceInfoListInfo"></Chart3>
-                        <br>
-                        <p class="title"><i class="iconfont icon-tidong" style="color:#ED9000"></i>{{ t('体动') }}</p>
-                        <Chart4 :DeviceInfoListInfo="DeviceInfoListInfo"></Chart4>
-                    </div>
-                </div>
+                </Table>
             </div>
         </Modal>
     </div>
 </template>
 
 <script setup lang="ts">
-import Chart1 from "./Chart1.vue";
-import Chart2 from "./Chart2.vue";
-import Chart3 from "./Chart3.vue";
-import Chart4 from "./Chart4.vue";
-import { DeviceSleepDeviceDetectionDays, DeviceSleepDeviceDayReport, DeviceSleepDeviceHeartRateByMinute } from "@/api/Device/Device"
-import { onMounted, ref, nextTick } from 'vue';
+import {DeviceWarningLog, DeviceSleepDeviceDetectionDays, DeviceSleepDeviceDayReport, DeviceSleepDeviceHeartRateByMinute,DeviceUsageRecordList } from "@/api/Device/Device"
+import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import dayjs from "dayjs"
 import { useRouter } from "vue-router"
@@ -211,19 +67,54 @@ const userInfo = ref<any>({})
 const mac = ref<any>('')
 const logInfo = ref<any>({})
 const date = ref(dayjs().format('YYYY-MM-DD'))
-const oldDate = ref(dayjs().subtract(1, 'day').format('YYYY-MM-DD'))
-const masks = ref({
-    modelValue: 'YYYY-MM-DD',
-});
+const dateSearch = ref<any>(['',''])
 const logDay = ref<any>(null)
 const DeviceInfoListInfo = ref<any>({})
 // const msg = ref<any>(null)
 const oss = ref<any>(import.meta.env.VITE_APP_AXIOS_BASER)
 
+const eventTypeMap:any={
+    3001:t('离床'),
+    3006:t('呼吸异常'),
+    300:t('心率异常'),
+    3012:t('在床'),
+    3008:t('紧急拉绳通知'),
+    3101:t('确认跌倒'),
+    3102:t('疑似跌倒'),
+    3103:t('跌倒解除')
+}
 
-watch(date, () => {
-    getData()
-})
+const columns = [
+{
+                        title: t('事件时间'),
+                        key: 'createTime',
+                        align: 'center',
+
+                    },
+                    {
+                        title: t('事件类型'),
+                        key: 'eventType',
+                        align: 'center',
+                        slot: 'eventType'
+
+                    },
+                    {
+                        title: t('事件设备'),
+                        key: 'deviceType',
+                        align: 'center',
+                        slot: 'deviceType'
+                    },
+                    {
+                        title: t('事件内容'),
+                        key: 'notes',
+                        align: 'center',
+                        // slot: 'eventType'
+                    }
+]
+const data = ref<any>([])
+// watch(mac, () => {
+//     getData()
+// })
 
 const Open = (data: any) => {
     userInfo.value = data.elderlyInfo
@@ -264,10 +155,23 @@ const handleLog = () => {
 }
 
 onMounted(() => {
-
+   
 })
 
-const getData = () => {
+const getData = () =>{
+
+    console.log(dateSearch.value)
+    DeviceWarningLog({
+        startTime:dateSearch.value[0]?dayjs(dateSearch.value[0]).format('YYYY-MM-DD'):'',
+        endTime:dateSearch.value[1]?dayjs(dateSearch.value[1]).format('YYYY-MM-DD'):'',
+        mac:mac.value
+    }).then((res: any) => {
+        console.log(res)
+        data.value = res.data
+    })
+}
+
+const getDatadddd = () => {
 
     DeviceSleepDeviceDetectionDays({
         mac: mac.value
@@ -381,7 +285,7 @@ defineExpose({
 
 .context {
     width: 100%;
-    display: flex;
+    // display: flex;
     margin-top: 10px;
 
 
@@ -410,77 +314,6 @@ defineExpose({
     //     }
     // }
 
-    .log {
-        flex: 1;
-        // margin: 0 10px;
-        margin-right: 10px;
-
-        // background: yellow;
-        .title {
-            font-weight: bold;
-        }
-
-        .date {
-            margin: 10px 0;
-        }
-
-        .logDay {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .sub_title {
-            color: rgba(0, 0, 0, .5);
-        }
-
-        .time1 {
-            .big {
-                font-weight: bold;
-                font-size: 20px;
-            }
-        }
-
-        .time2 {
-            font-weight: bold;
-        }
-
-        .info {
-            margin-top: 10px;
-
-            .title {
-                font-weight: bold;
-                display: flex;
-                align-items: center;
-                // justify-content: center;
-            }
-
-            .title::before {
-                content: " ";
-                display: inline-block;
-                width: 3px;
-                height: 14px;
-                background: #1890ff;
-                margin-right: 5px
-            }
-
-            .d {
-                font-size: 12px;
-                color: #8B8A96;
-                padding: 4px 0;
-            }
-        }
-    }
-
-    .chat {
-        flex: 2;
-        margin-left: 10px;
-        // background: blue;
-
-        .title {
-            font-weight: bold;
-        }
-    }
 
 
 }</style>

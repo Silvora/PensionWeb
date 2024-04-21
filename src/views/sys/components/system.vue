@@ -119,6 +119,8 @@ const lan: any = {
 const handleExit = () => {
     setToken('ing-Token', '').then(() => {
         Message.success(t('退出成功'))
+        setToken('ing-Bg', '')
+
         router.push('/login')
     })
 

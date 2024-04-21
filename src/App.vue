@@ -15,7 +15,7 @@ import MQTT from './utils/mqtt'
 // // //const shiftP = keys['ShiftLeft+S']
 import { useMqttStore } from "@/stores/modules/mqtt"
 import { onBeforeUnmount } from 'vue'
-
+import {DeviceSleepDeviceStatus} from "@/api/Device/Device"
 const mqttStore = useMqttStore()
 //切换语言
 const { locale, t } = useI18n()
@@ -98,6 +98,10 @@ const mqtt = ref<any>(null)
 //   if (v)
 //     modal.value = true
 // })
+
+const timer = ref<any>(null)
+
+
 //监控路由变化 改变title 跟随语言设置
 const route = useRoute()
 watch(route, (v: any) => {
@@ -110,9 +114,40 @@ watch(route, (v: any) => {
   if (v.name == 'login') {
     mqtt && mqtt.value?.unsubscribes()
 
+    clearInterval(timer.value)
+    timer.value = null
     // console.log("===============")
   }
+
+  if(!timer.value){
+    getStatus()
+  }
+
 }, { deep: true })
+
+
+const getStatus = () => {
+  getToken('ing-Token').then((token) => {
+
+
+    if(token){
+      timer.value = '1'
+      timer.value= setInterval(() => {
+    DeviceSleepDeviceStatus().then((res=>{
+        console.log("=========",res)
+        res.data.forEach((item:any,idx:any)=>{
+          item.eventType?setTimeout(() => {
+            mqttStore.setData('device', item)
+          },100*idx):''
+        })
+      }))
+  },6000)
+    }
+
+  })
+ 
+}
+
 
 onMounted(() => {
   // transitionName.value = appStore.TransitionConfig.modal
@@ -133,35 +168,35 @@ onMounted(() => {
   getToken('ing-Token').then((token) => {
     token && getToken('ing-Bg').then((res: any) => {
       if (res) {
-        // console.log("//////",res,`url(${oss.value + res})`)
+        console.log("//////",res,`url(${oss.value + res})`)
         document.body.style.backgroundImage = `url(${oss.value + res})`;
 
       }
-
-      //   if(token && mqttStore.client){
-      //   // mqttStore.over()
-      //   // mqttStore.client = null
-      //   mqttStore.unsubscribes()
-      //   mqttStore.initMqtt()
-      //   mqttStore.link()
-      //   mqttStore.get()
-      // }else{
-      //   mqttStore.initMqtt()
-      //   mqttStore.link()
-      //   mqttStore.get()
-      // }
-
+      
+      
 
     })
     mqtt.value = new MQTT()
 
 
     if (route.name == 'login') {
+      clearInterval(timer.value)
+      timer.value = null
       return
+
+
+
     }
 
 
     if (token) {
+
+    
+      
+      // !timer.value? getStatus():''
+
+
+
       mqtt.value.init()
       mqtt.value.link()
       mqtt.value.get((topic: any, message: any) => {
@@ -181,6 +216,7 @@ onMounted(() => {
         }
       })
     } else {
+      clearInterval(timer.value)
       mqtt && mqtt.value?.unsubscribes()
     }
     // let mqtt = new MQTT([

@@ -35,7 +35,7 @@ http.interceptors.response.use(
         }
         // 请求成功，状态不为成功时
         Message.error(response.data.message);
-        return Promise.reject(new Error(response.data.message));
+        return Promise.reject(response.data.message);
     },
     (error) => {
         Message.error(error.message);

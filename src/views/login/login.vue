@@ -40,9 +40,9 @@
       </Card>
     </div>
     <Modal v-model="modal" :title="t('用户隐私协议')" :footer-hide="true">
+      <!-- <p>Something...</p>
       <p>Something...</p>
-      <p>Something...</p>
-      <p>Something...</p>
+      <p>Something...</p> -->
     </Modal>
   </div>
 </template>

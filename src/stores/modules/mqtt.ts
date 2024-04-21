@@ -25,10 +25,10 @@ export const useMqttStore = defineStore("mqttStore", () => {
 
     const player = (msg:any,data:any) => {
 
-      Notice.warning({
-        title: `乎感消息提示`,
-        desc: `乎感提醒：${msg}`
-      })
+      // Notice.warning({
+      //   title: `乎感消息提示`,
+      //   desc: `乎感提醒：${msg}`
+      // })
 
 
         const notice = new Notification('乎感消息提示', {
@@ -71,12 +71,12 @@ export const useMqttStore = defineStore("mqttStore", () => {
             //     '0':'您绑定的护眠仪检测到无人状态',
             //     '1':'您绑定的护眠仪检测到有人活动'
             // },
-            "3006": `您绑定的护眠仪呼吸过${data.respiratoryRate?'低':'高'}，请注意查看关注`,
+            "3006": `您绑定的护眠仪呼吸过${data.respiratoryRate<50?'低':'高'}，请注意查看关注`,
             // {
             //     '0':'您绑定的护眠仪呼吸过低，请注意查看关注',
             //     '1':'您绑定的护眠仪呼吸过高，请注意查看关注'
             // },
-            "3007": `您绑定的护眠仪心率过${data.heartRate?'低':'高'}，请注意查看关注`,
+            "3007": `您绑定的护眠仪心率过${data.heartRate<50?'低':'高'}，请注意查看关注`,
             // {
             //     '0':'您绑定的护眠仪心率过低，请注意查看关注',
             //     '1':'您绑定的护眠仪心率过高，请注意查看关注'
@@ -119,7 +119,7 @@ export const useMqttStore = defineStore("mqttStore", () => {
         const permission = Notification.permission;
         if (permission === "granted") {
             console.log("已经授权通知，可以进行你的通知啦！");
-           player(map[data.type][data.eventType],data);
+            data.eventType?player(map[data.type][data.eventType],data):'';
 
         } else if (Notification.permission === "default") {
             console.log("用户还未选择同意/拒绝");
@@ -151,7 +151,7 @@ export const useMqttStore = defineStore("mqttStore", () => {
         const options = {
             protocol: "ws",
             host: "8.217.217.243",
-            port: 15675,
+            port: 8080,
             clientId: "mqtt_" + Math.random().toString(16).substring(2, 8),
             username: "hjy",
             password: "hjy123",

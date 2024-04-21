@@ -34,6 +34,7 @@ import { useAppStore } from "@/stores/modules/app"
 import { useI18n } from "vue-i18n"
 import { GetBaseSetting } from "@/api/Base/Base"
 
+const oss = ref<any>(import.meta.env.VITE_APP_AXIOS_BASER)
 
 const { t } = useI18n()
 import md5 from 'js-md5';
@@ -70,6 +71,7 @@ const handleSubmit = () => {
 
   loginForm.value.validate((valid: boolean) => {
     if (valid) {
+
       if (!props.autoDesc) {
         Message.warning(t('请先阅读并同意隐私协议'))
         return
@@ -97,6 +99,8 @@ const handleSubmit = () => {
       loading.value = true
       Login(data).then((res: any) => {
         console.log(res)
+        loading.value = false
+
         setToken('ing-Token', res.data)
         setToken('ing-User', form.value.identifier)
 
@@ -104,10 +108,12 @@ const handleSubmit = () => {
 
 
         router.push("/")
-        loading.value = false
         Message.success(t('登录成功'))
 
-      }).then(() => {
+      }).catch(() => {
+      console.log("==============")
+      loading.value = false
+    }).finally(() => {
        
         //router.push("/")
 
@@ -115,7 +121,7 @@ const handleSubmit = () => {
         console.log(res)
         // fileUrl.value.bgUrl = res.data?.background
         if (res.data?.background) {
-            document.body.style.backgroundImage = `url(${res.data.background})`;
+            document.body.style.backgroundImage = `url(${oss.value +res.data.background})`;
         }
 
         mqttStore.initMqtt()
@@ -129,9 +135,8 @@ const handleSubmit = () => {
 
         //     })
         // }
-    }).finally(() => {
-      loading.value = false
     })
+    
       })
     }
   })
