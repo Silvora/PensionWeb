@@ -459,7 +459,16 @@ const handleSearch = (value: any, selectedData: any) => {
     formData.value['roomId'] = value[2]
     formData.value['bedId'] = value[3]
     console.log(selectedData)
-    formData.value.roomBedNumber = selectedData[1].label + '-' + selectedData[2].label + '-' + selectedData[3]?.label
+
+
+    // 跌倒设备
+    if(formData.value['type'] == 'ed719_type'){
+        formData.value.roomBedNumber = selectedData[1].label + '-' + selectedData[2].label
+        
+    }else{
+        formData.value.roomBedNumber = selectedData[1].label + '-' + selectedData[2].label + '-' + selectedData[3]?.label
+
+    }
 
 }
 
@@ -566,6 +575,8 @@ const handleSubmit = () => {
     delete data.sleepParams.heartRateConfig.time
     delete data.sleepParams.leaveBedConfig.time
     delete data.sleepParams.respiratoryConfig.time
+
+  
 
     console.log(data)
 

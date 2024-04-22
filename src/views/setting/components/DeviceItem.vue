@@ -20,7 +20,7 @@
                     <div @click="handleGetDeviceInfo">
                         <p class="t1">
                             <!-- {{ props?.info.name }} -->
-                            {{ props.info?.type == 'ed719_type' ? t('行为感知') : t('睡眠感知') }}
+                            {{ props.info?.type == 'ed719_type' ? t('跌倒感知') : t('睡眠感知') }}
                         </p>
                         <p class="t2">
                             ID:{{ props?.info.mac }}

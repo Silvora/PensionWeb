@@ -336,14 +336,16 @@ onMounted(() => {
         console.log("获取数据")
         ElderlyAdmissionElderlyId({ elderlyId: route.query.id }).then((res: any) => {
             console.log(res,res.data.costList[0].price*1);
-            ROOM.value = res.data.checkIn.roomBedNumber.split('-')
+             let r = res.data.checkIn.roomBedNumber.split('-')
+             r.unshift(res.data.checkIn.hostelId)
 
+             ROOM.value = r
             let obj = {
                 care:{
-                    nursingDeviceType:'',
+                    nursingDeviceType:res.data.nursingDeviceType,
                     serviceFee:res.data.costList[0].price*1,
                     roomCosts:res.data.costList[1].price*1,
-                    nursingNotes:'',
+                    nursingNotes:res.data.nursingNotes,
                 },
                 bed:{
                     startTimeStr: res.data.checkIn.startTime,
@@ -351,7 +353,7 @@ onMounted(() => {
 
                 },
                 contract:{
-                    contractDateStr:'',
+                    contractDateStr:res.data.contractDate,
 
                 },
             }

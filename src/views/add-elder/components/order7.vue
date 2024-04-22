@@ -105,17 +105,17 @@ onMounted(() => {
 })
 
 const getData = () => {
-    FamilyList({ elderlyId: route.query.id }).then((res: any) => {
-        console.log(res)
-        // data.value = res.data
-        FormData.value[3].childs = res.data.map((item: any) => {
-            return {
-                label: item.name,
-                value: item.id,
-                ...item
-            }
-        })
-    })
+    // FamilyList({ elderlyId: route.query.id }).then((res: any) => {
+    //     console.log(res)
+    //     // data.value = res.data
+    //     FormData.value[3].childs = res.data.map((item: any) => {
+    //         return {
+    //             label: item.name,
+    //             value: item.id,
+    //             ...item
+    //         }
+    //     })
+    // })
 }
 
 

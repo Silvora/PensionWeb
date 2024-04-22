@@ -25,7 +25,7 @@ const map: any = ref({
 })
 
 const initChart = () => {
-    const myChart:any = echarts.init(EmptyChartRef.value);
+    const myChart: any = echarts.init(EmptyChartRef.value);
 
     const option = {
         color: [
@@ -70,7 +70,7 @@ const initChart = () => {
                     formatter: () => {
                         //console.log(params.name)
                         return [
-                            `{a|2121}`,
+                            `{a|0}`,
                             `{b|总数}`
                         ].join('\n')
                     },

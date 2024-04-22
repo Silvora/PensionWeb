@@ -12,7 +12,7 @@
             <div class="btn">
                 <Space>
                     <Button type="primary" @click="elderModal = true">{{ t('绑定老人') }}</Button>
-                    <Input prefix="ios-search" clearable :enter-button="t('搜索')" :placeholder="t('搜索')" />
+                    <!-- <Input prefix="ios-search" clearable :enter-button="t('搜索')" :placeholder="t('搜索')" /> -->
                 </Space>
             </div>
         </div>
@@ -119,7 +119,7 @@
             </template>
 
             <div class="elderBox">
-                <Input prefix="ios-search" clearable :enter-button="t('搜索')" :placeholder="t('搜索')" v-model="keyword" />
+                <Input clearable search :placeholder="t('搜索')" v-model="keyword" @on-search="getNurseNameList" />
 
                 <Card :bordered="false" :padding="5" style="background: rgba(19,100,248,0.05);margin: 5px 0;"
                     v-for="item in elderList" :key="item.id">
@@ -431,15 +431,20 @@ const getNurseTaskList = (id: any) => {
 
 
 
+const getNurseNameList = () => {
+    NurseRecordElderlyList({ name: keyword.value }).then((res: any) => {
+        //data.value = res.data
+        elderList.value = res.data.records
+    })
+}
+
 const getNurseList = () => {
     NurseRecordBindList({ staffId: route.query.id }).then((res: any) => {
         data.value = res.data
     })
 
-    NurseRecordElderlyList({}).then((res: any) => {
-        //data.value = res.data
-        elderList.value = res.data.records
-    })
+    getNurseNameList()
+
 
 }
 

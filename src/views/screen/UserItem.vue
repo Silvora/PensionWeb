@@ -36,7 +36,7 @@
                         </p>
                         <p class="t4">
                             <!-- <Icon type="ios-checkmark" /> -->
-                            <img src="@/assets/images/pad-processing@2x.png" alt="" style="width: 15px;">
+                            <img src="@/assets/images/pad-processing@2x.png" alt="" style="width: 15px;margin-right: 10px">
                             {{ elderlyInfo?.staffName }}
                         </p>
                     </div>
@@ -236,9 +236,14 @@ const handleNavTo = (path: string) => {
                 display: flex;
                 width: 100%;
                 margin: 2px 0;
-                justify-content: space-around;
+                // justify-content: space-around;
+                justify-content: start;
                 align-items: center;
                 height: 30px;
+
+                i {
+                    margin: 0 10px;
+                }
 
 
             }

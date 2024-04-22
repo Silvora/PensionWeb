@@ -13,7 +13,7 @@
         @checkbox-all="selectAllChangeEvent" @checkbox-change="selectChangeEvent" ref="tableRef">
 
         <vxe-column type="checkbox" title="" v-if="tableConfig.checkbox"></vxe-column>
-        <VxeColumn type="seq" title="序号" width="60" v-if="tableConfig.seq">
+        <VxeColumn type="seq" :title="t('序号')" width="60" v-if="tableConfig.seq">
         </VxeColumn>
         <VxeColumn v-for=" item  in  columns " :key="item.key" :field="item.key" :title="item.title"
             :min-width="item.minWidth" show-header-overflow :show-overflow="item.showOverflow == false ? false : true"
@@ -247,20 +247,20 @@ const exportAllDataEvent = () => {
     const $table = tableRef.value
 
     console.log(props.data.value)
-  if ($table) {
-    $table.exportData({
-      filename: '员工数据-'+ Date.now(),
-      type: 'csv',
-      isHeader: true,
-      isFooter: true,
-      // 自定义导出的数据源
-      data: props.data.value,
-      columnFilterMethod ({ column }:any) {
-        // console.log(column)
-        return ['seq', 'name','gender','roleName','entryTime'].includes(column.field)
-      }
-    })
-  }
+    if ($table) {
+        $table.exportData({
+            filename: '员工数据-' + Date.now(),
+            type: 'csv',
+            isHeader: true,
+            isFooter: true,
+            // 自定义导出的数据源
+            data: props.data.value,
+            columnFilterMethod({ column }: any) {
+                // console.log(column)
+                return ['seq', 'name', 'gender', 'roleName', 'entryTime'].includes(column.field)
+            }
+        })
+    }
 }
 
 

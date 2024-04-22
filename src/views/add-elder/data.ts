@@ -1265,7 +1265,7 @@ const contractInfo: any = {
      FormData:
          [
             {
-                type: 'dateTime',
+                type: 'date',
                 label: '合约签订日期',
                 prop: "contractDateStr",
                 span: 2,

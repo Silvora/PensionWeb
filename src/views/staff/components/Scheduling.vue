@@ -17,8 +17,8 @@
                         <Option value="1">{{ t('中班') }}</Option>
                         <Option value="2">{{ t('晚班') }}</Option>
                     </Select>
-                    <Input v-model="searchData.keyword" prefix="ios-search" clearable :enter-button="t('搜索')"
-                        :placeholder="t('搜索')" />
+                    <!-- <Input v-model="searchData.keyword" prefix="ios-search" clearable :enter-button="t('搜索')"
+                        :placeholder="t('搜索')" /> -->
                 </Space>
             </div>
         </div>
@@ -258,7 +258,7 @@ const handleOpenModal = (row: any) => {
     }
     addModal.value = true
 
-    console.log(row,addForm.value)
+    console.log(row, addForm.value)
 }
 // 添加备忘录
 const handleSumbit = () => {
@@ -388,9 +388,9 @@ const getData = () => {
                 //23 13  ------5 19   5-19
 
                 // 18 3 0 9  [15, 9, 9, 6]
-                if (ti > ei) { 
-                    ssss = [0, ei,24-ei-(24-ti)  , 24-ti]
-                            // 0,13,x,1
+                if (ti > ei) {
+                    ssss = [0, ei, 24 - ei - (24 - ti), 24 - ti]
+                    // 0,13,x,1
                 }
 
                 if (ei >= ti) {
@@ -408,7 +408,7 @@ const getData = () => {
 
             }
 
-            console.log("======",ssss)
+            console.log("======", ssss)
 
 
 

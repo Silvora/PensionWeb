@@ -19,7 +19,7 @@ export function FamilyList(params:any) {
 // 删除家属
 export function FamilyRemoveId(data:any) {
     return http.request({
-        url: `/admin/remove/${data.id}`,
+        url: `/admin/family/remove/${data.id}`,
         method: 'delete',
         data
     })

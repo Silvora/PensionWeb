@@ -22,7 +22,7 @@ const map: any = ref({
 })
 
 const initChart = () => {
-    const myChart:any = echarts.init(SexChartRef.value);
+    const myChart: any = echarts.init(SexChartRef.value);
 
     const option = {
         color: [
@@ -65,7 +65,7 @@ const initChart = () => {
                     // 注意，换行仍是使用 '\n'。
                     formatter: () => {
                         return [
-                            `{a|2121}`,
+                            `{a|0}`,
                             `{b|总数}`
                         ].join('\n')
                     },

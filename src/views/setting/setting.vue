@@ -85,6 +85,7 @@
         <FormData ref="FormDataRef" @handleResetData="handleResetData"></FormData>
 
         <DeviceInfo ref="DeviceInfoRef"></DeviceInfo>
+        <DeviceInfoCopy ref="DeviceInfoRefCopy"></DeviceInfoCopy>
     </div>
 </template>
 
@@ -95,6 +96,7 @@ import CountChart from "./components/CountChart.vue"
 import StateChart from "./components/StateChart.vue"
 import FormData from "./components/Form.vue";
 import DeviceInfo from "./components/DeviceInfo.vue"
+import DeviceInfoCopy from "./components/DeviceInfo-Copy.vue"
 import { onBeforeUnmount, ref } from 'vue';
 import { onMounted } from "vue";
 import { useI18n } from "vue-i18n";
@@ -109,7 +111,7 @@ const data = ref<any>([])
 const errList = ref<any>([])
 const FormDataRef = ref<InstanceType<typeof FormData>>()
 const DeviceInfoRef = ref<InstanceType<typeof DeviceInfo>>()
-
+const DeviceInfoRefCopy = ref<InstanceType<typeof DeviceInfoCopy>>()
 const searchData = ref<any>({
     hostelId: '',
     floorId: '',
@@ -143,7 +145,20 @@ const handleGetUser = (data: any) => {
 }
 
 const handleOpenInfo = (data: any) => {
-    DeviceInfoRef.value?.Open(data)
+
+    console.log(data)
+
+    if (data.type == 'ed719_type') {
+
+        DeviceInfoRef.value?.Open(data)
+
+    } else {
+        DeviceInfoRefCopy.value?.Open(data)
+
+    }
+
+    return
+
 }
 
 const handleShowModal = () => {
