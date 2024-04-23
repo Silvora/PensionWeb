@@ -3,7 +3,7 @@
         <div class="errInfo">
             <p class="title">
                 <span
-                    :class="['t1', props.info?.online == 1 ? 'green' : 'gary']">{{ ['离线', '在线'][props.info?.online] }}</span>
+                    :class="['t1', props.info?.online == 1 ? 'green' : 'gary']">{{ [t('离线'), t('在线')][props.info?.online] }}</span>
 
                 <span class="t2">{{ props.info?.type == 'ed719_type' ? t('跌倒感知') : t('睡眠感知') }}</span>
                 <span class="t3">

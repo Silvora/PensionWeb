@@ -8,6 +8,7 @@ import viteCompression from 'vite-plugin-compression'
 const {VITE_APP_AXIOS_BASE} = loadEnv(process.env.MODE, process.cwd());
 
 console.log("🚀🚀🚀",VITE_APP_AXIOS_BASE)
+const date = new Date().getTime();
 // https://vitejs.dev/config/
 export default defineConfig({
   base: './',
@@ -80,6 +81,13 @@ export default defineConfig({
         // 生产环境时移除console.log调试代码
         drop_console: true,
         drop_debugger: true
+      }
+    },
+    rollupOptions: {
+      output: {
+        chunkFileNames: `static/js/[name]-[hash]-${date}.js`,
+        entryFileNames: `static/js/[name]-[hash]-${date}.js`,
+        assetFileNames: 'static/[ext]/[name]-[hash].[ext]'
       }
     }
   }

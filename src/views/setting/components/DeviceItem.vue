@@ -3,7 +3,7 @@
         <div class="deviceInfo">
             <p class="title">
                 <span
-                    :class="['t1', props.info?.online == 1 ? 'green' : 'gary']">{{ ['离线', '在线'][props?.info.online] }}</span>
+                    :class="['t1', props.info?.online == 1 ? 'green' : 'gary']">{{ [t('离线'), t('在线')][props?.info.online] }}</span>
 
                 <!-- <span :class="['t1', 'green', 'yellow', 'gary'][props.info.online]">{{['离线','在线'][props.info.online]}}</span> -->
                 <span class="t2">{{ props?.info.roomBedNumber }}</span>
@@ -206,7 +206,8 @@ const handleGetDeviceInfo = () => {
             // display: inline-block;
             min-width: 60px;
             height: 60px;
-            .img{
+
+            .img {
                 width: 100%;
                 height: 100%;
             }

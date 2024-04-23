@@ -15,7 +15,7 @@ import MQTT from './utils/mqtt'
 // // //const shiftP = keys['ShiftLeft+S']
 import { useMqttStore } from "@/stores/modules/mqtt"
 import { onBeforeUnmount } from 'vue'
-import {DeviceSleepDeviceStatus} from "@/api/Device/Device"
+import { DeviceSleepDeviceStatus } from "@/api/Device/Device"
 const mqttStore = useMqttStore()
 //切换语言
 const { locale, t } = useI18n()
@@ -119,7 +119,7 @@ watch(route, (v: any) => {
     // console.log("===============")
   }
 
-  if(!timer.value){
+  if (!timer.value && v.name != 'login') {
     getStatus()
   }
 
@@ -130,22 +130,22 @@ const getStatus = () => {
   getToken('ing-Token').then((token) => {
 
 
-    if(token){
+    if (token) {
       timer.value = '1'
-      timer.value= setInterval(() => {
-    DeviceSleepDeviceStatus().then((res=>{
-        console.log("=========",res)
-        res.data.forEach((item:any,idx:any)=>{
-          item.eventType?setTimeout(() => {
-            mqttStore.setData('device', item)
-          },100*idx):''
-        })
-      }))
-  },6000)
+      timer.value = setInterval(() => {
+        DeviceSleepDeviceStatus().then((res => {
+          console.log("=========", res)
+          res.data.forEach((item: any, idx: any) => {
+            item.eventType ? setTimeout(() => {
+              mqttStore.setData('device', item)
+            }, 100 * idx) : ''
+          })
+        }))
+      }, 6000)
     }
 
   })
- 
+
 }
 
 
@@ -168,12 +168,12 @@ onMounted(() => {
   getToken('ing-Token').then((token) => {
     token && getToken('ing-Bg').then((res: any) => {
       if (res) {
-        console.log("//////",res,`url(${oss.value + res})`)
+        console.log("//////", res, `url(${oss.value + res})`)
         document.body.style.backgroundImage = `url(${oss.value + res})`;
 
       }
-      
-      
+
+
 
     })
     mqtt.value = new MQTT()
@@ -191,8 +191,8 @@ onMounted(() => {
 
     if (token) {
 
-    
-      
+
+
       // !timer.value? getStatus():''
 
 
