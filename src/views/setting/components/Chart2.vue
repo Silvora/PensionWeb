@@ -92,7 +92,7 @@ const initChart = () => {
                 show: false
             },
             axisLabel: {
-                fontSize: 10
+                fontSize: 12
             }
         },
         yAxis: {
@@ -140,7 +140,7 @@ const initChart = () => {
                 },
                 itemStyle: {
                     color: 'rgba(224, 98, 85, 1)',
-                    borderRadius: [15, 15, 15, 15]
+                    borderRadius: [15, 15, 15, 15],
                 },
                 // emphasis: {
                 //     itemStyle: {
@@ -148,7 +148,8 @@ const initChart = () => {
                 //     }
                 // },
                 // data: [30, 45, 48, 52, 38, 35,49]
-                data: props.DeviceInfoListInfo ? props.DeviceInfoListInfo.d5 : []
+                data: props.DeviceInfoListInfo ? props.DeviceInfoListInfo.d5 : [],
+                barWidth: 30 // 这里可以根据需要调整宽度
             }
         ]
     };

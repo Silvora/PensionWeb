@@ -83,7 +83,7 @@ const initChart = () => {
                 show: false
             },
             axisLabel: {
-                fontSize: 10
+                fontSize: 12
             }
         },
         yAxis: {
@@ -138,7 +138,9 @@ const initChart = () => {
                 //     }
                 // },
                 // data: [10, 10, 6, 8, 18, 15,18]
-                data: props.DeviceInfoListInfo ? props.DeviceInfoListInfo.d4 : []
+                data: props.DeviceInfoListInfo ? props.DeviceInfoListInfo.d4 : [],
+                barWidth: 30 // 这里可以根据需要调整宽度
+
             }
         ]
     };

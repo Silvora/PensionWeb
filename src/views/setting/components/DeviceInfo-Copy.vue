@@ -183,10 +183,18 @@
                                 style="color:#E06255"></i>{{ t('心率') }}</p>
                         <Chart2 :DeviceInfoListInfo="DeviceInfoListInfo"></Chart2>
                         <br>
-                        <p class="title"><i class="iconfont icon-huxizhuanke" style="color:#0160FF"></i>{{ t('呼吸频率') }}</p>
+                        <p class="title">
+                            <!-- <i class="iconfont icon-huxizhuanke" style="color:#0160FF"></i> -->
+                            <img src="@/assets/images/ic_呼吸@3x.png" alt="" style="display: inline-block;width: 16px;height: 16px;margin-right: 3px;">
+
+                            {{ t('呼吸频率') }}</p>
                         <Chart3 :DeviceInfoListInfo="DeviceInfoListInfo"></Chart3>
                         <br>
-                        <p class="title"><i class="iconfont icon-tidong" style="color:#ED9000"></i>{{ t('体动') }}</p>
+                        <p class="title">
+                            <!-- <i class="iconfont icon-tidong" style="color:#ED9000"></i> -->
+                            <img src="@/assets/images/ic_体动@3x.png" alt="" style="display: inline-block;width: 16px;height: 16px;margin-right: 3px;">
+
+                            {{ t('体动') }}</p>
                         <Chart4 :DeviceInfoListInfo="DeviceInfoListInfo"></Chart4>
                     </div>
                 </div>
@@ -200,13 +208,15 @@ import Chart1 from "./Chart1.vue";
 import Chart2 from "./Chart2.vue";
 import Chart3 from "./Chart3.vue";
 import Chart4 from "./Chart4.vue";
-import { DeviceSleepDeviceDetectionDays, DeviceSleepDeviceDayReport, DeviceSleepDeviceHeartRateByMinute } from "@/api/Device/Device"
+import { DeviceSleepDeviceCurrentData,DeviceSleepDeviceDetectionDays, DeviceSleepDeviceDayReport, DeviceSleepDeviceHeartRateByMinute } from "@/api/Device/Device"
 import { onMounted, ref, nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
 import dayjs from "dayjs"
 import { useRouter } from "vue-router"
 import { Message } from "view-ui-plus";
 import { watch } from "vue";
+import { dataTool } from "echarts";
+import { onBeforeUnmount } from "vue";
 const router = useRouter()
 const { t } = useI18n()
 const modal = ref<boolean>(false)
@@ -223,30 +233,94 @@ const DeviceInfoListInfo = ref<any>({})
 // const msg = ref<any>(null)
 const oss = ref<any>(import.meta.env.VITE_APP_AXIOS_BASER)
 
+const timer = ref<any>(null)
 
-watch(date, () => {
-    getData()
+watch(modal, (v) => {
+    if(!v){
+        clearInterval(timer.value)
+        timer.value = null
+    }
 })
+
+const getStatus = () => {
+    DeviceSleepDeviceCurrentData({mac:mac.value}).then((res: any) => {
+        console.log(res)
+        setDeviceInfoListInfo(res.data)
+    })
+
+    timer.value = setInterval(() => {
+        DeviceSleepDeviceCurrentData({mac:mac.value}).then((res: any) => {
+            setDeviceInfoListInfo(res.data)
+        })
+    },6000)
+}
+
+
+const setDeviceInfoListInfo = (data: any) => { 
+    // res.data?.forEach((element: any) => {
+    //         d1.push(element?.highBreathRate || 0)
+    //         d2.push(element?.highHeartRate || 0)
+    //         d3.push(element?.highPhysical || 0)
+    //         d4.push(element?.lowBreathRate || 0)
+    //         d5.push(element?.lowHeartRate || 0)
+    //         d6.push(element?.lowPhysical || 0)
+    //         date.push(element?.minute?.split(" ")[1]?.slice(0, 5) || '')
+    //     });
+    // let d1: any = []//最高呼吸率
+    //     let d2: any = []//最高心率
+    //     let d3: any = []//最高体动
+    //     let d4: any = []//最低呼吸率
+    //     let d5: any = []//最低心率
+    //     let d6: any = []//最低体动
+    //     let date: any = [] //时间
+
+    let len = data?.respiratoryRateList.length
+
+    let info = {
+        d1: data?.respiratoryRateList,
+        d2: data?.heartRateList,
+        d3: data?.bodyMovementList,
+        d4: data?.respiratoryRateList,
+        d5: data?.heartRateList,
+        d6: data?.bodyMovementList,
+        'date': [data.time, ...Array(len-1).fill('')],
+
+    }
+    DeviceInfoListInfo.value = info
+ }
+
+
 
 const Open = (data: any) => {
     userInfo.value = data.elderlyInfo
     mac.value = data.mac
     console.log(data)
 
+    getStatus()
     // msg.value = Message.loading({
     //     content: 'Loading...',
     //     duration: 0
     // });
     // setTimeout(msg, 3000);
 
-    getData()
+   
+
+    // getData()
 
     modal.value = true
 
 }
 const Close = () => {
+    clearInterval(timer.value)
+    timer.value = null
     modal.value = false
+   
 }
+
+onBeforeUnmount(() => {
+    clearInterval(timer.value)
+    timer.value = null
+})
 
 const toHourMinute = (minutes: any) => {
     if (!minutes) return '-'
@@ -267,7 +341,7 @@ const handleLog = () => {
 }
 
 onMounted(() => {
-
+   
 })
 
 const getData = () => {
@@ -414,7 +488,7 @@ defineExpose({
     // }
 
     .log {
-        flex: 1;
+        flex: 3;
         // margin: 0 10px;
         margin-right: 10px;
 
@@ -476,12 +550,15 @@ defineExpose({
     }
 
     .chat {
-        flex: 2;
+        flex: 5;
         margin-left: 10px;
         // background: blue;
 
         .title {
             font-weight: bold;
+            display: flex;
+            align-items: center;
+            // justify-content: center;
         }
     }
 

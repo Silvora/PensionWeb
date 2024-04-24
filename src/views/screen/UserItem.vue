@@ -45,18 +45,21 @@
                         <p class="t5">
                             <!-- <Icon type="ios-checkmark" /> -->
                             <i class="iconfont icon-xindongzhi-manxin-" style="color:#E06255"></i>
-                            {{ stateInfo?.heartRate || 0 }}/{{ t('次分') }}
+                            {{ stateInfo?.respiratoryRate || 0 }}/{{ t('次分') }}
 
                         </p>
                         <p class="t5">
                             <!-- <Icon type="ios-checkmark" /> -->
-                            <i class="iconfont icon-tidong" style="color:#0160FF"></i>
-                            {{ stateInfo?.bodyMovement || 0 }}/{{ t('次') }}
+                            <img src="@/assets/images/ic_呼吸@3x.png" alt="" style="display: block;width: 16px;height: 16px;margin: 0 10px;">
+                            <!-- <i class="iconfont icon-tidong" style="color:#0160FF"></i> -->
+                            {{ stateInfo?.heartRate || 0 }}/{{ t('次') }}
                         </p>
                         <p class="t5">
                             <!-- <Icon type="ios-checkmark" /> -->
-                            <i class="iconfont icon-wenduji" style="color:#ED9000"></i>
-                            {{ stateInfo?.bodyMovement || 0 }}/{{ t('度') }}
+                            <!-- <i class="iconfont icon-wenduji" style="color:#ED9000"></i> -->
+                            <img src="@/assets/images/ic_体动@3x.png" alt="" style="display: block;width: 16px;height: 16px;margin: 0 10px;">
+
+                            {{ stateInfo?.bodyMovement || 0 }}/{{ t('次') }}
                         </p>
                     </div>
 

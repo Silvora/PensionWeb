@@ -71,7 +71,7 @@ const initChart = () => {
                 show: false
             },
             axisLabel: {
-                fontSize: 10
+                fontSize: 12
             },
             splitLine: {
                 show: false
