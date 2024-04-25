@@ -41,18 +41,18 @@
                         </p>
                     </div>
                     <!-- @click="handleNavTo(`/setting`)" -->
-                    <div>
+                    <div @click="handleOpenDeviceInfo">
                         <p class="t5">
                             <!-- <Icon type="ios-checkmark" /> -->
                             <i class="iconfont icon-xindongzhi-manxin-" style="color:#E06255"></i>
-                            {{ stateInfo?.respiratoryRate || 0 }}/{{ t('次分') }}
+                            {{ stateInfo?.heartRate || 0 }}/{{ t('次分') }}
 
                         </p>
                         <p class="t5">
                             <!-- <Icon type="ios-checkmark" /> -->
                             <img src="@/assets/images/ic_呼吸@3x.png" alt="" style="display: block;width: 16px;height: 16px;margin: 0 10px;">
                             <!-- <i class="iconfont icon-tidong" style="color:#0160FF"></i> -->
-                            {{ stateInfo?.heartRate || 0 }}/{{ t('次') }}
+                            {{ stateInfo?.respiratoryRate || 0 }}/{{ t('次') }}
                         </p>
                         <p class="t5">
                             <!-- <Icon type="ios-checkmark" /> -->
@@ -68,6 +68,7 @@
         </div>
 
         <DeviceInfo ref="DeviceInfoRef"></DeviceInfo>
+        <DeviceInfoCopy ref="DeviceInfoCopyRef"></DeviceInfoCopy>
         <DetailsModal ref="DetailsModalRef" :info="props.info" @handleUpdate="handleUpdate"></DetailsModal>
     </Card>
 </template>
@@ -77,8 +78,10 @@ import { useRouter } from 'vue-router';
 import { ref, watchEffect } from 'vue';
 import { useI18n } from "vue-i18n";
 import DeviceInfo from '../setting/components/DeviceInfo.vue';
+import DeviceInfoCopy from '../setting/components/DeviceInfo-Copy.vue';
 import DetailsModal from "./DetailsModal.vue"
 import { Message } from 'view-ui-plus';
+import { watch } from 'vue';
 const { t } = useI18n()
 const router = useRouter()
 const oss = ref<any>(import.meta.env.VITE_APP_AXIOS_BASER)
@@ -88,6 +91,7 @@ const device = ref<any>({})
 const elderlyInfo = ref<any>({})
 const stateInfo = ref<any>({})
 const DeviceInfoRef = ref<any>(null)
+const DeviceInfoCopyRef =ref<any>(null)
 const DetailsModalRef = ref<any>(null)
 
 const props = defineProps({
@@ -96,6 +100,7 @@ const props = defineProps({
         default: () => ({})
     }
 })
+const emit = defineEmits(['handleStatus'])
 
 const handleSetting = () => {
     DetailsModalRef.value.showModal()
@@ -105,27 +110,71 @@ const handleUpdate = () => {
 
 }
 
-const handleOpenDeviceInfo = (item: any) => {
 
 
-    if (!item?.deviceList[0]?.stateInfo?.mac) {
+
+const handleOpenDeviceInfo = () => {
+
+
+    console.log(info.value)
+    if (!info.value?.deviceList[0]?.stateInfo?.mac) {
         Message.warning(t('该老人没有绑定设备'))
     } else {
-        console.log(item)
-        DeviceInfoRef.value.Open(item)
+        // console.log(item)
+
+        emit('handleStatus', true)
+
+
+        // console.log("llllllllllllllllllllllll",{...info.value,mac:device.value.mac,elderlyInfo:info.value})
+
+        if( device.value.type=="ed719_type"){
+            DeviceInfoRef.value.Open({...info.value,mac:device.value.mac,elderlyInfo:{...info.value,name:info.value.elderlyName}})
+
+        }else{
+            DeviceInfoCopyRef.value.Open({...info.value,mac:device.value.mac,elderlyInfo:{...info.value,name:info.value.elderlyName}})
+        }
+
     }
 
 }
 
-watchEffect(() => {
+// const setData = ()=>{
 
-    console.log(props?.info)
+
+//     // console.log("]]]]]]]]]]]]]]]]]]]]]]]]]]]")
+//     console.log(props?.info)
+//     info.value = props?.info
+//     device.value = props?.info?.deviceList[0]
+//     console.log(device.value)
+//     stateInfo.value = device.value?.stateInfo
+//     elderlyInfo.value = device.value?.elderlyInfo
+// }
+
+watch(()=>DeviceInfoRef.value?.modal, (b) => {
+    // console.log("first",b)
+
+    if(!b){
+        emit('handleStatus', false)
+    }
+})
+
+watch(()=>DeviceInfoCopyRef.value?.modal, (b) => {
+    // console.log("first",b)
+    if(!b){
+        emit('handleStatus', false)
+    }
+})
+
+// watch(()=>props?.info, (n) => {
+//         setData()
+// },{deep:true,immediate:true})
+
+watchEffect(() => {
     info.value = props?.info
     device.value = props?.info?.deviceList[0]
     console.log(device.value)
     stateInfo.value = device.value?.stateInfo
     elderlyInfo.value = device.value?.elderlyInfo
-
 
 })
 

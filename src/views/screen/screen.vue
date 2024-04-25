@@ -62,7 +62,7 @@
                     </span>
                 </Space>
                 <div class="list">
-                    <UserItem v-for="item in FocusList" :info="item"></UserItem>
+                    <UserItem v-for="item in FocusList" :info="item" @handleStatus="handleStatus"></UserItem>
                 </div>
             </div>
             <div class="bed">
@@ -90,7 +90,7 @@
 
                     <Row :gutter="10">
                         <Col :span="6" v-for="item in UserList" :key="item">
-                        <UserItem :info="item"></UserItem>
+                        <UserItem :info="item" @handleStatus="handleStatus"></UserItem>
                         </Col>
                     </Row>
                 </div>
@@ -166,6 +166,21 @@ const handleCheck = (item: any) => {
     })
 }
 
+const timer = ref<any>(null)
+
+
+
+const handleStatus = (bool: any) => {
+    if(bool && timer.value){
+        clearInterval(timer.value)
+        timer.value = null
+    }
+    
+    if(!bool && !timer.value){
+         getData()
+    }
+}
+
 
 const handleSearch = (value: any) => {
     if (value.length == 2) {
@@ -205,8 +220,6 @@ const loadData = (item: any, callback: any) => {
     })
 }
 
-const timer = ref<any>(null)
-
 
 
 const getData = () => {
@@ -216,8 +229,8 @@ const getData = () => {
 
 
     // searchData.value.floorId = floorId
+    
     // searchData.value.roomId = roomId
-
     CheckList(searchData.value).then((res: any) => {
         // console.log(res.records)
 
@@ -234,6 +247,32 @@ const getData = () => {
         FocusList.value = res.data.records
     })
 
+    if(!timer.value){
+        timer.value = setInterval(() => {
+        CheckList(searchData.value).then((res: any) => {
+        // console.log(res.records)
+
+        UserList.value = res.data.records
+
+        console.log(UserList.value)
+    })
+
+    CheckList({
+        current: 1,
+        size: 9999,
+        focus: 0,
+    }).then((res: any) => {
+        FocusList.value = res.data.records
+    })
+    }, 6000)
+    }
+
+
+   
+
+
+   
+
 
 
 
@@ -246,7 +285,7 @@ const getLog = () => {
         size: 1
     }).then((res: any) => {
         console.log(res)
-        LogData.value = res.data?.records ? res.data.records[0] : {}
+        LogData.value = res.data?.records.length>0 ? res.data.records[0] : {}
     })
 }
 
@@ -276,9 +315,7 @@ onBeforeUnmount(() => {
 onMounted(() => {
 
     getData()
-    timer.value = setInterval(() => {
-        getData()
-    }, 6000)
+    
 
 
     getLog()

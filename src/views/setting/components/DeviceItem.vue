@@ -25,8 +25,13 @@
                         <p class="t2">
                             ID:{{ props?.info.mac }}
                         </p>
-                        <p class="t2">
-                            关联老人:{{ props?.info.elderlyInfo?.name }}
+                        <p class="t2" v-if="props.info?.type == 'ed719_type'">
+                            {{ t('关联房间') }}:{{ props?.info?.roomBedNumber?.split('-')?.pop() }}
+
+                        </p>
+                        <p class="t2" v-else>
+                            {{ t('关联老人') }}:{{ props?.info.elderlyInfo?.name }}
+
                         </p>
                     </div>
 

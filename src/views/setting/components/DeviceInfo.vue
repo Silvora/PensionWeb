@@ -1,6 +1,6 @@
 <template>
     <div class="device_box">
-        <Modal v-model="modal" :title="t('设备记录')" width="1000" :footer-hide="true">
+        <Modal v-model="modal" :title="t('设备记录')" width="800" :footer-hide="true">
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
@@ -258,6 +258,7 @@ const getDatadddd = () => {
 }
 
 defineExpose({
+    modal,
     Open,
     Close,
 })

@@ -1,6 +1,6 @@
 <template>
     <div class="device_box">
-        <Modal v-model="modal" :title="t('设备记录')" width="1000" :footer-hide="true">
+        <Modal v-model="modal" :title="t('设备记录')" width="800" :footer-hide="true">
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
@@ -181,21 +181,21 @@
                     <div style="width: 100%;">
                         <p class="title"> <i class="iconfont icon-xindongzhi-manxin-"
                                 style="color:#E06255"></i>{{ t('心率') }}</p>
-                        <Chart2 :DeviceInfoListInfo="DeviceInfoListInfo"></Chart2>
+                        <Chart5 :DeviceInfoListInfo="DeviceInfoListInfo"></Chart5>
                         <br>
                         <p class="title">
                             <!-- <i class="iconfont icon-huxizhuanke" style="color:#0160FF"></i> -->
                             <img src="@/assets/images/ic_呼吸@3x.png" alt="" style="display: inline-block;width: 16px;height: 16px;margin-right: 3px;">
 
                             {{ t('呼吸频率') }}</p>
-                        <Chart3 :DeviceInfoListInfo="DeviceInfoListInfo"></Chart3>
+                        <Chart6 :DeviceInfoListInfo="DeviceInfoListInfo"></Chart6>
                         <br>
                         <p class="title">
                             <!-- <i class="iconfont icon-tidong" style="color:#ED9000"></i> -->
                             <img src="@/assets/images/ic_体动@3x.png" alt="" style="display: inline-block;width: 16px;height: 16px;margin-right: 3px;">
 
                             {{ t('体动') }}</p>
-                        <Chart4 :DeviceInfoListInfo="DeviceInfoListInfo"></Chart4>
+                        <Chart7 :DeviceInfoListInfo="DeviceInfoListInfo"></Chart7>
                     </div>
                 </div>
             </div>
@@ -208,6 +208,9 @@ import Chart1 from "./Chart1.vue";
 import Chart2 from "./Chart2.vue";
 import Chart3 from "./Chart3.vue";
 import Chart4 from "./Chart4.vue";
+import Chart5 from "./Chart5.vue";
+import Chart6 from "./Chart6.vue";
+import Chart7 from "./Chart7.vue";
 import { DeviceSleepDeviceCurrentData,DeviceSleepDeviceDetectionDays, DeviceSleepDeviceDayReport, DeviceSleepDeviceHeartRateByMinute } from "@/api/Device/Device"
 import { onMounted, ref, nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -241,6 +244,7 @@ watch(modal, (v) => {
         timer.value = null
     }
 })
+
 
 const getStatus = () => {
     DeviceSleepDeviceCurrentData({mac:mac.value}).then((res: any) => {
@@ -277,9 +281,9 @@ const setDeviceInfoListInfo = (data: any) => {
     let len = data?.respiratoryRateList.length
 
     let info = {
-        d1: data?.respiratoryRateList,
-        d2: data?.heartRateList,
-        d3: data?.bodyMovementList,
+        d1: data?.respiratoryRateList,//呼吸率值
+        d2: data?.heartRateList,//心率值
+        d3: data?.bodyMovementList,//体动值
         d4: data?.respiratoryRateList,
         d5: data?.heartRateList,
         d6: data?.bodyMovementList,
@@ -431,6 +435,7 @@ const getData = () => {
 }
 
 defineExpose({
+    modal,
     Open,
     Close,
 })

@@ -11,7 +11,7 @@ console.log("🚀🚀🚀",VITE_APP_AXIOS_BASE)
 const date = new Date().getTime();
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: './',
+  base: '/',
   plugins: [
     vue(),
     vueJsx(),
