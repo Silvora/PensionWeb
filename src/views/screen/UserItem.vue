@@ -1,6 +1,6 @@
 <template>
     <Card :bordered="false" :padding="0" style="background: rgba(255, 255, 255, 1);margin-bottom: 10px;">
-        <div :class="['userInfo', info.focus == 0 ? 'focus' : '', info?.deviceList[0]?.status == 10 ? 'error' : '']">
+        <div :class="['userInfo', info.focus == 0 ? 'focus' : '', info?.deviceList[0]?.status == 10 ? 'error' : '',stateInfo?.eventType=='3008'?'flashing':'']">
             <p class="title">
                 <span
                     :class="['t1', ['gary', 'green', 'yellow'][device?.status || 0]]">{{ [t('空闲'), t('正常'), t('异常')][device?.status || 0] }}</span>
@@ -186,6 +186,18 @@ const handleNavTo = (path: string) => {
 </script>
 
 <style scoped lang='less'>
+
+
+@keyframes blink {
+  0% { background-color: red; }
+  50% { background-color: transparent; }
+  100% { background-color: red; }
+}
+
+.flashing {
+  animation: blink 1s infinite;
+}
+
 .focus {
     border: 1px solid red;
     border-radius: 4px;

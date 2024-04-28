@@ -17,6 +17,11 @@
                         <Option value="1">正常</Option>
                         <Option value="10">异常</Option>
                     </Select> -->
+                    <Select v-model="status" clearable style="width:100px" :placeholder="t('处理状态')">
+                        <Option value="0">未处理</Option>
+                        <Option value="1">处理中</Option>
+                        <Option value="2">已处理</Option>
+                    </Select>
                     <Cascader :data="list" v-model="dataValue" :load-data="loadList" v-width="200"
                         :placeholder="t('楼栋/楼层/房间')" @on-change="handleSearch" />
 
@@ -24,11 +29,7 @@
                     <DatePicker type="daterange" split-panels :placeholder="t('选择日期')" style="width: 200px"
                         @on-change="handleSearchDate"></DatePicker>
 
-                    <!-- <Select v-model="model1" style="width:100px" placeholder="楼栋">
-                        <Option value="beijing">New York</Option>
-                        <Option value="shanghai" disabled>London</Option>
-                        <Option value="shenzhen">Sydney</Option>
-                    </Select> -->
+                  
                     <!-- <Select v-model="floorId" style="width:100px" placeholder="楼层">
                         <Option :value="String(item.id)" v-for="item in floorList" :key="item.id">{{ item.floorNumber }}</Option>
                        

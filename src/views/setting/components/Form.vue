@@ -6,11 +6,11 @@
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
             <Form :label-width="100" ref="FormRef" :model="formData" :rules="rules" @submit.prevent>
-                <FormItem label="设备编号(imei或mac)" prop="mac">
+                <FormItem :label="t('设备编号(imei或mac)')" prop="mac">
                     <Input type="text" v-model="formData.mac" placeholder="请输入设备编号">
                     </Input>
                 </FormItem>
-                <FormItem label="设备名称" prop="name">
+                <FormItem :label="t('设备名称')" prop="name">
                     <Input type="text" v-model="formData.name" placeholder="请输入设备名称">
                     </Input>
                 </FormItem>
@@ -28,7 +28,7 @@
                         value: '2'
                     }, -->
 
-                <FormItem label="设备类型" prop="type">
+                <FormItem :label="t('设备类型')" prop="type">
                     <Select v-model="formData.type" clearable style="width:100%" @on-change="handleDeviceType">
                         <Option value="ed713_type">{{ t('生命感知设备1代') }}</Option>
                         <Option value="x1_type">{{ t('生命感知设备2代') }}</Option>
@@ -40,14 +40,14 @@
 
 
               
-                <FormItem label="楼栋/楼层/房间" prop="dataValue" v-if="formData.type == 'ed719_type'">
+                <FormItem :label="t('楼栋/楼层/房间')" prop="dataValue" v-if="formData.type == 'ed719_type'">
                     <Cascader :data="list" v-model="formData.dataValue" :load-data="loadList"
-                        :placeholder="formData.roomBedNumber ? formData.roomBedNumber : '楼栋/楼层/房间'"
+                        :placeholder="formData.roomBedNumber ? formData.roomBedNumber : t('楼栋/楼层/房间')"
                         @on-change="handleSearch" />
                 </FormItem>
-                <FormItem label="楼栋/楼层/房间/床位" prop="dataValue" v-else>
+                <FormItem :label="t('楼栋/楼层/房间/床位')" prop="dataValue" v-else>
                     <Cascader :data="list" v-model="formData.dataValue" :load-data="loadList"
-                        :placeholder="formData.roomBedNumber ? formData.roomBedNumber : '楼栋/楼层/房间/床位'"
+                        :placeholder="formData.roomBedNumber ? formData.roomBedNumber : t('楼栋/楼层/房间/床位')"
                         @on-change="handleSearch" />
                 </FormItem>
 
@@ -59,7 +59,7 @@
 
                 <div v-if="formData.type == 'ed719_type'"
                     style="background: rgba(0, 0, 0,.05);padding: 10px;border-radius: 15px;margin: 10px 0;">
-                    <FormItem label="蜂鸣器报警" prop="beeper">
+                    <FormItem :label="t('蜂鸣器报警')" prop="beeper">
                         <Switch size="large" v-model="formData.fallParams.beeper" :true-value="1" :false-value="0">
                             <template #open>
                                 <span>开启</span>
@@ -70,22 +70,22 @@
                         </Switch>
                     </FormItem>
 
-                    <FormItem label="灵敏度" prop="sensi">
+                    <FormItem :label="t('灵敏度')" prop="sensi">
                         <!-- <InputNumber :max="999999" :min="0" v-model="formData.fallParams.sensi" placeholder="请输入灵敏度">
                     </InputNumber> -->
 
                         <Select v-model="formData.fallParams.sensi">
-                            <Option value="0">灵敏档</Option>
-                            <Option value="1">标准档</Option>
-                            <Option value="2">鲁棒档</Option>
+                            <Option value="0">{{t('灵敏档')}}</Option>
+                            <Option value="1">{{ t('标准档') }}</Option>
+                            <Option value="2">{{ t('鲁棒档') }}</Option>
                         </Select>
                     </FormItem>
-                    <FormItem label="延时状态" prop="stateDelay">
+                    <FormItem :label="t('延时状态')" prop="stateDelay">
                         <InputNumber :max="999999" :min="0" v-model="formData.fallParams.stateDelay" style="width: 100%;" />
 
                     </FormItem>
 
-                    <FormItem label="安装高度" prop="installHeight">
+                    <FormItem :label="t('安装高度')" prop="installHeight">
                         <!-- <InputNumber :step="0.2" :max="3" :min="2" v-model="formData.fallParams.installHeight" style="width: 100%;" /> -->
 
                         <Select v-model="formData.fallParams.installHeight">
@@ -99,10 +99,10 @@
                         </Select>
                     </FormItem>
 
-                    <FormItem label="安装方式" prop="installFlag">
+                    <FormItem :label="t('安装方式')" prop="installFlag">
                         <Select v-model="formData.fallParams.installFlag">
-                            <Option value="0">顶装</Option>
-                            <Option value="1">侧装</Option>
+                            <Option value="0">{{ t('顶装') }}</Option>
+                            <Option value="1">{{ t('侧装') }}</Option>
                         </Select>
                     </FormItem>
                     <!-- <FormItem label="灵敏度" prop="dataValue">
@@ -114,13 +114,13 @@
         </FormItem> -->
                     <div class="Dist">
                         <div>
-                            <FormItem label="前侧" prop="frontDist">
+                            <FormItem :label="t('前侧')" prop="frontDist">
                                 <InputNumber :max="999999" :min="0" v-model="formData.fallParams.frontDist"
                                     style="width: 120px;" />
                             </FormItem>
                         </div>
                         <div>
-                            <FormItem label="后侧" prop="backDist">
+                            <FormItem :label="t('后侧')" prop="backDist">
                                 <InputNumber :max="999999" :min="0" v-model="formData.fallParams.backDist"
                                     style="width: 120px;" />
                             </FormItem>
@@ -130,13 +130,13 @@
                     <div class="Dist">
 
                         <div>
-                            <FormItem label="左侧" prop="leftDist">
+                            <FormItem :label="t('左侧')" prop="leftDist">
                                 <InputNumber :max="999999" :min="0" v-model="formData.fallParams.leftDist"
                                     style="width: 120px;" />
                             </FormItem>
                         </div>
                         <div>
-                            <FormItem label="右侧" prop="rightDist">
+                            <FormItem :label="t('右侧')" prop="rightDist">
                                 <InputNumber :max="999999" :min="0" v-model="formData.fallParams.rightDist"
                                     style="width: 120px;" />
                             </FormItem>
@@ -148,21 +148,21 @@
 
                 <div v-if="formData.type == 'ed713_type' || formData.type == 'x1_type'">
                     <div style="background: rgba(0, 0, 0,.05);padding: 10px;border-radius: 15px;margin: 10px 0;">
-                        <FormItem label="离床报警" prop="leaveBedAlarm">
+                        <FormItem :label="t('离床报警')" prop="leaveBedAlarm">
                             <Switch size="large" v-model="formData.sleepParams.leaveBedAlarm" :true-value="1"
                                 :false-value="0">
                                 <template #open>
-                                    <span>开启</span>
+                                    <span>{{ t('开启') }}</span>
                                 </template>
                                 <template #close>
-                                    <span>关闭</span>
+                                    <span>{{ t('关闭') }}</span>
                                 </template>
                             </Switch>
                         </FormItem>
 
                         <div class="Dist">
                             <div>
-                                <FormItem label="开始时间" prop="time">
+                                <FormItem :label="t('开始时间')" prop="time">
                                     <!-- <TimePicker v-model="formData.sleepParams.leaveBedConfig.time" format="HH:mm" type="timerange"
                                 placement="bottom-end" :placeholder="t('时间段')" style="width: 100%" 
                                 @on-change="(e:any)=>handleTimeChange(e,'leaveBedConfig')"
@@ -173,7 +173,7 @@
                                 </FormItem>
                             </div>
                             <div>
-                                <FormItem label="结束时间" prop="time">
+                                <FormItem :label="t('结束时间')" prop="time">
                                     <!-- <TimePicker v-model="formData.sleepParams.leaveBedConfig.time" format="HH:mm" type="timerange"
                                 placement="bottom-end" :placeholder="t('时间段')" style="width: 100%" 
                                 @on-change="(e:any)=>handleTimeChange(e,'leaveBedConfig')"
@@ -185,7 +185,7 @@
                             </div>
                         </div>
 
-                        <FormItem label="离床时常" prop="time">
+                        <FormItem :label="t('离床时常')" prop="time">
                             <!-- <TimePicker v-model="formData.sleepParams.leaveBedConfig.time" format="HH:mm" type="timerange"
                                 placement="bottom-end" :placeholder="t('时间段')" style="width: 100%" 
                                 @on-change="(e:any)=>handleTimeChange(e,'leaveBedConfig')"
@@ -228,14 +228,14 @@
                     </div>
 
                     <div style="background: rgba(0, 0, 0,.05);padding: 10px;border-radius: 15px;margin: 10px 0;">
-                        <FormItem label="心率报警" prop="heartRateAlarm">
+                        <FormItem :label="t('心率报警')" prop="heartRateAlarm">
                             <Switch size="large" v-model="formData.sleepParams.heartRateAlarm" :true-value="1"
                                 :false-value="0">
                                 <template #open>
-                                    <span>开启</span>
+                                    <span>{{ t('开启') }}</span>
                                 </template>
                                 <template #close>
-                                    <span>关闭</span>
+                                    <span>{{ t('关闭') }}</span>
                                 </template>
                             </Switch>
                         </FormItem>
@@ -265,14 +265,14 @@
 
                         <div class="Dist">
                             <div>
-                                <FormItem label="最大监测范围" prop="max">
+                                <FormItem :label="t('最大监测范围')" prop="max">
                                     <InputNumber :max="999999" :min="0" v-model="formData.sleepParams.heartRateConfig.max"
                                         style="width: 120px;" />
 
                                 </FormItem>
                             </div>
                             <div>
-                                <FormItem label="最小时间范围" prop="min">
+                                <FormItem :label="t('最小时间范围')" prop="min">
                                     <InputNumber :max="999999" :min="0" v-model="formData.sleepParams.heartRateConfig.min"
                                         style="width: 120px;" />
 
@@ -288,14 +288,14 @@
                     </div>
 
                     <div style="background: rgba(0, 0, 0,.05);padding: 10px;border-radius: 15px;margin: 10px 0;">
-                        <FormItem label="呼吸报警" prop="respiratoryAlarm">
+                        <FormItem :label="t('呼吸报警')" prop="respiratoryAlarm">
                             <Switch size="large" v-model="formData.sleepParams.respiratoryAlarm" :true-value="1"
                                 :false-value="0">
                                 <template #open>
-                                    <span>开启</span>
+                                    <span>{{ t('开启') }}</span>
                                 </template>
                                 <template #close>
-                                    <span>关闭</span>
+                                    <span>{{ t('关闭') }}</span>
                                 </template>
                             </Switch>
                         </FormItem>
@@ -327,14 +327,14 @@
 
                         <div class="Dist">
                             <div>
-                                <FormItem label="最大监测范围" prop="max">
+                                <FormItem :label="t('最大监测范围')" prop="max">
                                     <InputNumber :max="999999" :min="0" v-model="formData.sleepParams.respiratoryConfig.max"
                                         style="width: 120px;" />
 
                                 </FormItem>
                             </div>
                             <div>
-                                <FormItem label="最小时间范围" prop="min">
+                                <FormItem :label="t('最小时间范围')" prop="min">
                                     <InputNumber :max="999999" :min="0" v-model="formData.sleepParams.respiratoryConfig.min"
                                         style="width: 120px;" />
 

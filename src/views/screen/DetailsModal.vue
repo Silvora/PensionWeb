@@ -63,7 +63,8 @@
                 </div>
                 <div class="info noBox" v-else>{{ t('暂无老人') }}</div>
                 <p style="padding:20px 0 ;">{{ t('智能设备列表') }}</p>
-                <div class="device" v-if="props.info?.checkIn">
+
+                <div class="device" v-if="props.info?.deviceList?.length>0">
                     <Row :gutter="10">
                         <Col span="12" v-for="item in deviceList" :key="item.label">
                         <Card :bordered="false" :padding="16"

@@ -8,7 +8,7 @@
             <div style="width: 100%;display: flex;justify-content: flex-end;margin-bottom: 10px;">
                 <DatePicker type="daterange" format="yyyy-MM-dd"  split-panels :placeholder="t('选择日期')" v-model="dateSearch" style="width: 200px" @on-change="getData"></DatePicker>
             </div>
-            <div class="userInfo">
+            <!-- <div class="userInfo">
                 <div class="photo">
                     <img :src="oss + userInfo?.photo" alt="">
                 </div>
@@ -33,7 +33,7 @@
                         <GridItem>{{ userInfo?.startTime?.split(" ")[0] || '&nbsp;' }}</GridItem>
                     </Grid>
                 </div>
-            </div>
+            </div> -->
             <div class="context">
                 <Table :columns="columns" :data="data" height="300">
                 
