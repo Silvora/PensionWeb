@@ -80,7 +80,7 @@
         </FormModal>
 
 
-        <FormModal v-if="createData" :title="t('创建用户')" :rules="createData.rules" :lableWidth="100"
+        <FormModal v-if="createData" title="建立账号" :rules="createData.rules" :lableWidth="100"
             :FormData="createData.FormData" ref="TableCreateRef" @handleModalOk="handleCreateAdmin">
         </FormModal>
 

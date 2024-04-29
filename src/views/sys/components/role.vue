@@ -13,7 +13,7 @@
                             <span>{{ t('开启') }}</span>
                         </template>
                         <template #close>
-                            <span>{{ t('禁用') }}</span>
+                            <span>{{ t('停用') }}</span>
                         </template>
                     </Switch>
                 </template>
@@ -49,7 +49,7 @@
             </div>
         </Card>
 
-        <FormModal :title="t('创建用户')" :rules="createRole.rules" :lableWidth="100" :FormData="createRole.FormData"
+        <FormModal title="建立工种" :rules="createRole.rules" :lableWidth="100" :FormData="createRole.FormData"
             ref="TableCreateRef" @handleModalOk="handleCreateRole">
         </FormModal>
     </div>

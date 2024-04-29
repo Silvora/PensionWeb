@@ -1,6 +1,6 @@
 <template>
     <div class="details">
-        <Modal v-model="detailsModal" :title="t('设备信息')" :footer-hide="true" width="650">
+        <Modal v-model="detailsModal" :title="t('设备信息')" :footer-hide="true" :width="650">
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
@@ -338,6 +338,7 @@ const getData = () => {
 // })
 
 defineExpose({
+    detailsModal,
     showModal,
     hideModal
 })

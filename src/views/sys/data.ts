@@ -41,7 +41,7 @@ const agencyData: any = {
             // },
             {
                 type: 'input',
-                label: '所属区域',
+                label: '机构名称',
                 prop: "region",
                 span: 3,
                 //disabled: false,
@@ -60,28 +60,52 @@ const agencyData: any = {
             },
             {
                 type: 'select',
-                label: '运营模式',
+                label: '机构类型',
                 prop: "operationMode",
                 span: 1,
                 //disabled: false,
                 required: false,
                 default: "",
                 childs: [
-                    {
-                        label: '公立',
-                        value: '公立',
+                    // {
+                    //     label: '公立',
+                    //     value: '公立',
 
+                    // },
+                    {
+                        label: '院舍服务',
+                        value: '院舍服务',
                     },
                     {
-                        label: '民营',
-                        value: '民营',
-                    },
-                    {
-                        label: '共建民营',
-                        value: '共建民营',
+                        label: '居家服务',
+                        value: '居家服务',
                     }
                 ]
             },
+            // {
+            //     type: 'select',
+            //     label: '运营模式',
+            //     prop: "operationMode",
+            //     span: 1,
+            //     //disabled: false,
+            //     required: false,
+            //     default: "",
+            //     childs: [
+            //         {
+            //             label: '公立',
+            //             value: '公立',
+
+            //         },
+            //         {
+            //             label: '民营',
+            //             value: '民营',
+            //         },
+            //         {
+            //             label: '共建民营',
+            //             value: '共建民营',
+            //         }
+            //     ]
+            // },
             // {
             //     type: 'select',
             //     label: '是否公建民营',
@@ -91,19 +115,28 @@ const agencyData: any = {
             //     required: false,
             //     default: "",
             // },
+            // {
+            //     type: 'input',
+            //     label: '邮政编码',
+            //     prop: "postalCode",
+            //     span: 1,
+            //     //disabled: false,
+            //     required: false,
+            //     default: "",
+            // },
             {
                 type: 'input',
-                label: '邮政编码',
-                prop: "postalCode",
-                span: 1,
+                label: '公司联系电话',
+                prop: "telephone",
+                span: 2,
                 //disabled: false,
                 required: false,
                 default: "",
             },
             {
                 type: 'input',
-                label: '联系电话',
-                prop: "telephone",
+                label: '负责人姓名',
+                prop: "directorName",
                 span: 1,
                 //disabled: false,
                 required: false,
@@ -113,11 +146,12 @@ const agencyData: any = {
                 type: 'input',
                 label: '负责人电话',
                 prop: "directorPhone",
-                span: 3,
+                span: 2,
                 //disabled: false,
                 required: false,
                 default: "",
             },
+           
             // {
             //     type: 'textarea',
             //     label: '机构介绍',
@@ -164,7 +198,7 @@ const legalData = {
             },
             {
                 type: 'sort',
-                label: '护理床位数量',
+                label: '房间总数',
                 prop: "nursingBedsCount",
                 span: 1,
                 disabled: true,
@@ -192,16 +226,16 @@ const legalData = {
             //     //     }
             //     // ]
             // },
-            {
-                type: 'sort',
-                label: '入住人员总数',
-                prop: "totalCheckIn",
-                span: 1,
-                disabled: true,
+            // {
+            //     type: 'sort',
+            //     label: '入住人员总数',
+            //     prop: "totalCheckIn",
+            //     span: 1,
+            //     disabled: true,
 
-                required: false,
-                default: "",
-            },
+            //     required: false,
+            //     default: "",
+            // },
             {
                 type: 'input',
                 label: '入住率',
@@ -532,12 +566,12 @@ const roleTable: any = {
     },
     columns: [
         {
-            title: '角色',
+            title: '工种类型',
             key: 'name',
             minWidth: 100,
         },
         {
-            title: '角色说明',
+            title: '工种说明',
             key: 'description',
             minWidth: 100,
         },
@@ -549,7 +583,7 @@ const roleTable: any = {
 
 
         {
-            title: '角色状态',
+            title: '工种状态',
             key: 'status',
             slot: true,
             minWidth: 100,
@@ -562,7 +596,7 @@ const createRole: any = {
     FormData: [
         {
             type: 'input',
-            label: '角色名称',
+            label: '工种类别',
             prop: "name",
             //disabled: false,
             //childs: [],
@@ -604,7 +638,7 @@ const createRole: any = {
         // },
         {
             type: 'input',
-            label: '说明',
+            label: '工种说明',
             prop: "description",
             //disabled: false,
             //childs: [],
@@ -614,14 +648,14 @@ const createRole: any = {
         },
         {
             type: 'switch',
-            label: '状态',
+            label: '工种状态',
             prop: "status",
             //disabled: false,
             //childs: [],
             //password: true,
             //required: true,
             open: '启用',
-            close: '禁用',
+            close: '停用',
         }
     ],
 }
@@ -867,7 +901,7 @@ const accountCreateAdmin = {
         },
         {
             type: 'select',
-            label: '角色',
+            label: '工种类型',
             prop: "roleIds",
             //disabled: false,
             childs: [],
@@ -905,7 +939,7 @@ const accountCreateAdmin = {
             //password: true,
             //required: true,
             open: '启用',
-            close: '禁用',
+            close: '停用',
         }
     ],
 }

@@ -103,6 +103,7 @@ const props = defineProps({
 const emit = defineEmits(['handleStatus'])
 
 const handleSetting = () => {
+    emit('handleStatus', true)
     DetailsModalRef.value.showModal()
 }
 
@@ -159,6 +160,14 @@ watch(()=>DeviceInfoRef.value?.modal, (b) => {
 })
 
 watch(()=>DeviceInfoCopyRef.value?.modal, (b) => {
+    // console.log("first",b)
+    if(!b){
+        emit('handleStatus', false)
+    }
+})
+
+
+watch(()=>DetailsModalRef.value?.detailsModal, (b) => {
     // console.log("first",b)
     if(!b){
         emit('handleStatus', false)

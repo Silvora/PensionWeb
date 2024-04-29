@@ -589,7 +589,7 @@ const handleSubmit = () => {
         DeviceUpdate(data).then(() => {
             Message.success(t('编辑成功'))
             modal.value = false
-            // emit('handleResetData')
+            emit('handleResetData')
         })
     } else {
         //添加

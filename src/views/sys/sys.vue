@@ -63,7 +63,7 @@ const typeList = ref([
         type: "agency",
     },
     {
-        label: "角色设置",
+        label: "工种设定",
         icon: "icon-jiaoseguanli",
         type: "role",
     },

@@ -32,7 +32,7 @@
                 </Col>
 
                 <Col :span="24" class="col">
-                <div class="label">{{ t('驾驶舱图片') }}</div>
+                <div class="label">{{ t('机构平台展示图片') }}</div>
                 <div class="input upload1">
 
                     <Upload :show-upload-list="false" :before-upload="(f: any) => handleUpload('driveUrl1', f)" action="#">

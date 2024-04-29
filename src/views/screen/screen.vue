@@ -6,7 +6,6 @@
             </span>
             <span class="searchBtn">
                 <Space>
-
                     <Cascader v-model="hostelTofloor" :data="hostelList" :load-data="loadData" v-width="200"
                         :placeholder="t('楼栋/楼层')" @on-change="handleSearch" />
                     <Select v-model="searchData.roomId" style="width:100px" clearable :placeholder="t('房间号')"
@@ -247,6 +246,14 @@ const getData = () => {
         FocusList.value = res.data.records
     })
 
+    DeviceLogList({
+        current: 1,
+        size: 1
+    }).then((res: any) => {
+        console.log(res)
+        LogData.value = res.data?.records.length>0 ? res.data.records[0] : {}
+    })
+
     if(!timer.value){
         timer.value = setInterval(() => {
         CheckList(searchData.value).then((res: any) => {
@@ -264,6 +271,16 @@ const getData = () => {
     }).then((res: any) => {
         FocusList.value = res.data.records
     })
+
+    DeviceLogList({
+        current: 1,
+        size: 1
+    }).then((res: any) => {
+        console.log(res)
+        LogData.value = res.data?.records.length>0 ? res.data.records[0] : {}
+    })
+
+
     }, 6000)
     }
 
@@ -279,15 +296,15 @@ const getData = () => {
 
 }
 
-const getLog = () => {
-    DeviceLogList({
-        current: 1,
-        size: 1
-    }).then((res: any) => {
-        console.log(res)
-        LogData.value = res.data?.records.length>0 ? res.data.records[0] : {}
-    })
-}
+// const getLog = () => {
+//     DeviceLogList({
+//         current: 1,
+//         size: 1
+//     }).then((res: any) => {
+//         console.log(res)
+//         LogData.value = res.data?.records.length>0 ? res.data.records[0] : {}
+//     })
+// }
 
 //const time = ref<any>(null)
 
@@ -318,7 +335,7 @@ onMounted(() => {
     
 
 
-    getLog()
+    // getLog()
     // handleTime()
 
 
