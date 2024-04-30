@@ -9,10 +9,10 @@
                         false-color="RGBA(237, 144, 0, 1)" true-value="30" false-value="40"
                         :before-change="() => handleUpdateSwitch(row)">
                         <template #open>
-                            <span>{{ t('开启') }}</span>
+                            <span>{{ t('启用') }}</span>
                         </template>
                         <template #close>
-                            <span>{{ t('禁用') }}</span>
+                            <span>{{ t('停用') }}</span>
                         </template>
                     </Switch>
                 </template>
@@ -62,7 +62,7 @@
             <div class="list">
                 <Button type="primary" @click="handleAddUser">{{ t('新增') }}</Button>
                 <Button type="primary" @click="handleBatchOnline">{{ t('批量启用') }}</Button>
-                <Button type="primary" @click="handleBatchOffline">{{ t('批量禁用') }}</Button>
+                <Button type="primary" @click="handleBatchOffline">{{ t('批量停用') }}</Button>
                 <Button type="error" @click="handleBatchDelete">{{ t('批量删除') }}</Button>
             </div>
         </Card>

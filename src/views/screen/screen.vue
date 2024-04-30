@@ -88,7 +88,7 @@
                 <div class="list">
 
                     <Row :gutter="10">
-                        <Col :span="6" v-for="item in UserList" :key="item">
+                        <Col :md="6" :lg="6" :xl="6" :xxl="4"  v-for="item in UserList" :key="item">
                         <UserItem :info="item" @handleStatus="handleStatus"></UserItem>
                         </Col>
                     </Row>
@@ -335,7 +335,7 @@ onMounted(() => {
     
 
 
-    // getLog()
+   // getLog()
     // handleTime()
 
 
@@ -459,8 +459,10 @@ const handleAddFocus = () => {
         background: #D4F2FA;
 
         .focus {
-            width: 21%;
-            padding: 20px 7px 0 20px;
+            // width: 21%;
+            min-width: 265px;
+            // padding: 20px 7px 0 20px;
+            margin-top: 20px;
 
             .title {
                 display: flex;
@@ -482,8 +484,9 @@ const handleAddFocus = () => {
         }
 
         .bed {
-            width: 79%;
+            width: calc(100% - 265px);
             padding: 20px 20px 0 7px;
+            // background: red;
 
             .title {
                 display: flex;

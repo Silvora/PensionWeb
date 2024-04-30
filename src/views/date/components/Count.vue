@@ -2,14 +2,16 @@
     <div class="count-4">
         <div v-for="(item, idx) in  data " :key="idx" class="box">
             <img :src="img" alt="">
-            <p class="t" style=" color: rgba(68, 193, 239, 1)">{{ item.title }}</p>
+            <p class="t" style=" color: rgba(68, 193, 239, 1)">{{ t(item.title) }}</p>
             <p class="b">{{ item.count }}</p>
         </div>
     </div>
 </template>
 
 <script setup lang='ts'>
+import { useI18n } from "vue-i18n";
 import img from "@/assets/date/a@2x.png"
+const { t } = useI18n()
 const data = [{
     title: "养老机构数",
     count: 12,

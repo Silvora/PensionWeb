@@ -3,8 +3,8 @@
         <div :class="['userInfo', info.focus == 0 ? 'focus' : '', info?.deviceList[0]?.status == 10 ? 'error' : '',stateInfo?.eventType=='3008'?'flashing':'']">
             <p class="title">
                 <span
-                    :class="['t1', ['gary', 'green', 'yellow'][device?.status || 0]]">{{ [t('空闲'), t('正常'), t('异常')][device?.status || 0] }}</span>
-                <span class="t2">{{ info?.roomBedNumber }}</span>
+                    :class="['t1', ['gary', 'green', 'yellow'][device?.online || 0]]">{{ [t('无人'), t('有人'), t('异常')][device?.status || 0] }}</span>
+                <span class="t2">{{ device?.roomBedNumber|| info?.roomBedNumber }}</span>
                 <span class="t3">
                     <img src="@/assets/images/room-setting.png" alt="" srcset=""
                         @click="handleNavTo(`/add-elder?type=0&id=${info?.elderlyId}`)">
@@ -20,10 +20,13 @@
                     <!-- @click="handleNavTo(`/add-elder?type=0&id=${info?.elderlyId}`)" -->
                     <img @click="handleSetting" v-else class="img" src="@/assets/images/screen.png" alt="" srcset="">
                     <div class="imgList" @click="handleSetting">
-                        <img src="@/assets/images/睡眠监测@2x(4).png" alt="">
+
+                        <!-- ed719_type -->
+                        <img src="@/assets/images/睡眠监测@2x(4).png" alt="" v-if="device?.type=='x1_type'">
+                        <img src="@/assets/images/setting_sleep2.png" alt="" v-else>
                         <img src="@/assets/images/位图@2x(2).png" alt="">
-                        <img src="@/assets/images/温度计@2x.png" alt="">
-                        <img src="@/assets/images/紧急按钮@2x.png" alt="">
+                        <img src="@/assets/images/温度计@2x.png" alt="" v-if="device?.type=='ed719_type'">
+                        <img src="@/assets/images/紧急按钮@2x.png" alt="" v-if="device?.type=='ed719_type'">
                     </div>
                 </div>
                 <div class="info">
@@ -218,7 +221,8 @@ const handleNavTo = (path: string) => {
 }
 
 .userInfo {
-    width: 100%;
+    // width: 265px;
+    min-width: 265px;
     padding-bottom: 1px;
     cursor: pointer;
 
@@ -255,7 +259,7 @@ const handleNavTo = (path: string) => {
         .t2 {
             box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.1);
             border-radius: 0px 0px 8px 8px;
-            width: 150px;
+           width: calc(100% - 60px);
             text-align: center;
         }
 
@@ -270,23 +274,31 @@ const handleNavTo = (path: string) => {
     }
 
     .userBox {
-        margin: 10px;
+        // margin: 10px;
+        padding: 10px;
         display: flex;
+        min-width: 265px;
+        overflow: hidden;
+        flex-direction: row;
 
 
         .imgInfo {
             display: flex;
             flex-direction: column;
             width: 130px;
-
+            // background: yellow;
             .img {
                 display: inline-block;
+                display: flex;
+                // width: 100%;
+                // aspect-ratio: 1/1;
+                
                 width: 130px;
                 height: 130px;
             }
 
             .imgList {
-                width: 100%;
+                // width: 100%;
                 // background: gold;
                 display: flex;
                 justify-content: flex-start;
@@ -301,13 +313,20 @@ const handleNavTo = (path: string) => {
         }
 
         .info {
-            width: 100%;
-            padding: 0 10px;
+            // display: flex;
+            // flex-direction: column;
+            // width: calc(100% - 130px);
+             width: 100%;
+            // padding: 0 10px;
+            padding-left: 10px;
+            overflow: hidden;
+            // margin-right: 10px;
+            //  background: red;
 
             .t4,
             .t5 {
                 display: flex;
-                width: 100%;
+                // width:calc(100% - 30px);
                 margin: 2px 0;
                 // justify-content: space-around;
                 justify-content: start;

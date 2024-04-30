@@ -808,7 +808,7 @@ const accountTable: any = {
       //     minWidth: 230,
       // },
       {
-          title: '角色状态',
+          title: '工种状态',
           key: 'status',
           slot: true,
           minWidth: 100,

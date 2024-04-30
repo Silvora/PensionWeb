@@ -7,6 +7,8 @@ import * as echarts from "echarts"
 import { onMounted, ref } from "vue";
 const SexChartRef = ref(null)
 const myChart: any = ref(null)
+import { useI18n } from "vue-i18n";
+const { t } = useI18n()
 onMounted(() => {
 
     initChart()
@@ -66,7 +68,7 @@ const initChart = () => {
                     formatter: () => {
                         return [
                             `{a|0}`,
-                            `{b|总数}`
+                            `{b|${t('总数')}}`,
                         ].join('\n')
                     },
 

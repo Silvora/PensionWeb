@@ -73,10 +73,10 @@
             </div>
             <Button size="small" class="stateBtn"
                 :style="{ background: 'rgba(224, 98, 85, 1)', color: '#fff', border: 'none' }"
-                v-if="props.info?.stateInfo?.eventType">{{ errInfo[props.info?.stateInfo?.eventType] }}</Button>
+                v-if="props.info?.stateInfo?.eventType">{{ t(errInfo[props.info?.stateInfo?.eventType]) }}</Button>
             <Button size="small" class="stateBtn"
                 :style="{ background: 'rgba(224, 98, 85, 1)', color: '#fff', border: 'none' }"
-                v-else-if="props.info?.stateInfo?.onBedStatus">{{ ['不在床', '在床'][props.info?.stateInfo?.onBedStatus] }}</Button>
+                v-else-if="props.info?.stateInfo?.onBedStatus">{{ [t('不在床'), t('在床')][props.info?.stateInfo?.onBedStatus] }}</Button>
             <Button size="small" class="stateBtn"
                 :style="{ background: 'rgba(18, 185, 135, 0.05)', color: 'rgba(18, 185, 135, 1)', border: 'none' }"
                 v-else>{{ t('暂无连接设备') }}</Button>

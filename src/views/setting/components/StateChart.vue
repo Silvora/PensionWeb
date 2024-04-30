@@ -8,6 +8,8 @@ import { onMounted, ref } from "vue";
 import {DeviceTypeRatio} from "@/api/Device/Device"
 const StateChartRef = ref(null)
 const myChart: any = ref(null)
+import { useI18n } from "vue-i18n";
+const { t } = useI18n()
 const sum = ref(0)
 onMounted(() => {
 
@@ -75,7 +77,7 @@ const initChart = () => {
                        // console.log(params.name)
                         return [
                             `{a|${sum.value}}`,
-                            `{b|设备状态}`
+                            `{b|${t('设备状态')}}`
                         ].join('\n')
                     },
 
@@ -104,9 +106,9 @@ const initChart = () => {
                     show: false
                 },
                 data: [
-                    { value: 1048, name: '(340个在线)', product: "在线" },
-                    { value: 735, name: '(23个离线)', product: "离线" },
-                    { value: 580, name: '(4个紧急)', product: "紧急" },
+                    { value: 1048, name: `(340${t('个在线')})`, product: "在线" },
+                    { value: 735, name: `(23${t('个离线')})`, product: "离线" },
+                    { value: 580, name: `(4${t('个紧急')})`, product: "紧急" },
                 ]
             }
         ]

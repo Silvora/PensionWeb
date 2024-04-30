@@ -8,6 +8,8 @@ import { onMounted, ref } from "vue";
 import {DeviceStateRatio} from "@/api/Device/Device"
 const CountChartRef = ref(null)
 const myChart: any = ref(null)
+import { useI18n } from "vue-i18n";
+const { t } = useI18n()
 const sum = ref(0)
 onMounted(() => {
 
@@ -79,7 +81,7 @@ const initChart = () => {
                         //console.log(params.name)
                         return [
                             `{a|${sum.value}}`,
-                            `{b|类型统计}`
+                            `{b|${t('类型统计')}}`
                         ].join('\n')
                     },
 
@@ -109,10 +111,10 @@ const initChart = () => {
                     show: false
                 },
                 data: [
-                    { value: 1048, name: '(25%睡眠雷达)', product: "睡眠雷达" },
-                    { value: 735, name: '(25%摔倒监测)', product: "摔倒监测" },
-                    { value: 580, name: '(25%温度计)', product: "温度计" },
-                    { value: 484, name: '(25%紧急按钮)', product: "紧急按钮" },
+                    { value: 1048, name: `(25%${t('睡眠雷达')})`, product: "睡眠雷达" },
+                    { value: 735, name: `(25%${t('摔倒监测')})`, product: "摔倒监测" },
+                    { value: 580, name: `(25%${t('温度计')})`, product: "温度计" },
+                    { value: 484, name: `(25%${t('紧急按钮')})`, product: "紧急按钮" },
                 ]
             }
         ]

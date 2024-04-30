@@ -5,6 +5,8 @@
 <script setup lang='ts'>
 import * as echarts from "echarts"
 import { onMounted, ref, nextTick } from "vue";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n()
 const AgeChartRef = ref(null)
 onMounted(() => {
 
@@ -94,7 +96,7 @@ const initChart = () => {
                         //console.log(params.name)
                         return [
                             `{a|0}`,
-                            `{b|总数}`,
+                            `{b|${t('总数')}}`,
                         ].join('\n')
                     },
 
