@@ -17,7 +17,7 @@
                         <Option value="1">正常</Option>
                         <Option value="10">异常</Option>
                     </Select> -->
-                    <Select v-model="status" clearable style="width:100px" :placeholder="t('处理状态')">
+                    <Select v-model="searchData.status" clearable style="width:100px" :placeholder="t('处理状态')" @on-change="handleSearch">
                         <Option value="0">未处理</Option>
                         <Option value="1">处理中</Option>
                         <Option value="2">已处理</Option>
@@ -131,7 +131,8 @@ const searchData = ref<any>({
     floorId: '',
     roomId: '',
     startTime: '',
-    endTime: ''
+    endTime: '',
+    status: '',
 })
 
 const pagerConfig = ref({
@@ -150,6 +151,7 @@ const handleSearch = (value: any) => {
 
     searchData.value.floorId = value[1]
     searchData.value.roomId = value[2]
+
 
     getData()
 }

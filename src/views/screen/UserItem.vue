@@ -3,8 +3,9 @@
         <div :class="['userInfo', info.focus == 0 ? 'focus' : '', info?.deviceList[0]?.status == 10 ? 'error' : '',stateInfo?.eventType=='3008'?'flashing':'']">
             <p class="title">
                 <span
-                    :class="['t1', ['gary', 'green', 'yellow'][device?.online || 0]]">{{ [t('无人'), t('有人'), t('异常')][device?.status || 0] }}</span>
-                <span class="t2">{{ device?.roomBedNumber|| info?.roomBedNumber }}</span>
+                    :class="['t1', ['gary', 'green', 'yellow'][device?.online || 0]]">{{device?.status==10?t('异常'): [t('无人'), t('有人')][device?.status ||0] }}</span>
+                <!-- <span class="t2">{{ device?.roomBedNumber|| info?.roomBedNumber }}</span> -->
+                <span class="t2">{{ device?.roomBedNumber|| '未入住' }}</span>
                 <span class="t3">
                     <img src="@/assets/images/room-setting.png" alt="" srcset=""
                         @click="handleNavTo(`/add-elder?type=0&id=${info?.elderlyId}`)">
@@ -19,7 +20,7 @@
                     <!-- handleOpenDeviceInfo -->
                     <!-- @click="handleNavTo(`/add-elder?type=0&id=${info?.elderlyId}`)" -->
                     <img @click="handleSetting" v-else class="img" src="@/assets/images/screen.png" alt="" srcset="">
-                    <div class="imgList" @click="handleSetting">
+                    <div class="imgList" @click="handleSetting" v-if="stateInfo">
 
                         <!-- ed719_type -->
                         <img src="@/assets/images/睡眠监测@2x(4).png" alt="" v-if="device?.type=='x1_type'">

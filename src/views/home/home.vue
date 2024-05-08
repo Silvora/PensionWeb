@@ -36,12 +36,12 @@ const menuList: any = ref([
     color: "rgba(132, 190, 174, 1)",
 
   },
-  {
-    logo: date,
-    label: "数据展示",
-    route: "/date?type=home",
-    color: "rgba(67, 140, 203, 1)",
-  },
+  // {
+  //   logo: date,
+  //   label: "数据展示",
+  //   route: "/date?type=home",
+  //   color: "rgba(67, 140, 203, 1)",
+  // },
   {
     logo: room,
     label: "房间设定",

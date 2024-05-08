@@ -36,7 +36,7 @@
 
 
 
-        <p class="form-footer">{{ t('深圳海吉雅健康科技有限公司 技术支持') }}</p>
+        <p class="form-footer">{{ t('海吉雅健康科技有限公司 技术支持') }}</p>
       </Card>
     </div>
     <Modal v-model="modal" :title="t('用户隐私协议')" :footer-hide="true">

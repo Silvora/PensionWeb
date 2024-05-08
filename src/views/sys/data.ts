@@ -496,7 +496,7 @@ const roleTable: any = {
         },
     },
     editConfig: {
-        title: '编辑角色',
+        title: '编辑工种',
         lableWidth: 100,
         rules: {},
         FormData: [
@@ -548,7 +548,7 @@ const roleTable: any = {
             //childs: [],
             required: false,
             open: '启用',
-            close: '禁用',
+            close: '停用',
             // default: "",
         }
         

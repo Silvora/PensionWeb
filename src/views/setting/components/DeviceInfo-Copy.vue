@@ -301,6 +301,8 @@ const Open = (data: any) => {
     console.log(data)
 
     getStatus()
+    getData()
+
     // msg.value = Message.loading({
     //     content: 'Loading...',
     //     duration: 0
@@ -345,7 +347,7 @@ const handleLog = () => {
 }
 
 onMounted(() => {
-   
+    // getData()
 })
 
 const getData = () => {
@@ -381,56 +383,56 @@ const getData = () => {
 
     })
 
-    DeviceSleepDeviceHeartRateByMinute({
-        startTime: dayjs(date.value).subtract(1, 'day').format('YYYY-MM-DD'),
-        endTime: date.value,
-        mac: mac.value
-    }).then((res: any) => {
-        console.log(res)
-        let d1: any = []//最高呼吸率
-        let d2: any = []//最高心率
-        let d3: any = []//最高体动
-        let d4: any = []//最低呼吸率
-        let d5: any = []//最低心率
-        let d6: any = []//最低体动
-        let date: any = [] //时间
+    // DeviceSleepDeviceHeartRateByMinute({
+    //     startTime: dayjs(date.value).subtract(1, 'day').format('YYYY-MM-DD'),
+    //     endTime: date.value,
+    //     mac: mac.value
+    // }).then((res: any) => {
+    //     console.log(res)
+    //     let d1: any = []//最高呼吸率
+    //     let d2: any = []//最高心率
+    //     let d3: any = []//最高体动
+    //     let d4: any = []//最低呼吸率
+    //     let d5: any = []//最低心率
+    //     let d6: any = []//最低体动
+    //     let date: any = [] //时间
 
-        if (!res.data) {
-            console.log("=================")
-            DeviceInfoListInfo.value = null
+    //     if (!res.data) {
+    //         console.log("=================")
+    //         DeviceInfoListInfo.value = null
 
-            // msg.value = null
-            // modal.value = true
+    //         // msg.value = null
+    //         // modal.value = true
 
-            return
-        }
+    //         return
+    //     }
 
-        res.data?.forEach((element: any) => {
-            d1.push(element?.highBreathRate || 0)
-            d2.push(element?.highHeartRate || 0)
-            d3.push(element?.highPhysical || 0)
-            d4.push(element?.lowBreathRate || 0)
-            d5.push(element?.lowHeartRate || 0)
-            d6.push(element?.lowPhysical || 0)
-            date.push(element?.minute?.split(" ")[1]?.slice(0, 5) || '')
-        });
+    //     res.data?.forEach((element: any) => {
+    //         d1.push(element?.highBreathRate || 0)
+    //         d2.push(element?.highHeartRate || 0)
+    //         d3.push(element?.highPhysical || 0)
+    //         d4.push(element?.lowBreathRate || 0)
+    //         d5.push(element?.lowHeartRate || 0)
+    //         d6.push(element?.lowPhysical || 0)
+    //         date.push(element?.minute?.split(" ")[1]?.slice(0, 5) || '')
+    //     });
 
-        DeviceInfoListInfo.value = {
-            d1,
-            d2,
-            d3,
-            d4,
-            d5,
-            d6,
-            date
-        }
+    //     DeviceInfoListInfo.value = {
+    //         d1,
+    //         d2,
+    //         d3,
+    //         d4,
+    //         d5,
+    //         d6,
+    //         date
+    //     }
 
-        // msg.value = null
-        // modal.value = true
+    //     // msg.value = null
+    //     // modal.value = true
 
 
 
-    })
+    // })
 
 }
 

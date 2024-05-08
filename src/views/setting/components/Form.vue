@@ -152,10 +152,10 @@
                             <Switch size="large" v-model="formData.sleepParams.leaveBedAlarm" :true-value="1"
                                 :false-value="0">
                                 <template #open>
-                                    <span>{{ t('开启') }}</span>
+                                    <span>{{ t('启用') }}</span>
                                 </template>
                                 <template #close>
-                                    <span>{{ t('关闭') }}</span>
+                                    <span>{{ t('停用') }}</span>
                                 </template>
                             </Switch>
                         </FormItem>
@@ -232,10 +232,10 @@
                             <Switch size="large" v-model="formData.sleepParams.heartRateAlarm" :true-value="1"
                                 :false-value="0">
                                 <template #open>
-                                    <span>{{ t('开启') }}</span>
+                                    <span>{{ t('启用') }}</span>
                                 </template>
                                 <template #close>
-                                    <span>{{ t('关闭') }}</span>
+                                    <span>{{ t('停用') }}</span>
                                 </template>
                             </Switch>
                         </FormItem>
@@ -272,7 +272,7 @@
                                 </FormItem>
                             </div>
                             <div>
-                                <FormItem :label="t('最小时间范围')" prop="min">
+                                <FormItem :label="t('最小监测范围')" prop="min">
                                     <InputNumber :max="999999" :min="0" v-model="formData.sleepParams.heartRateConfig.min"
                                         style="width: 120px;" />
 
@@ -292,10 +292,10 @@
                             <Switch size="large" v-model="formData.sleepParams.respiratoryAlarm" :true-value="1"
                                 :false-value="0">
                                 <template #open>
-                                    <span>{{ t('开启') }}</span>
+                                    <span>{{ t('启用') }}</span>
                                 </template>
                                 <template #close>
-                                    <span>{{ t('关闭') }}</span>
+                                    <span>{{ t('停用') }}</span>
                                 </template>
                             </Switch>
                         </FormItem>
@@ -334,7 +334,7 @@
                                 </FormItem>
                             </div>
                             <div>
-                                <FormItem :label="t('最小时间范围')" prop="min">
+                                <FormItem :label="t('最小监测范围')" prop="min">
                                     <InputNumber :max="999999" :min="0" v-model="formData.sleepParams.respiratoryConfig.min"
                                         style="width: 120px;" />
 

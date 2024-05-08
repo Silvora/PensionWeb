@@ -114,6 +114,8 @@ const screenBoxAll = ref(null)
 import dayjs from "dayjs"
 import { useFullscreen } from '@vueuse/core'
 import { DeviceLogList } from "@/api/Device/Device"
+import { useMqttStore } from "@/stores/modules/mqtt"
+const mqttStore = useMqttStore()
 // let box = document.getElementById("#layoutBox")
 const { toggle, isFullscreen } = useFullscreen(screenBoxAll)
 
@@ -233,7 +235,17 @@ const getData = () => {
     CheckList(searchData.value).then((res: any) => {
         // console.log(res.records)
 
-        UserList.value = res.data.records
+        let err:any = []
+        let list:any = []
+        res.data.records.forEach((item: any) => {
+            if(item?.deviceList[0]?.stateInfo?.eventType == '3008'){
+                err.push(item)
+            }else{
+                list.push(item)
+            }
+        })
+
+        UserList.value = [...err,...list]
 
         console.log(UserList.value)
     })
@@ -277,7 +289,18 @@ const getData = () => {
         size: 1
     }).then((res: any) => {
         console.log(res)
-        LogData.value = res.data?.records.length>0 ? res.data.records[0] : {}
+
+        if(res.data?.records.length>0){
+
+            res.data?.records.forEach((item: any) => {
+                mqttStore.showMessages(item)
+            })
+
+
+            LogData.value = res.data.records[0]
+        }
+
+      
     })
 
 
@@ -375,12 +398,6 @@ onMounted(() => {
 })
 
 
-onBeforeUnmount(() => {
-
-    console.log("sdasdasdasd")
-    // clearInterval(time.value)
-    // time.value = null
-})
 
 const handleAddFocus = () => {
     elderModal.value = true
