@@ -16,6 +16,7 @@ import MQTT from './utils/mqtt'
 import { useMqttStore } from "@/stores/modules/mqtt"
 import { onBeforeUnmount } from 'vue'
 import { DeviceSleepDeviceStatus } from "@/api/Device/Device"
+import { DeviceLogList } from '@/api/Device/Device'
 const mqttStore = useMqttStore()
 //切换语言
 const { locale, t } = useI18n()
@@ -133,6 +134,29 @@ const getStatus = () => {
     if (token) {
       timer.value = '1'
       timer.value = setInterval(() => {
+
+
+        DeviceLogList({
+        current: 1,
+        size: 1
+    }).then((res: any) => {
+        console.log(res)
+
+        if(res.data?.records.length>0){
+
+            res.data?.records.forEach((item: any) => {
+                mqttStore.showMessages(item)
+            })
+
+
+        }else{
+          mqttStore.showMessages(null)
+        }
+
+      
+    })
+
+
         DeviceSleepDeviceStatus().then((res => {
           console.log("=========", res)
           res.data.forEach((item: any, idx: any) => {

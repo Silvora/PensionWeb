@@ -6,6 +6,9 @@ import * as mqtt from "mqtt/dist/mqtt";
 import { Notice } from "view-ui-plus"
 
 export const useMqttStore = defineStore("mqttStore", () => {
+
+    const logError = ref('')
+
     //异常数据
     const errorData = ref<any>({});
 
@@ -289,8 +292,11 @@ export const useMqttStore = defineStore("mqttStore", () => {
 
   const setMessages = (data:any) =>  {
 
+    logError.value = data?.roomBedNumber
 
-    let ed713_type= {
+    if(!data) return
+
+    let ed713_type = {
         // 3001 离床 3006呼吸异常 3007心率异常 3012在床 3008紧急拉绳
         // "3001": `您绑定的护眠仪检测到无人状态`,
         "3001": `您綁定的護眠儀偵測到無人狀態`,
@@ -381,6 +387,7 @@ export const useMqttStore = defineStore("mqttStore", () => {
         "ed713_type": ed713_type,
         "x1_type": x1_type
     }
+   
 
     // console.log(data.type,map[data.type],data.eventType)
 
@@ -398,6 +405,7 @@ export const useMqttStore = defineStore("mqttStore", () => {
   } 
 
     return {
+      logError,
         client,
         setData,
         initMqtt,

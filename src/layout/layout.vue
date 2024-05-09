@@ -8,6 +8,12 @@
         <span class="title">
           {{ t(route.meta.title) }}
         </span>
+        <div class="right-notification-box" v-if="route.name != 'sys'" @click="() => router.push('/log')">
+          <!-- <Notification :count="mqttStore.logError?' ':'' " /> -->
+          <Badge :dot="mqttStore.logError?true:false">
+            <Avatar shape="square" icon="md-notifications-outline" />
+        </Badge>
+        </div>
         <div class="right-box" v-if="route.name != 'sys'">
           <!-- <span class="right" :style="{ 'background': route.name == 'home' ? 'rgba(19, 100, 248, 1)' : '#fff' }"> -->
           <span v-if="['home', 'screen'].includes(route.name)" class="right"
@@ -54,6 +60,8 @@ import { useI18n } from "vue-i18n";
 const { t } = useI18n()
 const route = useRoute()
 const appStore = useAppStore()
+import { useMqttStore } from "@/stores/modules/mqtt"
+const mqttStore = useMqttStore()
 console.log(route)
 
 
@@ -128,9 +136,12 @@ window.addEventListener('resize', () => {
         width: 80px;
         cursor: pointer;
       }
+      .right-notification-box{
+        cursor: pointer;
+      }
 
       .right-box {
-        width: 80px;
+        width: 60px;
         float: right;
         display: flex;
         justify-content: flex-end;

@@ -70,7 +70,7 @@
                     <span class="alert">
                         <Alert type="error">
                             <span
-                                v-if="LogData.status == 0 && LogData.createTime.includes(dayjs().format('YYYY-MM-DD'))">{{ LogData.roomBedNumber }}
+                                v-if="LogData.status == 0 && LogData.createTime.includes(dayjs().format('YYYY-MM-DD'))">{{ mqttStore.logError }}
                                 {{ t('紧急通知') }} </span>
                             <span v-else>{{ t('暂无通知') }}</span>
                         </Alert>
@@ -284,24 +284,24 @@ const getData = () => {
         FocusList.value = res.data.records
     })
 
-    DeviceLogList({
-        current: 1,
-        size: 1
-    }).then((res: any) => {
-        console.log(res)
+    // DeviceLogList({
+    //     current: 1,
+    //     size: 1
+    // }).then((res: any) => {
+    //     console.log(res)
 
-        if(res.data?.records.length>0){
+    //     if(res.data?.records.length>0){
 
-            res.data?.records.forEach((item: any) => {
-                mqttStore.showMessages(item)
-            })
+    //         // res.data?.records.forEach((item: any) => {
+    //         //     mqttStore.showMessages(item)
+    //         // })
 
 
-            LogData.value = res.data.records[0]
-        }
+    //         LogData.value = res.data.records[0]
+    //     }
 
       
-    })
+    // })
 
 
     }, 6000)
