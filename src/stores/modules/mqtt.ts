@@ -391,7 +391,7 @@ export const useMqttStore = defineStore("mqttStore", () => {
 
     // console.log(data.type,map[data.type],data.eventType)
 
-    Notice.error({
+    Notice.warning({
       title:  `${data.elderlyName}[${data.roomBedNumber}]`,
       desc: map[data.deviceType][data.eventType],
       duration: 6

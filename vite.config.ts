@@ -30,7 +30,7 @@ export default defineConfig({
   resolve: {
     alias: {
       //'@': fileURLToPath(new URL('./src', import.meta.url)),
-      '@': resolve(__dirname, '/src'),
+      '@': resolve(__dirname, 'src'),
       'vue-i18n': 'vue-i18n/dist/vue-i18n.cjs.js'
     },
     // 省略后缀名引入

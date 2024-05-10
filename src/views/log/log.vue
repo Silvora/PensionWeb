@@ -54,6 +54,21 @@
         <div class="box">
             <TableView ref="TableViewRef" :data="data" :tableConfig="LogTable" :tablePage="pagerConfig"
                 @handleUpdatePage="handleUpdatePage">
+                <template #status="{ row }">
+                    <Tag :color="row.status == 0 ? 'magenta' : row.status == 1 ? 'blue' : 'warning'">
+                        {{ row.status == 0 ? '未處理' : row.status == 1 ? '已處理' : '處理中' }}
+                    </Tag>
+                </template>
+
+                <template #active="{ row }">
+                    <vxe-button type="text" size="mini" status="primary" @click="handleLogStatus(row)">
+                       <span v-if="row.status == 0" style="color: RGBA(237, 144, 0, 1);">{{ t('处理') }}</span>
+                       <span v-if="row.status == 10">{{ t('完成') }}</span>
+                    </vxe-button>
+                    <!-- <vxe-button type="text" size="mini" status="primary">
+                        权限
+                    </vxe-button> -->
+                </template>
 
                 <!-- <template #status="{ row }">
                     <Switch size="large" :model-value="String(row.status)" true-color="RGBA(18, 185, 135, 1)"
@@ -116,9 +131,9 @@ import { LogTable } from "./data"
 import { ref } from 'vue';
 import { onMounted } from "vue";
 import { useI18n } from "vue-i18n";
-import { Cascader, Modal, Message, DatePicker } from 'view-ui-plus';
+import { Cascader, Modal, Message, DatePicker, Row } from 'view-ui-plus';
 import { HostelList, HostelFloorlList, HostelRoomListOfFloor, HostelRoomBedListOfRoom } from "@/api/Hostel/Hostel"
-import { DeviceLogList, DeviceStateratio, DeviceTypeRatio, DeviceList, DeviceUpdate, DeviceSave, DeviceRemoveBatch, DeviceStopUsage, DeviceUsageRecordList, DeviceAddUsageRecord } from "@/api/Device/Device";
+import {DeviceWarningProcessing,DeviceWarningComplete, DeviceLogList, DeviceStateratio, DeviceTypeRatio, DeviceList, DeviceUpdate, DeviceSave, DeviceRemoveBatch, DeviceStopUsage, DeviceUsageRecordList, DeviceAddUsageRecord } from "@/api/Device/Device";
 const { t } = useI18n()
 const checkAll = ref<any>(false)
 const data = ref<any>([])
@@ -145,6 +160,24 @@ const dataValue = ref<any>([])
 const floorId = ref<any>()
 const list = ref<any>([])
 const hostelList = ref<any>([])
+
+
+const handleLogStatus = (row: any) => {
+    if(row.status == 0){
+        DeviceWarningProcessing(row.id).then((res: any) => {
+            console.log(res)
+            Message.success(t('操作成功'))
+            getData()
+        })
+    }
+    if(row.status == 10){
+        DeviceWarningComplete(row.id).then((res: any) => {
+            console.log(res)
+            Message.success(t('操作成功'))
+            getData()
+        })
+    }
+}
 
 
 const handleSearch = (value: any) => {

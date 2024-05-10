@@ -202,3 +202,22 @@ export function DeviceWarningLog(params:any) {
         params
     })
 }
+
+
+// 设备警告标记为-正在处理
+export function DeviceWarningProcessing(data: any) {
+    return http.request({
+        url: `/admin/device/deviceWarningMarkedAsProcess/${data}`,
+        method: 'put',
+        // data
+    })
+}
+
+// 设备警告标记为-处理完成
+export function DeviceWarningComplete(data: any) {
+    return http.request({
+        url: `/admin/device/deviceWarningMarkedAsProcessed/${data}`,
+        method: 'put',
+        // data
+    })
+}

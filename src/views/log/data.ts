@@ -7,7 +7,10 @@ const LogTable:any = {
       border: 'inner', //边框样式
       seq: true, //排序
       checkbox:false,//复选框
-      activeConfig: null,
+      activeConfig: {
+          active: true,
+           width: 80,
+      },
   },
   editConfig: {
       title: '编辑角色',
@@ -124,39 +127,45 @@ const LogTable:any = {
       {
           title: '日志内容',
           key: 'notes',
-          minWidth: 150,
+          minWidth: 120,
       },
       {
         title: '设备名称',
         key: 'deviceName',
         // slot: true,
-        minWidth: 150,
+        minWidth: 100,
     },
       {
           title: '设备Id',
           key: 'deviceId',
-          minWidth: 150,
+          minWidth: 50,
       },
+      {
+        title: '状态',
+        key: 'status',
+        minWidth: 60,
+        slot: true,
+    },
       {
           title: '时间',
           key: 'createTime',
-          minWidth: 200,
+          minWidth: 160,
       },
 
       {
         title: '床位',
         key: 'roomBedNumber',
-        minWidth: 150,
+        minWidth: 120,
     },
       {
           title: '护理员名称',
           key: 'nursingName',
-          minWidth: 150,
+          minWidth: 80,
       },
       {
         title: '老人名称',
         key: 'elderlyName',
-        minWidth: 150,
+        minWidth: 80,
     }
   ]
 }

@@ -3,7 +3,12 @@
         <div :class="['userInfo', info.focus == 0 ? 'focus' : '', info?.deviceList[0]?.status == 10 ? 'error' : '',stateInfo?.eventType=='3008'?'flashing':'']">
             <p class="title">
                 <span
-                    :class="['t1', ['gary', 'green', 'yellow'][device?.online || 0]]">{{device?.status==10?t('异常'): [t('无人'), t('有人')][device?.status ||0] }}</span>
+                    :class="['t1', ['gary', 'green', 'yellow'][device?.online || 0]]">
+                    <span v-if="device?.status==10">{{ t('异常') }}</span>
+                    <span v-if="!device?.online">{{ [t('无人'), t('有人')][device?.status ||0] }}</span>
+                    <span v-else>{{ [t('离床'), t('在床')][device?.status ||0]  }} </span>
+                    <!-- {{device?.status==10?t('异常'): [t('无人'), t('有人')][device?.status ||0] }} -->
+                </span>
                 <!-- <span class="t2">{{ device?.roomBedNumber|| info?.roomBedNumber }}</span> -->
                 <span class="t2">{{ device?.roomBedNumber|| '未入住' }}</span>
                 <span class="t3">
@@ -23,8 +28,9 @@
                     <div class="imgList" @click="handleSetting" v-if="stateInfo">
 
                         <!-- ed719_type -->
-                        <img src="@/assets/images/睡眠监测@2x(4).png" alt="" v-if="device?.type=='x1_type'">
-                        <img src="@/assets/images/setting_sleep2.png" alt="" v-else>
+                        <img src="@/assets/images/setting_sleep2.png" alt="" v-if="device?.type=='x1_type'">
+                        <img src="@/assets/images/睡眠监测@2x(4).png" alt="" v-else >
+
                         <img src="@/assets/images/位图@2x(2).png" alt="">
                         <img src="@/assets/images/温度计@2x.png" alt="" v-if="device?.type=='ed719_type'">
                         <img src="@/assets/images/紧急按钮@2x.png" alt="" v-if="device?.type=='ed719_type'">

@@ -118,18 +118,19 @@ watch(route, (v: any) => {
     clearInterval(timer.value)
     timer.value = null
     // console.log("===============")
-  }
-
-  if (!timer.value && v.name != 'login') {
+  }else{
     getStatus()
   }
+
+  // if (!timer.value && v.name != 'login') {
+  //   getStatus()
+  // }
 
 }, { deep: true })
 
 
 const getStatus = () => {
   getToken('ing-Token').then((token) => {
-
 
     if (token) {
       timer.value = '1'
@@ -208,19 +209,11 @@ onMounted(() => {
       timer.value = null
       return
 
-
-
     }
 
 
     if (token) {
-
-
-
       // !timer.value? getStatus():''
-
-
-
       mqtt.value.init()
       mqtt.value.link()
       mqtt.value.get((topic: any, message: any) => {

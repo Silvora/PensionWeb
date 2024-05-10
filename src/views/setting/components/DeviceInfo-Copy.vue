@@ -151,19 +151,20 @@
                                     <p class="d">{{ t('参考值:') }}20～60%</p>
                                     </Col>
                                     <Col :span="12">
-                                    <p class="title">深睡比例{{ ' ' }}%</p>
+                                    <p class="title">深睡比例{{ logInfo?.sleepLong ? (logInfo?.sleepDeep /
+                                        logInfo?.sleepLong).toFixed(0) : '-' }}%</p>
                                     <p class="d">{{ t('参考值:') }}20～80%</p>
                                     </Col>
                                     <Col :span="12">
-                                    <p class="title">睡眠次数{{ logInfo.sleepLong || '-' }}次</p>
+                                    <p class="title">睡眠次数{{ logInfo?.sleepRangeList?.length || '0' }}次</p>
                                     <p class="d">{{ t('参考值:') }}1{{ t('次') }}</p>
                                     </Col>
                                     <Col :span="12">
-                                    <p class="title">翻身次数{{ logInfo?.turnOverNumber || '-' }}次</p>
+                                    <p class="title">翻身次数{{ logInfo?.turnOverNumber || '0' }}次</p>
                                     <p class="d">{{ t('参考值:') }}20～45{{ t('次') }}</p>
                                     </Col>
                                     <Col :span="12">
-                                    <p class="title">离床次数{{ logInfo?.leaveBedNumber || '-' }}次</p>
+                                    <p class="title">离床次数{{ logInfo?.leaveBedNumber || '0' }}次</p>
                                     <p class="d">{{ t('参考值:') }}0～2{{ t('次') }}</p>
                                     </Col>
                                 </Row>
