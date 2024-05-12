@@ -394,7 +394,7 @@ export const useMqttStore = defineStore("mqttStore", () => {
     Notice.warning({
       title:  `${data.elderlyName}[${data.roomBedNumber}]`,
       desc: map[data.deviceType][data.eventType],
-      duration: 6
+      duration: 5
     });
    
 };

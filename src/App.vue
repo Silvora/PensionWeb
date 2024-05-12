@@ -17,6 +17,7 @@ import { useMqttStore } from "@/stores/modules/mqtt"
 import { onBeforeUnmount } from 'vue'
 import { DeviceSleepDeviceStatus } from "@/api/Device/Device"
 import { DeviceLogList } from '@/api/Device/Device'
+import { watchEffect } from 'vue'
 const mqttStore = useMqttStore()
 //切换语言
 const { locale, t } = useI18n()
@@ -113,13 +114,13 @@ watch(route, (v: any) => {
   // console.log("===============")
 
   if (v.name == 'login') {
-    mqtt && mqtt.value?.unsubscribes()
+    // mqtt && mqtt.value?.unsubscribes()
 
     clearInterval(timer.value)
     timer.value = null
     // console.log("===============")
   }else{
-    getStatus()
+     getStatus()
   }
 
   // if (!timer.value && v.name != 'login') {
@@ -128,18 +129,38 @@ watch(route, (v: any) => {
 
 }, { deep: true })
 
+// watchEffect(() => {
+//   if (route.name == 'login') {
+//     // mqtt && mqtt.value?.unsubscribes()
+
+//     clearInterval(timer.value)
+//     timer.value = null
+//     // console.log("===============")
+//   }
+//   // else{
+//   //   getStatus()
+//   // }
+// })
+
 
 const getStatus = () => {
+
+
+
   getToken('ing-Token').then((token) => {
 
-    if (token) {
+
+
+    if (token && timer.value == null) {
+
       timer.value = '1'
       timer.value = setInterval(() => {
 
 
         DeviceLogList({
         current: 1,
-        size: 1
+        size: 1,
+        status:0,
     }).then((res: any) => {
         console.log(res)
 

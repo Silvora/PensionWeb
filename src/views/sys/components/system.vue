@@ -121,7 +121,8 @@ const handleExit = () => {
         Message.success(t('退出成功'))
         setToken('ing-Bg', '')
 
-        router.push('/login')
+           router.push('/login')
+
     })
 
 }
