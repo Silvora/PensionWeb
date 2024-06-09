@@ -167,11 +167,11 @@ export function DeviceSleepDeviceHeartRateByMinute(params: any) {
 }
 
 // 睡眠设备日报信息
-export function DeviceSleepDeviceReportDate(data: any) {
+export function DeviceSleepDeviceReportDate(params: any) {
     return http.request({
         url: '/admin/device/sleepDevice/reportDate',
         method: 'get',
-        data
+        params
     })
 }
 

@@ -66,9 +66,6 @@
             </div>
             <div class="context" v-if="modal">
 
-
-                
-
                 <!-- <div class="userInfo">
                     <p class="title">{{ t('老人详情') }}</p>
                     <div v-if="userInfo">
@@ -111,7 +108,7 @@
                         </div>
                         <div class="date">
                             <VDatePicker v-model.string="date" mode="date" :masks="masks" is-required
-                                style="width: 100%;height: auto;">
+                                style="width: 100%;height: auto;" :attributes="attributes">
                             </VDatePicker>
                         </div>
                         <div v-if="logInfo">
@@ -141,22 +138,22 @@
                                     <p class="d">{{ t('参考值:') }}6～10{{ t('小时') }}</p>
                                     </Col>
                                     <Col :span="12">
-                                    <p class="title">清醒比例{{ logInfo?.sleepLong ? (logInfo?.awakeLong /
-                                        logInfo?.sleepLong).toFixed(0) : '-' }}%</p>
+                                    <p class="title">清醒比例{{ logInfo?.sleepLong ? (logInfo?.awakeLong*100 /
+                                        logInfo?.totalTime).toFixed(0) : '-' }}%</p>
                                     <p class="d">{{ t('参考值:') }}0～10%</p>
                                     </Col>
                                     <Col :span="12">
-                                    <p class="title">浅睡比例{{ logInfo?.sleepLong ? (logInfo?.sleepLight /
-                                        logInfo?.sleepLong).toFixed(0) : '-' }}%</p>
+                                    <p class="title">浅睡比例{{ logInfo?.sleepLong ? (logInfo?.sleepLight*100 /
+                                        logInfo?.totalTime).toFixed(0) : '-' }}%</p>
                                     <p class="d">{{ t('参考值:') }}20～60%</p>
                                     </Col>
                                     <Col :span="12">
-                                    <p class="title">深睡比例{{ logInfo?.sleepLong ? (logInfo?.sleepDeep /
-                                        logInfo?.sleepLong).toFixed(0) : '-' }}%</p>
+                                    <p class="title">深睡比例{{ logInfo?.sleepLong ? (logInfo?.sleepDeep*100 /
+                                        logInfo?.totalTime).toFixed(0) : '-' }}%</p>
                                     <p class="d">{{ t('参考值:') }}20～80%</p>
                                     </Col>
                                     <Col :span="12">
-                                    <p class="title">睡眠次数{{ logInfo?.sleepRangeList?.length || '0' }}次</p>
+                                    <p class="title">睡眠次数{{ logInfo?.sleepNumber || '0' }}次</p>
                                     <p class="d">{{ t('参考值:') }}1{{ t('次') }}</p>
                                     </Col>
                                     <Col :span="12">
@@ -212,7 +209,7 @@ import Chart4 from "./Chart4.vue";
 import Chart5 from "./Chart5.vue";
 import Chart6 from "./Chart6.vue";
 import Chart7 from "./Chart7.vue";
-import { DeviceSleepDeviceCurrentData,DeviceSleepDeviceDetectionDays, DeviceSleepDeviceDayReport, DeviceSleepDeviceHeartRateByMinute } from "@/api/Device/Device"
+import {DeviceSleepDeviceReportDate, DeviceSleepDeviceCurrentData,DeviceSleepDeviceDetectionDays, DeviceSleepDeviceDayReport, DeviceSleepDeviceHeartRateByMinute } from "@/api/Device/Device"
 import { onMounted, ref, nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
 import dayjs from "dayjs"
@@ -239,11 +236,32 @@ const oss = ref<any>(import.meta.env.VITE_APP_AXIOS_BASER)
 
 const timer = ref<any>(null)
 
+const attributes = ref<any>([
+    // {
+    //     highlight: {
+    //       color: '#dbeafe',
+    //       fillMode: 'light',
+    //     },
+    //     dates: new Date(2024, 5, 13),
+    //   }
+
+
+
+
+])
+
 watch(modal, (v) => {
     if(!v){
         clearInterval(timer.value)
         timer.value = null
     }
+})
+
+watch(date, () => {
+    // console.log("><<<<<<<?????????????????????",v)
+
+    // setDeviceInfoListInfo()
+    getData()
 })
 
 
@@ -288,10 +306,51 @@ const setDeviceInfoListInfo = (data: any) => {
         d4: data?.respiratoryRateList,
         d5: data?.heartRateList,
         d6: data?.bodyMovementList,
-        'date': [data.time, ...Array(len-1).fill('')],
+        'date': [data?.time, ...Array(len-1).fill('')],
 
     }
     DeviceInfoListInfo.value = info
+ }
+
+
+ const getDataHot = () => {
+    const day = dayjs().format('YYYY-MM-DD')
+
+const date = new Date();
+  const year = date.getFullYear();
+  const month = date.getMonth();
+
+    DeviceSleepDeviceReportDate({
+        mac: mac.value,
+        dayTime: day
+    }).then((res: any) => {
+        // console.log("----------------",res)
+
+        let attrs:any = []
+        res.data.forEach((item:any)=>{
+
+            let i = item.split("-")
+
+            console.log(i,year,month)
+
+            let it = {
+                highlight:{
+                color: '#dbeafe',
+                fillMode: 'light',
+                },
+                dates: new Date(year, month, i[2]*1),
+            }
+
+            attrs.push(it)
+           
+        })
+
+        attributes.value = attrs
+
+
+
+    })
+
  }
 
 
@@ -303,6 +362,8 @@ const Open = (data: any) => {
 
     getStatus()
     getData()
+
+    getDataHot()
 
     // msg.value = Message.loading({
     //     content: 'Loading...',
@@ -364,7 +425,7 @@ const getData = () => {
         dayTime: date.value,
         mac: mac.value
     }).then((res: any) => {
-        console.log(res)
+        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",res)
         logInfo.value = res.data
         let time = [
             [],
