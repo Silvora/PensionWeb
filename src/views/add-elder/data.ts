@@ -551,7 +551,7 @@ const toolBarConfig:any= {
 const familyInfo: any = {
       defaultConfig: {
         DOMTool: false,
-        DOMPage: true,
+        DOMPage: false,
         stripe: false, //斑马线条纹
         border: 'inner', //边框样式
         seq: true, //排序

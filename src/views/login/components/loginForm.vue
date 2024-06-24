@@ -107,15 +107,9 @@ const handleSubmit = () => {
         appStore.setUserInfo(form.value.identifier)
 
 
+
         router.push("/")
         Message.success(t('登录成功'))
-
-      }).catch(() => {
-      console.log("==============")
-      loading.value = false
-    }).finally(() => {
-       
-        //router.push("/")
 
         GetBaseSetting().then((res: any) => {
         console.log(res)
@@ -136,8 +130,12 @@ const handleSubmit = () => {
         //     })
         // }
     })
-    
-      })
+
+
+      }).catch(() => {
+      console.log("==============")
+      loading.value = false
+    })
     }
   })
 

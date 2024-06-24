@@ -416,7 +416,7 @@ onMounted(() => {
         roleList.value = res.data.records
         accountCreateAdmin.FormData.forEach(
             (item) => {
-                if (item.label === '角色') {
+                if (item.label === '工种类型') {
                     item.childs = list
                 }
             })

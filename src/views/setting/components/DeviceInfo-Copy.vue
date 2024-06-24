@@ -6,7 +6,9 @@
             </template>
             <div class="userInfo">
                 <div class="photo">
-                    <img :src="oss + userInfo?.photo" alt="">
+                    <img :src="oss + userInfo?.photo" alt="" v-if="userInfo?.photo">
+                    <img src="@/assets/images/screen.png" alt="" srcset="" v-else>
+
                 </div>
                 <div class="info">
                     <Grid border :col="6" :padding="'10px'" style="border: 1px solid #ebeef5;">
@@ -20,7 +22,7 @@
                         <GridItem>{{ userInfo?.roomBedNumber || '&nbsp;' }}</GridItem>
 
                         <GridItem style="background: #fafafa;color: #909399;">{{ t('护理等级') }}</GridItem>
-                        <GridItem>{{ userInfo?.nursingGrade || '&nbsp;' }}</GridItem>
+                        <GridItem>{{ userInfo?.nursingGrade ? jobLevelList[userInfo?.nursingGrade]: ' ' || '&nbsp;' }}</GridItem>
 
                         <GridItem style="background: #fafafa;color: #909399;">{{ t('护理员') }}</GridItem>
                         <GridItem>{{ userInfo?.staffName || '&nbsp;' }}</GridItem>
@@ -103,7 +105,7 @@
                     <p class="title">{{ t('睡眠记录') }}</p>
                     <div>
                         <div class="logDay">
-                            <p>{{ t('连续测量天数') }}: {{ logDay }}</p>
+                            <p>{{ t('连续测量天数') }}: {{ logDay || '-' }}</p>
                             <Button type="primary" @click="handleLog">{{ t('日志') }}</Button>
                         </div>
                         <div class="date">
@@ -225,6 +227,9 @@ const userInfo = ref<any>({})
 const mac = ref<any>('')
 const logInfo = ref<any>({})
 const date = ref(dayjs().format('YYYY-MM-DD'))
+
+const jobLevelList = ref(["三级", "二级", "一级", "特一级", "特二级", "特三级", "专需护理"])
+
 const oldDate = ref(dayjs().subtract(1, 'day').format('YYYY-MM-DD'))
 const masks = ref({
     modelValue: 'YYYY-MM-DD',

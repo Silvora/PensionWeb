@@ -27,7 +27,7 @@ http.interceptors.response.use(
 
         if (!response.data) {
             // Message.error(response.data.msg);
-            Message.error('操作有誤')
+            Message.error('操作有誤: 数据获取失败!')
             return Promise.resolve(response.data);
         }
         // 请求成功
@@ -36,11 +36,13 @@ http.interceptors.response.use(
         }
         // 请求成功，状态不为成功时
         // Message.error(response.data.message);
-        Message.error('操作有誤')
+
+        console.log(response.data.message)
+        Message.error(response.data.message)
         return Promise.reject(response.data.message);
     },
     (error) => {
-        Message.error('操作有誤')
+        // Message.error('操作有誤: ', error)
         // Message.error(error.message);
         if (error.response.status === 401) {
             router.push('/login');

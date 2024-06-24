@@ -53,12 +53,13 @@ const oss = ref<any>(import.meta.env.VITE_APP_AXIOS_BASER)
 const { t } = useI18n()
 const handleElderAdd = () => {
     console.log(TableFormRef.value.FormData)
+
     let data = JSON.parse(JSON.stringify({ ...TableFormRef.value.FormData, photo: photo.value, }))
 
 
     if (route.query.id) {
 
-        data['birthday'] = data['birthDate']
+        // data['birthday'] = data['birthDate']
 
         delete data['birthDate']
 

@@ -81,7 +81,7 @@
 
 
         <div style="display: flex;justify-content: space-between;padding: 15px 0;">
-            <Button type="default" @click="" style="width: 25%;">{{ t('重置') }}</Button>
+            <Button type="default" @click="data = {}" style="width: 25%;">{{ t('重置') }}</Button>
 
             <Button type="primary" @click="handleSubmit" style="width: 25%;">{{ t('保存') }}</Button>
         </div>

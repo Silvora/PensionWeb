@@ -1,7 +1,7 @@
 <template>
-    <TableForm title="" :FormData="FormData" ref="leaveInfo"></TableForm>
+    <TableForm title="" :FormData="FormData" ref="leaveInfo" :data="data"></TableForm>
     <div style="display: flex;justify-content: space-between;padding: 15px 0;">
-        <Button type="default" @click="" style="width: 25%;">{{ t('重置') }}</Button>
+        <Button type="default" @click="data={}" style="width: 25%;">{{ t('重置') }}</Button>
 
         <Button type="primary" @click="handleSubmit" style="width: 25%;"> {{ t('保存') }}</Button>
     </div>
@@ -82,6 +82,8 @@ const FormData = ref<any>([
     //     default: 0,
     // },
 ])
+
+let data = ref({})
 const route = useRoute()
 
 const leaveInfo = ref<any>({})
@@ -105,17 +107,17 @@ onMounted(() => {
 })
 
 const getData = () => {
-    // FamilyList({ elderlyId: route.query.id }).then((res: any) => {
-    //     console.log(res)
-    //     // data.value = res.data
-    //     FormData.value[3].childs = res.data.map((item: any) => {
-    //         return {
-    //             label: item.name,
-    //             value: item.id,
-    //             ...item
-    //         }
-    //     })
-    // })
+    FamilyList({ elderlyId: route.query.id }).then((res: any) => {
+        console.log(res)
+        // data.value = res.data
+        FormData.value[3].childs = res.data.map((item: any) => {
+            return {
+                label: item.name,
+                value: item.id,
+                ...item
+            }
+        })
+    })
 }
 
 

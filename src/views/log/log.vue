@@ -19,8 +19,8 @@
                     </Select> -->
                     <Select v-model="searchData.status" clearable style="width:100px" :placeholder="t('处理状态')" @on-change="handleSearch">
                         <Option value="0">未处理</Option>
-                        <Option value="1">处理中</Option>
-                        <Option value="2">已处理</Option>
+                        <Option value="10">处理中</Option>
+                        <Option value="1">已处理</Option>
                     </Select>
                     <Cascader :data="list" v-model="dataValue" :load-data="loadList" v-width="200"
                         :placeholder="t('楼栋/楼层/房间')" @on-change="handleSearch" />
@@ -135,11 +135,11 @@ import { Cascader, Modal, Message, DatePicker, Row } from 'view-ui-plus';
 import { HostelList, HostelFloorlList, HostelRoomListOfFloor, HostelRoomBedListOfRoom } from "@/api/Hostel/Hostel"
 import {DeviceWarningProcessing,DeviceWarningComplete, DeviceLogList, DeviceStateratio, DeviceTypeRatio, DeviceList, DeviceUpdate, DeviceSave, DeviceRemoveBatch, DeviceStopUsage, DeviceUsageRecordList, DeviceAddUsageRecord } from "@/api/Device/Device";
 const { t } = useI18n()
-const checkAll = ref<any>(false)
+// const checkAll = ref<any>(false)
 const data = ref<any>([])
-const errList = ref<any>([])
-const online = ref<any>()
-const status = ref<any>()
+// const errList = ref<any>([])
+// const online = ref<any>()
+// const status = ref<any>()
 
 const searchData = ref<any>({
     hostelId: '',
@@ -151,7 +151,7 @@ const searchData = ref<any>({
 })
 
 const pagerConfig = ref({
-    total: 10,//总数
+    total: 0,//总数
     currentPage: 1,//当前页
     pageSize: 10 //数量
 })
@@ -181,9 +181,13 @@ const handleLogStatus = (row: any) => {
 
 
 const handleSearch = (value: any) => {
+    if( searchData.value.floorId != undefined){
+        searchData.value.floorId = value[1]
+    }
+    if( searchData.value.roomId != undefined){
+        searchData.value.roomId = value[2]
+    }
 
-    searchData.value.floorId = value[1]
-    searchData.value.roomId = value[2]
 
 
     getData()
@@ -191,9 +195,10 @@ const handleSearch = (value: any) => {
 
 
 const getData = () => {
-    DeviceLogList(searchData.value).then((res: any) => {
+    DeviceLogList({...searchData.value, current:pagerConfig.value.currentPage,size:pagerConfig.value.pageSize }).then((res: any) => {
         console.log(res)
         data.value = res.data.records
+        pagerConfig.value.total= res.data.total
     })
 }
 

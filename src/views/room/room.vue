@@ -373,7 +373,7 @@ onMounted(() => {
 
             .roomItem {
                 width: 100%;
-                cursor: pointer;
+                // cursor: pointer;
 
                 .roomTitle {
                     display: flex;
@@ -412,6 +412,7 @@ onMounted(() => {
                     text-align: center;
                     margin-bottom: 10px;
                     min-width: 150px;
+                    cursor: pointer;
 
                     .user {
                         width: 100%;

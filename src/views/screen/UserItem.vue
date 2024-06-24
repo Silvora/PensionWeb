@@ -10,7 +10,7 @@
                     <!-- {{device?.status==10?t('异常'): [t('无人'), t('有人')][device?.status ||0] }} -->
                 </span>
                 <!-- <span class="t2">{{ device?.roomBedNumber|| info?.roomBedNumber }}</span> -->
-                <span class="t2">{{ device?.roomBedNumber|| '未入住' }}</span>
+                <span class="t2">{{ device?.roomBedNumber ? device?.roomBedNumber : info?.roomBedNumber? t('已入住') : t('未入住') }}</span>
                 <span class="t3">
                     <img src="@/assets/images/room-setting.png" alt="" srcset=""
                         @click="handleNavTo(`/add-elder?type=0&id=${info?.elderlyId}`)">

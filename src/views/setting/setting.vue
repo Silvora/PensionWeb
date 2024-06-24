@@ -20,7 +20,7 @@
                     <Cascader :data="list" v-model="dataValue" :load-data="loadList" v-width="200"
                         :placeholder="t('楼栋/楼层/房间')" @on-change="handleSearch" />
                     <Button type="primary" @click="handleToNavLog">{{ t('全部日志') }}</Button>
-                    <Button type="primary">{{ t('重置') }}</Button>
+                    <!-- <Button type="primary">{{ t('重置') }}</Button> -->
                 </Space>
             </span>
         </div>
@@ -64,8 +64,8 @@
                         <div class="list">
                             <Button type="primary" @click="handleShowModal">{{ t('添加设备') }}</Button>
                             <!-- <Button type="primary">参数设置</Button> -->
-                            <Button type="primary" @click="handleDeviceOnline">{{ t('一键上线') }}</Button>
-                            <Button type="primary" @click="handleDeviceOffline">{{ t('一键下线') }}</Button>
+                            <Button type="primary" @click="handleDeviceOnline">{{ t('一键布防') }}</Button>
+                            <Button type="primary" @click="handleDeviceOffline">{{ t('一键撤防') }}</Button>
                             <Button type="error" @click="handleBatchDelete">{{ t('批量删除') }}</Button>
                         </div>
                     </Card>

@@ -19,6 +19,7 @@
                                 </Radio>
                             </RadioGroup>
                             <Button type="error" size="small" class="btn" @click="handleOnCheck">{{ t('移除床位') }}</Button>
+                            <!-- <Button type="primary" size="small" class="btn" @click="handleCheckUser({ ...props.info, status: 2 })" v-if="props.info?.status==1">{{ t('入住') }}</Button> -->
                         </Space>
                     </span>
                     <!-- <span>
@@ -96,7 +97,7 @@
             </div>
         </Modal>
 
-        <Modal v-model="elderModal" :title="t('暂无设备')" :footer-hide="true" width="300">
+        <Modal v-model="elderModal" :title="t('老人选择')" :footer-hide="true" width="300">
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
@@ -161,6 +162,8 @@ const props = defineProps({
 const descriptionList = ref<any>([])
 const type = ref('0')
 
+const jobLevelList:any = ref(["三级", "二级", "一级", "特一级", "特二级", "特三级", "专需护理"])
+
 watchEffect(() => {
     type.value = props.info?.status + ''
     descriptionList.value = [
@@ -170,7 +173,7 @@ watchEffect(() => {
         },
         {
             label: '主要疾病',
-            value: '主要疾病',
+            value: '',
         },
         {
             label: '性别',
@@ -178,15 +181,15 @@ watchEffect(() => {
         },
         {
             label: '用药',
-            value: '用药'
+            value: ''
         },
         {
             label: '年龄',
-            value: '年龄'
+            value: dayjs(dayjs().format("YYYY-MM-DD") ).diff(props.info?.checkIn?.birthDate ,'year')
         },
         {
             label: '用餐规划',
-            value: '用餐规划'
+            value: ''
         },
         {
             label: '档案号',
@@ -194,27 +197,27 @@ watchEffect(() => {
         },
         {
             label: '康复计划',
-            value: '康复计划'
+            value: ''
         },
         {
             label: '护理等级',
-            value: '护理等级'
+            value: props.info?.checkIn?.nursingGrade?jobLevelList[props.info?.checkIn?.nursingGrade]:''
         },
         {
             label: '入住时间',
-            value: '入住时间'
+            value: ''
         },
         {
             label: '床位信息',
-            value: '床位信息'
+            value: ''
         },
-        {
-            label: '到期时间',
-            value: '到期时间'
-        },
+        // {
+        //     label: '到期时间',
+        //     value: '到期时间'
+        // },
         {
             label: '看护人',
-            value: '看护人'
+            value: props.info?.checkIn?.nursingName
         },
     ]
 })

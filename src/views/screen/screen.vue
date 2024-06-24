@@ -35,20 +35,38 @@
             </template>
 
             <div class="elderBox">
-                <Input prefix="ios-search" clearable :enter-button="t('搜索')" :placeholder="t('搜索')" />
+                <!-- <Input prefix="ios-search" clearable :enter-button="t('搜索')" :placeholder="t('搜索')" /> -->
+                <Input v-model="searchFocusData.name" search @on-search="handleSearchFocus" >
+            <template #prepend>
+              <Select v-model="searchFocusData.focus" style="width: 80px" @on-change="handleSearchFocus">
+                <Option   value="-1">{{ t('全部') }}</Option>
+                  <Option value="1">{{ t('未关注') }}</Option>
+                  <Option value="0">{{ t('已关注') }}</Option>
+              </Select>
+            </template>
+            <!-- <template #append>
+              <Button icon="ios-search" @on-click="handleSearchFocus"></Button>
+            </template> -->
+        </Input>
 
-                <Card :bordered="false" :padding="5" style="background: rgba(19,100,248,0.05);margin: 5px 0;"
-                    v-for="item in detailList" :key="item.id">
-                    <div class="userBox" @click="handleCheck(item)">
-                        <div>
-                            <img :src="oss + item.photo" alt="">
+                <div style="width: 100%; height: 450px; overflow: hidden; overflow-y: auto;">
+                    <Card :bordered="false" :padding="5" style="background: rgba(19,100,248,0.05);margin: 5px 0;"
+                        v-for="item in detailList" :key="item.id">
+                        <div class="userBox" >
+                            <div>
+                                <img :src="oss + item.photo" alt="">
+                            </div>
+                            <div class="name">
+                                <p>{{ item.elderlyName }}</p>
+                                <p>ID:{{ item.elderlyFileNo }}</p>
+                            </div>
+                            <div class="active">
+                                <Button type="primary" size="small" v-if="item.focus == 1" @click="handleCheck(item, 0)">关注</Button>
+                                <Button type="error" size="small" v-if="item.focus == 0" @click="handleCheck(item, 1)">取消</Button>
+                            </div>
                         </div>
-                        <div class="name">
-                            <p>{{ item.elderlyName }}</p>
-                            <p>ID:{{ item.elderlyFileNo }}</p>
-                        </div>
-                    </div>
-                </Card>
+                    </Card>
+                </div>
 
             </div>
         </Modal>
@@ -150,13 +168,13 @@ const searchData = ref<any>({
     // elderlyName: ''
 })
 
-const handleCheck = (item: any) => {
+const handleCheck = (item: any, isF: any) => {
     // detailList.value = []
     // detailList.value.push(item)
     // elderModal.value = false
     console.log(item)
 
-    CheckFocus({
+    isF==0&& CheckFocus({
         elderlyId: item.elderlyId,
         checkInId: item.id
     }).then(() => {
@@ -165,6 +183,15 @@ const handleCheck = (item: any) => {
         elderModal.value = false
         getData()
     })
+
+    isF==1&&CheckCancelFocus({id: item.id}).then(() => {
+        Message.success(t('取消成功'))
+        // getData()
+        elderModal.value = false
+        getData()
+    })
+
+
 }
 
 const timer = ref<any>(null)
@@ -399,15 +426,50 @@ onMounted(() => {
 
 
 
+const searchFocusData:any = ref({
+    list:[],
+    // current: 1,
+    // size: 9999,
+    focus: '',
+    name:'',
+
+})
+
+const handleSearchFocus = () =>{
+    console.log("first",searchFocusData.value)
+
+    let list:any = []
+    if(searchFocusData.value.focus == -1 || searchFocusData.value.focus == ''){
+        list = searchFocusData.value.list.filter((item:any)=>
+            item.elderlyName.includes(searchFocusData.value.name)
+        )
+    }
+    if(searchFocusData.value.focus == 0){
+        list = searchFocusData.value.list.filter((item:any)=>
+            item.elderlyName.includes(searchFocusData.value.name) && item.focus == 0
+        )
+    }
+    if(searchFocusData.value.focus == 1){
+        list = searchFocusData.value.list.filter((item:any)=>
+            item.elderlyName.includes(searchFocusData.value.name) && item.focus == 1
+        )
+    }
+
+    detailList.value = list
+
+}
+
 const handleAddFocus = () => {
     elderModal.value = true
 
     CheckList({
-        current: 1,
-        size: 9999,
-        focus: 1,
-    }).then((res: any) => {
+    current: 1,
+    size: 9999,
+    focus: null,
+
+}).then((res: any) => {
         // console.log(res.records)
+        searchFocusData.value.list = res.data.records
 
         detailList.value = res.data.records
 
@@ -560,11 +622,15 @@ const handleAddFocus = () => {
         }
 
         .name {
+            width: 180px;
             font-size: 14px;
             font-family: PingFangSC, PingFang SC;
             font-weight: 400;
             color: #1C1B1B;
             line-height: 20px;
+        }
+        .active{
+            width: 50px;
         }
     }
 }

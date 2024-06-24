@@ -535,20 +535,30 @@ const handleSumbitAdd = () => {
     let data = {
         name: addInput.value,
     }
+
+    if(data.name == ''){
+            Message.warning('名称不能为空')
+            return
+        }
+
     if (roomType.value == 0) {
+
+      
+
         //楼栋
         HostelSave({ ...data }).then(() => {
             Message.success(t('添加成功'))
             addModal.value = false
             emit('handleUpdate', true)
         }).catch(() => {
-            Message.success('添加失败')
+            Message.error('添加失败')
         })
     }
 
     if (roomType.value == 1) {
         // 
 
+      
         //楼层
         HostelFloorSave({ hostelId: selectHostelId.value, floorNumber: data.name }).then(() => {
             Message.success(t('添加成功'))
@@ -561,6 +571,8 @@ const handleSumbitAdd = () => {
     }
 
     if (roomType.value == 2) {
+
+        
         // 
 
         bedFromDataRef.value.validate((valid: any) => {
