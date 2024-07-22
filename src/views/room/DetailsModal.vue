@@ -1,6 +1,6 @@
 <template>
     <div class="details">
-        <Modal v-model="detailsModal" :title="t('床位信息')" :footer-hide="true" width="650">
+        <Modal v-model="detailsModal" :title="t('床位信息')" :footer-hide="true" :width="650" :mask-closable="false">
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
@@ -18,8 +18,9 @@
                                     {{ t('预留') }}
                                 </Radio>
                             </RadioGroup>
+                            <Button type="primary" size="small" class="btn" @click="handleCheckUpdate({ ...props.info, status: 2 })" v-if="props.info?.status==1">{{ t('入住') }}</Button>
+
                             <Button type="error" size="small" class="btn" @click="handleOnCheck">{{ t('移除床位') }}</Button>
-                            <!-- <Button type="primary" size="small" class="btn" @click="handleCheckUser({ ...props.info, status: 2 })" v-if="props.info?.status==1">{{ t('入住') }}</Button> -->
                         </Space>
                     </span>
                     <!-- <span>
@@ -34,7 +35,7 @@
                         <Space>
                             <span>{{ t('床位信息') }}</span>
                             <!-- <span>一楼 A101 01</span> -->
-                            <span>{{ props.info.bedNumber }}</span>
+                            <span>{{ props?.info?.bedNumber }}</span>
                         </Space>
                     </span>
                     <span>
@@ -65,11 +66,12 @@
                 </div>
                 <div class="info noBox" v-else>{{ t('暂无老人') }}</div>
                 <p style="padding:20px 0 ;">{{ t('智能设备列表') }}</p>
-                <div class="device" v-if="props.info?.checkIn">
+                <div class="device" v-if="props.info?.checkIn?.deviceList.length > 0">
                     <Row :gutter="10">
                         <Col span="12" v-for="item in deviceList" :key="item.label">
                         <Card :bordered="false" :padding="16"
-                            style="background: rgba(19,100,248,0.05);margin-bottom: 10px;">
+                            style="background: rgba(19,100,248,0.05);margin-bottom: 10px;" 
+                            v-if="typeList.includes(item.type)">
                             <div class="deviceBox">
                                 <div style="margin-right: 16px;">
                                     <img :src="item.img" alt="">
@@ -83,10 +85,10 @@
                                         <span class="t1">{{ t('设备数量') }}</span>
                                         <span class="t2">{{ item.num }}</span>
                                     </p>
-                                    <p class="descript">
+                                    <!-- <p class="descript">
                                         <span class="t1">{{ t('告警次数') }}</span>
                                         <span class="t2">{{ item.errorNum }}</span>
-                                    </p>
+                                    </p> -->
                                 </div>
                             </div>
                         </Card>
@@ -97,19 +99,28 @@
             </div>
         </Modal>
 
-        <Modal v-model="elderModal" :title="t('老人选择')" :footer-hide="true" width="300">
+        <Modal v-model="elderModal" :title="t('老人选择')" :footer-hide="true" :width="300" :mask-closable="false">
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
 
             <div class="elderBox">
-                <Input prefix="ios-search" clearable :enter-button="t('搜索')" :placeholder="t('搜索')" v-model="keyword" />
-
-                <Card :bordered="false" :padding="5" style="background: rgba(19,100,248,0.05);margin: 5px 0;"
+                <Input v-model.trim="searchFocusData.name"  search clearable @on-search="handleSearchFocus" >
+                    <template #prepend>
+              <Select v-model="searchFocusData.focus" style="width: 80px" @on-change="handleSearchFocus">
+                  <Option value="-1">{{ t('全部') }}</Option>
+                  <Option value="1">{{ t('未关注') }}</Option>
+                  <Option value="0">{{ t('已关注') }}</Option>
+              </Select>
+            </template>
+                </Input>
+                <div style="width: 100%; height: 450px; overflow: hidden; overflow-y: auto;">
+                    <Card :bordered="false" :padding="5" style="background: rgba(19,100,248,0.05);margin: 5px 0;"
                     v-for="item in detailList" :key="item.id">
                     <div class="userBox">
                         <div>
-                            <img :src="item.photo" alt="">
+                            <img :src="oss + item.photo" alt="" v-if="item.photo">
+                            <img v-else src="@/assets/images/screen.png" alt="" srcset="">
                         </div>
                         <div class="name">
                             <p>{{ item.name }}</p>
@@ -125,6 +136,9 @@
                         </div>
                     </div>
                 </Card>
+                </div>
+
+              
 
             </div>
         </Modal>
@@ -139,7 +153,7 @@ import sleep from "@/assets/images/sleep.png"
 import sleep2 from "@/assets/images/setting_sleep2.png"
 import errBtn from "@/assets/images/errBtn.png"
 import { ElderlyListNotCheckIn } from '@/api/Elderly/Elderly'
-import { CheckSave, CheckRemoveId } from "@/api/Check/Check"
+import { CheckSave, CheckRemoveId, CheckUpdate } from "@/api/Check/Check"
 import { Message, Modal, Space } from 'view-ui-plus';
 import { useI18n } from "vue-i18n";
 const { t } = useI18n()
@@ -164,6 +178,42 @@ const type = ref('0')
 
 const jobLevelList:any = ref(["三级", "二级", "一级", "特一级", "特二级", "特三级", "专需护理"])
 
+const searchFocusData:any = ref({
+    list:[],
+    // current: 1,
+    // size: 9999,
+    focus: '',
+    name:'',
+
+})
+
+const handleSearchFocus = () =>{
+    console.log("first",searchFocusData.value)
+
+    let list:any = []
+    if(searchFocusData.value.focus == -1 || searchFocusData.value.focus == ''){
+        list = searchFocusData.value.list.filter((item:any)=>
+            item.name.toLowerCase().includes(searchFocusData.value.name.toLowerCase())
+        )
+    }
+    if(searchFocusData.value.focus == 0){
+        list = searchFocusData.value.list.filter((item:any)=>
+            item.name.toLowerCase().includes(searchFocusData.value.name.toLowerCase()) && item.focus == 0
+        )
+    }
+    if(searchFocusData.value.focus == 1){
+        list = searchFocusData.value.list.filter((item:any)=>
+            item.name.toLowerCase().includes(searchFocusData.value.name.toLowerCase()) && item.focus == 1
+        )
+    }
+
+    detailList.value = list
+
+}
+
+
+const typeList = ref<any>([])
+
 watchEffect(() => {
     type.value = props.info?.status + ''
     descriptionList.value = [
@@ -171,59 +221,62 @@ watchEffect(() => {
             label: '姓名',
             value: props.info?.checkIn?.elderlyName
         },
-        {
-            label: '主要疾病',
-            value: '',
-        },
+        // {
+        //     label: '主要疾病',
+        //     value: '',
+        // },
         {
             label: '性别',
             value: props.info?.checkIn?.elderlyGender == 1 ? '男' : '女'
         },
-        {
-            label: '用药',
-            value: ''
-        },
+        // {
+        //     label: '用药',
+        //     value: ''
+        // },
         {
             label: '年龄',
             value: dayjs(dayjs().format("YYYY-MM-DD") ).diff(props.info?.checkIn?.birthDate ,'year')
         },
-        {
-            label: '用餐规划',
-            value: ''
-        },
+        // {
+        //     label: '用餐规划',
+        //     value: ''
+        // },
         {
             label: '档案号',
             value: props.info?.checkIn?.elderlyFileNo
         },
-        {
-            label: '康复计划',
-            value: ''
-        },
+        // {
+        //     label: '康复计划',
+        //     value: ''
+        // },
         {
             label: '护理等级',
-            value: props.info?.checkIn?.nursingGrade?jobLevelList[props.info?.checkIn?.nursingGrade]:''
+            value: props.info?.checkIn?.nursingGrade!= ''?jobLevelList.value[props.info?.checkIn?.nursingGrade]:''
         },
         {
             label: '入住时间',
-            value: ''
+            value: props.info?.checkIn?.startTime
         },
-        {
-            label: '床位信息',
-            value: ''
-        },
+        // {
+        //     label: '床位信息',
+        //     value: ''
+        // },
         // {
         //     label: '到期时间',
         //     value: '到期时间'
         // },
         {
             label: '看护人',
-            value: props.info?.checkIn?.nursingName
+            value: props.info?.checkIn?.staffName
         },
     ]
+    props.info?.checkIn?.deviceList?.forEach((item: any) => {
+        typeList.value.push(item?.type)
+    })
 })
 
 
-console.log(props.info)
+// console.log(props.info)
 
 
 const deviceList = ref([
@@ -231,42 +284,64 @@ const deviceList = ref([
         img: sleep2,
         label: '睡眠监测',
         num: 1,
-        errorNum: 3,
+        errorNum: 0,
+        type:'x1_type'
     },
     {
         img: bitmap,
         label: '摔倒监测',
-        num: 5,
-        errorNum: 7,
+        num: 1,
+        errorNum: 0,
+        type:'ed719_type'
     },
     {
         img: errBtn,
         label: '紧急按钮',
-        num: 9,
-        errorNum: 11,
+        num: 1,
+        errorNum: 0,
+        type:'dadedd719_type'
     },
     {
         img: thermometer,
         label: '温度计',
-        num: 14,
-        errorNum: 12,
+        num: 1,
+        errorNum: 0,
+         type:'edasdd719_type'
     }
 ])
 
 
+const handleCheckUpdate = (info:any) =>{
+
+    let data = info.checkIn
+    CheckUpdate({
+    "bedId": data.bedId,
+  "elderlyId": data.elderlyId,
+  "id": data.id,
+  "status": 2
+}).then(()=>{
+    Message.success(t('入住成功'))
+    emit('handleUpdate', true)
+    detailsModal.value = false
+
+})
+}
+
+
 const handleOnCheck = () => {
     console.log(props.info)
+    let log = props.info?.status == '1' ? '是否移除預留人' : '是否移除入住人'
 
     Modal.confirm({
-        title: t('删除'),
-        content: `${t('是否删除入住人')}【${props.info?.checkIn?.elderlyName}】?`,
+        title: t('提示'),
+        content: `${t(log)}【${props.info?.checkIn?.elderlyName}】?`,
         loading: true,
         onOk: () => {
             CheckRemoveId({
-                bedId: props.info.id
-            }).then((res) => {
+                bedId: props?.info?.id
+            }).then(() => {
                 Modal.remove();
-                Message.success(t('删除成功'))
+                Message.success(t('移除成功'))
                 detailsModal.value = false
 
                 emit('handleUpdate', true)
@@ -296,9 +371,11 @@ const handleCheckUser = (item: any) => {
 
     console.log(data)
 
+    let txt = item.status == 1 ? t('预留成功') : t('入住成功')
+
 
     CheckSave(data).then(() => {
-        Message.success(t('添加成功'))
+        Message.success(txt)
         elderModal.value = false
         detailsModal.value = false
         emit('handleUpdate', true)
@@ -306,6 +383,8 @@ const handleCheckUser = (item: any) => {
 }
 
 const handleOpenElderModal = () => {
+      searchFocusData.value.name = ''
+    searchFocusData.value.focus = '-1'
     elderModal.value = true
     getData()
 }
@@ -318,7 +397,6 @@ const handleRadioType = (label: string) => {
 }
 
 const showModal = () => {
-
     detailsModal.value = true
 }
 
@@ -329,11 +407,12 @@ const hideModal = () => {
 const getData = () => {
     ElderlyListNotCheckIn({
         current: 1,
-        keyword: keyword.value,
+        // keyword: keyword.value,
         size: 9999
     }).then((res: any) => {
         console.log(res)
         detailList.value = res.data.records
+        searchFocusData.value.list = res.data.records
     })
 }
 

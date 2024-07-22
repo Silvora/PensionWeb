@@ -5,15 +5,15 @@
             <Row justify="start">
 
                 <Col :span="24" class="col">
-                <div class="label" style="width: 123px; height: 96px;"> {{ t('机构介绍') }} </div>
+                <div class="label" style="width: 123px; height: 96px;color: black;"> {{ t('机构介绍') }} </div>
                 <div class="input" style="width:100%;height: 96px;">
-                    <Input type="textarea" v-model="value" :placeholder="t('请输入机构介绍')"
+                    <Input type="textarea" v-model.trim="value" :placeholder="t('请输入机构介绍')"
                         :autosize="{ minRows: 4, maxRows: 4 }" />
                 </div>
                 </Col>
 
                 <Col :span="24" class="col">
-                <div class="label"> {{ t('荣誉展示') }} </div>
+                <div class="label" style="color: black;"> {{ t('荣誉展示') }} </div>
                 <div class="input upload1">
                     <!-- <div class="up4">1</div>
                     <div class="up4">2</div>
@@ -22,7 +22,7 @@
                     <Upload :show-upload-list="false" :before-upload="(f: any) => handleUpload('driveUrl1', f)" action="#">
 
                         <div class="imgItem">
-                            <img :src="oss + fileUrl.driveUrl1" class="up4" alt="" v-if="fileUrl.driveUrl1" />
+                            <img :src="fileUrl.driveUrl1" class="up4" alt="" v-if="fileUrl.driveUrl1" />
                             <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
 
                             <Icon class="icon" size="22" type="md-close-circle"
@@ -36,7 +36,7 @@
                     <Upload :show-upload-list="false" :before-upload="(f: any) => handleUpload('driveUrl2', f)" action="#">
 
                         <div class="imgItem">
-                            <img :src="oss + fileUrl.driveUrl2" class="up4" alt="" v-if="fileUrl.driveUrl2" />
+                            <img :src="fileUrl.driveUrl2" class="up4" alt="" v-if="fileUrl.driveUrl2" />
                             <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
 
                             <Icon class="icon" size="22" type="md-close-circle"
@@ -49,7 +49,7 @@
                     <Upload :show-upload-list="false" :before-upload="(f: any) => handleUpload('driveUrl3', f)" action="#">
 
                         <div class="imgItem">
-                            <img :src="oss + fileUrl.driveUrl3" class="up4" alt="" v-if="fileUrl.driveUrl3" />
+                            <img :src=" fileUrl.driveUrl3" class="up4" alt="" v-if="fileUrl.driveUrl3" />
                             <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
 
                             <Icon class="icon" size="22" type="md-close-circle"
@@ -64,7 +64,7 @@
 
 
                         <div class="imgItem">
-                            <img :src="oss + fileUrl.driveUrl4" class="up4" alt="" v-if="fileUrl.driveUrl4" />
+                            <img :src=" fileUrl.driveUrl4" class="up4" alt="" v-if="fileUrl.driveUrl4" />
                             <img src="@/assets/images/ic_荣誉照片@2x.png" class="up4" alt="" v-else />
 
                             <Icon class="icon" size="22" type="md-close-circle"
@@ -158,20 +158,34 @@ const handleSubmit = () => {
     // console.log(info)
 
 
-    let data = {
+    let data:any = {
         createDate: info.createDate,
         address: info.address,
         name: info.name,
         region: info.region,
         operationMode: info.operationMode,
-        postalCode: info.postalCode,
+        // postalCode: info.postalCode,
         telephone: info.telephone,
         directorPhone: info.directorPhone,
         introduce: value.value,
+        directorName: info.directorName,
         honorDisplayJson: JSON.stringify(jsonImg)
     }
+    let rules:any = []
 
-    // console.log(data)
+    Object.keys(data).forEach((item: any) => {
+        if (item != 'introduce' && item != 'honorDisplayJson') {
+            if(data[item] == '' || data[item] == null || data[item] == undefined){
+                     rules.push(item)
+            }
+        }
+    })
+console.log(rules)
+    if(rules.length > 0){
+        Message.warning(t('必填項不能為空'))
+        return
+    }
+
 
     OrgUpdate(data).then((res: any) => {
         console.log(res)

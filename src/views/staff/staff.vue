@@ -125,7 +125,7 @@
             </div>
         </div>
 
-        <Modal v-model="modal" :title="t('排班情况')" :footer-hide="true" :width="1220">
+        <Modal v-model="modal" :title="t('排班情况')" :footer-hide="true" :width="1220" :mask-closable="false">
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
@@ -133,7 +133,7 @@
         </Modal>
 
 
-        <Modal v-model="addModal" :title="t(info.id ? '编辑员工' : '添加员工')" :footer-hide="true" :width="802">
+        <Modal v-model="addModal" :title="t(info.id ? '编辑员工' : '添加员工')" :footer-hide="true" :width="802" :mask-closable="false">
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
@@ -351,6 +351,23 @@ const handleRoleSumbit = () => {
 
     }
 
+    console.log(data)
+    let rules:any = []
+    Object.keys(data).forEach(key => {
+        if(key != 'certificateJson' && key != 'photo' && key != 'groupName' && key != 'superiorName') {
+            if (data[key] == '' || data[key] == null || data[key] == undefined) {
+                data[key] === 0?'':rules.push(key)
+        }
+        }
+    })
+    console.log(rules)
+    if (rules.length > 0) {
+        Message.warning('必填項不能為空')
+        return
+    }
+
+
+
 
     if (data.id) {
         handleRoleEditSubmit(data)
@@ -397,7 +414,7 @@ const handleRoleEditSubmit = (data: any) => {
     delete data.birthDate
     delete data.entryTime
     StaffUpdate(data).then(() => {
-        Message.success(t('编辑成功'))
+        Message.success(t('修改成功'))
         getData()
         addModal.value = false
     })

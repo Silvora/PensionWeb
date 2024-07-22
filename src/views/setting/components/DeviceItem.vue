@@ -29,7 +29,7 @@
                             <!-- {{ t('关联房间') }}:{{ props?.info?.roomBedNumber?.split('-')?.pop() }} -->
 
                         </p>
-                        <p class="t2" v-else>
+                        <p class="t2" v-else style="overflow: hidden;width: 100%;white-space: nowrap;text-overflow: ellipsis;">
                             {{ t('关联老人') }}:{{ props?.info.elderlyInfo?.name }}
 
                         </p>
@@ -71,15 +71,15 @@
                 </div> -->
 
             </div>
-            <Button size="small" class="stateBtn"
+            <!-- <Button size="small" class="stateBtn"
                 :style="{ background: 'rgba(224, 98, 85, 1)', color: '#fff', border: 'none' }"
                 v-if="props.info?.stateInfo?.eventType">{{ t(errInfo[props.info?.stateInfo?.eventType]) }}</Button>
             <Button size="small" class="stateBtn"
                 :style="{ background: 'rgba(224, 98, 85, 1)', color: '#fff', border: 'none' }"
-                v-else-if="props.info?.stateInfo?.onBedStatus">{{ [t('不在床'), t('在床')][props.info?.stateInfo?.onBedStatus] }}</Button>
-            <Button size="small" class="stateBtn"
+                v-else-if="props.info?.stateInfo?.onBedStatus">{{ [t('不在床'), t('在床')][props.info?.stateInfo?.onBedStatus] }}</Button> -->
+            <!-- <Button size="small" class="stateBtn"
                 :style="{ background: 'rgba(18, 185, 135, 0.05)', color: 'rgba(18, 185, 135, 1)', border: 'none' }"
-                v-else>{{ t('暂无连接设备') }}</Button>
+                v-else>{{ t('暂无连接设备') }}</Button> -->
         </div>
     </Card>
 </template>
@@ -117,7 +117,7 @@ watchEffect(() => {
     // console.log(check.value)
 
     // if(props.checkAll){
-    //     check.value = true
+    //     emit('handleCheck', { id: props.info.id, check: check.value })
     // }
 
 })

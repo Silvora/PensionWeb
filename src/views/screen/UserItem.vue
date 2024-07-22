@@ -4,13 +4,17 @@
             <p class="title">
                 <span
                     :class="['t1', ['gary', 'green', 'yellow'][device?.online || 0]]">
-                    <span v-if="device?.status==10">{{ t('异常') }}</span>
-                    <span v-if="!device?.online">{{ [t('无人'), t('有人')][device?.status ||0] }}</span>
-                    <span v-else>{{ [t('离床'), t('在床')][device?.status ||0]  }} </span>
+                    <span v-if="device?.online == 0 || !device?.online">{{ t('離線') }}</span>
+                    <span v-else-if=" stateInfo?.heartRate > 0 || stateInfo?.respiratoryRate> 0 || stateInfo?.bodyMovement > 0">{{ t('有人') }}</span>
+                    <span v-else>{{ t('无人') }}</span>
+                    <!-- <span>{{ [t('離線'), t('線上')][device?.online ||0] }}</span> -->
+                    <!-- <span v-if="device?.status==10">{{ t('异常') }}</span>
+                    <span v-if="!device?.online">{{ [t('无人'), t('有人')][device?.status ||0] }} </span>
+                    <span v-else>{{ [t('离床'), t('在床')][device?.status || 0 ]  }}</span> -->
                     <!-- {{device?.status==10?t('异常'): [t('无人'), t('有人')][device?.status ||0] }} -->
                 </span>
                 <!-- <span class="t2">{{ device?.roomBedNumber|| info?.roomBedNumber }}</span> -->
-                <span class="t2">{{ device?.roomBedNumber ? device?.roomBedNumber : info?.roomBedNumber? t('已入住') : t('未入住') }}</span>
+                <span class="t2">{{ info?.roomBedNumber ? info?.roomBedNumber : device?.roomBedNumber? t('已入住') : t('未入住') }}</span>
                 <span class="t3">
                     <img src="@/assets/images/room-setting.png" alt="" srcset=""
                         @click="handleNavTo(`/add-elder?type=0&id=${info?.elderlyId}`)">
@@ -29,17 +33,18 @@
 
                         <!-- ed719_type -->
                         <img src="@/assets/images/setting_sleep2.png" alt="" v-if="device?.type=='x1_type'">
-                        <img src="@/assets/images/睡眠监测@2x(4).png" alt="" v-else >
+                        <!-- <img src="@/assets/images/睡眠监测@2x(4).png" alt="" v-else >
 
-                        <img src="@/assets/images/位图@2x(2).png" alt="">
-                        <img src="@/assets/images/温度计@2x.png" alt="" v-if="device?.type=='ed719_type'">
+                        <img src="@/assets/images/位图@2x(2).png" alt=""> -->
+                        <!-- <img src="@/assets/images/温度计@2x.png" alt="" v-if="device?.type=='ed719_type'"> -->
                         <img src="@/assets/images/紧急按钮@2x.png" alt="" v-if="device?.type=='ed719_type'">
                     </div>
                 </div>
                 <div class="info">
                     <!-- @click="handleNavTo(`/elder`)" -->
                     <div>
-                        <p class="t4">{{ info?.elderlyName }}
+                        <p class="t4">
+                            <p style="overflow: hidden; width: calc(100% - 30px);white-space: nowrap;text-overflow: ellipsis;">{{ info?.elderlyName }}</p>
                             <!-- <Icon type="ios-checkmark" /> -->
                             <i v-if="info?.elderlyGender == 1" class="iconfont icon-nan" style="color:#0160FF"></i>
                             <i v-if="info?.elderlyGender == 2" class="iconfont icon-nv" style="color:#E06255"></i>
@@ -47,7 +52,7 @@
                         <p class="t4">
                             <!-- <Icon type="ios-checkmark" /> -->
                             <img src="@/assets/images/pad-processing@2x.png" alt="" style="width: 15px;margin-right: 10px">
-                            {{ elderlyInfo?.staffName }}
+                           {{ elderlyInfo?.staffName }}
                         </p>
                     </div>
                     <!-- @click="handleNavTo(`/setting`)" -->
@@ -190,7 +195,7 @@ watch(()=>DetailsModalRef.value?.detailsModal, (b) => {
 
 watchEffect(() => {
     info.value = props?.info
-    device.value = props?.info?.deviceList[0]
+    device.value = props?.info?.deviceList.find((it:any)=>it?.type=="x1_type")
     console.log(device.value)
     stateInfo.value = device.value?.stateInfo
     elderlyInfo.value = device.value?.elderlyInfo
@@ -229,7 +234,8 @@ const handleNavTo = (path: string) => {
 
 .userInfo {
     // width: 265px;
-    min-width: 265px;
+    //min-width: 265px;
+    width: 100%;
     padding-bottom: 1px;
     cursor: pointer;
 

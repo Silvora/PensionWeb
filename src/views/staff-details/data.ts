@@ -2,7 +2,7 @@
 const nursingTable: any = {
       defaultConfig: {
         DOMTool: false,
-        DOMPage: true,
+        DOMPage: false,
         stripe: false, //斑马线条纹
         border: 'inner', //边框样式
         seq: true, //排序
@@ -88,11 +88,11 @@ const nursingTable: any = {
             minWidth: 100,
         },
 
-        {
-            title: '服务项目数量',
-            key: 'serviceCount',
-            minWidth: 100,
-        }
+        // {
+        //     title: '服务项目数量',
+        //     key: 'serviceCount',
+        //     minWidth: 100,
+        // }
     ]
 }
 

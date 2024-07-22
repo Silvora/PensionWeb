@@ -69,7 +69,7 @@
 
 
         <Modal v-model="isPermissions" :title="t('权限修改')" :width="30" @on-ok="handleSetPermissions"
-            @on-cancel="isPermissions = false">
+            @on-cancel="isPermissions = false" :mask-closable="false">
 
             <Tree :data="treeData" show-checkbox ref="TreeViewRef"></Tree>
         </Modal>
@@ -341,18 +341,29 @@ const handleBatchDelete = () => {
     let list = TableViewRef.value.getSelectRecords().map((item: any) => item.id)
     console.log(list)
     if (list.length > 0) {
-        AdminUserRemoveBatch({ ids: list }).then(() => {
+        Modal.confirm({
+        title: '删除使用者',
+        content: '確定要删除此使用者',
+        loading: true,
+        onOk: () => {
+            AdminUserRemoveBatch({ ids: list }).then(() => {
             Message.success(t('删除成功'))
             getData()
-        })
+        }).catch(() => {
+                Modal.loading = false
+            })
+        }
+    })
+    }else{
+        Message.warning(t('請選擇要删除的使用者!'))
     }
 }
 
 //删除角色
 const handleRoleDelete = (id: any) => {
     Modal.confirm({
-        title: '删除角色',
-        content: '确定要删除此角色',
+        title: '删除使用者',
+        content: '確定要删除此使用者',
         loading: true,
         onOk: () => {
             console.log(id)
@@ -375,6 +386,7 @@ const handleUpdatePage = ({ currentPage, pageSize }: any) => {
         currentPage,
         pageSize
     }
+    getData()
 }
 
 

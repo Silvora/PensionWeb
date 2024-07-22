@@ -369,7 +369,7 @@ const urgentInforms:any= {
                 prop: "name",
                 span: 1,
                 //disabled: false,
-                required: false,
+                required: true,
                 default: "",
             },
             {
@@ -378,7 +378,7 @@ const urgentInforms:any= {
                 prop: "name",
                 span: 1,
                 //disabled: false,
-                required: false,
+                required: true,
                 default: "",
             },
             {
@@ -387,7 +387,7 @@ const urgentInforms:any= {
                 prop: "name",
                 span: 1,
                 //disabled: false,
-                required: false,
+                required: true,
                 default: "",
             },
             {
@@ -396,7 +396,7 @@ const urgentInforms:any= {
                 prop: "name",
                 span: 1,
                 //disabled: false,
-                required: false,
+                required: true,
                 default: "",
             },
             {
@@ -405,7 +405,7 @@ const urgentInforms:any= {
                 prop: "name",
                 span: 1,
                 //disabled: false,
-                required: false,
+                required: true,
                 default: "",
             },
             {
@@ -414,7 +414,7 @@ const urgentInforms:any= {
                 prop: "name",
                 span: 1,
                 //disabled: false,
-                required: false,
+                required: true,
                 default: "",
             },
             {
@@ -423,7 +423,7 @@ const urgentInforms:any= {
                 prop: "name",
                 span: 1,
                 //disabled: false,
-                required: false,
+                required: true,
                 default: "",
             },
             {
@@ -432,7 +432,7 @@ const urgentInforms:any= {
                 prop: "name",
                 span: 1,
                 //disabled: false,
-                required: false,
+                required: true,
                 default: "",
             },
             {
@@ -441,7 +441,7 @@ const urgentInforms:any= {
                 prop: "name",
                 span: 1,
                 //disabled: false,
-                required: false,
+                required: true,
                 default: "",
             },
         ]
@@ -458,7 +458,7 @@ const toolBarConfig:any= {
             prop: "name",
             //disabled: false,
             //childs: [],
-            required: false,
+            required: true,
             // default: "",
         },
            {
@@ -467,7 +467,7 @@ const toolBarConfig:any= {
             prop: "phone",
             //disabled: false,
             //childs: [],
-            required: false,
+            required: true,
             // default: "",
             },
         
@@ -477,7 +477,7 @@ const toolBarConfig:any= {
             prop: "idNumber",
             //disabled: false,
             //childs: [],
-            required: false,
+            required: true,
             // default: "",
             },
              
@@ -489,18 +489,18 @@ const toolBarConfig:any= {
             childs: [
                 {
                     label: '未知',
-                    value: 0
+                    value: '0'
                 },
                 {
                     label: '男',
-                    value: 1
+                    value: '1'
                 },
                 {
                     label: '女',
-                    value: 2
+                    value: '2'
                 },
             ],
-            required: false,
+            required: true,
             // default: "",
             },
                {
@@ -509,7 +509,7 @@ const toolBarConfig:any= {
             prop: "relationship",
             //disabled: false,
             //childs: [],
-            required: false,
+            required: true,
             // default: "",
             },
                   {
@@ -520,14 +520,14 @@ const toolBarConfig:any= {
             childs: [
                 {
                     label: '是',
-                    value: 1
+                    value: '1'
                 },
                 {
                     label: '否',
-                    value: 0
+                    value: '0'
                 }
             ],
-            required: false,
+            required: true,
             // default: "",
         },
         
@@ -537,7 +537,7 @@ const toolBarConfig:any= {
             prop: "address",
             //disabled: false,
            // childs: [],
-            required: false,
+            required: true,
             // default: "",
         },
 
@@ -573,7 +573,7 @@ const familyInfo: any = {
                 prop: "name",
                 //disabled: false,
                 //childs: [],
-                required: false,
+                required: true,
                 // default: "",
             },
                {
@@ -582,7 +582,7 @@ const familyInfo: any = {
                 prop: "phone",
                 //disabled: false,
                 //childs: [],
-                required: false,
+                required: true,
                 // default: "",
                 },
             
@@ -592,7 +592,7 @@ const familyInfo: any = {
                 prop: "idNumber",
                 //disabled: false,
                 //childs: [],
-                required: false,
+                required: true,
                 // default: "",
                 },
                  
@@ -604,18 +604,18 @@ const familyInfo: any = {
                 childs: [
                     {
                         label: '男',
-                        value: 1
+                        value: '1'
                     },
                     {
                         label: '女',
-                        value: 2
+                        value: '2'
                     },
                     {
                 label: "未知",
                 value:0
             }
                 ],
-                required: false,
+                required: true,
                 // default: "",
                 },
                    {
@@ -624,7 +624,7 @@ const familyInfo: any = {
                 prop: "relationship",
                 //disabled: false,
                 //childs: [],
-                required: false,
+                required: true,
                 // default: "",
                 },
                       {
@@ -635,14 +635,14 @@ const familyInfo: any = {
                 childs: [
                     {
                         label: '是',
-                        value: 1
+                        value: '1'
                     },
                     {
                         label: '否',
-                        value: 0
+                        value: '0'
                     }
                 ],
-                required: false,
+                required: true,
                 // default: "",
             },
             
@@ -652,7 +652,7 @@ const familyInfo: any = {
                 prop: "address",
                 //disabled: false,
                // childs: [],
-                required: false,
+                required: true,
                 // default: "",
             },
     
@@ -707,7 +707,7 @@ const healthyInfo: any = {
                 span: 1,
                 //disabled: false,
                 required: false,
-                default: "",
+                default: "0",
             },
             
             {
@@ -717,7 +717,7 @@ const healthyInfo: any = {
                 span: 1,
                 //disabled: false,
                 required: false,
-                default: "",
+                default: "0",
             },
             
             {
@@ -1268,21 +1268,21 @@ const contractInfo: any = {
                 type: 'date',
                 label: '合约签订日期',
                 prop: "contractDateStr",
-                span: 2,
+                span: 3,
                 //disabled: false,
                 required: false,
                 default: "",
              },
             
-                   {
-                type: 'sort',
-                label: '合计费用',
-                prop: "admissionDeposit",
-                span: 1,
-                disabled: true,
-                required: false,
-                default: "",
-             },
+            //        {
+            //     type: 'sort',
+            //     label: '合计费用',
+            //     prop: "admissionDeposit",
+            //     span: 1,
+            //     disabled: true,
+            //     required: false,
+            //     default: "",
+            //  },
 
            
              

@@ -29,17 +29,17 @@
         <div class="box" id="screenBoxAll" ref="screenBoxAll">
 
 
-            <Modal v-model="elderModal" :title="t('老人选择')" :footer-hide="true" width="270" :transfer="false">
+            <Modal v-model="elderModal" :title="t('老人选择')" :footer-hide="true" width="270" :transfer="false" :mask-closable="false">
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
 
             <div class="elderBox">
                 <!-- <Input prefix="ios-search" clearable :enter-button="t('搜索')" :placeholder="t('搜索')" /> -->
-                <Input v-model="searchFocusData.name" search @on-search="handleSearchFocus" >
+                <Input v-model.trim="searchFocusData.name" clearable search @on-search="handleSearchFocus" >
             <template #prepend>
               <Select v-model="searchFocusData.focus" style="width: 80px" @on-change="handleSearchFocus">
-                <Option   value="-1">{{ t('全部') }}</Option>
+                  <Option value="-1">{{ t('全部') }}</Option>
                   <Option value="1">{{ t('未关注') }}</Option>
                   <Option value="0">{{ t('已关注') }}</Option>
               </Select>
@@ -54,7 +54,9 @@
                         v-for="item in detailList" :key="item.id">
                         <div class="userBox" >
                             <div>
-                                <img :src="oss + item.photo" alt="">
+                                <img :src="oss + item.elderlyPhoto" alt="" v-if="item.elderlyPhoto">
+                                <img v-else src="@/assets/images/screen.png" alt="" srcset="">
+
                             </div>
                             <div class="name">
                                 <p>{{ item.elderlyName }}</p>
@@ -75,7 +77,7 @@
                 <Space class="title">
                     <span>{{ t('重点关注老人') }}</span>
                     <span>
-                        <Button type="primary" @click="handleAddFocus">{{ t('添加人员') }}</Button>
+                        <Button type="primary" @click="handleAddFocus">{{ t('人員調整') }}</Button>
                     </span>
                 </Space>
                 <div class="list">
@@ -84,11 +86,11 @@
             </div>
             <div class="bed">
                 <div class="title">
-                    <span class="p">{{ t('床位管理') }}</span>
+                    <span class="p">{{ t('牀位管理') }}</span>
                     <span class="alert">
                         <Alert type="error">
                             <span
-                                v-if="LogData.status == 0 && LogData.createTime.includes(dayjs().format('YYYY-MM-DD'))">{{ mqttStore.logError }}
+                                v-if="LogData.status == 0">{{ mqttStore.logError }}
                                 {{ t('紧急通知') }} </span>
                             <span v-else>{{ t('暂无通知') }}</span>
                         </Alert>
@@ -106,8 +108,9 @@
                 <div class="list">
 
                     <Row :gutter="10">
-                        <Col :md="6" :lg="6" :xl="6" :xxl="4"  v-for="item in UserList" :key="item">
+                        <Col :span="6"  v-for="item in UserList" :key="item">
                         <UserItem :info="item" @handleStatus="handleStatus"></UserItem>
+                         <!-- dsads -->
                         </Col>
                     </Row>
                 </div>
@@ -133,6 +136,7 @@ import dayjs from "dayjs"
 import { useFullscreen } from '@vueuse/core'
 import { DeviceLogList } from "@/api/Device/Device"
 import { useMqttStore } from "@/stores/modules/mqtt"
+import { nextTick } from "process";
 const mqttStore = useMqttStore()
 // let box = document.getElementById("#layoutBox")
 const { toggle, isFullscreen } = useFullscreen(screenBoxAll)
@@ -265,14 +269,17 @@ const getData = () => {
         let err:any = []
         let list:any = []
         res.data.records.forEach((item: any) => {
-            if(item?.deviceList[0]?.stateInfo?.eventType == '3008'){
+            if(item?.deviceList[0]?.stateInfo?.eventType == '3008' || item?.deviceList[1]?.stateInfo?.eventType == '3008' ){
                 err.push(item)
             }else{
                 list.push(item)
             }
         })
 
-        UserList.value = [...err,...list]
+       nextTick(() => {
+        // UserList.value = [...err,...list]
+        UserList.value = res.data.records
+       })
 
         console.log(UserList.value)
     })
@@ -441,17 +448,17 @@ const handleSearchFocus = () =>{
     let list:any = []
     if(searchFocusData.value.focus == -1 || searchFocusData.value.focus == ''){
         list = searchFocusData.value.list.filter((item:any)=>
-            item.elderlyName.includes(searchFocusData.value.name)
+            item.elderlyName.toLowerCase().includes(searchFocusData.value.name.toLowerCase())
         )
     }
     if(searchFocusData.value.focus == 0){
         list = searchFocusData.value.list.filter((item:any)=>
-            item.elderlyName.includes(searchFocusData.value.name) && item.focus == 0
+            item.elderlyName.toLowerCase().includes(searchFocusData.value.name.toLowerCase()) && item.focus == 0
         )
     }
     if(searchFocusData.value.focus == 1){
         list = searchFocusData.value.list.filter((item:any)=>
-            item.elderlyName.includes(searchFocusData.value.name) && item.focus == 1
+            item.elderlyName.toLowerCase().includes(searchFocusData.value.name.toLowerCase()) && item.focus == 1
         )
     }
 
@@ -460,6 +467,8 @@ const handleSearchFocus = () =>{
 }
 
 const handleAddFocus = () => {
+    searchFocusData.value.name = ''
+    searchFocusData.value.focus = '-1'
     elderModal.value = true
 
     CheckList({

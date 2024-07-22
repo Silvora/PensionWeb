@@ -6,7 +6,7 @@
             </span>
             <span class="searchBtn">
                 <Space>
-                    <Select v-model="searchData.online" clearable style="width:100px" :placeholder="t('是否在线')"
+                    <!-- <Select v-model="searchData.online" clearable style="width:100px" :placeholder="t('是否在线')"
                         @on-change="handleSearchData">
                         <Option value="0">{{ t('断开') }}</Option>
                         <Option value="1">{{ t('在线') }}</Option>
@@ -18,9 +18,8 @@
                         <Option value="10">{{ t('异常') }}</Option>
                     </Select>
                     <Cascader :data="list" v-model="dataValue" :load-data="loadList" v-width="200"
-                        :placeholder="t('楼栋/楼层/房间')" @on-change="handleSearch" />
+                        :placeholder="t('楼栋/楼层/房间')" @on-change="handleSearch" /> -->
                     <Button type="primary" @click="handleToNavLog">{{ t('全部日志') }}</Button>
-                    <!-- <Button type="primary">{{ t('重置') }}</Button> -->
                 </Space>
             </span>
         </div>
@@ -40,7 +39,7 @@
             <div class="bed">
                 <div class="title">
                     <span class="p">
-                        <Checkbox v-model="checkAll">{{ t('设备全选') }}</Checkbox>
+                        <Checkbox v-model="checkAll" @on-change="handleCheckAll">{{ t('设备全选') }}</Checkbox>
                     </span>
                     <span class="alert">
                         <!-- <Alert type="error">An error prompt</Alert>
@@ -64,21 +63,21 @@
                         <div class="list">
                             <Button type="primary" @click="handleShowModal">{{ t('添加设备') }}</Button>
                             <!-- <Button type="primary">参数设置</Button> -->
-                            <Button type="primary" @click="handleDeviceOnline">{{ t('一键布防') }}</Button>
-                            <Button type="primary" @click="handleDeviceOffline">{{ t('一键撤防') }}</Button>
+                            <Button type="primary" @click="handleDeviceOnline">{{ t('一鍵上線') }}</Button>
+                            <Button type="primary" @click="handleDeviceOffline">{{ t('一鍵下線') }}</Button>
                             <Button type="error" @click="handleBatchDelete">{{ t('批量删除') }}</Button>
                         </div>
                     </Card>
                 </div>
 
-                <div class="chart">
+                <!-- <div class="chart">
                     <p>{{ t('设备类型统计') }}</p>
                     <CountChart></CountChart>
                 </div>
                 <div class="chart">
                     <p>{{ t('设备状态') }}</p>
                     <StateChart></StateChart>
-                </div>
+                </div> -->
             </div>
         </div>
 
@@ -113,7 +112,7 @@ const FormDataRef = ref<InstanceType<typeof FormData>>()
 const DeviceInfoRef = ref<InstanceType<typeof DeviceInfo>>()
 const DeviceInfoRefCopy = ref<InstanceType<typeof DeviceInfoCopy>>()
 const searchData = ref<any>({
-    hostelId: '',
+    // hostelId: '',
     floorId: '',
     roomId: '',
     status: '',
@@ -166,14 +165,25 @@ const handleShowModal = () => {
     FormDataRef.value?.Open(null)
 }
 
+const handleCheckAll = (b:any) => {
+   if(b){
+    //    checkList.value = []
+    checkList.value = data.value.map((item:any)=>item.id)
+   }else{
+        checkList.value = []
+   }
+}
+
 // 选中
 const handleCheck = (item: any) => {
     console.log(item)
-    if (checkList.value.includes(item)) {
+    if (checkList.value.includes(item.id)) {
         checkList.value.splice(checkList.value.indexOf(item.id), 1);
     } else {
         checkList.value.push(item.id)
     }
+
+    console.log("checkList.value", checkList.value)
 }
 
 // 搜索
@@ -193,6 +203,13 @@ const handleSearch = (value: any) => {
 // 批量删除
 const handleBatchDelete = () => {
     console.log(checkList.value)
+
+    return;
+
+    if(!checkList.value.length){
+        Message.warning(t('請選擇删除的設備!'))
+        return
+    }
 
     Modal.confirm({
         title: t('提示'),
@@ -295,6 +312,11 @@ const getHome = () => {
 // 设备布防
 const handleDeviceOnline = () => {
 
+    if(!checkList.value.length){
+        Message.warning(t('請選擇上線的設備!'))
+        return
+    }
+
     let data = checkList.value.map((it: any) => {
         return {
             id: it
@@ -303,12 +325,18 @@ const handleDeviceOnline = () => {
 
     DeviceOnlineBatch(data).then((res: any) => {
         console.log(res)
-        Message.success(t('设备布防成功'))
+        Message.success(t('一鍵上線成功'))
         getData()
     })
 }
 // 设备撤防
 const handleDeviceOffline = () => {
+
+    if(!checkList.value.length){
+        Message.warning(t('請選擇下線的設備!'))
+        return
+    }
+
     let data = checkList.value.map((it: any) => {
         return {
             id: it
@@ -316,7 +344,7 @@ const handleDeviceOffline = () => {
     })
     DeviceOfflineBatch(data).then((res: any) => {
         console.log(res)
-        Message.success(t('设备撤防成功'))
+        Message.success(t('一鍵下線成功'))
         getData()
     })
 }

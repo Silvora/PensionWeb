@@ -94,8 +94,18 @@ const handleSubmit = () => {
         elderlyId: route.query.id,
         ...leaveInfo.value.FormData
     }
-
     console.log(data)
+    let rules:any = []
+    Object.keys(data).forEach(key => {
+        if (data[key] == '' || data[key] == null || data[key] == undefined) {
+            data[key] === 0?'':rules.push(key)
+        }
+    })
+    if (rules.length > 0) {
+        Message.warning('必填項不能為空')
+        return
+    }
+
     ElderlyAdmissionLeave(data).then(() => {
         Message.success(t('保存成功'))
     })

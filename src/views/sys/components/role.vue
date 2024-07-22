@@ -132,7 +132,6 @@ const handleUpdateSwitch = (row: any) => {
 }
 //编辑角色
 const handleRoleEdit = (row: any) => {
-
     TableViewRef.value.handleOpenEditModal(row)
 }
 const handleRoleEditModal = (data: any) => {
@@ -168,13 +167,25 @@ const handleBatchOnline = () => {
     })
     console.log(list)
     if (list.length > 0) {
-        RoleOnlineBatch(list).then(() => {
+
+        Modal.confirm({
+        title: '启用工種',
+        content: '確定要启用此工種',
+        loading: true,
+        onOk: () => {
+            RoleOnlineBatch(list).then(() => {
             Message.success(t('启用成功'))
             getData()
-        })
+        }).catch(() => {
+                Modal.loading = false
+            })
+        }
+    })
+
+       
         
     }else{
-        Message.warning(t('请选择要启用的角色'))
+        Message.warning(t('請選擇要启用的工種'))
     }
 }
 // 批量禁用
@@ -186,20 +197,32 @@ const handleBatchOffline = () => {
     })
     console.log(list)
    if(list.length > 0){
-    RoleOfflineBatch(list).then(() => {
+
+    Modal.confirm({
+        title: '禁用工種',
+        content: '确定要禁用此工種',
+        loading: true,
+        onOk: () => {
+            RoleOfflineBatch(list).then(() => {
         Message.success(t('禁用成功'))
         getData()
+            }).catch(() => {
+                Modal.loading = false
+            })
+        }
     })
+
+    
    }else{
-    Message.warning(t('请选择要禁用的角色'))
+    Message.warning(t('請選擇要禁用的工種!'))
    }
 }
 
 //删除角色
 const handleRoleDelete = (id: any) => {
     Modal.confirm({
-        title: '删除角色',
-        content: '确定要删除此角色',
+        title: '删除工種',
+        content: '確定要删除此工種',
         loading: true,
         onOk: () => {
             console.log(id)
@@ -218,10 +241,25 @@ const handleRoleDelete = (id: any) => {
 const handleBatchDelete = () => {
     let list = TableViewRef.value.getSelectRecords().map((item: any) => item.id)
     console.log(list)
-    RoleRemoveBatch({ ids: list }).then(() => {
+    if(list.length > 0){
+        Modal.confirm({
+        title: '删除工種',
+        content: '確定要删除此工種',
+        loading: true,
+        onOk: () => {
+            RoleRemoveBatch({ ids: list }).then(() => {
         Message.success(t('删除成功'))
         getData()
+    }).catch(() => {
+                Modal.loading = false
+            })
+        }
     })
+    }else{
+        Message.warning(t('請選擇要删除的工種!'))
+    }
+
+    
 }
 
 
@@ -234,6 +272,8 @@ const handleUpdatePage = ({ currentPage, pageSize }: any) => {
         currentPage,
         pageSize
     }
+
+    getData()
 }
 const getData = (search = {}) => {
     RoleList({

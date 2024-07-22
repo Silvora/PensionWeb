@@ -23,26 +23,45 @@ const handleElderAdd = () => {
     // console.log(TableFormRef.value.FormData,route.query.id,data.value)
 
     // console.log(route.query.id && JSON.stringify(data.value)!="{}")
-    if (route.query.id && JSON.stringify(data.value) != "{}") {
-        ElderlyHealthUpdate
-            ({ ...TableFormRef.value.FormData, elderlyId: route.query.id }).then(_ => {
-                Message.success(t('修改成功'))
-            })
 
+    let data = JSON.parse(JSON.stringify({ ...TableFormRef.value.FormData,elderlyId: route.query.id }))
+
+    console.log(data)
+    let rules:any = []
+    Object.keys(data).forEach(key => {
+        if (data[key] == '' || data[key] == null || data[key] == undefined) {
+            data[key] === 0?'':rules.push(key)
+        }
+    })
+
+    console.log(rules)
+
+    if (rules.length > 0) {
+        Message.warning(t('必填項不能為空'))
         return
     }
 
 
 
-    ElderlyHealthSave({ ...TableFormRef.value.FormData, elderlyId: route.query.id }).then(res => {
-        console.log(res);
+    if (JSON.stringify(data.value)) {
+        ElderlyHealthUpdate(data).then(_ => {
+                Message.success(t('保存成功'))
+            })
 
-        Message.success(t('添加成功'))
-        router.replace({
-            path: "/add-elder",
-            query: { type: 3, id: route.query.id }
-        })
+    }else{
+        ElderlyHealthSave(data).then(res => {
+        console.log(res);
+        Message.success(t('保存成功'))
+        // router.replace({
+        //     path: "/add-elder",
+        //     query: { type: 3, id: route.query.id }
+        // })
     })
+    }
+
+
+
+
 }
 
 onMounted(() => {

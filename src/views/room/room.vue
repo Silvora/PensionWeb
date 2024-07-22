@@ -6,7 +6,7 @@
                 </span></div>
             <div class="bar">
                 <RadioGroup v-model="type" type="button" button-style="solid" @on-change="handleRadioType">
-                    <Radio v-for="item in  typeList" :key="item.id" :label="item.id">
+                    <Radio v-for="item in  typeList" :key="String(item.id)" :label="item.id">
                         <!-- <Icon :type="item.icon" /> -->
                         {{ item.name }}
                     </Radio>
@@ -40,8 +40,7 @@
                     <p class="roomTitle">
                         <span class="tt"> {{ houseList.find((item: any) => item.id == houseActive)?.roomNumber }}</span>
                         <span>{{ checkInfo.check }}{{ t('入住') }}、{{ checkInfo.reserve }}{{ t('预留') }}、{{ checkInfo.free
-                        }}{{ t('空闲') }}、{{ t('共') }}{{ checkInfo.count
-}}{{ t('床') }}</span>
+                        }}{{ t('空闲') }}、{{ t('共') }}{{ checkInfo.count}}{{ t('床') }}</span>
                     </p>
                     <div class="roomContiner">
                         <Row :gutter="8">
@@ -60,7 +59,7 @@
                                     <!-- //item.checkIn -->
                                     <div v-if="item.checkIn" class="user" @click="handleGetUserInfo(item)">
                                         <div class="t5">
-                                            <span class="t6">{{ item.checkIn?.nursingGrade }}</span>
+                                            <!-- <span class="t6">{{ item.checkIn?.nursingGrade }}</span> -->
                                             <img class="t7" :src="oss + item.checkIn.elderlyPhoto" alt="" srcset=""
                                                 v-if="item.checkIn.elderlyPhoto">
                                             <img class="t7" src="@/assets/images/screen.png" alt="" srcset="" v-else>
@@ -74,15 +73,22 @@
                                         </p>
                                         <p class="t9">{{ item.checkIn?.birthDate.split(":")[0] }}</p>
                                         <p class="t10">
-                                            <img src="@/assets/images/睡眠监测@2x(4).png" alt="">
+                                            <!-- <img src="@/assets/images/睡眠监测@2x(4).png" alt="">
                                             <img src="@/assets/images/位图@2x(2).png" alt="">
                                             <img src="@/assets/images/温度计@2x.png" alt="">
-                                            <img src="@/assets/images/紧急按钮@2x.png" alt="">
+                                            <img src="@/assets/images/紧急按钮@2x.png" alt=""> -->
+                                             <!-- ed719_type -->
+                        <img src="@/assets/images/setting_sleep2.png" alt="" v-if="item?.type=='x1_type'">
+                        <!-- <img src="@/assets/images/睡眠监测@2x(4).png" alt="" v-else >
+
+                        <img src="@/assets/images/位图@2x(2).png" alt=""> -->
+                        <!-- <img src="@/assets/images/温度计@2x.png" alt="" v-if="device?.type=='ed719_type'"> -->
+                        <img src="@/assets/images/紧急按钮@2x.png" alt="" v-if="item?.type=='ed719_type'">
                                         </p>
                                     </div>
                                     <div v-else class="user noUser" @click="handleGetUserInfo(item)">
                                         <img src="@/assets/images/room-whiter.png" alt="">
-                                        等待入住
+                                        <p>等待入住</p>
                                     </div>
                                 </div>
                             </Card>
@@ -91,9 +97,6 @@
                         </Row>
                     </div>
                 </div>
-
-
-
             </div>
 
             <div class="floor">
@@ -120,7 +123,7 @@
 
 <script setup lang='ts' name="room">
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import HouseOpen from "@/assets/images/house-open.png"
 import HouseClose from "@/assets/images/house-close.png"
 import BuildingModal from './BuildingModal.vue';
@@ -129,13 +132,16 @@ import { useI18n } from "vue-i18n"
 import { onMounted } from 'vue';
 const { t } = useI18n()
 import { HostelList, HostelFloorlList, HostelRoomListOfFloor, HostelRoomBedListOfRoom } from "@/api/Hostel/Hostel"
+import { nextTick } from 'process';
+import { flatMap } from 'lodash';
 
 const oss = ref<any>(import.meta.env.VITE_APP_AXIOS_BASER)
 
 const BuildingModalRef: any = ref(null)
 const DetailsModalRef: any = ref(null)
 const router = useRouter()
-const type = ref('')
+const route = useRoute()
+const type = ref<any>('')
 const typeList = ref<any>([])
 
 const checkInfo = ref({
@@ -158,6 +164,7 @@ const handleGetUserInfo = (item: any) => {
         // houseActive,
         floorId: floorActive.value
     }
+    console.log(info.value)
 
     DetailsModalRef.value.showModal()
 }
@@ -175,23 +182,54 @@ const houseActive = ref<any>('')
 const floorList = ref<any>([])
 const floorActive = ref<any>('')
 const bedList = ref<any>([])
+const isUp = ref<any>(false)
 
 
 // 选择房间
 const handleHouseActive = (id: string) => {
-    console.log("first", id)
+    console.log("first", id,router,route)
     houseActive.value = id
+    router.replace(
+        {
+            path: '/room',
+            query: {
+                ...route.query,
+                house: id
+            }
+        }
+    )
     getRoomBedList()
 }
 // 选择楼层
 const handleFloorActive = (id: string) => {
     console.log("------first")
     floorActive.value = id
+    router.replace(
+        {
+            path: '/room',
+            query: {
+                ...route.query,
+                floor: id
+            }
+        }
+    )
+
     getRoomList()
 }
+// 选择楼栋
 const handleRadioType = (id: string) => {
-    //console.log(label)
-    router.replace('/room?type=' + id)
+    console.log(id)
+    type.value = id
+    isUp.value = true
+    router.replace(
+        {
+            path: '/room',
+            query: {
+                ...route.query,
+                type: id
+            }
+        }
+    )
 
     getFloorlList()
 
@@ -203,7 +241,15 @@ const getHostelList = () => {
     HostelList().then((res: any) => {
         console.log(res)
         typeList.value = res.data
-        type.value = res.data[0]?.id || ''
+        type.value = type.value ? type.value : (res.data[0]?.id || '')
+
+        // console.log('---------------', type.value, res.data[0]?.id || '')
+        if(res.data.length == 0){
+            floorList.value = []
+            houseList.value = []
+            return
+        }
+        
         getFloorlList()
     })
 }
@@ -218,7 +264,21 @@ const getFloorlList = () => {
         console.log(res)
 
         floorList.value = res.data
-        floorActive.value = res.data[0]?.id || ''
+        let id = ''
+
+        if(isUp.value){
+            id = (res.data[0]?.id || '')
+        }else{
+            id = route.query.floor ? Number(route.query.floor) : (res.data[0]?.id || '')
+        }
+        floorActive.value = id
+
+
+        if(res.data.length == 0){
+            houseList.value = []
+            return
+        }
+
         // typeList.value = res.data
         // type.value = res.data[0].name
 
@@ -228,6 +288,7 @@ const getFloorlList = () => {
 
 // 获取房间列表
 const getRoomList = () => {
+
     // 获取房间列表
     HostelRoomListOfFloor({
         floorId: floorActive.value,
@@ -235,7 +296,21 @@ const getRoomList = () => {
         needDeviceInfo: false,
     }).then((res: any) => {
         houseList.value = res.data
-        houseActive.value = res.data[0]?.id || ''
+
+        let id = ''
+
+if(isUp.value){
+    id = (res.data[0]?.id || '')
+}else{
+    id = route.query.house ? Number(route.query.house) : (res.data[0]?.id || '')
+}
+
+        houseActive.value = id
+
+        if(res.data.length == 0){
+            bedList.value = []
+            return
+        }
 
         getRoomBedList()
     })
@@ -243,12 +318,24 @@ const getRoomList = () => {
 
 // 获取房间床位列表
 const getRoomBedList = () => {
+
+
+    isUp.value = false
+
     // 获取房间床位列表
     HostelRoomBedListOfRoom({
         roomId: houseActive.value,
-        needDeviceInfo: false
+        needDeviceInfo: true
     }).then((res: any) => {
         console.log(res)
+
+       res.data.forEach((item: any) => {
+            let list:any = []
+            item.checkIn?.deviceList?.forEach((it:any)=>list.push(it?.type))
+            item.type = list
+        })
+
+
         bedList.value = res.data
 
         // let count = 0;//全部人数
@@ -267,12 +354,31 @@ const getRoomBedList = () => {
             reserve: res.data.filter((item: any) => item.status == 1).length || 0,
             count: res.data.length || 0,
         }
+    }).finally(() => {
+        nextTick(() => {
+    if( type.value && floorActive.value && houseActive.value){
+        router.replace(
+        {
+            path: '/room',
+            query: {
+                type: type.value,
+                floor: floorActive.value,
+                house: houseActive.value
+            }
+        }
+    )
+    }
+   })
     })
+
+
+   
 }
 
 
 //获取楼栋数据
 onMounted(() => {
+    // type.value = route.query.type ? Number(route.query.type) : ''
     getHostelList()
 })
 
@@ -422,8 +528,12 @@ onMounted(() => {
                     .noUser {
                         img {
                             width: 100%;
-                            padding: 10px;
+                            padding: 10px;  
                         }
+                        p{
+                            padding: 27px 0;
+                        }
+
                     }
 
                     .t1 {
@@ -488,7 +598,8 @@ onMounted(() => {
                         img {
                             width: 100%;
                             padding: 10px 8px 0 8px;
-                            height: 130px;
+                            // height: 130px;
+                            aspect-ratio: 1/1;
                         }
 
                         .t6 {
@@ -525,8 +636,10 @@ onMounted(() => {
                         width: 100%;
                         justify-content: center;
                         padding-bottom: 10px;
+                        height: 30px;
 
                         img {
+                            display: block;
                             width: 20px;
                             height: 20px;
                             margin: 0 2px;

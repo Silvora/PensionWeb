@@ -16,7 +16,7 @@
             <TableForm title="床位信息" :FormData="bedInfo.FormData" ref="bed_data" :data="data.bed"></TableForm>
             <Row justify="start" style="width: 100%;">
                 <Col :span="24" class="col">
-                <div class="label">{{ t('房间选择') }}</div>
+                <div class="label"> <span class="rule_span">*</span>{{ t('房间选择') }}</div>
                 <div class="input upload1">
                     <Cascader :data="RoomData" v-model="ROOM" :load-data="loadRoomData" style="width: 100%;"
                         :placeholder="data?.bed?.roomBedNumber?data?.bed?.roomBedNumber:t('楼栋/楼层/房间/床位')" />
@@ -95,7 +95,7 @@ import {
 } from "../data"
 import { Message } from "view-ui-plus";
 import { ref, onMounted } from "vue";
-import { ElderlyAdmissionSave,ElderlyHealthSave, ElderlyAdmissionElderlyId } from "@/api/Elderly/Elderly"
+import { ElderlyAdmissionSave,ElderlyHealthSave, ElderlyAdmissionElderlyId, ElderlyAdmissionUpdate } from "@/api/Elderly/Elderly"
 import { HostelList, HostelFloorlList, HostelRoomListOfFloor, HostelRoomBedListOfRoom } from "@/api/Hostel/Hostel"
 import { ChargeList } from "@/api/Charge/Charge"
 import { useI18n } from "vue-i18n";
@@ -122,6 +122,7 @@ const RoomData = ref<any>([])
 const ROOM = ref<any>([])
 
 const data = ref<any>({})
+const isAdd = ref<boolean>(true)
 
 const FormDataList = [
 
@@ -336,11 +337,25 @@ onMounted(() => {
         console.log("获取数据")
         ElderlyAdmissionElderlyId({ elderlyId: route.query.id }).then((res: any) => {
             console.log(res,res.data.costList[0].price*1);
-             let r = res.data.checkIn.roomBedNumber.split('-')
-             r.unshift(res.data.checkIn.hostelId)
+            //  let r = res.data.checkIn.roomBedNumber.split('-')
+            //  r.unshift(res.data.checkIn.hostelId)
 
-             ROOM.value = r
+            if(res.data){
+                isAdd.value = false
+            }else{
+                isAdd.value = true
+
+                return
+            }
+
+            let r = res.data?.checkIn
+            if(r.floorId && r.roomId && r.bedId && r.hostelId){
+            ROOM.value = [r.hostelId, r.floorId, r.roomId, r.bedId]
+
+            }
+
             let obj = {
+                id: res.data.id,
                 care:{
                     nursingDeviceType:res.data.nursingDeviceType,
                     serviceFee:res.data.costList[0].price*1,
@@ -397,6 +412,32 @@ const handleSubmit = () => {
     //     dietNotes: food_data.value.FormData.dietNotes,
     // }
 
+    // console.log(RoomData.value,RoomData.value?.children?.children?.children)
+        let str = ''
+        let t = ROOM.value[0]
+        let h = ROOM.value[1]
+        let f = ROOM.value[2]
+        let r = ROOM.value[3]
+        let t_data =  RoomData.value.find((item: any) => item.value == t )
+        let h_data =  t_data.children.find((item: any) => item.value == h )
+        let f_data =  h_data.children.find((item: any) => item.value == f )
+        let r_data =  f_data.children.find((item: any) => item.value == r )
+    if(t && h && f && r && r_data){
+        // let t = ROOM.value[0]
+        // let h = ROOM.value[1]
+        // let f = ROOM.value[2]
+        // let r = ROOM.value[3]
+        console.log(t_data, h_data, f_data, r_data)
+
+        str = h_data.label+'-'+f_data.label+'-'+r_data.label
+    }else{
+        str = data.value.bed.roomBedNumber ? data.value.bed.roomBedNumber: h_data.label+'-'+f_data.label+'-'+r_data?.label
+    }
+   
+     console.log(str)
+
+
+
     let checkIn = {
         elderlyId: route.query.id,
         startTimeStr: bed_data.value.FormData.startTimeStr,
@@ -406,7 +447,9 @@ const handleSubmit = () => {
         floorId: ROOM.value[1],
         roomId: ROOM.value[2],
         bedId: ROOM.value[3],
-        roomBedNumber: `${ROOM.value[1]}-${ROOM.value[2]}-${ROOM.value[3]}`,
+        // roomBedNumber: `${ROOM.value[1]}-${ROOM.value[2]}-${ROOM.value[3]}`,
+        roomBedNumber: str,
+
         status:2,
     }
 
@@ -429,7 +472,7 @@ const handleSubmit = () => {
 
 
 
-    let data = {
+    let info:any = {
         elderlyId: route.query.id,
         ...nursing,
         checkIn,
@@ -446,20 +489,54 @@ const handleSubmit = () => {
     //     allergen: data.allergen,
 
     // }
+    console.log(info)
+    let rules:any = []
+    Object.keys(info).forEach(key => {
+        if (info[key] == '' || info[key] == null || info[key] == undefined) {
+            info[key] == 0?'':rules.push(key)
+        }
+    })
+    Object.keys(info.checkIn).forEach(key => {
+        if (info.checkIn[key] == '' || info.checkIn[key] == null || info.checkIn[key] == undefined) {
+            info[key] == 0?'':rules.push(key)
+        }
+    })
 
-    console.log(data)
+    console.log(rules)
+
+    if (rules.length > 0) {
+        Message.warning('必填項不能為空')
+        return
+    }
 
 
-    ElderlyAdmissionSave(data).then(res => {
+    console.log(info)
+    if(route.query.id && !isAdd.value){
+
+        ElderlyAdmissionUpdate({id:data.value.id , ...info}).then(res => {
+            Message.success('保存成功')
+            router.replace({
+                path: "/add-elder",
+                query: { type: 3, id: route.query.id }
+            })
+        })
+       
+    }else{
+        ElderlyAdmissionSave(info).then(() => {
         //console.log(res);
 
-        Message.success(t('添加成功'))
-
-        router.replace({
-            path: "/add-elder",
-            query: { type: 4, id: route.query.id }
-        })
+        Message.success('保存成功')
+        // router.replace({
+        //     path: "/add-elder",
+        //     query: { type: 4, id: route.query.id }
+        // })
     })
+    }
+
+   
+
+
+   
 }
 
 const handleDeleteImg = (type: string) => {

@@ -6,7 +6,7 @@
                 <div class="label">{{ t('选择语言') }}</div>
                 <div class="input">
                     <Select v-model="local" @on-change="handleSetLocal">
-                        <Option value="zh-CN">{{ t('中文') }}</Option>
+                        <Option value="zh-CN">{{ t('簡體') }}</Option>
                         <Option value="zh-HK">{{ t('繁体') }}</Option>
                     </Select>
                 </div>
@@ -92,7 +92,7 @@
 
         </div>
         <div class="btn">
-            <Button type="primary" @click="handleExit" style="width: 25%;">{{ t('退出系统') }}</Button>
+            <Button type="primary" @click="handleExit" style="width: 25%;">{{ t('退出系統') }}</Button>
         </div>
     </div>
 </template>

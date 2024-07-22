@@ -2,6 +2,11 @@
 /* .ivu-modal-mask,.ivu-modal-wrap{
   z-index: 9999 !important;
 } */
+ .rule_span{
+  color: red;
+  font-family: PingFangSC, PingFang SC;
+    font-weight: 400;
+ }
 
 
 .ivu-layout{

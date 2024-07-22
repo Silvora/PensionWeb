@@ -5,19 +5,23 @@
             <Row justify="start">
                 <Col v-for="item in props.FormData" :span="String(item.span * props.span)" class="col">
                 <!-- <div style="width: 100%;height:100%"> -->
-                <FormItem :prop="item.prop" :label="t(item.label)"
+                <FormItem :prop="item.prop" :label="'*'+t(item.label)"
                     :style="{ 'width': '100%', 'height': props.labelHeight ? props.labelHeight + 'px' : '32px' }">
                     <!-- <Input v-model="FormData[item.prop]" placeholder="请输入" />
                     </FormItem>
                 </div> -->
+                <template #label>
+                    <span class="rule_span">*</span>
+                    {{ t(item.label) }}
+                </template>
 
                     <div style="width: 100%;height:100%" v-if="item.type == 'sort'">
-                        <InputNumber :disabled="item.disabled" :min="0" :max="item.max ? item.max : 9999999999"
+                        <InputNumber :disabled="item.disabled" :max="item.max ? item.max : 9999999999"
                             v-model="FormData[item.prop]" style="width: 100%;touch-action:none" />
                     </div>
 
                     <div style="width: 100%;height:100%" v-if="item.type == 'price'">
-                        <InputNumber :disabled="item.disabled" v-model="FormData[item.prop]" :max="9999999999" :min="0"
+                        <InputNumber :disabled="item.disabled" v-model="FormData[item.prop]" :max="9999999999" 
                             :formatter="(value: any) => `￥ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
                             :parser="(value: any) => value.replace(/\$\s?|(,*)/g, '')"
                             style="width: 100%;touch-action:none" />
@@ -229,7 +233,12 @@ watchEffect(() => {
 
         if (item.type == 'sort') {
             // console.log(FormData.value[item.prop])
-            FormData.value[item.prop] = Number(FormData.value[item.prop])
+            if(FormData.value[item.prop] === 0){
+                FormData.value[item.prop] = 0
+            }else{
+                 FormData.value[item.prop] = FormData.value[item.prop] == ''  ? '' : Number(FormData.value[item.prop])
+            }
+
         }
 
 

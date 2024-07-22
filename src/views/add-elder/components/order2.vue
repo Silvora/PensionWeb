@@ -115,6 +115,9 @@ const handleUpdateSwitch = (b: boolean) => {
 
 //编辑角色
 const handleRoleEdit = (row: any) => {
+    Object.keys(row).forEach(key => {
+        row[key] = row[key] + ''
+    })
     TableViewRef.value.handleOpenEditModal(row)
 }
 const handleEdit = (data: any) => {
@@ -182,6 +185,7 @@ const handleUpdatePage = ({ currentPage, pageSize }: any) => {
         currentPage,
         pageSize
     }
+
 }
 
 onMounted(() => {

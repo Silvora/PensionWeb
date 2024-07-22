@@ -1,6 +1,6 @@
 <template>
     <div class="device_box">
-        <Modal v-model="modal" :title="t('设备记录')" width="800" :footer-hide="true">
+        <Modal v-model="modal" :title="t('设备记录')" width="800" :footer-hide="true" :mask-closable="false">
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
@@ -8,7 +8,6 @@
                 <div class="photo">
                     <img :src="oss + userInfo?.photo" alt="" v-if="userInfo?.photo">
                     <img src="@/assets/images/screen.png" alt="" srcset="" v-else>
-
                 </div>
                 <div class="info">
                     <Grid border :col="6" :padding="'10px'" style="border: 1px solid #ebeef5;">
@@ -19,19 +18,15 @@
                             <span>{{ userInfo?.gender == 1 ? t('男') : userInfo?.gender == 2 ? t('女') : t('未知') }}</span>
                         </GridItem>
                         <GridItem style="background: #fafafa;color: #909399;">{{ t('居住信息') }}</GridItem>
-                        <GridItem>{{ userInfo?.roomBedNumber || '&nbsp;' }}</GridItem>
-
+                        <GridItem>{{ userInfo?.roomBedNumber?.slice(4) || '&nbsp;' }}</GridItem>
                         <GridItem style="background: #fafafa;color: #909399;">{{ t('护理等级') }}</GridItem>
-                        <GridItem>{{ userInfo?.nursingGrade ? jobLevelList[userInfo?.nursingGrade]: ' ' || '&nbsp;' }}</GridItem>
-
+                        <GridItem>{{ jobLevelList[userInfo?.nursingGrade]|| '&nbsp;' }}</GridItem>
                         <GridItem style="background: #fafafa;color: #909399;">{{ t('护理员') }}</GridItem>
                         <GridItem>{{ userInfo?.staffName || '&nbsp;' }}</GridItem>
-
                         <GridItem style="background: #fafafa;color: #909399;">{{ t('入住时间') }}</GridItem>
                         <GridItem>{{ userInfo?.startTime?.split(" ")[0] || '&nbsp;' }}</GridItem>
                     </Grid>
                 </div>
-
                 <!-- <p class="title">{{ t('老人详情') }}</p> -->
 
 
@@ -123,11 +118,13 @@
                                 <span class="big">{{ toHourSecond(logInfo?.sleepLong).split(":")[1] || '-' }}</span>
                                 {{ t('分钟') }}</p>
                             <p class="time2">{{ t('入睡时间') }} <span
-                                    class="bold">{{ logInfo?.sleepStartTime?.split(" ")[1] || '-' }}</span>
-                                {{ t('分') }}, {{ t('结束时间') }}<span
-                                    class="bold">{{ logInfo?.sleepEndTime?.split(" ")[1] || '-' }}</span> {{ t('分') }}
+                                    class="bold">{{ logInfo?.sleepStartTime?.slice(11,-3) }}</span>
+                                <!-- {{ t('分') }},  -->
+                                {{ t('结束时间') }}<span
+                                    class="bold">{{ logInfo?.sleepEndTime?.slice(11,-3) }}</span> 
+                                    <!-- {{ t('分') }} -->
                             </p>
-                            <p class="desc">{{ t('睡眠质量不佳,加强欲动可以帮助你改善睡眠') }}</p>
+                            <p class="desc">{{ toSleepInfoScore(logInfo.evaluation) }}</p>
                             <div>
                                 <!-- <Chart1 :logInfoTime="{}"></Chart1> -->
                             </div>
@@ -136,22 +133,22 @@
                                 <!-- {{ t('暂无数据') }} -->
                                 <Row>
                                     <Col :span="12">
-                                    <p class="title">夜间睡眠{{ toHourSecond(logInfo?.sleepLong).split(":")[0] || '-' }}小时</p>
+                                    <p class="title">夜间睡眠{{ toHourSecond(logInfo?.sleepLong).split(":")[0] }}时{{ toHourSecond(logInfo?.sleepLong).split(":")[1] }}分</p>
                                     <p class="d">{{ t('参考值:') }}6～10{{ t('小时') }}</p>
                                     </Col>
                                     <Col :span="12">
                                     <p class="title">清醒比例{{ logInfo?.sleepLong ? (logInfo?.awakeLong*100 /
-                                        logInfo?.totalTime).toFixed(0) : '-' }}%</p>
+                                        logInfo?.totalTime).toFixed(1) : '-' }}%</p>
                                     <p class="d">{{ t('参考值:') }}0～10%</p>
                                     </Col>
                                     <Col :span="12">
                                     <p class="title">浅睡比例{{ logInfo?.sleepLong ? (logInfo?.sleepLight*100 /
-                                        logInfo?.totalTime).toFixed(0) : '-' }}%</p>
+                                        logInfo?.totalTime).toFixed(1) : '-' }}%</p>
                                     <p class="d">{{ t('参考值:') }}20～60%</p>
                                     </Col>
                                     <Col :span="12">
                                     <p class="title">深睡比例{{ logInfo?.sleepLong ? (logInfo?.sleepDeep*100 /
-                                        logInfo?.totalTime).toFixed(0) : '-' }}%</p>
+                                        logInfo?.totalTime).toFixed(1) : '-' }}%</p>
                                     <p class="d">{{ t('参考值:') }}20～80%</p>
                                     </Col>
                                     <Col :span="12">
@@ -169,10 +166,9 @@
                                 </Row>
                             </div>
                         </div>
-                        <div v-else>
+                        <div v-else style="text-align: center;">
                             {{ t('暂无数据') }}
                         </div>
-
                     </div>
 
                 </div>
@@ -229,6 +225,21 @@ const logInfo = ref<any>({})
 const date = ref(dayjs().format('YYYY-MM-DD'))
 
 const jobLevelList = ref(["三级", "二级", "一级", "特一级", "特二级", "特三级", "专需护理"])
+
+const toSleepInfoScore = (score:any) =>{
+    if(score>80){
+        return '睡眠優質，請您繼續保持好習慣。'
+    }
+    else if(score>60){
+         return '睡眠質量不佳，加強運動可以幫您改善睡眠。'
+    }
+    else if(score>40){
+         return '睡眠質量不佳，改善作息可以幫您改善睡眠。'
+    }
+    else{
+         return '睡眠急需改善，调整調整心態與作息可以幫您改善睡眠。'
+    }
+}
 
 const oldDate = ref(dayjs().subtract(1, 'day').format('YYYY-MM-DD'))
 const masks = ref({
@@ -365,6 +376,8 @@ const Open = (data: any) => {
     mac.value = data.mac
     console.log(data)
 
+    date.value =  dayjs().format('YYYY-MM-DD')
+
     getStatus()
     getData()
 
@@ -403,7 +416,7 @@ const toHourMinute = (minutes: any) => {
 }
 const toHourSecond = (second: any) => {
     if (!second) return '-'
-    return (Math.floor(second / 60 / 60) + ":" + (second % 60));
+    return (Math.floor(second / 3600)) + ":" + (Math.floor(((second % 3600) / 60)));
     // 也可以转换为json，以方便专外部使用属
     // return {hour:Math.floor(minutes/60),minute:(minutes%60)};
 }

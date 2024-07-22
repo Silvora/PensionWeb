@@ -44,7 +44,7 @@
         </div>
 
         <div class="infoBox">
-            <div class="left">
+            <!-- <div class="left">
                 <div class="chart">
                     <p class="title">{{ t('年龄分布') }}</p>
                     <AgeChart></AgeChart>
@@ -57,7 +57,7 @@
                     <p class="title">{{ t('空床比例') }}</p>
                     <EmptyChart></EmptyChart>
                 </div>
-            </div>
+            </div> -->
             <div class="center">
                 <TableView ref="TableViewRef" :data="data" :tableConfig="elderTable" :tablePage="pagerConfig"
                     @handleUpdatePage="handleUpdatePage" :tableH="tableH" @handleEdit="handleElderEditModal">
@@ -93,18 +93,31 @@
                     </Card>
                 </div>
                 <div class="chart" style="margin-bottom: 0px;">
-                    <p class="title">{{ t('临近续费提醒') }}</p>
+                    <!-- <p class="title">{{ t('临近续费提醒') }}</p>
                     <div class="renewalList">
                         <div v-for="item in exprireList" class="item">
                             <p class="t1">{{ item.elderlyName }}</p>
                             <p class="t2">{{ t('到期时间') }}:{{ item.endTime.split(" ")[0] }}</p>
                             <p class="t3">{{ dayjs(item.endTime).diff(dayjs(), 'day') }}{{ t('天') }}</p>
                         </div>
+                    </div> -->
+
+                    <!-- <p class="title">{{ t('备忘录') }}</p> -->
+                    <p class="title">{{ t('备忘录') }} <span class="write" @click="handleOpenMemo">
+                            <Icon type="md-brush" />
+                        </span></p>
+                    <div class="renewalList" style="padding: 0 5px;">
+                        <div v-for="item in memoList" class="item">
+                            <p class="t1">{{ item.name }}</p>
+                            <p class="t2">{{ item.content }}</p>
+                            <p class="t3" @click="handleDeleteMemo(item.id)">X</p>
+                        </div>
+                        <!-- {{ memoList[memoActive]?.content }} -->
                     </div>
                 </div>
             </div>
         </div>
-        <div class="chartBox">
+        <!-- <div class="chartBox">
             <div class="left">
                 <div class="chart">
                     <p class="title">{{ t('护理等级统计') }}</p>
@@ -124,9 +137,6 @@
                         </span></p>
                     <div class="memo">
                         <div class="textList">
-                            <!-- <p>dsadsa</p>
-                            <p>dsadsa</p>
-                            <p>dsadsa</p> -->
                             {{ memoList[memoActive]?.content }}
                         </div>
                         <div class="list">
@@ -144,7 +154,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
 
         <FormModal title="备忘录" :rules="memoData.rules" :lableWidth="100" :FormData="memoData.FormData" ref="MemoCreateRef"
@@ -193,11 +203,14 @@ const exprireList = ref<any>([])
 const model1 = ref<any>(null)
 
 onMounted(() => {
-    console.log("", pageBox.value?.clientHeight)//680
+    // console.log("", pageBox.value?.clientHeight)//680
+    // const h = pageBox.value?.clientHeight
+    // if (h >= 990) {
+    //     tableH.value = 630 + 'px'
+    // }
     const h = pageBox.value?.clientHeight
-    if (h >= 990) {
-        tableH.value = 630 + 'px'
-    }
+    console.log(h)
+    tableH.value = h - 185 + 'px'
 
     getData()
     getMemoList()
@@ -479,11 +492,11 @@ const getRoomList = () => {
             overflow-y: auto;
 
             .item {
-                height: 50px;
+                // height: 50px;
                 position: relative;
                 background: rgba(19, 100, 248, 0.05);
                 border-radius: 4px;
-                margin: 5px 10px;
+                margin: 5px 0;
                 padding: 10px;
                 display: flex;
                 flex-direction: column;
@@ -510,6 +523,9 @@ const getRoomList = () => {
                     border-radius: 0px 4px 0px 4px;
                     color: #fff;
                     font-size: 10px;
+                    width: 15px;
+                    text-align: center;
+                    cursor: pointer;
 
                 }
             }
@@ -628,7 +644,7 @@ const getRoomList = () => {
         }
 
         .center {
-            width: calc(100% - 330px);
+            width: calc(100% - 170px);
             padding: 0 20px;
         }
 

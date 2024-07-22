@@ -3,7 +3,7 @@
         <p v-if="isInfo">
             {{ t('睡眠期间的心率介于') }} {{ min }} 到 {{ max }} {{ t('之间') }}
         </p>
-        <p v-else>
+        <p v-else style="text-align: center;">
             {{ t('暂无数据') }}
         </p>
 
@@ -41,7 +41,6 @@ watch(() => props.DeviceInfoListInfo, () => {
         min.value = Math.min(...props.DeviceInfoListInfo?.d5)
     } else {
         isInfo.value = false
-
     }
     initChart()
 

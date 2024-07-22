@@ -51,13 +51,13 @@
                                 <span class="t1">{{ t('学业水平') }}</span>
                                 <span class="t2">{{ userInfo.educationLevel }}</span>
                             </p>
-                            <p>
+                            <!-- <p>
                                 <span class="t1">{{ t('工作经验') }}</span>
                                 <span class="t2">{{ userInfo.educationLevel }}</span>
-                            </p>
+                            </p> -->
                             <p>
                                 <span class="t1">{{ t('工种') }}</span>
-                                <span class="t2">{{ userInfo.roleId }}</span>
+                                <span class="t2">{{ roleName }}</span>
                             </p>
                             <p>
                                 <span class="t1">{{ t('联系电话') }}</span>
@@ -69,10 +69,10 @@
                                 <span class="t1">{{ t('员工编号') }}</span>
                                 <span class="t2">{{ userInfo.id }}</span>
                             </p>
-                            <p>
+                            <!-- <p>
                                 <span class="t1">{{ t('雇佣模式') }}</span>
                                 <span class="t2">{{ userInfo.groupId }}</span>
-                            </p>
+                            </p> -->
                             <!-- <p>
                                 <span class="t1">职业等级</span>
                                 <span class="t2">{{ jobLevelList[userInfo.jobLevel] }}</span>
@@ -112,7 +112,7 @@
             </div>
         </div>
 
-        <Modal v-model="elderModal" :title="t('绑定老人')" :footer-hide="true" :width="270">
+        <Modal v-model="elderModal" :title="t('绑定老人')" :footer-hide="true" :width="270" :mask-closable="false">
             <template #close>
 
                 <Icon type="md-close-circle" color="#000" size="16" />
@@ -139,7 +139,7 @@
 
 
         <!--  护理列表 -->
-        <Modal v-model="nerseModal" :title="t('护理任务')" :footer-hide="true" :width="70">
+        <Modal v-model="nerseModal" :title="t('护理任务')" :footer-hide="true" :width="70" :mask-closable="false">
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
@@ -214,6 +214,7 @@ import { useRoute } from "vue-router"
 import { NurseRecordBindList, NurseRecordUnBindId, NurseRecordElderlyList, NurseRecordBind, NurseTaskList, NurseTaskStartOrEndTaskId, NurseTaskRemoveId, NurseTaskUpdate, NurseTaskSave } from "@/api/Nurse/Nurse"
 import { Modal, Message, Table } from "view-ui-plus";
 import { useI18n } from "vue-i18n";
+import {RoleList} from "@/api/RoleInfo/RoleInfo"
 const { t } = useI18n()
 const route = useRoute()
 const oss = ref<any>(import.meta.env.VITE_APP_AXIOS_BASER)
@@ -270,15 +271,27 @@ const pagerConfig = ref({
 })
 
 const NursingInfo = ref<any>({})
-
+const roleList = ref<any>([])
+const roleName = ref<any>('')
 
 onMounted(() => {
     const h = pageBox.value?.clientHeight
     console.log(h)
     tableH.value = h - 210 + 'px'
 
-    getData()
-    getNurseList()
+  
+    
+    RoleList({
+        current: 1,
+        size: 99999
+    }).then((res: any) => {
+        console.log(res)
+        roleList.value = res.data.records
+    }).finally(() => {
+        getData()
+        getNurseList()
+    })
+
 })
 
 const handleEditModalOk = (data: any) => {
@@ -451,6 +464,8 @@ const getNurseList = () => {
 const getData = () => {
     StaffDetailId({ id: route.query.id }).then((res: any) => {
         userInfo.value = res.data
+
+        roleName.value = roleList.value.find((item: any) => item.id == res.data.roleId).name
     })
 }
 

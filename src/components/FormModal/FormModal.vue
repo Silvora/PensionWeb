@@ -1,11 +1,11 @@
 <template>
-    <Modal v-model="modal" :title="t(props.title)" width="30" :transition-names="appStore.TransitionConfig.modal">
+    <Modal v-model="modal" :title="t(props.title)" width="30" :transition-names="appStore.TransitionConfig.modal" :mask-closable="false">
 
         <template #close>
             <Icon type="md-close-circle" color="#000" size="16" />
         </template>
         <FormData :rules="props.rules" :lableWidth="props.lableWidth" :FormData="props.FormData" :data="defaultData"
-            ref="FormRef">
+            ref="FormRef" :key="Date.now()">
         </FormData>
         <template #footer>
             <Button @click="handleCancel">{{ $t('取消') }}</Button>

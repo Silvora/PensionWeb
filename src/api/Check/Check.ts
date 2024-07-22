@@ -61,3 +61,13 @@ export function CheckAboutToExpireList(params:any) {
         params
     })
 }
+
+
+// 修改入住状态
+export function CheckUpdate(data:any) {
+    return http.request({
+        url: '/admin/checkIn/updateState',
+        method: 'post',
+        data
+    })
+}

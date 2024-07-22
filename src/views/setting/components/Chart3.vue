@@ -3,7 +3,7 @@
         <p v-if="isInfo">
             {{ t('睡着时的呼吸频率介于') }} {{ min }} 到 {{ max }} 次/分。
         </p>
-        <p v-else>
+        <p v-else style="text-align: center;">
             {{ t('暂无数据') }}
         </p>
 

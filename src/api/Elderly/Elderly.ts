@@ -43,6 +43,9 @@ export function ElderlySave(data: any) {
     })
 }
 
+
+
+
 // 
 export function ElderlyDetail(data: any) { 
     return http.request({
@@ -80,6 +83,16 @@ export function ElderlyAdmissionSave(data: any) {
     })
 }
 
+// 修改长者健康信息
+export function ElderlyAdmissionUpdate(data: any) { 
+    return http.request({
+        url: '/admin/elderly/admission/update',
+        method: 'post',
+        data
+    })
+}
+
+
 // 添加长者健康信息
 export function ElderlyHealthSave(data: any) { 
     return http.request({
@@ -88,6 +101,9 @@ export function ElderlyHealthSave(data: any) {
         data
     })
 }
+
+
+
 
 // 修改长者健康信息
 export function ElderlyHealthUpdate(data: any) { 

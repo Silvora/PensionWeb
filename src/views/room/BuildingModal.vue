@@ -1,6 +1,6 @@
 <template>
     <div class="building">
-        <Modal v-model="modal" :title="t('楼栋管理')" :footer-hide="true">
+        <Modal v-model="modal" :title="t('楼栋管理')" :footer-hide="true" :mask-closable="false">
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
@@ -144,7 +144,7 @@
         </Modal>
 
         <Modal v-model="addModal" :title="[t('楼栋'), t('楼层'), t('房间'), t('床位')][roomType] + (isEdit ? t('编辑') : t('添加'))"
-            :footer-hide="true" :styles="{ top: '150px' }">
+            :footer-hide="true" :styles="{ top: '150px' }" :mask-closable="false">
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
@@ -162,7 +162,7 @@
             <div style="padding: 10px;" v-if="roomType == 2 && !isEdit">
                 <p style="padding-bottom: 10px;">{{ [t('楼栋'), t('楼层'), t('房间'), t('床位')][roomType] }}{{ t('名称') }}</p>
                 <RadioGroup v-model="count" @on-change="handleSetBedCount">
-                    <Radio :label="idx + 1 + ''" v-for="(item, idx) in roomListType" :key="item">
+                    <Radio :label="idx + 1 + ''" v-for="(item, idx) in roomListType" :key="idx">
                         {{ item + t('人间') }}
                     </Radio>
                 </RadioGroup>
@@ -182,7 +182,6 @@
                             <Input type="text" v-model="it.bedNumber" :placeholder="t('床位号')"></Input>
                         </FormItem>
                         <FormItem prop="cost">
-
                             <InputNumber :max="99999999" :min="0" v-model="it.cost" :placeholder="t('床位费用')"
                                 style="width: 170px;" />
                         </FormItem>
@@ -207,6 +206,7 @@ import { reject } from 'lodash';
 import { useI18n } from "vue-i18n";
 const { t } = useI18n()
 import axios from 'axios';
+import { onMounted } from 'vue';
 const modal = ref(false)
 const addModal = ref(false)
 const addInput = ref('')
@@ -291,6 +291,7 @@ const handleSetBedCount = (count: any) => {
 
 
 const showModal = () => {
+    // handleSetBedCount(1)
     modal.value = true
 }
 
@@ -533,7 +534,7 @@ const handleSumbitAdd = () => {
     }
 
     let data = {
-        name: addInput.value,
+        name: addInput.value.trim(),
     }
 
     if(data.name == ''){
@@ -582,37 +583,66 @@ const handleSumbitAdd = () => {
                 return
             } else {
 
+                let b = false
+                JSON.parse(JSON.stringify(bedFromData.value.list)).forEach((item: any) => {
+                            if(item.bedNumber.trim() == ''){
+                                b= true
+                            }
+                    })
+
+                    if(b){
+                        Message.warning('床位名称不能为空')
+                        return 
+                    }
 
 
-                let roomId =
+
+                let roomId = ''
                     //房间
                     HostelRoomSave({ roomNumber: data.name, count: count.value, floorId: selectFloorId.value }).then((res: any) => {
                         Message.success(t('添加成功'))
                         roomId = res.data
                         // addModal.value = false
                         // emit('handleUpdate', true)
-                    }).then(() => {
+                    }).then(async () => {
                         console.log(roomId)
 
 
                         //添加床位
 
-                        console.log()
+                        // console.log()
                         let request: any = []
                         JSON.parse(JSON.stringify(bedFromData.value.list)).forEach((item: any) => {
                             delete item.idx
                             request.push(HostelRoomBedSave({ ...item, roomId }))
                         })
 
-                        axios.all(request).then(axios.spread((...responses) => {
-                            console.log(responses)
-                            Message.success(t('添加成功'))
-                            addModal.value = false
-                            emit('handleUpdate', true)
-                        }))
+                        // axios.all(request).then(axios.spread((...responses) => {
+                        //     console.log(responses)
+                        //     Message.success(t('添加成功'))
+                        //     addModal.value = false
+                        //     emit('handleUpdate', true)
+                        // }))
 
-                        handleChangeName(roomType.value - 1, selectFloorId.value)
-                        selectFloorId.value = ''
+                        // handleChangeName(roomType.value - 1, selectFloorId.value)
+                        // selectFloorId.value = ''
+
+                        for (let req of request) {
+                                try {
+                                    const response = await req(); // 发送请求并等待响应
+                                    console.log(response); // 处理响应
+                                } catch (error) {
+                                    console.error('请求失败:', error); // 处理错误
+                                }
+                            }
+
+                            Message.success(t('添加成功'));
+                            addModal.value = false;
+                            emit('handleUpdate', true);
+
+                            handleChangeName(roomType.value - 1, selectFloorId.value);
+                            selectFloorId.value = '';
+
                     })
 
 
@@ -649,6 +679,7 @@ const handleAddHouse = (type: number) => {
     addInput.value = ''
     roomCost.value = 0
     count.value = '1'
+    handleSetBedCount(1)
     addModal.value = true
 }
 

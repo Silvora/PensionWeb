@@ -1,6 +1,6 @@
 <template>
     <div class="details">
-        <Modal v-model="detailsModal" :title="t('设备信息')" :footer-hide="true" :width="650">
+        <Modal v-model="detailsModal" :title="t('设备信息')" :footer-hide="true" :width="650" :mask-closable="false">
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
@@ -45,7 +45,7 @@
                 </p>
                 <div class="info" v-if="props.info">
                     <div class="img">
-                        <img :src="oss + props.info?.elderlyPhoto" alt="" srcset="" v-if="props.info?.elderlyPhoto">
+                        <img :src="oss + props.info?.elderlyPhoto" alt="" srcset="" v-if="props?.info?.elderlyPhoto">
                         <img src="@/assets/images/screen.png" alt="" srcset="" v-else>
                     </div>
                     <div class="user">
@@ -68,7 +68,7 @@
                     <Row :gutter="10">
                         <Col span="12" v-for="item in deviceList" :key="item.label">
                         <Card :bordered="false" :padding="16"
-                            style="background: rgba(19,100,248,0.05);margin-bottom: 10px;">
+                            style="background: rgba(19,100,248,0.05);margin-bottom: 10px;" v-if="typeList.includes(item.type)">
                             <div class="deviceBox">
                                 <div style="margin-right: 16px;">
                                     <img :src="item.img" alt="">
@@ -82,10 +82,10 @@
                                         <span class="t1">{{ t('设备数量') }}</span>
                                         <span class="t2">{{ item.num }}</span>
                                     </p>
-                                    <p class="descript">
+                                    <!-- <p class="descript">
                                         <span class="t1">{{ t('告警次数') }}</span>
                                         <span class="t2">{{ item.errorNum }}</span>
-                                    </p>
+                                    </p> -->
                                 </div>
                             </div>
                         </Card>
@@ -96,7 +96,7 @@
             </div>
         </Modal>
 
-        <Modal v-model="elderModal" :title="t('暂无设备')" :footer-hide="true" :width="300">
+        <Modal v-model="elderModal" :title="t('暂无设备')" :footer-hide="true" :width="300" :mask-closable="false">
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
@@ -135,6 +135,7 @@ import { onMounted, ref, watchEffect } from 'vue';
 import thermometer from "@/assets/images/thermometer.png"
 import bitmap from "@/assets/images/bitmap.png"
 import sleep from "@/assets/images/sleep.png"
+import sleep2 from "@/assets/images/setting_sleep2.png"
 import errBtn from "@/assets/images/errBtn.png"
 import { ElderlyListNotCheckIn } from '@/api/Elderly/Elderly'
 import { CheckSave, CheckRemoveId } from "@/api/Check/Check"
@@ -158,9 +159,56 @@ const props = defineProps({
 const jobLevelList = ref(["三级", "二级", "一级", "特一级", "特二级", "特三级", "专需护理"])
 const descriptionList = ref<any>([])
 const type = ref('0')
+const typeList:any = ref([])
+const deviceList = ref([
+    {
+        img: sleep2,
+        label: '睡眠监测',
+        num: 1,
+        errorNum: 0,
+        type:'x1_type'
+    },
+    {
+        img: bitmap,
+        label: '摔倒监测',
+        num: 1,
+        errorNum: 0,
+         type:'ed719_type'
+    },
+    {
+        img: errBtn,
+        label: '紧急按钮',
+        num: 1,
+        errorNum: 0,
+         type:'x1312312_type'
+    },
+    {
+        img: thermometer,
+        label: '温度计',
+        num: 1,
+        errorNum: 0,
+        type:'x111_type'
+    }
+])
 
 watchEffect(() => {
     type.value = props.info?.status + ''
+    if(props.info?.deviceList.length > 0){
+        props.info?.deviceList.forEach((it:any)=>{
+            console.log(it?.type)
+            typeList.value.push(it?.type)
+
+
+            if(it?.type == 'x1_type'){
+                // deviceList.value[0].num = it?.num
+                deviceList.value[0].errorNum = it?.errorNum
+            }
+        })
+    }
+
+    // props.info?.deviceList.length > 0 && 
+    console.log(typeList.value )
+
     descriptionList.value = [
         {
             label: '姓名',
@@ -196,7 +244,7 @@ watchEffect(() => {
         // },
         {
             label: '护理等级',
-            value: props.info?.nursingGrade?jobLevelList[props.info?.nursingGrade-1]:''
+            value: jobLevelList.value[props.info?.nursingGrade] || ''
         },
         // {
         //     label: '入住时间',
@@ -212,7 +260,7 @@ watchEffect(() => {
         // },
         {
             label: '看护人',
-            value: props.info?.nursingName
+            value: props.info?.staffName
         },
     ]
 })
@@ -221,32 +269,7 @@ watchEffect(() => {
 console.log(props.info)
 
 
-const deviceList = ref([
-    {
-        img: sleep,
-        label: '睡眠监测',
-        num: 1,
-        errorNum: 3,
-    },
-    {
-        img: bitmap,
-        label: '摔倒监测',
-        num: 5,
-        errorNum: 7,
-    },
-    {
-        img: errBtn,
-        label: '紧急按钮',
-        num: 9,
-        errorNum: 11,
-    },
-    {
-        img: thermometer,
-        label: '温度计',
-        num: 14,
-        errorNum: 12,
-    }
-])
+
 
 
 const handleOnCheck = () => {

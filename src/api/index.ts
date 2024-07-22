@@ -42,12 +42,14 @@ http.interceptors.response.use(
         return Promise.reject(response.data.message);
     },
     (error) => {
-        // Message.error('操作有誤: ', error)
         // Message.error(error.message);
         if (error.response.status === 401) {
             router.push('/login');
+        }else{
+            Message.error(error.response.data.message)
         }
-        //  console.log(error)
+
+        // console.log(error)
         //Message.error(error.message);
         //Message.error(error.response.data.message);
         return Promise.reject(error);

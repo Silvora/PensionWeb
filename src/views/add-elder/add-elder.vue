@@ -13,7 +13,7 @@
 
                         <i :class="['iconfont', item.icon]"></i>
                         {{ t(item.title) }}</Button>
-                    <span v-if="idx != 4">></span>
+                    <span v-if="idx != 3">></span>
                 </span>
             </div>
             <div style="position: absolute;right: 10px;">
@@ -33,7 +33,7 @@
                 <Order4 v-if="active == 3"></Order4>
                 <!-- <Order5 v-if="active == 4"></Order5>
                 <Order6 v-if="active == 5"></Order6> -->
-                <Order7 v-if="active == 4"></Order7>
+                <!-- <Order7 v-if="active == 4"></Order7> -->
             </div>
         </div>
     </div>
@@ -81,10 +81,10 @@ const orderMenu = [
     //     title: "合同管理",
     //     icon: "ios-person",
     // },
-    {
-        title: "出院办理",
-        icon: "icon-5_round_solid",
-    }
+    // {
+    //     title: "出院办理",
+    //     icon: "icon-5_round_solid",
+    // }
 ]
 
 const active = ref<any>(0)

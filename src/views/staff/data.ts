@@ -274,39 +274,39 @@ const roleData: any = {
                 default: "",
         },
 
-         {
-            type: 'select',
-            label: '所属小组',
-            prop: "groupId",
-            //disabled: false,
-            childs: [
-                {
-                    label: '管理员',
-                    value: '管理员'
-                }
-            ],
-            span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-        },
+        //  {
+        //     type: 'select',
+        //     label: '所属小组',
+        //     prop: "groupId",
+        //     //disabled: false,
+        //     childs: [
+        //         {
+        //             label: '管理员',
+        //             value: '管理员'
+        //         }
+        //     ],
+        //     span: 1,
+        //         //disabled: false,
+        //         required: false,
+        //         default: "",
+        // },
           
-           {
-            type: 'select',
-            label: '直属上级',
-            prop: "superiorId",
-            //disabled: false,
-            childs: [
-                {
-                    label: '管理员',
-                    value: '管理员'
-                }
-            ],
-            span: 1,
-                //disabled: false,
-                required: false,
-                default: "",
-        },
+        //    {
+        //     type: 'select',
+        //     label: '直属上级',
+        //     prop: "superiorId",
+        //     //disabled: false,
+        //     childs: [
+        //         {
+        //             label: '管理员',
+        //             value: '管理员'
+        //         }
+        //     ],
+        //     span: 1,
+        //         //disabled: false,
+        //         required: false,
+        //         default: "",
+        // },
           
 
     ]

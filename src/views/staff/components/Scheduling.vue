@@ -3,7 +3,7 @@
         <div class="toolBar">
             <div>
                 <DatePicker :model-value="searchData.dateStr" type="date" :clearable="false"
-                    @on-change="() => { getData() }" :editable="false" />
+                    @on-change="getChangeDate" :editable="false" />
             </div>
             <div class="bar">
             </div>
@@ -47,7 +47,7 @@
                                 <div>
                                     <Avatar icon="ios-person" size="30" />
                                 </div>
-                                <div class="txt">
+                                <div class="txt" style="width: 100%;overflow: hidden; white-space: nowrap;text-overflow: ellipsis;">
                                     <p class="t1">{{ item.name }}</p>
                                     <p class="t2">{{ item.type }}</p>
                                 </div>
@@ -62,7 +62,7 @@
                             </div>
                             <!-- <Poptip > -->
                             <div class="center hover" @click="handleSetTimeModal(item)"
-                                :style="{ width: item.isActiveBox[1] * 45 + 'px', height: '100%', background: 'rgb(255, 238, 191)', borderRadius: '8px' }">
+                                :style="{ width: item.isActiveBox[1] * 45 + 'px', height: '100%', background: 'rgb(255, 238, 191)', borderRadius: '8px',overflow: 'hidden',whiteSpace: 'nowrap',textOverflow: 'ellipsis' }">
                                 <div class="item" v-if="item.isActiveBox[1] >= item.isActiveBox[3]">
                                     <span>
                                         &nbsp;&nbsp;
@@ -82,7 +82,7 @@
                             </div>
                             <!-- <Poptip trigger="hover"> -->
                             <div class="center hover" @click="handleSetTimeModal(item)"
-                                :style="{ width: item.isActiveBox[3] * 45 + 'px', height: '100%', background: 'rgb(255, 238, 191)', borderRadius: '8px' }">
+                                :style="{ width: item.isActiveBox[3] * 45 + 'px', height: '100%', background: 'rgb(255, 238, 191)', borderRadius: '8px',overflow: 'hidden',whiteSpace: 'nowrap',textOverflow: 'ellipsis' }">
                                 <div class="item" v-if="item.isActiveBox[1] < item.isActiveBox[3]">
                                     <span>&nbsp;&nbsp;
                                         {{ item.startTime }}~{{ item.endTime }}</span>
@@ -107,7 +107,7 @@
             </table>
         </div>
 
-        <Modal v-model="addModal" :title="t('设置排班')" :footer-hide="true" :width="340" style="z-index: 2000 !important;">
+        <Modal v-model="addModal" :title="t('设置排班')" :footer-hide="true" :width="340" style="z-index: 2000 !important;" :mask-closable="false">
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
@@ -156,7 +156,7 @@
         </Modal>
 
 
-        <Modal v-model="notesModal" :title="t('信息板')" :footer-hide="true" :width="340">
+        <Modal v-model="notesModal" :title="t('信息板')" :footer-hide="true" :width="340" :mask-closable="false">
             <template #close>
                 <Icon type="md-close-circle" color="#000" size="16" />
             </template>
@@ -321,6 +321,18 @@ const handleEditSchedule = () => {
     let data = JSON.parse(JSON.stringify(addForm.value))
     delete data.name
     delete data.type
+    console.log(data)
+    let end = data.endTimeStr.split(":")[0]*1
+    let start = data.startTimeStr.split(":")[0]*1
+
+
+    if((end-start) <= 0){
+
+        Message.error(t('设置的时间有误'))
+        return
+
+    }
+
 
 
     request(data).then(() => {
@@ -353,13 +365,20 @@ const handleDelete = (row: any) => {
 
 }
 
+const getChangeDate = (date: any) => {
+    console.log(date)
 
+    searchData.value.dateStr = date
+
+    getData()
+}
 
 const getData = () => {
+
     StaffScheduleListOfDay({
         current: 1,
         size: 9999,
-        data: searchData.value.dateStr,
+        dayTime: searchData.value.dateStr,
         shiftType: searchData.value.shiftType
     }).then(res => {
         // console.log(res)

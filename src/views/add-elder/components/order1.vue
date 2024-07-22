@@ -56,6 +56,25 @@ const handleElderAdd = () => {
 
     let data = JSON.parse(JSON.stringify({ ...TableFormRef.value.FormData, photo: photo.value, }))
 
+    let rules:any = []
+    Object.keys(data).forEach(key => {
+        if (key != 'photo' && key != 'status') {
+            if (data[key] == '' || data[key] == null || data[key] == undefined){
+                data[key] === 0?'':rules.push(key)
+
+            }
+        }
+    })
+
+    console.log(rules)
+
+    if (rules.length > 0) {
+        Message.warning(t('必填項不能為空'))
+        return
+    }
+
+
+
 
     if (route.query.id) {
 
@@ -69,29 +88,14 @@ const handleElderAdd = () => {
         delete data.contractDate
         delete data.status
         ElderlyUpdate(data).then(_ => {
-            Message.success(t('修改成功'))
+            Message.success(t('保存成功'))
         })
 
-        return
-    }
-
-    // data['birthday'] = data['birthDate']
-
-    // delete data['birthDate']
-
-    // let data = {
-    //     ...TableFormRef.value.FormData,
-    //     contractDateStr: TableFormRef.value.FormData.contractDate,
-    //     birthday: TableFormRef.value.FormData.birthDate,
-    // }
-
-    // let data = JSON.parse(JSON.stringify({ ...TableFormRef.value.FormData, photo: photo.value }))
-    // delete data.orgId
-
-    ElderlySave(data).then(res => {
+    }else{
+        ElderlySave(data).then(res => {
         console.log(res);
 
-        Message.success(t('添加成功'))
+        Message.success(t('保存成功'))
 
         router.replace({
             path: "/add-elder",
@@ -99,6 +103,9 @@ const handleElderAdd = () => {
         })
 
     })
+    }
+
+   
 }
 
 onMounted(() => {

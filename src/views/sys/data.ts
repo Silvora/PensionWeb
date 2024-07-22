@@ -1,6 +1,7 @@
 //机构信息
 const agencyData: any = {
-    rules: {},
+    rules: {
+    },
     FormData:
         [
             {
@@ -528,7 +529,7 @@ const roleTable: any = {
             prop: "name",
             //disabled: false,
             //childs: [],
-            required: false,
+            required: true,
             // default: "",
         },
            {
@@ -537,7 +538,7 @@ const roleTable: any = {
             prop: "description",
             //disabled: false,
             //childs: [],
-            required: false,
+            required: true,
             // default: "",
         },
         {
@@ -748,7 +749,7 @@ const accountTable: any = {
                 value:0
             }
         ],
-        // required: true,
+        required: true,
         // default: "",
         },
        

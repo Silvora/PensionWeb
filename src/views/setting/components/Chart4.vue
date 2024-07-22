@@ -1,17 +1,15 @@
 <template>
-    <div style="width: 100%;">
+    <div style="width: 100%;min-height: 150px">
         <!-- <p>睡着时的体动介于0到100</p> -->
-        <p v-if="isInfo">
+        <p v-if="isInfo && max!=0">
             {{ t('睡着时的体动介于') }} {{ min }} 到 {{ max }} {{ t('之间') }}
         </p>
-        <p v-else>
+        <p v-else style="text-align: center;">
             {{ t('暂无数据') }}
         </p>
-        <div class="box" ref="chartRef">
+        <div class="box" ref="chartRef" v-if="isInfo">
         </div>
-        <!-- <div v-else  class="box">
-            {{ t('暂无数据') }}
-        </div> -->
+       
     </div>
 </template>
 
@@ -40,6 +38,9 @@ watch(() => props.DeviceInfoListInfo, () => {
         isInfo.value = true
         max.value = Math.max(...props.DeviceInfoListInfo?.d6)
         min.value = Math.min(...props.DeviceInfoListInfo?.d3)
+        if(max.value == 0){
+            isInfo.value = false
+        }
     } else {
         isInfo.value = false
     }
@@ -50,6 +51,7 @@ watch(() => props.DeviceInfoListInfo, () => {
 console.log(props)
 
 const initChart = () => {
+    if(!chartRef.value) return
     const myChart: any = echarts.init(chartRef.value);
 
     const option = {

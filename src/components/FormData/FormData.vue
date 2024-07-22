@@ -256,7 +256,7 @@ watchEffect(() => {
 
 
         if (item.required) {
-            let placeholder = item.type == 'input' ? '请输入' : '请选择'
+            let placeholder =( item.type == 'input'||item.type == 'textarea') ? '请输入' : '请选择'
             let trigger = item.type == 'input' ? 'blur' : 'change'
 
             if (item.prop == 'password') {
@@ -289,7 +289,6 @@ watchEffect(() => {
     FormData.value = { ...props.data, ...FormData.value }
 
     // console.log(FormData.value)
-
     rules.value = { ...rulesData, ...props.rules }
 
     //console.log(rules.value)

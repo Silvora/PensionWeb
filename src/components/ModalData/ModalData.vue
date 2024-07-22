@@ -1,5 +1,5 @@
 <template>
-    <Modal v-model="modal" :title="props.title" :footer-hide="true">
+    <Modal v-model="modal" :title="props.title" :footer-hide="true" :mask-closable="false">
         <template #close>
             <Icon type="md-close-circle" color="#000" size="16" />
         </template>
