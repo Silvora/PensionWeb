@@ -54,10 +54,15 @@
         <div class="box">
             <TableView ref="TableViewRef" :data="data" :tableConfig="LogTable" :tablePage="pagerConfig"
                 @handleUpdatePage="handleUpdatePage">
+
                 <template #status="{ row }">
                     <Tag :color="row.status == 0 ? 'magenta' : row.status == 1 ? 'blue' : 'warning'">
                         {{ row.status == 0 ? '未處理' : row.status == 1 ? '已處理' : '處理中' }}
                     </Tag>
+                </template>
+
+                <template #notes="{ row }">
+                   <span>{{ hkMap[row.notes] }}</span>
                 </template>
 
                 <template #active="{ row }">
@@ -140,6 +145,16 @@ const data = ref<any>([])
 // const errList = ref<any>([])
 // const online = ref<any>()
 // const status = ref<any>()
+const hkMap = ref<any>({
+    离床:"離床",
+    正常:"正常",
+    异常:"異常",
+    在床:"在床",
+    心率异常:"心率異常",
+    脉搏异常:"脈搏異常",
+    呼吸异常:"呼吸異常",
+    紧急拉绳通知:"緊急拉繩通知",
+})
 
 const searchData = ref<any>({
     hostelId: '',

@@ -807,8 +807,8 @@ const healthyInfo: any = {
                         value: '一般'
                     },
                     {
-                        label: '一般',
-                        value: '一般'
+                        label: '失明',
+                        value: '失明'
                     }
                 ]
             },

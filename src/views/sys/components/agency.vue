@@ -1,6 +1,6 @@
 <template>
     <div class="agency">
-        <TableForm title="机构信息" :FormData="agencyData.FormData" ref="agencyDataRef" :data="agency"></TableForm>
+        <TableForm title="機构資訊" :FormData="agencyData.FormData" ref="agencyDataRef" :data="agency"></TableForm>
         <div class="system">
             <Row justify="start">
 

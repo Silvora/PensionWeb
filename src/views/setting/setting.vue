@@ -204,7 +204,6 @@ const handleSearch = (value: any) => {
 const handleBatchDelete = () => {
     console.log(checkList.value)
 
-    return;
 
     if(!checkList.value.length){
         Message.warning(t('請選擇删除的設備!'))

@@ -128,6 +128,7 @@ const LogTable:any = {
           title: '日志内容',
           key: 'notes',
           minWidth: 120,
+          slot: true,
       },
       {
         title: '设备名称',

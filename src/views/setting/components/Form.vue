@@ -214,6 +214,48 @@
         </div>
 
         <div v-if="formData.type == 'ed713_type' || formData.type == 'x1_type'">
+
+          <div
+            style="
+              background: rgba(0, 0, 0, 0.05);
+              padding: 10px;
+              border-radius: 15px;
+              margin: 10px 0;
+            "
+          >
+          <FormItem :label="t('心率报警')" prop="heartRateAlarm">
+              <Switch
+                size="large"
+                v-model="formData.sleepParams.heartRateAlarm"
+                :true-value="1"
+                :false-value="0"
+              >
+                <template #open>
+                  <span>{{ t("启用") }}</span>
+                </template>
+                <template #close>
+                  <span>{{ t("停用") }}</span>
+                </template>
+              </Switch>
+            </FormItem>
+            <FormItem :label="t('呼吸报警')" prop="respiratoryAlarm">
+              <Switch
+                size="large"
+                v-model="formData.sleepParams.respiratoryAlarm"
+                :true-value="1"
+                :false-value="0"
+              >
+                <template #open>
+                  <span>{{ t("启用") }}</span>
+                </template>
+                <template #close>
+                  <span>{{ t("停用") }}</span>
+                </template>
+              </Switch>
+            </FormItem>
+            
+        </div>
+
           <div
             style="
               background: rgba(0, 0, 0, 0.05);
@@ -518,7 +560,7 @@ const formData = ref<any>({
   roomBedNumber: "",
   roomId: 0,
   sleepParams: {
-    heartRateAlarm: 0,
+    heartRateAlarm: 1,
     heartRateConfig: {
       time: "",
       max: 0,
@@ -528,7 +570,7 @@ const formData = ref<any>({
       sleep: "",
     },
     id: 0,
-    leaveBedAlarm: 0,
+    leaveBedAlarm: 1,
     leaveBedConfig: {
       time: "",
       max: 0,
@@ -537,7 +579,7 @@ const formData = ref<any>({
       minTime: "",
       sleep: "",
     },
-    respiratoryAlarm: 0,
+    respiratoryAlarm: 1,
     respiratoryConfig: {
       time: "",
       max: 0,
@@ -800,7 +842,7 @@ const Open = (data: any) => {
       roomBedNumber: "",
       roomId: 0,
       sleepParams: {
-        heartRateAlarm: 0,
+        heartRateAlarm: 1,
         heartRateConfig: {
           time: "",
           max: 0,
@@ -809,7 +851,7 @@ const Open = (data: any) => {
           minTime: "",
         },
         id: 0,
-        leaveBedAlarm: 0,
+        leaveBedAlarm: 1,
         leaveBedConfig: {
           time: "",
           max: 0,
@@ -817,7 +859,7 @@ const Open = (data: any) => {
           min: 0,
           minTime: "",
         },
-        respiratoryAlarm: 0,
+        respiratoryAlarm: 1,
         respiratoryConfig: {
           time: "",
           max: 0,

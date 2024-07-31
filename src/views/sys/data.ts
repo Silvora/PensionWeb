@@ -525,7 +525,7 @@ const roleTable: any = {
         // },
         {
             type: 'input',
-            label: '角色名称',
+            label: '工种类型',
             prop: "name",
             //disabled: false,
             //childs: [],
@@ -534,7 +534,7 @@ const roleTable: any = {
         },
            {
             type: 'input',
-            label: '角色说明',
+            label: '工种说明',
             prop: "description",
             //disabled: false,
             //childs: [],
@@ -543,7 +543,7 @@ const roleTable: any = {
         },
         {
             type: 'switch',
-            label: '状态',
+            label: '工种状态',
             prop: "status",
             //disabled: false,
             //childs: [],
