@@ -46,7 +46,7 @@
           </Suspense>
         </Content>
       </Layout>
-      <p class="footer" v-if="route.name != 'home'">{{ t('海吉雅健康科技有限公司 技术支持') }}</p>
+      <p class="footer" v-if="route.name != 'home'">Copyright © 2024. All Rights Reserved. <a href="https://beian.miit.gov.cn" target="_blank" style="color: #000;">粤ICP备2023101780号-1</a>{{ t('海吉雅健康科技有限公司技术支持') }}</p>
     </div>
   </div>
 </template>
